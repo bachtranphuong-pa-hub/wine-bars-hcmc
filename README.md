@@ -90,6 +90,29 @@
 
 ---
 
+#### **5. [3-Year Dividend Portfolio](./vn-dividend-portfolio-3year-2026.html)** (25KB) — **NEW**
+**Date:** March 3, 2026  
+**Topic:** 5 dividend stocks for long-term income (2026-2029)
+
+**TOP 5 DIVIDEND STOCKS:**
+1. **NT2 (PetroVietnam Nhon Trach 2):** ₫21.5k, **7% yield** — Power (best yield)
+2. **GAS (PetroVietnam Gas):** ₫95k, **3-8% yield** — Gas transmission
+3. **VNM (Vinamilk):** ₫70k, **6-8% yield** — Consumer dairy (dividend cut risk)
+4. **PLX (Petrolimex):** ₫61.8k, **2.5-3.5% yield** — Oil distribution
+5. **REE (REE Corporation):** ₫70k, **1.4% cash + 15% stock** — Diversified conglomerate
+
+**Expected 3-Year Return:** **+28-38%** (9.3-12.7% annualized)  
+**Risk Profile:** Low-Medium (defensive sectors, income focus)  
+**Dividend Yield:** 4.5-6.5% annual (weighted average)
+
+**Key Features:**
+- Dividend history: 5-10 years consistent payouts
+- Payout ratios: 30-50% (sustainable, except VNM 130%)
+- DRIP strategy: Reinvest dividends for compounding
+- Hold horizon: 3 years minimum
+
+---
+
 ### **🍷 Wine Bar Research (TP.HCM)**
 
 #### **5. [Wine Bars Database](./index.html)** — Interactive Map + Tables
