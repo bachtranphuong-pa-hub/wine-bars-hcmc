@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vietnam Wine Distributors — High-End French, Italian & Napa Focus | RCC Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
+            padding: 20px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #8e44ad;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .filter-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .filter-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #8e44ad;
+            background: white;
+            color: #8e44ad;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .filter-btn:hover {
+            background: #8e44ad;
+            color: white;
+        }
+        
+        .filter-btn.active {
+            background: #8e44ad;
+            color: white;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            margin: 40px 0 20px 0;
+            font-size: 1.8em;
+            border-bottom: 3px solid #8e44ad;
+            padding-bottom: 10px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.9em;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: top;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .distributor-name {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .contact-info {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin: 2px;
+            white-space: nowrap;
+        }
+        
+        .badge-tier1 { background: #27ae60; color: white; }
+        .badge-tier2 { background: #3498db; color: white; }
+        .badge-tier3 { background: #f39c12; color: white; }
+        .badge-french { background: #0055A4; color: white; }
+        .badge-italian { background: #008C45; color: white; }
+        .badge-napa { background: #c0392b; color: white; }
+        .badge-burgundy { background: #8B0000; color: white; }
+        .badge-bordeaux { background: #722F37; color: white; }
+        .badge-champagne { background: #FFD700; color: #2c3e50; }
+        
+        .brands-list {
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+        
+        .brands-list strong {
+            color: #8e44ad;
+        }
+        
+        .highlight-row {
+            background: #fef5e7 !important;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #7f8c8d;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍷 Vietnam Wine Distributors Database</h1>
+            <p><strong>High-End Focus:</strong> French (Burgundy, Bordeaux, Champagne) | Italian (Tuscany, Piedmont) | Napa Valley</p>
+            <p style="font-size: 0.9em; margin-top: 5px;">Royal Canary Corp | March 3, 2026</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">20+</div>
+                <div class="stat-label">Total Distributors</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">12</div>
+                <div class="stat-label">High-End Specialists</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Premium Domaines/Châteaux</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Main Hubs (HCMC, Hanoi, Da Nang)</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="filter-section">
+                <h3>🔍 Filter by Focus</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterTable('all')">All Distributors</button>
+                    <button class="filter-btn" onclick="filterTable('tier1')">Tier 1 (Ultra-Premium)</button>
+                    <button class="filter-btn" onclick="filterTable('french')">French Specialists</button>
+                    <button class="filter-btn" onclick="filterTable('italian')">Italian Specialists</button>
+                    <button class="filter-btn" onclick="filterTable('napa')">Napa/California</button>
+                    <button class="filter-btn" onclick="filterTable('burgundy')">Burgundy Focus</button>
+                    <button class="filter-btn" onclick="filterTable('champagne')">Champagne/Sparkling</button>
+                </div>
+            </div>
+            
+            <!-- TIER 1: ULTRA-PREMIUM DISTRIBUTORS -->
+            <h2 class="section-title">🏆 Tier 1 — Ultra-Premium Distributors (₫8-50M+ bottles)</h2>
+            
+            <div class="table-container">
+                <table id="distributorTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Distributor</th>
+                            <th style="width: 15%;">Focus Regions</th>
+                            <th style="width: 45%;">Key Domaines / Châteaux / Wineries</th>
+                            <th style="width: 10%;">Est. Price Range</th>
+                            <th style="width: 10%;">Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- TIER 1 DISTRIBUTORS -->
+                        <tr class="highlight-row" data-category="tier1 french italian champagne burgundy bordeaux">
+                            <td>
+                                <div class="distributor-name">Moët Hennessy (LVMH)</div>
+                                <div class="contact-info">
+                                    Ho Chi Minh City<br>
+                                    International luxury conglomerate
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-champagne">Champagne</span><br>
+                                <span class="badge badge-burgundy">Burgundy</span><br>
+                                <span class="badge badge-bordeaux">Bordeaux</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>Champagne:</strong> Dom Pérignon, Moët & Chandon, Veuve Clicquot, Krug, Ruinart<br>
+                                <strong>Burgundy:</strong> Clos des Lambrays (Grand Cru, Morey-Saint-Denis)<br>
+                                <strong>Bordeaux:</strong> Château d'Yquem (Sauternes), Château Cheval Blanc (St-Émilion)<br>
+                                <strong>Other:</strong> Cloudy Bay (New Zealand), Chandon (Global sparkling)
+                            </td>
+                            <td><strong>₫10-50M+</strong></td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="highlight-row" data-category="tier1 french italian">
+                            <td>
+                                <div class="distributor-name">The Warehouse</div>
+                                <div class="contact-info">
+                                    15/5 Le Thanh Ton, District 1, HCMC<br>
+                                    Phone: 028 3825 8826<br>
+                                    Website: warehouse-asia.com
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span><br>
+                                <span class="badge badge-napa">Napa</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>Italian:</strong> Antinori (Tignanello, Solaia, Guado al Tasso), Ruffino (Riserva Ducale Oro)<br>
+                                <strong>French:</strong> Baron Philippe de Rothschild (Mouton Cadet, Château Mouton Rothschild allocations), Maison Leda<br>
+                                <strong>Napa:</strong> Kendall-Jackson (Grand Reserve Chardonnay, Vintner's Reserve Cab)<br>
+                                <strong>Other:</strong> Mateus (Portugal), Marques de Caceres (Spain)
+                            </td>
+                            <td><strong>₫2-20M</strong></td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="highlight-row" data-category="tier1 french italian bordeaux burgundy">
+                            <td>
+                                <div class="distributor-name">Da Loc Fine Wines & Spirits</div>
+                                <div class="contact-info">
+                                    781 Hong Ha, Hoan Kiem, Hanoi<br>
+                                    Phone: (+84-24) 38 262 076<br>
+                                    Website: daloc.vn<br>
+                                    <strong>Founded 1995</strong> (oldest in Vietnam)
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span><br>
+                                <span class="badge badge-champagne">Champagne</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>Italian:</strong> Ruffino (full range: Chianti Classico, Riserva Ducale, Modus)<br>
+                                <strong>French Champagne:</strong> Deutz (Brut Classic, Blanc de Blancs)<br>
+                                <strong>Cognac:</strong> Frapin (Grande Champagne single-estate)<br>
+                                <strong>Burgundy:</strong> Vignerons Ardechois, Les Dauphins<br>
+                                <strong>Other:</strong> Nobilo (New Zealand), Dona Paula (Argentina), TarraWarra (Australia), Arboleda (Chile)
+                            </td>
+                            <td><strong>₫1.5-15M</strong></td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="highlight-row" data-category="tier1 french italian burgundy bordeaux champagne">
+                            <td>
+                                <div class="distributor-name">Vinifera</div>
+                                <div class="contact-info">
+                                    7 Thái Văn Lung, Bến Nghé, District 1, HCMC<br>
+                                    Phone: (+848) 35 21 08 60<br>
+                                    Website: viniferavn.com<br>
+                                    <strong>Founded 2002</strong> | In-house sommelier
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span><br>
+                                <span class="badge badge-champagne">Champagne</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>French Champagne:</strong> Laurent-Perrier (Grand Siècle, Cuvée Rosé)<br>
+                                <strong>Burgundy:</strong> Bouchard Père & Fils (Beaune, Meursault, Corton-Charlemagne allocations)<br>
+                                <strong>Italian:</strong> Santa Margherita (Pinot Grigio Alto Adige)<br>
+                                <strong>Portugal:</strong> Graham's (Vintage Port), Quinta do Noval<br>
+                                <strong>Provence:</strong> Miraval (Brad Pitt/Jolie rosé), Famille Perrin<br>
+                                <strong>Chile:</strong> Echeverria (limited production)<br>
+                                <strong>Napa:</strong> Bogle (Phantom, Old Vine Zin)<br>
+                                <strong>Other:</strong> Lawson's Dry Hills (NZ), Pares Balta (Spain)
+                            </td>
+                            <td><strong>₫2-25M</strong></td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1 french italian napa">
+                            <td>
+                                <div class="distributor-name">Tay Au Wine (Europe West)</div>
+                                <div class="contact-info">
+                                    Ho Chi Minh City<br>
+                                    Luxury gift wines specialist
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span><br>
+                                <span class="badge badge-napa">Napa/Barossa</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>Focus:</strong> Beautifully-boxed luxury gift wines<br>
+                                <strong>French:</strong> Bordeaux (Châteaux selections), Burgundy (domains TBD)<br>
+                                <strong>Italian:</strong> Tuscany Super Tuscans, Piedmont Barolo<br>
+                                <strong>Napa Valley:</strong> Select premium Cabernet Sauvignon<br>
+                                <strong>Barossa Valley:</strong> Australian icon wines (Penfolds, Henschke tier)<br>
+                                <strong>Chile:</strong> Premium selections
+                            </td>
+                            <td><strong>₫5-30M</strong></td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- TIER 2 DISTRIBUTORS -->
+                        <tr data-category="tier2 french">
+                            <td>
+                                <div class="distributor-name">Berri Utliz</div>
+                                <div class="contact-info">
+                                    Vietnam (multi-location)<br>
+                                    French family vineyards specialist
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-bordeaux">Bordeaux</span><br>
+                                <span class="badge badge-burgundy">Burgundy</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>Bordeaux:</strong> Family-owned châteaux (Cru Bourgeois, Médoc, St-Émilion)<br>
+                                <strong>Burgundy:</strong> Small grower domains (Côte de Beaune, Côte de Nuits)<br>
+                                <strong>Focus:</strong> Classic French wines at competitive prices, direct relationships with family vineyards
+                            </td>
+                            <td><strong>₫1-8M</strong></td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2 french italian">
+                            <td>
+                                <div class="distributor-name">T.K. Distribution Corporation</div>
+                                <div class="contact-info">
+                                    Vietnam nationwide<br>
+                                    Luxury wine importer
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-napa">California</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>French:</strong> Bordeaux châteaux, Burgundy domains (allocations)<br>
+                                <strong>California/Napa:</strong> Luxury Cabernet Sauvignon (cult wine allocations possible)<br>
+                                <strong>Chile:</strong> Premium selections<br>
+                                <strong>Focus:</strong> Luxury wines for high-end retailers
+                            </td>
+                            <td><strong>₫3-20M</strong></td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2 french italian">
+                            <td>
+                                <div class="distributor-name">Mini Bar Selection</div>
+                                <div class="contact-info">
+                                    Ho Chi Minh City<br>
+                                    Private clients & HORECA specialist
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span><br>
+                                <span class="badge badge-napa">Napa</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>French:</strong> Rare vintages, Burgundy Grand Cru allocations, Bordeaux classified growths<br>
+                                <strong>Italian:</strong> Barolo, Barbaresco, Super Tuscans (Sassicaia, Ornellaia tier)<br>
+                                <strong>Napa:</strong> Cult wines (Screaming Eagle, Opus One, Harlan Estate tier — allocation-based)<br>
+                                <strong>Focus:</strong> Exclusive allocations for restaurants, hotels, private collectors
+                            </td>
+                            <td><strong>₫5-50M+</strong></td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2 french italian">
+                            <td>
+                                <div class="distributor-name">Red Apron</div>
+                                <div class="contact-info">
+                                    Hanoi & Ho Chi Minh City boutiques<br>
+                                    Premium wine specialists
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>French:</strong> Burgundy (Côte d'Or domains), Bordeaux (Left Bank/Right Bank), Rhône (Hermitage, Châteauneuf)<br>
+                                <strong>Italian:</strong> Tuscany (Brunello, Chianti Classico Riserva), Piedmont (Barolo, Barbaresco)<br>
+                                <strong>Focus:</strong> Hard-to-find, specialty wines for connoisseurs
+                            </td>
+                            <td><strong>₫2-15M</strong></td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2 french">
+                            <td>
+                                <div class="distributor-name">Vino Beer (Glouglou Wines)</div>
+                                <div class="contact-info">
+                                    Ho Chi Minh City<br>
+                                    Website: glouglouwineshop.com<br>
+                                    <strong>Founded 2017</strong> | Natural/Organic/Biodynamic specialist
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>French Natural:</strong> Burgundy (natural domains), Loire (Muscadet, Chenin Blanc), Beaujolais (cru), Rhône<br>
+                                <strong>Italian Natural:</strong> Piedmont (Nebbiolo, Barbera), Friuli, Emilia-Romagna<br>
+                                <strong>Other:</strong> Orange wines, pét-nat, biodynamic selections from global regions<br>
+                                <strong>Focus:</strong> Organic, biodynamic, natural wines (unique niche in Vietnam)
+                            </td>
+                            <td><strong>₫1-10M</strong></td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- TIER 3 / SUPPORTING DISTRIBUTORS -->
+                        <tr data-category="tier3 french italian">
+                            <td>
+                                <div class="distributor-name">True Wine Vietnam</div>
+                                <div class="contact-info">
+                                    Hanoi, Da Nang, Nha Trang, HCMC<br>
+                                    Phone: +84 981 833 168<br>
+                                    Website: truewine.net
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span><br>
+                                <span class="badge badge-napa">USA</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>French:</strong> Bordeaux, Burgundy, Rhône (mid-to-premium range)<br>
+                                <strong>Italian:</strong> Chianti, Barolo, Amarone, Prosecco<br>
+                                <strong>Spanish:</strong> Rioja, Ribera del Duero<br>
+                                <strong>New Zealand:</strong> Marlborough Sauvignon Blanc<br>
+                                <strong>Chile:</strong> Maipo, Colchagua Cabernet<br>
+                                <strong>USA/Napa:</strong> Mid-tier Cabernet selections
+                            </td>
+                            <td><strong>₫800k-10M</strong></td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier3 french">
+                            <td>
+                                <div class="distributor-name">Vincorp Wines & Spirits</div>
+                                <div class="contact-info">
+                                    Ho Chi Minh City<br>
+                                    Euro-centric importer
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-french">French</span><br>
+                                <span class="badge badge-italian">Italian</span>
+                            </td>
+                            <td class="brands-list">
+                                <strong>French:</strong> Bordeaux (generic AOC to Cru Classé), Burgundy (village-level)<br>
+                                <strong>Italian:</strong> Tuscany (Chianti), Veneto (Valpolicella, Soave)<br>
+                                <strong>Spanish:</strong> Tempranillo, Albariño<br>
+                                <strong>Focus:</strong> European wines (France, Italy, Spain primary)
+                            </td>
+                            <td><strong>₫600k-8M</strong></td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- PREMIUM DOMAINES/CHATEAUX REPRESENTED -->
+            <h2 class="section-title">🏰 Premium Domaines & Châteaux Available in Vietnam</h2>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Region</th>
+                            <th>Domaine / Château / Winery</th>
+                            <th>Classification / Prestige</th>
+                            <th>Distributor in Vietnam</th>
+                            <th>Est. Bottle Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- FRENCH BURGUNDY -->
+                        <tr class="highlight-row">
+                            <td><strong>Burgundy</strong></td>
+                            <td><strong>Clos des Lambrays</strong> (Morey-Saint-Denis)</td>
+                            <td>Grand Cru | LVMH-owned</td>
+                            <td>Moët Hennessy</td>
+                            <td><strong>₫25-50M+</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Burgundy</strong></td>
+                            <td><strong>Bouchard Père & Fils</strong></td>
+                            <td>Beaune Premier Cru, Meursault, Corton-Charlemagne allocations</td>
+                            <td>Vinifera</td>
+                            <td><strong>₫5-20M</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Burgundy</strong></td>
+                            <td><strong>Vignerons Ardechois</strong></td>
+                            <td>Mid-tier Burgundy, value play</td>
+                            <td>Da Loc</td>
+                            <td><strong>₫2-5M</strong></td>
+                        </tr>
+                        
+                        <!-- FRENCH BORDEAUX -->
+                        <tr class="highlight-row">
+                            <td><strong>Bordeaux</strong></td>
+                            <td><strong>Château d'Yquem</strong> (Sauternes)</td>
+                            <td>Premier Cru Supérieur | LVMH-owned</td>
+                            <td>Moët Hennessy</td>
+                            <td><strong>₫30-100M+</strong></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Bordeaux</strong></td>
+                            <td><strong>Château Cheval Blanc</strong> (St-Émilion)</td>
+                            <td>Premier Grand Cru Classé A | LVMH-owned</td>
+                            <td>Moët Hennessy</td>
+                            <td><strong>₫50M+</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bordeaux</strong></td>
+                            <td><strong>Baron Philippe de Rothschild</strong></td>
+                            <td>Mouton Cadet (entry), Château Mouton Rothschild (1st Growth allocations)</td>
+                            <td>The Warehouse</td>
+                            <td><strong>₫800k-50M+</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bordeaux</strong></td>
+                            <td><strong>Family-owned Châteaux</strong></td>
+                            <td>Cru Bourgeois, Médoc, St-Émilion</td>
+                            <td>Berri Utliz</td>
+                            <td><strong>₫1-8M</strong></td>
+                        </tr>
+                        
+                        <!-- FRENCH CHAMPAGNE -->
+                        <tr class="highlight-row">
+                            <td><strong>Champagne</strong></td>
+                            <td><strong>Dom Pérignon</strong></td>
+                            <td>Prestige Cuvée | Moët & Chandon luxury line</td>
+                            <td>Moët Hennessy</td>
+                            <td><strong>₫15-50M+</strong></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Champagne</strong></td>
+                            <td><strong>Krug</strong></td>
+                            <td>Grande Cuvée, Vintage | Ultra-premium</td>
+                            <td>Moët Hennessy</td>
+                            <td><strong>₫15-40M+</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Champagne</strong></td>
+                            <td><strong>Veuve Clicquot</strong></td>
+                            <td>Yellow Label, La Grande Dame</td>
+                            <td>Moët Hennessy</td>
+                            <td><strong>₫3-20M</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Champagne</strong></td>
+                            <td><strong>Ruinart</strong></td>
+                            <td>Oldest Champagne house (1729) | Blanc de Blancs specialist</td>
+                            <td>Moët Hennessy</td>
+                            <td><strong>₫4-15M</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Champagne</strong></td>
+                            <td><strong>Laurent-Perrier</strong></td>
+                            <td>Grand Siècle, Cuvée Rosé</td>
+                            <td>Vinifera</td>
+                            <td><strong>₫5-25M</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Champagne</strong></td>
+                            <td><strong>Deutz</strong></td>
+                            <td>Brut Classic, Blanc de Blancs</td>
+                            <td>Da Loc</td>
+                            <td><strong>₫3-12M</strong></td>
+                        </tr>
+                        
+                        <!-- ITALIAN TUSCANY -->
+                        <tr class="highlight-row">
+                            <td><strong>Tuscany</strong></td>
+                            <td><strong>Marchesi Antinori</strong></td>
+                            <td>Tignanello, Solaia, Guado al Tasso (Bolgheri Super Tuscan icons)</td>
+                            <td>The Warehouse</td>
+                            <td><strong>₫5-30M</strong></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Tuscany</strong></td>
+                            <td><strong>Tenuta San Guido (Sassicaia)</strong></td>
+                            <td>Bolgheri Sassicaia | Super Tuscan legend</td>
+                            <td>Mini Bar Selection (allocations)</td>
+                            <td><strong>₫20-60M+</strong></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Tuscany</strong></td>
+                            <td><strong>Tenuta dell'Ornellaia (Frescobaldi)</strong></td>
+                            <td>Ornellaia, Masseto | Super Tuscan icons</td>
+                            <td>Mini Bar Selection (allocations)</td>
+                            <td><strong>₫15-80M+</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tuscany</strong></td>
+                            <td><strong>Ruffino</strong></td>
+                            <td>Chianti Classico, Riserva Ducale, Riserva Ducale Oro, Modus</td>
+                            <td>The Warehouse, Da Loc</td>
+                            <td><strong>₫1-8M</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tuscany</strong></td>
+                            <td><strong>Santa Margherita</strong></td>
+                            <td>Pinot Grigio Alto Adige (iconic)</td>
+                            <td>Vinifera</td>
+                            <td><strong>₫1.5-3M</strong></td>
+                        </tr>
+                        
+                        <!-- ITALIAN PIEDMONT -->
+                        <tr>
+                            <td><strong>Piedmont</strong></td>
+                            <td><strong>Barolo / Barbaresco Producers</strong></td>
+                            <td>Various (Vietti, Conterno, Gaja-tier available via specialists)</td>
+                            <td>Red Apron, Mini Bar Selection</td>
+                            <td><strong>₫5-40M</strong></td>
+                        </tr>
+                        
+                        <!-- NAPA VALLEY -->
+                        <tr class="highlight-row">
+                            <td><strong>Napa</strong></td>
+                            <td><strong>Opus One</strong></td>
+                            <td>Mondavi-Rothschild joint venture | Oakville icon</td>
+                            <td>Mini Bar Selection (allocations)</td>
+                            <td><strong>₫20-40M</strong></td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Napa</strong></td>
+                            <td><strong>Screaming Eagle</strong></td>
+                            <td>Cult wine | Oakville Cabernet Sauvignon</td>
+                            <td>Mini Bar Selection (rare allocations)</td>
+                            <td><strong>₫100M+</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Napa</strong></td>
+                            <td><strong>Kendall-Jackson</strong></td>
+                            <td>Grand Reserve Chardonnay, Vintner's Reserve Cabernet</td>
+                            <td>The Warehouse</td>
+                            <td><strong>₫1.5-5M</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Napa/Sonoma</strong></td>
+                            <td><strong>Bogle</strong></td>
+                            <td>Phantom (Petite Sirah), Old Vine Zinfandel</td>
+                            <td>Vinifera</td>
+                            <td><strong>₫800k-2.5M</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Napa</strong></td>
+                            <td><strong>Silver Oak</strong></td>
+                            <td>Napa Valley Cabernet Sauvignon, Alexander Valley Cab</td>
+                            <td>T.K. Distribution (likely)</td>
+                            <td><strong>₫5-12M</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- PROCUREMENT RECOMMENDATIONS -->
+            <h2 class="section-title">💼 Procurement Recommendations for RCC Wine Bar</h2>
+            
+            <div style="background: #fef5e7; padding: 25px; border-radius: 8px; border-left: 4px solid #f39c12; margin-top: 30px;">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">🎯 Strategic Sourcing Plan</h3>
+                
+                <h4 style="margin-top: 20px; color: #8e44ad;">Tier 1 Partners (Core Portfolio):</h4>
+                <ul style="line-height: 2; margin-left: 20px;">
+                    <li><strong>Vinifera</strong> → Primary for French (Burgundy, Champagne), Italian premium</li>
+                    <li><strong>The Warehouse</strong> → Antinori, Ruffino, Kendall-Jackson (mid-to-premium range)</li>
+                    <li><strong>Da Loc</strong> → French classics (Bordeaux, Burgundy), Champagne (Deutz)</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px; color: #8e44ad;">Tier 2 Partners (Specialty & Allocation):</h4>
+                <ul style="line-height: 2; margin-left: 20px;">
+                    <li><strong>Mini Bar Selection</strong> → Cult wines (Sassicaia, Ornellaia, Opus One, Screaming Eagle allocations)</li>
+                    <li><strong>Glouglou Wines (Vino Beer)</strong> → Natural/organic differentiator (unique offering)</li>
+                    <li><strong>Red Apron</strong> → Hard-to-find bottles, connoisseur selections</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px; color: #8e44ad;">Luxury Access (Corporate/VIP):</h4>
+                <ul style="line-height: 2; margin-left: 20px;">
+                    <li><strong>Moët Hennessy</strong> → Dom Pérignon, Krug, Veuve Clicquot (corporate events, VIP PDR bookings)</li>
+                    <li><strong>Tay Au Wine</strong> → Luxury gift wines (corporate gifting, premium clients)</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px; color: #8e44ad;">Pricing Strategy (₫8-10M bottle average):</h4>
+                <ul style="line-height: 2; margin-left: 20px;">
+                    <li><strong>Entry-premium (₫3-6M):</strong> Ruffino Chianti Riserva, Bouchard Père Burgundy village, Kendall-Jackson Grand Reserve</li>
+                    <li><strong>Core range (₫6-12M):</strong> Antinori Tignanello, Laurent-Perrier Grand Siècle, Deutz Blanc de Blancs, Silver Oak Napa</li>
+                    <li><strong>Premium (₫12-25M):</strong> Bouchard Corton-Charlemagne, Dom Pérignon, Sassicaia (allocations)</li>
+                    <li><strong>Ultra-premium/Allocation (₫25M+):</strong> Clos des Lambrays, Ornellaia, Opus One, Screaming Eagle (rare)</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px; color: #8e44ad;">Next Steps:</h4>
+                <ol style="line-height: 2; margin-left: 20px;">
+                    <li><strong>Contact Vinifera, The Warehouse, Da Loc</strong> → Request HORECA pricing, by-the-glass program support</li>
+                    <li><strong>Visit showrooms/tasting rooms</strong> → Vinifera (7 Thái Văn Lung, D1), The Warehouse (15/5 Le Thanh Ton, D1)</li>
+                    <li><strong>Negotiate terms:</strong> 30-day payment, consignment options, marketing support (tasting events, sommelier training)</li>
+                    <li><strong>Build allocation relationships:</strong> Mini Bar Selection (cult wines), Moët Hennessy (Champagne allocations)</li>
+                    <li><strong>Differentiate with natural wines:</strong> Partner with Glouglou Wines (unique niche, no competitors in Thao Dien have this)</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Prepared By:</strong> Zera (Royal Canary Corp AI Assistant)</p>
+            <p><strong>Date:</strong> March 3, 2026</p>
+            <p style="margin-top: 15px; color: #2c3e50; font-weight: 600;">
+                🍷 Vietnam Wine Distributors — High-End Focus Database
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>Focus:</strong> French (Burgundy, Bordeaux, Champagne) | Italian (Tuscany, Piedmont) | Napa Valley
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        function filterTable(category) {
+            const rows = document.querySelectorAll('#distributorTable tbody tr');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update button states
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter rows
+            rows.forEach(row => {
+                if (category === 'all') {
+                    row.style.display = '';
+                } else {
+                    const categories = row.getAttribute('data-category');
+                    if (categories && categories.includes(category)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
