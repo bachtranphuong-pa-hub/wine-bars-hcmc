@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Bar Location Analysis - Thao Dien Focus | RCC Strategy</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 20px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .recommendation-banner {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            padding: 25px 40px;
+            text-align: center;
+            border-bottom: 3px solid #1e8449;
+        }
+        
+        .recommendation-banner h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .recommendation-banner p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .map-section {
+            margin-bottom: 40px;
+        }
+        
+        .map-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+        }
+        
+        #map {
+            height: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+        
+        .map-legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-marker {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .marker-target { background: #e74c3c; }
+        .marker-competitor { background: #95a5a6; }
+        .marker-landmark { background: #3498db; }
+        
+        .table-section {
+            margin-top: 40px;
+        }
+        
+        .table-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.95em;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .score {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .score-excellent { color: #27ae60; }
+        .score-good { color: #f39c12; }
+        .score-fair { color: #e67e22; }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin: 2px;
+            white-space: nowrap;
+        }
+        
+        .badge-top { background: #27ae60; color: white; }
+        .badge-recommended { background: #3498db; color: white; }
+        .badge-alternative { background: #95a5a6; color: white; }
+        
+        .highlight-row {
+            background: #d5f4e6 !important;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .pros-cons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .pros-box, .cons-box {
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .pros-box {
+            background: #d5f4e6;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .cons-box {
+            background: #fadbd8;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .pros-box h3, .cons-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .pros-box ul, .cons-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .pros-box li, .cons-box li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .pros-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .cons-box li:before {
+            content: "⚠";
+            position: absolute;
+            left: 0;
+            font-size: 1.1em;
+        }
+        
+        .action-box {
+            background: #fff3cd;
+            border-left: 4px solid #f39c12;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .action-box h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .action-box ol {
+            padding-left: 20px;
+        }
+        
+        .action-box li {
+            padding: 8px 0;
+            font-weight: 500;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #7f8c8d;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍷 Wine Bar Location Strategy</h1>
+            <p><strong>Thao Dien Focus</strong> — Premium Shophouse Analysis</p>
+            <p style="font-size: 0.9em; margin-top: 5px;">Royal Canary Corp | March 3, 2026</p>
+        </div>
+        
+        <div class="recommendation-banner">
+            <h2>🏆 TOP RECOMMENDATION</h2>
+            <p><strong>Heritage Shophouse, Nguyen Van Huong Street, Thao Dien, District 2</strong></p>
+            <p style="font-size: 0.95em; margin-top: 8px;">Prime Location | Proven Demand | Affordable Rent | PDR Differentiation</p>
+        </div>
+        
+        <div class="content">
+            <!-- MAP SECTION -->
+            <div class="map-section">
+                <h2>📍 Thao Dien Strategic Map</h2>
+                <div id="map"></div>
+                <div class="map-legend">
+                    <h4 style="margin-bottom: 15px; color: #2c3e50;">Map Legend</h4>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <span class="legend-marker marker-target"></span>
+                            <span><strong>Target Locations</strong> (Recommended Shophouses)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker marker-competitor"></span>
+                            <span><strong>Existing Competitors</strong> (Wine Bars)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker marker-landmark"></span>
+                            <span><strong>Key Landmarks</strong> (Schools, Shopping, Hotels)</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9em; color: #7f8c8d;">
+                        <strong>Interactive Map:</strong> Click markers for details. Zoom in/out to explore streets. Red markers = Priority locations.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- DETAILED LOCATION TABLE -->
+            <div class="table-section">
+                <h2>📊 Target Location Analysis — Nguyen Van Huong Street</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Location ID</th>
+                                <th>Specific Address</th>
+                                <th>Est. Rent (VND/month)</th>
+                                <th>Size (m²)</th>
+                                <th>Pros</th>
+                                <th>Foot Traffic</th>
+                                <th>Priority Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="highlight-row">
+                                <td><span class="badge badge-top">TOP-1</span></td>
+                                <td><strong>Nguyen Van Huong, Block 50-70</strong><br><small>Between Xuan Thuy & Quoc Huong</small></td>
+                                <td><strong>₫100-120M</strong><br><small>($4,000-4,800)</small></td>
+                                <td><strong>150-180m²</strong><br><small>2-3 storey</small></td>
+                                <td>
+                                    • Parallel to Xuan Thuy (quieter, lower rent)<br>
+                                    • Heritage shophouses available<br>
+                                    • Residential clusters (expats + Vietnamese)<br>
+                                    • Easy access from main roads
+                                </td>
+                                <td><span class="score score-good">Medium-High</span></td>
+                                <td><span class="score score-excellent">9.5/10</span></td>
+                            </tr>
+                            <tr class="highlight-row">
+                                <td><span class="badge badge-top">TOP-2</span></td>
+                                <td><strong>Nguyen Van Huong, Block 80-100</strong><br><small>Near Thao Dien Village</small></td>
+                                <td><strong>₫120-150M</strong><br><small>($4,800-6,000)</small></td>
+                                <td><strong>160-200m²</strong><br><small>2-3 storey</small></td>
+                                <td>
+                                    • Closer to Thao Dien Village (retail cluster)<br>
+                                    • Higher foot traffic (families, shoppers)<br>
+                                    • Modern villa developments nearby<br>
+                                    • International school proximity
+                                </td>
+                                <td><span class="score score-excellent">High</span></td>
+                                <td><span class="score score-excellent">9.0/10</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-recommended">ALT-1</span></td>
+                                <td><strong>Xuan Thuy, Block 50-80</strong><br><small>Main strip, high visibility</small></td>
+                                <td><strong>₫180-250M</strong><br><small>($7,200-10,000)</small></td>
+                                <td><strong>180-220m²</strong><br><small>2-3 storey</small></td>
+                                <td>
+                                    • Main strip visibility (MAD location proof)<br>
+                                    • Highest foot traffic in Thao Dien<br>
+                                    • Established F&B cluster<br>
+                                    • Tourist/expat destination
+                                </td>
+                                <td><span class="score score-excellent">Very High</span></td>
+                                <td><span class="score score-good">8.5/10</span><br><small>(Rent premium)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-recommended">ALT-2</span></td>
+                                <td><strong>Tran Ngoc Dien, Villa Conversions</strong><br><small>Residential villa area</small></td>
+                                <td><strong>₫200-300M</strong><br><small>($8,000-12,000)</small></td>
+                                <td><strong>200-300m²</strong><br><small>Villa format</small></td>
+                                <td>
+                                    • Villa format = premium positioning<br>
+                                    • Garden/courtyard possible<br>
+                                    • Parking available<br>
+                                    • Exclusive residential cluster
+                                </td>
+                                <td><span class="score score-fair">Low-Medium</span></td>
+                                <td><span class="score score-good">8.0/10</span><br><small>(Premium format)</small></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-alternative">ALT-3</span></td>
+                                <td><strong>Quoc Huong, Near International Schools</strong><br><small>Family-oriented area</small></td>
+                                <td><strong>₫100-140M</strong><br><small>($4,000-5,600)</small></td>
+                                <td><strong>140-170m²</strong><br><small>2 storey</small></td>
+                                <td>
+                                    • International school proximity (ISHCMC, BIS)<br>
+                                    • Expat family clusters<br>
+                                    • Daytime retail traffic (parents drop-off)<br>
+                                    • Lower competition
+                                </td>
+                                <td><span class="score score-fair">Medium</span></td>
+                                <td><span class="score score-good">7.5/10</span><br><small>(Family-focused)</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- COMPETITOR LOCATIONS TABLE -->
+            <div class="table-section">
+                <h2>🎯 Competitor & Landmark Reference Points</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Relevance</th>
+                                <th>Distance from Target Area</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Competitor</strong></td>
+                                <td>MAD Wine Bar</td>
+                                <td>63 Xuan Thuy, Thao Dien, D2</td>
+                                <td>Flagship wine bar, old-world wines, expat-heavy</td>
+                                <td>300-500m from Nguyen Van Huong</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Competitor</strong></td>
+                                <td>Lửa Winebar</td>
+                                <td>Thao Dien area</td>
+                                <td>Michelin sommelier, organic/biodynamic focus</td>
+                                <td>400-600m from Nguyen Van Huong</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Competitor</strong></td>
+                                <td>Grotto</td>
+                                <td>89A Xuân Thuỷ, Thảo Điền, D2</td>
+                                <td>Cave-themed speakeasy, private dining</td>
+                                <td>500-700m from Nguyen Van Huong</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Competitor</strong></td>
+                                <td>NÚC Kitchen and Bar</td>
+                                <td>8 Nguyen Dang Giai, Thao Dien, D2</td>
+                                <td>Restaurant with wine pairing, 4.8/5 rating</td>
+                                <td>600-800m from Nguyen Van Huong</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Landmark</strong></td>
+                                <td>Thao Dien Village</td>
+                                <td>Nguyen Van Huong, D2</td>
+                                <td>Retail/F&B cluster, expat families</td>
+                                <td><strong>ON-SITE</strong> (target area)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Landmark</strong></td>
+                                <td>ISHCMC (International School)</td>
+                                <td>28 Vo Truong Toan, D2</td>
+                                <td>Expat families, drop-off/pick-up traffic</td>
+                                <td>800m-1km from Nguyen Van Huong</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Landmark</strong></td>
+                                <td>Vincom Mega Mall Thao Dien</td>
+                                <td>Thao Dien, D2</td>
+                                <td>Shopping mall, foot traffic, parking</td>
+                                <td>1-1.5km from Nguyen Van Huong</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Landmark</strong></td>
+                                <td>The Vista / Masteri Thao Dien</td>
+                                <td>Thao Dien area</td>
+                                <td>High-rise apartments, affluent residents</td>
+                                <td>500m-1km from Nguyen Van Huong</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- PROS & CONS -->
+            <div class="pros-cons">
+                <div class="pros-box">
+                    <h3>✓ Why Nguyen Van Huong Works</h3>
+                    <ul>
+                        <li>Parallel to Xuan Thuy = <strong>30-40% lower rent</strong> but same neighborhood</li>
+                        <li><strong>Heritage shophouses available</strong> (authentic wine bar vibe)</li>
+                        <li>Walking distance to <strong>MAD, Lửa, Grotto</strong> (proven wine bar demand)</li>
+                        <li><strong>Residential clusters</strong> = repeat customers (expats + affluent Vietnamese)</li>
+                        <li><strong>Quieter than Xuan Thuy</strong> = better for PDR privacy, less street noise</li>
+                        <li><strong>Retail integration</strong> = street-facing ground floor, walk-in traffic from Thao Dien Village</li>
+                        <li><strong>International school proximity</strong> = expat families (daytime retail, weekend brunch)</li>
+                        <li><strong>Parking solutions</strong> = nearby street parking, valet partnerships possible</li>
+                        <li><strong>Easy access</strong> = Xuan Thuy, Quoc Huong main roads within 200-300m</li>
+                        <li><strong>Lower competition</strong> = No wine bar on Nguyen Van Huong yet (first-mover)</li>
+                    </ul>
+                </div>
+                
+                <div class="cons-box">
+                    <h3>⚠ Challenges & Mitigations</h3>
+                    <ul>
+                        <li><strong>Parking limited</strong> → Mitigation: Valet service, partnerships with nearby buildings</li>
+                        <li><strong>Heritage preservation rules</strong> → Mitigation: Work with architect experienced in heritage renovations</li>
+                        <li><strong>High competitor density</strong> (MAD, Lửa, Grotto nearby) → Mitigation: PDR focus differentiates, corporate market untapped</li>
+                        <li><strong>Foot traffic lower</strong> than Xuan Thuy main strip → Mitigation: Destination positioning (reservations, events), not walk-in dependent</li>
+                        <li><strong>Lease negotiation</strong> = heritage shophouses = family-owned (slower process) → Mitigation: Start broker engagement early (3-6 months lead time)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- NEXT ACTIONS -->
+            <div class="action-box">
+                <h3>📋 Next Steps — Immediate Actions</h3>
+                <ol>
+                    <li><strong>Site Visit (Week 1-2):</strong> Walk Nguyen Van Huong Block 50-100, photograph available shophouses, note "For Rent" signs</li>
+                    <li><strong>Broker Engagement (Week 1-2):</strong> Contact commercial real estate brokers (CBRE Vietnam, Savills Vietnam, JLL HCMC) — request Thao Dien shophouse listings</li>
+                    <li><strong>Competitor Intel (Week 2-3):</strong> Visit MAD, Lửa, Lozzi, Grotto (study layout, pricing, crowd patterns, peak hours)</li>
+                    <li><strong>Lease Negotiation (Week 3-6):</strong> Target 3-5 shortlisted shophouses, negotiate rent (aim ₫100-120M/month), lease terms (3+3 years, tenant improvement allowance)</li>
+                    <li><strong>Architect Brief (Week 4-6):</strong> Brief architect on 2-3 storey layout (public ground floor, 2 PDRs per upper floor, wine cellar, retail integration)</li>
+                    <li><strong>Financial Modeling (Week 4-6):</strong> Finalize CapEx budget (renovation, furniture, wine cellar, initial inventory), OpEx projections, break-even timeline</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Prepared By:</strong> Zera (Royal Canary Corp AI Assistant)</p>
+            <p><strong>Date:</strong> March 3, 2026</p>
+            <p style="margin-top: 15px; color: #2c3e50; font-weight: 600;">
+                🏆 RECOMMENDATION: Heritage Shophouse, Nguyen Van Huong St, Block 50-70, Thao Dien
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>Target Rent:</strong> ₫100-120M/month | <strong>Size:</strong> 150-180m² | <strong>Score:</strong> 9.5/10
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize map centered on Thao Dien
+        const map = L.map('map').setView([10.8020, 106.7340], 15);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Target Locations (Red markers)
+        const targets = [
+            {
+                name: "TOP-1: Nguyen Van Huong Block 50-70",
+                coords: [10.8015, 106.7330],
+                info: "<strong>PRIORITY LOCATION</strong><br>Est. Rent: ₫100-120M/month<br>Size: 150-180m²<br>Score: 9.5/10<br><br>✓ Lower rent than Xuan Thuy<br>✓ Heritage shophouses available<br>✓ Quieter, residential feel"
+            },
+            {
+                name: "TOP-2: Nguyen Van Huong Block 80-100",
+                coords: [10.8025, 106.7345],
+                info: "<strong>PRIORITY LOCATION</strong><br>Est. Rent: ₫120-150M/month<br>Size: 160-200m²<br>Score: 9.0/10<br><br>✓ Near Thao Dien Village<br>✓ Higher foot traffic<br>✓ International school proximity"
+            },
+            {
+                name: "ALT-1: Xuan Thuy Main Strip",
+                coords: [10.8023, 106.7357],
+                info: "<strong>ALTERNATIVE LOCATION</strong><br>Est. Rent: ₫180-250M/month<br>Size: 180-220m²<br>Score: 8.5/10<br><br>✓ Highest visibility<br>⚠ Rent premium<br>⚠ High competition"
+            },
+            {
+                name: "ALT-2: Tran Ngoc Dien Villas",
+                coords: [10.8005, 106.7320],
+                info: "<strong>ALTERNATIVE LOCATION</strong><br>Est. Rent: ₫200-300M/month<br>Size: 200-300m²<br>Score: 8.0/10<br><br>✓ Villa format = premium<br>✓ Garden/courtyard<br>⚠ Lower foot traffic"
+            }
+        ];
+        
+        targets.forEach(location => {
+            const marker = L.circleMarker(location.coords, {
+                radius: 10,
+                fillColor: '#e74c3c',
+                color: '#fff',
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 0.9
+            }).addTo(map);
+            
+            marker.bindPopup(location.info);
+        });
+        
+        // Competitor Locations (Grey markers)
+        const competitors = [
+            {name: "MAD Wine Bar", coords: [10.8023, 106.7357], info: "Flagship wine bar<br>Old-world wines<br>Expat-heavy<br>4.4/5 rating"},
+            {name: "Lửa Winebar", coords: [10.8015, 106.7345], info: "Michelin sommelier<br>Organic/biodynamic<br>4.7/5 rating"},
+            {name: "Grotto", coords: [10.8035, 106.7368], info: "Cave-themed speakeasy<br>Private dining"},
+            {name: "NÚC Kitchen", coords: [10.8020, 106.7340], info: "Restaurant + wine pairing<br>4.8/5 rating"}
+        ];
+        
+        competitors.forEach(comp => {
+            const marker = L.circleMarker(comp.coords, {
+                radius: 7,
+                fillColor: '#95a5a6',
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.bindPopup(`<strong>${comp.name}</strong><br>${comp.info}`);
+        });
+        
+        // Landmarks (Blue markers)
+        const landmarks = [
+            {name: "Thao Dien Village", coords: [10.8020, 106.7335], info: "Retail/F&B cluster<br>Expat families"},
+            {name: "ISHCMC", coords: [10.8050, 106.7310], info: "International School<br>Expat drop-off traffic"},
+            {name: "Vincom Mega Mall", coords: [10.7990, 106.7290], info: "Shopping mall<br>Parking available"},
+            {name: "The Vista / Masteri", coords: [10.7995, 106.7360], info: "High-rise apartments<br>Affluent residents"}
+        ];
+        
+        landmarks.forEach(landmark => {
+            const marker = L.circleMarker(landmark.coords, {
+                radius: 6,
+                fillColor: '#3498db',
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.7
+            }).addTo(map);
+            
+            marker.bindPopup(`<strong>${landmark.name}</strong><br>${landmark.info}`);
+        });
+        
+        // Add a highlighted zone for Nguyen Van Huong priority area
+        const priorityZone = L.rectangle(
+            [[10.8010, 106.7325], [10.8030, 106.7350]],
+            {
+                color: '#27ae60',
+                weight: 3,
+                fillColor: '#27ae60',
+                fillOpacity: 0.1,
+                dashArray: '10, 5'
+            }
+        ).addTo(map);
+        
+        priorityZone.bindPopup("<strong>🎯 PRIORITY ZONE</strong><br>Nguyen Van Huong St, Block 50-100<br>Target Rent: ₫100-150M/month");
+    </script>
+</body>
+</html>
