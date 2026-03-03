@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Bars HCMC Research 2026 - Complete Database</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .filter-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .filter-section h3 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .filter-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.95em;
+        }
+        
+        tbody tr {
+            transition: background 0.2s;
+        }
+        
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin: 2px;
+            white-space: nowrap;
+        }
+        
+        .badge-tier1 { background: #d4edda; color: #155724; }
+        .badge-tier2 { background: #cce5ff; color: #004085; }
+        .badge-tier3 { background: #fff3cd; color: #856404; }
+        .badge-tier4 { background: #f8d7da; color: #721c24; }
+        .badge-closed { background: #6c757d; color: white; }
+        
+        .badge-natural { background: #d4edda; color: #155724; }
+        .badge-sommelier { background: #e2e3e5; color: #383d41; }
+        .badge-michelin { background: #fff3cd; color: #856404; }
+        
+        .venue-name {
+            font-weight: 600;
+            color: #212529;
+        }
+        
+        .rating {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
+        .address {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .price-range {
+            font-weight: 500;
+        }
+        
+        .wine-relevance-high { color: #28a745; font-weight: bold; }
+        .wine-relevance-medium { color: #ffc107; font-weight: bold; }
+        .wine-relevance-low { color: #6c757d; }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #6c757d;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .map-section {
+            margin-bottom: 40px;
+        }
+        
+        .map-container {
+            position: relative;
+        }
+        
+        .district-overview {
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .district-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .district-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .district-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .district-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .district-card h3 {
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .district-count {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .district-desc {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .venue-list {
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .venue-list small {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍷 Wine Bars Research — TP. Hồ Chí Minh 2026</h1>
+            <p>Comprehensive Database | Research Date: March 3, 2026</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">32+</div>
+                <div class="stat-label">Total Venues</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">Dedicated Wine Bars</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Natural Wine Specialists</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">6+</div>
+                <div class="stat-label">Certified Sommeliers</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- MAP SECTION -->
+            <div class="map-section">
+                <h2 style="margin-bottom: 20px; color: #495057;">📍 Wine Bar Map - Ho Chi Minh City</h2>
+                <div class="map-container">
+                    <div id="map" style="height: 500px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+                    <div class="map-legend" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px; color: #495057;">Map Legend:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                            <div><span style="color: #28a745; font-size: 1.5em;">●</span> Natural Wine Bars</div>
+                            <div><span style="color: #dc3545; font-size: 1.5em;">●</span> Premium Wine Bars (Tier 1)</div>
+                            <div><span style="color: #007bff; font-size: 1.5em;">●</span> Mid-Market (Tier 2-3)</div>
+                            <div><span style="color: #6c757d; font-size: 1.5em;">●</span> Hotel/Rooftop Bars</div>
+                            <div><span style="color: #ffc107; font-size: 1.5em;">●</span> Cocktail Bars</div>
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #6c757d;">
+                            <strong>Note:</strong> Interactive map shows approximate locations. Click markers for venue details. Zoom in/out with mouse wheel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DISTRICT OVERVIEW -->
+            <div class="district-overview" style="margin: 40px 0;">
+                <h2 style="margin-bottom: 20px; color: #495057;">📊 Distribution by District</h2>
+                <div class="district-cards">
+                    <div class="district-card">
+                        <div class="district-icon">🏙️</div>
+                        <h3>Thao Dien (District 2)</h3>
+                        <div class="district-count">8 venues</div>
+                        <p class="district-desc">Wine bar hub, expat community</p>
+                        <div class="venue-list">
+                            <small>MAD, Lửa, Lozzi, Grotto, NÚC, ÚNU, THE BRIX, 3G Trois Gourmands</small>
+                        </div>
+                    </div>
+                    
+                    <div class="district-card">
+                        <div class="district-icon">🏢</div>
+                        <h3>District 1 (CBD)</h3>
+                        <div class="district-count">12 venues</div>
+                        <p class="district-desc">Urban core, business district</p>
+                        <div class="venue-list">
+                            <small>NOB, Glou Glou, Cellar, Tipsy, ÔMM, Le Corto, Nhau Nhau, Social Club, Shri, Elgin, Thirty 59</small>
+                        </div>
+                    </div>
+                    
+                    <div class="district-card">
+                        <div class="district-icon">🌆</div>
+                        <h3>Binh Thanh</h3>
+                        <div class="district-count">3 venues</div>
+                        <p class="district-desc">Emerging wine scene</p>
+                        <div class="venue-list">
+                            <small>Pickles, BEL Coffee, Lozzi</small>
+                        </div>
+                    </div>
+                    
+                    <div class="district-card">
+                        <div class="district-icon">🏘️</div>
+                        <h3>District 7</h3>
+                        <div class="district-count">2 venues</div>
+                        <p class="district-desc">Residential, expat area</p>
+                        <div class="venue-list">
+                            <small>Sine Qua Non, RAW</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3>🔍 Filter by Category</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterTable('all')">All Venues</button>
+                    <button class="filter-btn" onclick="filterTable('tier1')">Tier 1 (Premium)</button>
+                    <button class="filter-btn" onclick="filterTable('tier2')">Tier 2 (Mid-Market)</button>
+                    <button class="filter-btn" onclick="filterTable('tier3')">Tier 3 (Casual)</button>
+                    <button class="filter-btn" onclick="filterTable('natural')">Natural Wine</button>
+                    <button class="filter-btn" onclick="filterTable('thao-dien')">Thao Dien</button>
+                    <button class="filter-btn" onclick="filterTable('district-1')">District 1</button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="venueTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Venue Name</th>
+                            <th>Type</th>
+                            <th>Location</th>
+                            <th>Specialty</th>
+                            <th>Price Range</th>
+                            <th>Rating</th>
+                            <th>Wine Relevance</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- TIER 1: PREMIUM WINE BARS -->
+                        <tr data-category="tier1 thao-dien">
+                            <td>1</td>
+                            <td class="venue-name">MAD Wine Bar & Eatery</td>
+                            <td>Wine Bar + Restaurant</td>
+                            <td class="address">63 Xuan Thuy, Thao Dien, D2</td>
+                            <td>Old-world wines (Burgundy, Bordeaux)</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">4.4/5 (297)</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                                <span class="badge badge-sommelier">Sommelier</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1 district-1 natural">
+                            <td>2</td>
+                            <td class="venue-name">NOB Natural Wine Bar</td>
+                            <td>Natural Wine Bar</td>
+                            <td class="address">Quiet corner, District 1</td>
+                            <td>40+ natural wines by-the-glass</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">4.9/5 (33)</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                                <span class="badge badge-natural">Natural Wine</span>
+                                <span class="badge badge-sommelier">Int'l Sommelier</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1 thao-dien natural">
+                            <td>3</td>
+                            <td class="venue-name">Lửa (Lua) Winebar</td>
+                            <td>Wine Bar</td>
+                            <td class="address">Thao Dien, District 2</td>
+                            <td>Organic, biodynamic, sustainable wines</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">4.7/5 (338)</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                                <span class="badge badge-natural">Natural Wine</span>
+                                <span class="badge badge-michelin">Michelin Sommelier</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1 district-1 natural">
+                            <td>4</td>
+                            <td class="venue-name">Glou Glou Wine Bar</td>
+                            <td>Natural Wine Bar + Restaurant</td>
+                            <td class="address">5D Nguyen Sieu, Ben Nghe, D1</td>
+                            <td>Organic, biodynamic, natural wines</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                                <span class="badge badge-natural">Natural Wine</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1">
+                            <td>5</td>
+                            <td class="venue-name">Little Bear Wine Bar</td>
+                            <td>Wine Bar + Fusion Restaurant</td>
+                            <td class="address">HCMC</td>
+                            <td>Vietnamese fusion + wine pairing</td>
+                            <td class="price-range">₫₫₫₫</td>
+                            <td class="rating">4.7/5 (338)</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                                <span class="badge badge-michelin">Michelin Guide 2 Yrs</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1">
+                            <td>6</td>
+                            <td class="venue-name">Lozzi</td>
+                            <td>Wine Bar</td>
+                            <td class="address">85/1 Pham Viet Chanh, Binh Thanh</td>
+                            <td>Old & new-world wines, Japanese-owned</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">4.7/5 (87)</td>
+                            <td class="wine-relevance-high">HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1">
+                            <td>7</td>
+                            <td class="venue-name">Wine Embassy Bar</td>
+                            <td>Wine Bar</td>
+                            <td class="address">HCMC</td>
+                            <td>Enomatic system (~30 bottles)</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- TIER 2: MID-MARKET WINE BARS -->
+                        <tr data-category="tier2 district-1">
+                            <td>8</td>
+                            <td class="venue-name">Cellar Wine Bistro</td>
+                            <td>Wine Bar (above brewery)</td>
+                            <td class="address">31 D Ly Tu Trong, District 1</td>
+                            <td>30 by-glass, 140 by-bottle</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-medium">MEDIUM-HIGH</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2 district-1">
+                            <td>9</td>
+                            <td class="venue-name">Tipsy Wine Bar</td>
+                            <td>Wine Bar (OG)</td>
+                            <td class="address">31A Lê Thánh Tôn, D1</td>
+                            <td>Budget-friendly, 100+ labels</td>
+                            <td class="price-range">₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-high">HIGH</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2 thao-dien">
+                            <td>10</td>
+                            <td class="venue-name">Grotto</td>
+                            <td>Wine Bar (speakeasy)</td>
+                            <td class="address">89A Xuân Thuỷ, Thảo Điền, D2</td>
+                            <td>Cave-themed, private dining room</td>
+                            <td class="price-range">₫�dong</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-high">HIGH</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2">
+                            <td>11</td>
+                            <td class="venue-name">Pickles Eatery & Wine Bar</td>
+                            <td>Wine Bar + Restaurant</td>
+                            <td class="address">83 Nguyen Cong Tru, Binh Thanh</td>
+                            <td>350+ wine labels, Mediterranean</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2">
+                            <td>12</td>
+                            <td class="venue-name">Sine Qua Non</td>
+                            <td>Gastro Wine Bar</td>
+                            <td class="address">Riverside Residence, D7</td>
+                            <td>200+ labels, 70 by-glass, French BBQ</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-high">VERY HIGH</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- TIER 3: CASUAL & ACCESSIBLE -->
+                        <tr data-category="tier3">
+                            <td>13</td>
+                            <td class="venue-name">BEL Coffee</td>
+                            <td>Dual-space (coffee/wine)</td>
+                            <td class="address">40/8 Phạm Viết Chánh, Bình Thạnh</td>
+                            <td>Rooftop bar, growing wine list</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-medium">MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier3">
+                            <td>14</td>
+                            <td class="venue-name">RAW</td>
+                            <td>Food & Drink Bar</td>
+                            <td class="address">76 Duong C, D7</td>
+                            <td>20+ wines, raw food focus</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-medium">MEDIUM-HIGH</td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- RESTAURANTS WITH WINE PROGRAMS -->
+                        <tr data-category="tier2 thao-dien">
+                            <td>15</td>
+                            <td class="venue-name">NÚC Kitchen and Bar</td>
+                            <td>Restaurant</td>
+                            <td class="address">8 Nguyen Dang Giai, Thao Dien, D2</td>
+                            <td>European-Vietnamese fusion, wine pairing</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">4.8/5 (100+)</td>
+                            <td class="wine-relevance-medium">MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2 district-1">
+                            <td>16</td>
+                            <td class="venue-name">Le Corto</td>
+                            <td>Bistro</td>
+                            <td class="address">5D Nguyen Sieu, D1</td>
+                            <td>French-Vietnamese, European wine focus</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-medium">MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier1">
+                            <td>17</td>
+                            <td class="venue-name">3G Trois Gourmands</td>
+                            <td>French Fine Dining</td>
+                            <td class="address">District 2 (colonial villa)</td>
+                            <td>French cuisine, extensive wine list</td>
+                            <td class="price-range">₫₫₫₫</td>
+                            <td class="rating">4.4/5 (571)</td>
+                            <td class="wine-relevance-high">HIGH</td>
+                            <td>
+                                <span class="badge badge-tier1">Tier 1</span>
+                                <span class="badge badge-michelin">Michelin Mention</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- HOTEL & ROOFTOP BARS -->
+                        <tr data-category="tier4 district-1">
+                            <td>18</td>
+                            <td class="venue-name">Social Club Rooftop Bar</td>
+                            <td>Rooftop Bar</td>
+                            <td class="address">Hotel Des Arts, District 1</td>
+                            <td>Hotel bar, wine list available</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">4.5/5 (2149)</td>
+                            <td class="wine-relevance-low">LOW-MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier4">Tier 4</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier4 district-1">
+                            <td>19</td>
+                            <td class="venue-name">Level 23 Wine Bar</td>
+                            <td>Rooftop Wine Bar</td>
+                            <td class="address">23F, Sheraton Saigon, D1</td>
+                            <td>International wines, skyline views</td>
+                            <td class="price-range">₫₫₫₫</td>
+                            <td class="rating">4.5/5 (197)</td>
+                            <td class="wine-relevance-medium">MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier4">Tier 4</span>
+                                <span class="badge badge-closed">TEMP CLOSED</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier4">
+                            <td>20</td>
+                            <td class="venue-name">Blank Lounge</td>
+                            <td>Lounge Bar</td>
+                            <td class="address">75-76F, Landmark 81</td>
+                            <td>Highest in Vietnam, cocktails/wine</td>
+                            <td class="price-range">₫₫₫₫</td>
+                            <td class="rating">4.5/5 (2395)</td>
+                            <td class="wine-relevance-low">LOW</td>
+                            <td>
+                                <span class="badge badge-tier4">Tier 4</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier4 district-1">
+                            <td>21</td>
+                            <td class="venue-name">Shri</td>
+                            <td>Rooftop Bar</td>
+                            <td class="address">23F, Centec Tower, D1/3</td>
+                            <td>Wine & spirits, Asian-European fusion</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-low">LOW-MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier4">Tier 4</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier4 district-1">
+                            <td>22</td>
+                            <td class="venue-name">Banana Mama Rooftop</td>
+                            <td>Beach-style Rooftop</td>
+                            <td class="address">10F, WMC Tower, D1</td>
+                            <td>Cocktails primary, wine available</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">4.7/5 (2030)</td>
+                            <td class="wine-relevance-low">LOW</td>
+                            <td>
+                                <span class="badge badge-tier4">Tier 4</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- COCKTAIL BARS WITH WINE -->
+                        <tr data-category="tier3 district-1">
+                            <td>23</td>
+                            <td class="venue-name">ÔMM Mixology</td>
+                            <td>Cocktail Bar</td>
+                            <td class="address">1F, 63 Ho Tung Mau, D1</td>
+                            <td>Origin-driven cocktails, wine secondary</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">High praise</td>
+                            <td class="wine-relevance-low">LOW</td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier3 thao-dien">
+                            <td>24</td>
+                            <td class="venue-name">ÚNU Eatery & Cocktails</td>
+                            <td>Cocktail Bar</td>
+                            <td class="address">Thao Dien, D2</td>
+                            <td>Experimental cocktails, wine minimal</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">4.6/5 (80+)</td>
+                            <td class="wine-relevance-low">LOW</td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier3 district-1">
+                            <td>25</td>
+                            <td class="venue-name">Nhau Nhau</td>
+                            <td>Cocktail Bar</td>
+                            <td class="address">89 Ton That Dam, D1</td>
+                            <td>Local Vietnamese spirits, no wine</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">High acclaim</td>
+                            <td class="wine-relevance-low">NONE</td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                                <span class="badge badge-michelin">B.A.R. Awards</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- ADDITIONAL VENUES -->
+                        <tr data-category="tier3 thao-dien">
+                            <td>26</td>
+                            <td class="venue-name">THE BRIX</td>
+                            <td>Restaurant + Bar</td>
+                            <td class="address">Thao Dien area</td>
+                            <td>Modern Asian, poolside, wine available</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">4.6/5 (999)</td>
+                            <td class="wine-relevance-low">LOW-MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier4">
+                            <td>27</td>
+                            <td class="venue-name">Carmen Bar</td>
+                            <td>Live Music Bar</td>
+                            <td class="address">Saigon</td>
+                            <td>Latin live music, wine available</td>
+                            <td class="price-range">₫₫₫₫</td>
+                            <td class="rating">4.3/5 (1019)</td>
+                            <td class="wine-relevance-low">LOW</td>
+                            <td>
+                                <span class="badge badge-tier4">Tier 4</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier3">
+                            <td>28</td>
+                            <td class="venue-name">Cheer House Restaurant</td>
+                            <td>Restaurant</td>
+                            <td class="address">HCMC</td>
+                            <td>Wine cellar decor, wine focus</td>
+                            <td class="price-range">₫₫₫</td>
+                            <td class="rating">4.4/5 (185)</td>
+                            <td class="wine-relevance-medium">MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier3">Tier 3</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2">
+                            <td>29</td>
+                            <td class="venue-name">Elgin</td>
+                            <td>Restaurant & Wine Bar</td>
+                            <td class="address">District 1</td>
+                            <td>Casual dining, wine bar</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-medium">MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="tier2">
+                            <td>30</td>
+                            <td class="venue-name">Thirty 59</td>
+                            <td>Wine Bar</td>
+                            <td class="address">District 1</td>
+                            <td>"Anti-wine-bar-wine-bar"</td>
+                            <td class="price-range">₫₫</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-medium">MEDIUM</td>
+                            <td>
+                                <span class="badge badge-tier2">Tier 2</span>
+                            </td>
+                        </tr>
+                        
+                        <!-- CLOSED VENUES -->
+                        <tr data-category="closed district-1">
+                            <td>31</td>
+                            <td class="venue-name">Le Padam - Cheese Bar</td>
+                            <td>Wine Bar + Cheese Shop</td>
+                            <td class="address">Pasteur Street, D1</td>
+                            <td>Parisian wine cafe, French cheeses</td>
+                            <td class="price-range">N/A</td>
+                            <td class="rating">4.2/5 (101)</td>
+                            <td class="wine-relevance-high">N/A</td>
+                            <td>
+                                <span class="badge badge-closed">PERMANENTLY CLOSED</span>
+                            </td>
+                        </tr>
+                        
+                        <tr data-category="closed">
+                            <td>32</td>
+                            <td class="venue-name">13% Wine Bistro</td>
+                            <td>Wine Bistro</td>
+                            <td class="address">HCMC</td>
+                            <td>Defunct (owner now runs Pickles)</td>
+                            <td class="price-range">N/A</td>
+                            <td class="rating">N/A</td>
+                            <td class="wine-relevance-high">N/A</td>
+                            <td>
+                                <span class="badge badge-closed">DEFUNCT</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Research Conducted By:</strong> Zera (Royal Canary Corp AI Assistant)</p>
+            <p><strong>Date:</strong> March 3, 2026</p>
+            <p><strong>Sources:</strong> Wanderlog (22 venues), Jovel Chan (10 venues), Star Wine List, Google Reviews, Direct Research</p>
+            <p style="margin-top: 15px; color: #495057;">
+                <strong>Legend:</strong> 
+                ₫ = Budget | ₫₫ = Mid | ₫₫₫ = Upscale | ₫₫₫₫ = Luxury
+            </p>
+            <p style="margin-top: 10px;">
+                <a href="mailto:contact@rccai.com">Contact for More Information</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([10.7945, 106.7095], 12);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Wine bar data
+        const venues = [
+            {name: "MAD Wine Bar", coords: [10.8023, 106.7357], type: "premium", info: "Tier 1 • Old-world wines • Rating: 4.4/5"},
+            {name: "NOB Natural Wine Bar", coords: [10.7769, 106.6958], type: "natural", info: "Tier 1 • 40+ natural wines • Rating: 4.9/5"},
+            {name: "Lửa Winebar", coords: [10.8015, 106.7345], type: "natural", info: "Tier 1 • Michelin Sommelier • Rating: 4.7/5"},
+            {name: "Glou Glou Wine Bar", coords: [10.7755, 106.7003], type: "natural", info: "Tier 1 • Natural Wine Specialist • Vino Beer"},
+            {name: "Little Bear", coords: [10.7800, 106.6950], type: "premium", info: "Tier 1 • Michelin Guide 2 Years • Rating: 4.7/5"},
+            {name: "Lozzi", coords: [10.7990, 106.7095], type: "premium", info: "Tier 1 • Japanese-owned • Rating: 4.7/5"},
+            {name: "Cellar Wine Bistro", coords: [10.7745, 106.7005], type: "mid", info: "Tier 2 • Above Heart of Darkness • 30 by-glass"},
+            {name: "Tipsy Wine Bar", coords: [10.7752, 106.7002], type: "mid", info: "Tier 2 • OG, Budget-Friendly • 100+ labels"},
+            {name: "Grotto", coords: [10.8035, 106.7368], type: "mid", info: "Tier 2 • Cave-themed Speakeasy"},
+            {name: "Pickles Eatery", coords: [10.7978, 106.7085], type: "mid", info: "Tier 2 • 350+ Labels • Mediterranean"},
+            {name: "NÚC Kitchen", coords: [10.8020, 106.7340], type: "mid", info: "Restaurant • Wine Pairing • Rating: 4.8/5"},
+            {name: "Social Club Rooftop", coords: [10.7730, 106.6968], type: "hotel", info: "Hotel Bar • Hotel Des Arts • Rating: 4.5/5"},
+            {name: "Blank Lounge", coords: [10.7945, 106.7223], type: "hotel", info: "Hotel Bar • Landmark 81 • 75-76F"},
+            {name: "ÔMM Mixology", coords: [10.7763, 106.6975], type: "cocktail", info: "Cocktail Bar • Wine Secondary"},
+            {name: "3G Trois Gourmands", coords: [10.8010, 106.7350], type: "premium", info: "Fine Dining • Michelin Mention • Rating: 4.4/5"}
+        ];
+        
+        // Color mapping
+        const colors = {
+            natural: '#28a745',
+            premium: '#dc3545',
+            mid: '#007bff',
+            hotel: '#6c757d',
+            cocktail: '#ffc107'
+        };
+        
+        // Add markers
+        venues.forEach(venue => {
+            const marker = L.circleMarker(venue.coords, {
+                radius: 8,
+                fillColor: colors[venue.type],
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.bindPopup(`<strong>${venue.name}</strong><br>${venue.info}`);
+        });
+        
+        // Filter table function
+        function filterTable(category) {
+            const rows = document.querySelectorAll('#venueTable tbody tr');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update button states
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter rows
+            rows.forEach(row => {
+                if (category === 'all') {
+                    row.style.display = '';
+                } else {
+                    const categories = row.getAttribute('data-category');
+                    if (categories && categories.includes(category)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
