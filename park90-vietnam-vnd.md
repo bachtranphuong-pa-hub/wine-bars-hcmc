@@ -243,7 +243,263 @@
 
 ---
 
-## 7️⃣ KỊCH BẢN DỰ PHÒNG
+## 7️⃣ PHÂN TÍCH WORST CASE: TẠI SAO LỖ & GIẢI PHÁP
+
+### **Conservative Scenario = LỖ ₫4.8 TỶ/NĂM — Deep Dive**
+
+#### **A. TẠI SAO WORST CASE LỖ?**
+
+**Doanh Thu Quá Thấp: ₫23.75 tỷ/năm (₫1.98 tỷ/tháng)**
+
+| Yếu tố | Base Case | Conservative | Gap | % Giảm |
+|---|---|---|---|---|
+| **Public utilization** | 60% | 50% | -10% | -17% |
+| **PDR utilization** | 45% | 35% | -10% | -22% |
+| **Avg spend/pax** | ₫600k (pub) / ₫1,350k (PDR) | ₫500k / ₫1,200k | -₫100k / -₫150k | -17% / -11% |
+| **Turns/day** | 1.5x (pub) / 1.2x (PDR) | 1.3x / 1.0x | -0.2x / -0.2x | -13% / -17% |
+| **Wine retail** | 25% of F&B | 15% of F&B | -10% | -40% |
+| **Events** | 3x/month | 1x/month | -2x | -67% |
+
+**Kết quả:** Doanh thu giảm **37%** (₫37.5 tỷ → ₫23.75 tỷ)
+
+---
+
+**Chi Phí Cố Định Không Giảm Tương Ứng:**
+
+| Chi phí | Base Case | Conservative | % Doanh thu (Cons) |
+|---|---|---|---|
+| **Wine COGS** | ₫14.25 tỷ (38%) | ₫9.98 tỷ (42%) | ↑ 4% |
+| **Food COGS** | ₫10.5 tỷ (28%) | ₫7.6 tỷ (32%) | ↑ 4% |
+| **Nhân sự** | ₫7.13 tỷ (19%) | ₫5.23 tỷ (22%) | ↑ 3% |
+| **Thuê MB** | ₫3.38 tỷ (9%) | ₫2.38 tỷ (10%) | ↑ 1% |
+| **Utilities** | ₫1.88 tỷ (5%) | ₫1.68 tỷ (7%) | ↑ 2% |
+| **Marketing** | ₫1.5 tỷ (4%) | ₫1.2 tỷ (5%) | ↑ 1% |
+
+**Vấn đề:** Chi phí cố định (nhân sự, thuê MB, utilities) **không giảm tỷ lệ thuận** với doanh thu.
+
+**Ví dụ:**
+- Nhân sự: Vẫn cần 1 GM + 1 sommelier + 3 servers + 2 kitchen = ₫5.23 tỷ/năm (vs. ₫7.13 tỷ base case)
+- Thuê mặt bằng: Nếu cố định ₫200tr/tháng = ₫2.4 tỷ/năm (10% doanh thu conservative)
+- Utilities: AC, điện, nước = ít nhất ₫120-150tr/tháng = ₫1.68 tỷ/năm
+
+**Kết quả:** Chi phí = 118% doanh thu → **EBITDA âm ₫4.3 tỷ**
+
+---
+
+#### **B. CÁC NGUYÊN NHÂN DẪN ĐẾN WORST CASE**
+
+**1. Thất Bại Marketing / Brand Awareness Thấp**
+- Park90 Singapore brand không cộng hưởng với thị trường Vietnam
+- Không đủ ngân sách marketing (chỉ ₫1.2 tỷ/năm = 5% doanh thu)
+- Social media, PR yếu → ít walk-ins
+
+**2. Vị Trí Le Meridien Không Tối Ưu**
+- Tea Lounge không có mặt tiền đường (hidden inside hotel)
+- Walk-in traffic thấp (phụ thuộc hotel guests + word-of-mouth)
+- Quận 1 CBD = văn phòng nhiều nhưng residential ít (tối/cuối tuần vắng)
+
+**3. PDR Utilization Thấp (35%)**
+- Thiếu corporate partnerships (chưa outreach doanh nghiệp)
+- Giá PDR cao (₫1,200k/pax) → khách corporate ngại chi
+- Cạnh tranh từ hotel F&B khác (Grand Hyatt, Park Hyatt có PDRs)
+
+**4. Avg Spend/Pax Thấp**
+- Khách order giá chai thấp (₫2-3 triệu thay vì ₫4-6 triệu)
+- Food pairing yếu (chỉ order rượu, không order cheese/charcuterie)
+- Upselling kém (sommelier không đủ kỹ năng)
+
+**5. Wine Retail & Events Thất Bại**
+- Wine retail chỉ 15% F&B (vs. 25% target) → khách không mua chai mang về
+- Events chỉ 1x/tháng (vs. 3x target) → thiếu activations, masterclasses
+
+---
+
+#### **C. GIẢI PHÁP ĐỂ TRÁNH WORST CASE**
+
+### **Tier 1: Giải Pháp Trước Khi Mở Cửa (De-Risk)**
+
+**1. Pre-Opening Corporate Partnerships (Tăng PDR Utilization)**
+
+**Hành động:**
+- Ký MOU với 10-15 công ty lớn (tài chính, luật, tư vấn, bất động sản)
+- Chương trình: "Corporate Wine Club" — ₫50-100 triệu/năm membership
+  - 12 tháng wine dinners (1x/tháng, 8-12 pax)
+  - Giảm 20% PDR bookings
+  - Priority access to rare wines
+- **Target:** 5 corporate members × ₫75 triệu = **₫375 triệu** locked revenue
+
+**Impact:** PDR utilization tăng từ 35% → 45% (+₫2.1 tỷ doanh thu)
+
+---
+
+**2. Park90 Singapore Member Pre-Activation**
+
+**Hành động:**
+- Park90 Singapore gửi EDM tới 100% member base (estimate 500-1,000 members)
+- Offer: "Grand Opening Special" — 30% off first visit, free wine tasting
+- Target: 10% Singapore members visit Vietnam/year = 50-100 visits × ₫1.5 triệu = **₫75-150 triệu**
+
+**Impact:** Public utilization tăng từ 50% → 55% (+₫468 triệu doanh thu)
+
+---
+
+**3. Strengthen Wine Retail Strategy**
+
+**Hành động:**
+- Tạo "Wine of the Month Club" — subscription ₫2-3 triệu/tháng (1 chai giao tận nơi)
+- Target: 30 subscribers × ₫2.5 triệu × 12 tháng = **₫900 triệu**
+- Bottle shop prominently displayed (entrance area, không hidden)
+- Staff commission: 5% mỗi chai bán retail (incentive upselling)
+
+**Impact:** Wine retail tăng từ 15% → 25% F&B (+₫620 triệu)
+
+---
+
+**4. Events & Activations Calendar (Lock 12 Months)**
+
+**Hành động:**
+- Book winemakers/sommeliers 12 tháng trước (Burgundy, Napa, Italy)
+- Ticket sales advance: ₫1-1.5 triệu/pax, 12-20 pax/event
+- Partnerships: Wine importers (Moët Hennessy, Vinifera) co-sponsor events
+- **Target:** 3x/month × ₫30 triệu/event = **₫1.08 tỷ**
+
+**Impact:** Events revenue tăng từ ₫150 triệu → ₫540 triệu (+₫390 triệu)
+
+---
+
+### **Tier 2: Giải Pháp Trong Quá Trình Vận Hành (Adjust)**
+
+**5. Dynamic Pricing (Tăng Avg Spend/Pax)**
+
+**Hành động:**
+- **Happy Hour (5-7pm):** Giảm 20% BTG wines → tăng volume
+- **Premium Thursdays:** Feature rare wines (Burgundy Grand Cru) → tăng avg spend
+- **Weekend premium:** +10% pricing Fri-Sat (peak demand) → capture willingness to pay
+
+**Impact:** Avg spend tăng từ ₫500k → ₫600k (+20%, +₫2.8 tỷ doanh thu public)
+
+---
+
+**6. Food Pairing Upselling**
+
+**Hành động:**
+- Mandatory pairing suggestion: Mỗi bottle order → sommelier suggest cheese/charcuterie
+- "Sommelier's Choice" pairing menu: ₫300-500k (fixed, 3 courses + 3 wines)
+- Target: 40% khách order food pairing (vs. 20% hiện tại)
+
+**Impact:** Food revenue tăng 30% → COGS improve (food margin 70% vs. wine 50%)
+
+---
+
+**7. Cost Optimization (Nếu Doanh Thu < ₫30 Tỷ)**
+
+**Hành động cắt giảm:**
+
+| Chi phí | Cắt giảm | Tiết kiệm/năm |
+|---|---|---|
+| **Nhân sự** | Giảm 1 server (3 → 2) | ₫360 triệu |
+| **Marketing** | Cắt paid ads, tập trung organic | ₫300 triệu |
+| **Utilities** | Đóng cửa Chủ Nhật (52 ngày) | ₫240 triệu |
+| **Events** | Tự tổ chức (không mời winemaker từ nước ngoài) | ₫180 triệu |
+| **Total savings** | | **₫1.08 tỷ** |
+
+**Impact:** Chi phí giảm từ 118% → 113.5% doanh thu → gần hòa vốn
+
+---
+
+**8. Renegotiate License Fee (Emergency Clause)**
+
+**Hành động:**
+- Nếu doanh thu < ₫30 tỷ sau 12 tháng → trigger renegotiation
+- Đề xuất Park90: Giảm min license từ ₫500 triệu → ₫300 triệu (năm đầu)
+- Hoặc: Defer license payment (pay Year 2 khi profitable)
+
+**Impact:** License fee giảm ₫200 triệu → lỗ giảm từ ₫4.8 tỷ → ₫4.6 tỷ
+
+---
+
+### **Tier 3: Exit Strategy (Nếu Không Cải Thiện)**
+
+**9. Early Termination (Sau 18-24 Tháng)**
+
+**Điều kiện sử dụng:**
+- EBITDA âm 2 quý liên tiếp
+- Cash flow âm > ₫100 triệu/tháng
+- Không thấy dấu hiệu cải thiện
+
+**Hành động:**
+- Trigger early exit clause (EBITDA < ₫0 for 2 consecutive years)
+- Park90 refund 50% setup fee = ₫1.875 tỷ
+- RCC salvage value:
+  - Wine inventory: ₫2-3 tỷ (sell to distributors)
+  - Fixtures: ₫1-1.5 tỷ (cellar, bar equipment)
+  - **Total recovery:** ₫5-6.4 tỷ
+
+**Net loss:** ₫16.75 tỷ investment - ₫5.4 tỷ recovery - ₫4.8 tỷ operating loss (Year 1) = **-₫16.15 tỷ** (worst case)
+
+---
+
+#### **D. BREAKEVEN SENSITIVITY: GIẢI PHÁP NÀO HIỆU QUẢ NHẤT?**
+
+**Baseline Conservative:** ₫23.75 tỷ revenue → -₫4.8 tỷ loss
+
+**Scenarios với từng giải pháp:**
+
+| Giải pháp | Doanh thu Tăng | Lỗ Giảm | Trạng thái |
+|---|---|---|---|
+| **Baseline** | ₫23.75 tỷ | -₫4.8 tỷ | Lỗ ❌ |
+| + Corporate partnerships | +₫2.1 tỷ | -₫2.7 tỷ | Vẫn lỗ ❌ |
+| + Wine retail strategy | +₫620 triệu | -₫2.08 tỷ | Vẫn lỗ ❌ |
+| + Events activations | +₫390 triệu | -₫1.69 tỷ | Vẫn lỗ ❌ |
+| + Dynamic pricing | +₫2.8 tỷ | **+₫1.11 tỷ** | **Lãi** ✅ |
+| **Combined (All 4)** | **+₫5.91 tỷ** | **+₫1.11 tỷ** | **Lãi** ✅ |
+
+**Kết luận:** Cần kết hợp **TỐI THIỂU 3-4 giải pháp** để thoát worst case.
+
+---
+
+#### **E. CHECKLIST TRÁNH WORST CASE**
+
+**Pre-Opening (Tháng 1-6):**
+- [ ] Ký 5 corporate partnerships (target ₫375 triệu locked)
+- [ ] Park90 Singapore member activation (target 50 visits Year 1)
+- [ ] Wine retail setup (bottle shop + subscription program)
+- [ ] Lock 12-month events calendar (3x/month minimum)
+
+**Post-Opening (Tháng 7-12):**
+- [ ] Monitor monthly: Nếu doanh thu < ₫2.5 tỷ/tháng → trigger cost cuts
+- [ ] Dynamic pricing: Test happy hour, premium nights
+- [ ] Food pairing upselling: Train staff, track attach rate
+- [ ] Quarterly review: Nếu EBITDA âm → renegotiate license
+
+**Month 12 Decision:**
+- [ ] If doanh thu < ₫30 tỷ → activate Tier 2 cost optimization
+- [ ] If doanh thu < ₫25 tỷ → trigger early exit discussion with Park90
+
+---
+
+#### **F. WORST CASE PROBABILITY ASSESSMENT**
+
+**Likelihood của Conservative Scenario:**
+
+| Yếu tố | Xác suất | Lý do |
+|---|---|---|
+| **Park90 brand không cộng hưởng VN** | 20% | Singapore brand có precedent (ví dụ: Potato Head đóng cửa Saigon 2019) |
+| **Le Meridien location không tối ưu** | 15% | CBD location OK, nhưng không có mặt tiền đường |
+| **PDR utilization < 35%** | 25% | Corporate market competitive (Grand Hyatt, Park Hyatt) |
+| **Marketing thất bại** | 10% | Park90 có kinh nghiệm, RCC có ngân sách |
+| **Events/Retail flop** | 20% | Vietnam wine culture đang phát triển, retail chưa mature |
+
+**Overall probability Conservative:** **~15-20%** (base case 60-70%, optimistic 15-20%)
+
+**Mitigations hiệu quả nhất:**
+1. ✅ Corporate partnerships (giảm PDR risk)
+2. ✅ Dynamic pricing (tăng avg spend)
+3. ✅ Pre-opening events calendar (lock activations)
+
+---
+
+## 8️⃣ KỊCH BẢN DỰ PHÒNG
 
 ### **Nếu Park90 Từ Chối:**
 
