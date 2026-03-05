@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7-Day Marrakech & Atlas Mountains Itinerary</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        
+        #map {
+            height: 800px;
+            width: 100%;
+        }
+        
+        .itinerary {
+            padding: 40px;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+        
+        .day-card {
+            background: #f8f9fa;
+            border-left: 5px solid #2a5298;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .day-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .day-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2a5298;
+        }
+        
+        .day-location {
+            font-size: 14px;
+            color: #666;
+            background: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+        
+        .day-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .activity-list {
+            list-style: none;
+        }
+        
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            font-weight: 600;
+            color: #2a5298;
+            margin-right: 10px;
+        }
+        
+        .activity-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .activity-link:hover {
+            text-decoration: underline;
+        }
+        
+        .drive-info {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 15px;
+            margin-top: 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .drive-info strong {
+            color: #856404;
+        }
+        
+        .food-highlight {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 12px 15px;
+            margin-top: 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .food-highlight strong {
+            color: #155724;
+        }
+        
+        .legend {
+            background: white;
+            padding: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .legend h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            #map {
+                height: 500px;
+            }
+            
+            .itinerary {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇲🇦 7-Day Marrakech & Atlas Itinerary</h1>
+            <p>Culture • Mountains • Coast • Canyons • Local Cuisine</p>
+        </div>
+        
+        <div class="content">
+            <div id="map"></div>
+            
+            <div class="itinerary">
+                <!-- Day 1 -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-number">Day 1</div>
+                        <div class="day-location">📍 Marrakech</div>
+                    </div>
+                    <div class="day-title">Arrival & Medina Immersion</div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-time">Morning:</span>
+                            Arrive, check-in <a href="https://maps.google.com/?q=Medina+Marrakech" target="_blank" class="activity-link">Riad in Medina</a>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Afternoon:</span>
+                            <a href="https://maps.google.com/?q=Jemaa+el-Fna+Marrakech" target="_blank" class="activity-link">Jemaa el-Fna Square</a>, 
+                            <a href="https://maps.google.com/?q=Koutoubia+Mosque+Marrakech" target="_blank" class="activity-link">Koutoubia Mosque</a>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Evening:</span>
+                            Medina walk, sunset from rooftop
+                        </li>
+                    </ul>
+                    <div class="food-highlight">
+                        <strong>🍽️ Dinner:</strong> <a href="https://maps.google.com/?q=Nomad+Restaurant+Marrakech" target="_blank">Nomad</a> — Modern Moroccan, rooftop terrace
+                    </div>
+                </div>
+                
+                <!-- Day 2 -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-number">Day 2</div>
+                        <div class="day-location">📍 Marrakech</div>
+                    </div>
+                    <div class="day-title">Culture Deep Dive</div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-time">Morning:</span>
+                            <a href="https://maps.google.com/?q=Bahia+Palace+Marrakech" target="_blank" class="activity-link">Bahia Palace</a>, 
+                            <a href="https://maps.google.com/?q=Saadian+Tombs+Marrakech" target="_blank" class="activity-link">Saadian Tombs</a>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Afternoon:</span>
+                            <a href="https://maps.google.com/?q=Ben+Youssef+Madrasa+Marrakech" target="_blank" class="activity-link">Ben Youssef Madrasa</a>, 
+                            <a href="https://maps.google.com/?q=Marrakech+Souks" target="_blank" class="activity-link">Souks</a> (carpets, spices, leather)
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Evening:</span>
+                            Traditional hammam experience
+                        </li>
+                    </ul>
+                    <div class="food-highlight">
+                        <strong>🍽️ Dinner:</strong> <a href="https://maps.google.com/?q=Al+Fassia+Marrakech" target="_blank">Al Fassia</a> — Traditional Moroccan, female-run kitchen
+                    </div>
+                </div>
+                
+                <!-- Day 3 -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-number">Day 3</div>
+                        <div class="day-location">📍 Ourika Valley</div>
+                    </div>
+                    <div class="day-title">Atlas Mountains — Ourika Valley</div>
+                    <div class="drive-info">
+                        <strong>🚗 Drive:</strong> 1.5 hours from Marrakech (60 km) — Scenic mountain roads
+                    </div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-time">Morning:</span>
+                            Drive to <a href="https://maps.google.com/?q=Ourika+Valley+Morocco" target="_blank" class="activity-link">Ourika Valley</a>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Midday:</span>
+                            <a href="https://maps.google.com/?q=Setti+Fatma+Waterfalls" target="_blank" class="activity-link">Setti Fatma Waterfalls</a> hike (2-3 hours, moderate)
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Lunch:</span>
+                            Riverside restaurant in Setti Fatma village
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Evening:</span>
+                            Return to Marrakech
+                        </li>
+                    </ul>
+                    <div class="food-highlight">
+                        <strong>🍽️ Dinner:</strong> <a href="https://maps.google.com/?q=Le+Jardin+Marrakech" target="_blank">Le Jardin</a> — Garden setting, Moroccan-Mediterranean fusion
+                    </div>
+                </div>
+                
+                <!-- Day 4 -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-number">Day 4</div>
+                        <div class="day-location">📍 Imlil / High Atlas</div>
+                    </div>
+                    <div class="day-title">High Atlas — Toubkal Base</div>
+                    <div class="drive-info">
+                        <strong>🚗 Drive:</strong> 1.5 hours from Marrakech (65 km) — Mountain roads to 1,740m altitude
+                    </div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-time">Morning:</span>
+                            Drive to <a href="https://maps.google.com/?q=Imlil+Morocco" target="_blank" class="activity-link">Imlil Village</a> (gateway to Mt. Toubkal)
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Midday:</span>
+                            Hike to <a href="https://maps.google.com/?q=Toubkal+Base+Camp" target="_blank" class="activity-link">Toubkal Base Camp</a> viewpoint (3-4 hrs) OR easier trek to Armed village
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Lunch:</span>
+                            Mountain guesthouse (tagine with panoramic views)
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Evening:</span>
+                            Return to Marrakech
+                        </li>
+                    </ul>
+                    <div class="food-highlight">
+                        <strong>🍽️ Dinner:</strong> <a href="https://maps.google.com/?q=Pepe+Nero+Marrakech" target="_blank">Pepe Nero</a> — Italian (if you need a tagine break!)
+                    </div>
+                </div>
+                
+                <!-- Day 5 -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-number">Day 5</div>
+                        <div class="day-location">📍 Essaouira</div>
+                    </div>
+                    <div class="day-title">Drive to Atlantic Coast</div>
+                    <div class="drive-info">
+                        <strong>🚗 Drive:</strong> 3 hours from Marrakech (190 km) — Coastal highway, argan tree landscapes
+                    </div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-time">Morning:</span>
+                            Drive to <a href="https://maps.google.com/?q=Essaouira+Morocco" target="_blank" class="activity-link">Essaouira</a>, check-in riad
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Afternoon:</span>
+                            <a href="https://maps.google.com/?q=Essaouira+Medina" target="_blank" class="activity-link">Medina</a> stroll, 
+                            <a href="https://maps.google.com/?q=Essaouira+Ramparts" target="_blank" class="activity-link">Ramparts</a> walk, beach
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Sunset:</span>
+                            Harbor-side walk, watch fishing boats return
+                        </li>
+                    </ul>
+                    <div class="food-highlight">
+                        <strong>🍽️ Dinner:</strong> <a href="https://maps.google.com/?q=Chez+Sam+Essaouira" target="_blank">Chez Sam</a> — Fresh seafood, harbor views (grilled sardines, calamari)
+                    </div>
+                </div>
+                
+                <!-- Day 6 -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-number">Day 6</div>
+                        <div class="day-location">📍 Paradise Valley / Taghazout</div>
+                    </div>
+                    <div class="day-title">Canyon Oasis & Surf Town</div>
+                    <div class="drive-info">
+                        <strong>🚗 Drive:</strong> 1.5 hours from Essaouira to Paradise Valley (100 km) — Coastal + inland mountain route
+                    </div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-time">Morning:</span>
+                            Drive to <a href="https://maps.google.com/?q=Paradise+Valley+Morocco" target="_blank" class="activity-link">Paradise Valley</a> (near Agadir)
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Midday:</span>
+                            Explore canyon, natural pools, cliff jumping (optional)
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Afternoon:</span>
+                            <a href="https://maps.google.com/?q=Taghazout+Morocco" target="_blank" class="activity-link">Taghazout</a> beach town (surf vibe, chill cafés)
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Evening:</span>
+                            Drive back to Marrakech (3.5 hours via coast road)
+                        </li>
+                    </ul>
+                    <div class="food-highlight">
+                        <strong>🍽️ Dinner:</strong> <a href="https://maps.google.com/?q=Dar+Moha+Marrakech" target="_blank">Dar Moha</a> — Riad dining, refined Moroccan cuisine
+                    </div>
+                </div>
+                
+                <!-- Day 7 -->
+                <div class="day-card">
+                    <div class="day-header">
+                        <div class="day-number">Day 7</div>
+                        <div class="day-location">📍 Marrakech</div>
+                    </div>
+                    <div class="day-title">Leisure & Departure</div>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <span class="activity-time">Morning:</span>
+                            <a href="https://maps.google.com/?q=Majorelle+Garden+Marrakech" target="_blank" class="activity-link">Majorelle Garden</a>, 
+                            <a href="https://maps.google.com/?q=YSL+Museum+Marrakech" target="_blank" class="activity-link">YSL Museum</a>
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Afternoon:</span>
+                            Final souk shopping, traditional hammam spa
+                        </li>
+                        <li class="activity-item">
+                            <span class="activity-time">Evening:</span>
+                            Departure or final night in Marrakech
+                        </li>
+                    </ul>
+                    <div class="food-highlight">
+                        <strong>🍽️ Farewell Dinner:</strong> <a href="https://maps.google.com/?q=La+Mamounia+Marrakech" target="_blank">La Mamounia</a> — Legendary hotel, French-Moroccan fine dining (splurge!)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <h3>Map Legend</h3>
+            <span class="legend-item">
+                <span class="legend-color" style="background: #e74c3c;"></span> Marrakech Base
+            </span>
+            <span class="legend-item">
+                <span class="legend-color" style="background: #27ae60;"></span> Atlas Mountains
+            </span>
+            <span class="legend-item">
+                <span class="legend-color" style="background: #3498db;"></span> Coast & Canyons
+            </span>
+            <span class="legend-item">
+                <span class="legend-color" style="background: #f39c12;"></span> Day Trips
+            </span>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on Morocco
+        const map = L.map('map').setView([31.6295, -7.9811], 8);
+        
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Define locations
+        const locations = [
+            {
+                name: 'Marrakech',
+                coords: [31.6295, -7.9811],
+                color: '#e74c3c',
+                description: 'Days 1-2, 7: Culture, Medina, Markets',
+                icon: '🏛️'
+            },
+            {
+                name: 'Ourika Valley',
+                coords: [31.3167, -7.6833],
+                color: '#27ae60',
+                description: 'Day 3: Waterfalls, Mountain Villages',
+                icon: '⛰️'
+            },
+            {
+                name: 'Imlil / Toubkal',
+                coords: [31.1333, -7.9167],
+                color: '#27ae60',
+                description: 'Day 4: High Atlas, Mt. Toubkal Base',
+                icon: '🏔️'
+            },
+            {
+                name: 'Essaouira',
+                coords: [31.5085, -9.7595],
+                color: '#3498db',
+                description: 'Day 5: Coastal Town, Seafood, Beach',
+                icon: '🌊'
+            },
+            {
+                name: 'Paradise Valley',
+                coords: [30.4167, -9.4333],
+                color: '#f39c12',
+                description: 'Day 6: Canyon Oasis, Natural Pools',
+                icon: '🏞️'
+            },
+            {
+                name: 'Taghazout',
+                coords: [30.5378, -9.7078],
+                color: '#3498db',
+                description: 'Day 6: Surf Town, Beach Vibes',
+                icon: '🏄'
+            }
+        ];
+        
+        // Add markers
+        locations.forEach(loc => {
+            const marker = L.circleMarker(loc.coords, {
+                radius: 10,
+                fillColor: loc.color,
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+            
+            marker.bindPopup(`
+                <strong style="font-size: 16px;">${loc.icon} ${loc.name}</strong><br>
+                <span style="font-size: 13px; color: #666;">${loc.description}</span>
+            `);
+        });
+        
+        // Draw routes
+        const routes = [
+            {
+                path: [[31.6295, -7.9811], [31.3167, -7.6833]], // Marrakech to Ourika
+                color: '#27ae60',
+                label: 'Day 3: 60 km, 1.5h'
+            },
+            {
+                path: [[31.6295, -7.9811], [31.1333, -7.9167]], // Marrakech to Imlil
+                color: '#27ae60',
+                label: 'Day 4: 65 km, 1.5h'
+            },
+            {
+                path: [[31.6295, -7.9811], [31.5085, -9.7595]], // Marrakech to Essaouira
+                color: '#3498db',
+                label: 'Day 5: 190 km, 3h'
+            },
+            {
+                path: [[31.5085, -9.7595], [30.4167, -9.4333]], // Essaouira to Paradise Valley
+                color: '#f39c12',
+                label: 'Day 6: 100 km, 1.5h'
+            },
+            {
+                path: [[30.4167, -9.4333], [30.5378, -9.7078]], // Paradise Valley to Taghazout
+                color: '#f39c12',
+                label: '15 km, 20 min'
+            }
+        ];
+        
+        routes.forEach(route => {
+            L.polyline(route.path, {
+                color: route.color,
+                weight: 4,
+                opacity: 0.7,
+                dashArray: '10, 5'
+            }).addTo(map).bindPopup(route.label);
+        });
+    </script>
+</body>
+</html>
