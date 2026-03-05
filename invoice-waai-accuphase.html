@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Giá - WAAI Audio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        
+        .invoice-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        
+        .company-info {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .company-name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .company-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .company-address {
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+        
+        .invoice-title {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 48px;
+            font-weight: 700;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2a5298;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .delivery-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .delivery-info p {
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .items-table thead {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+        
+        .items-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .items-table th:last-child,
+        .items-table td:last-child {
+            text-align: right;
+        }
+        
+        .items-table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background 0.2s;
+        }
+        
+        .items-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .items-table td {
+            padding: 20px 15px;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            color: #1e3c72;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        
+        .item-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .price {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .totals {
+            margin-top: 30px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 15px;
+        }
+        
+        .totals-row.subtotal {
+            color: #666;
+        }
+        
+        .totals-row.vat {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .totals-row.grand-total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e3c72;
+            border-top: 2px solid #2a5298;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        
+        .footer strong {
+            color: #1e3c72;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .invoice-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .invoice-title {
+                font-size: 32px;
+                top: 30px;
+                right: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .items-table {
+                font-size: 13px;
+            }
+            
+            .items-table th,
+            .items-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="header">
+            <div class="invoice-title">INVOICE</div>
+            <div class="company-info">
+                <div class="company-name">🎵 WAAI Audio</div>
+                <div class="company-tagline">Premium Hi-Fi Audio Solutions</div>
+                <div class="company-address">
+                    📍 79 Phó Đức Chính, Phường Sài Gòn, TP.HCM<br>
+                    📞 Hotline: (028) 3xxx xxxx | 📧 info@waai.vn
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-title">Thông Tin Giao Hàng</div>
+                <div class="delivery-info">
+                    <p><strong>Địa chỉ:</strong> 2707 Tháp Lotus, Vista Verde</p>
+                    <p><strong>Số 8 Nguyễn Thanh Sơn, Phường Cát Lái</strong></p>
+                    <p><strong>Quận 2, TP.HCM</strong></p>
+                    <p style="margin-top: 10px;"><strong>Ngày báo giá:</strong> 05/03/2026</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Chi Tiết Sản Phẩm & Dịch Vụ</div>
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60%;">Sản Phẩm / Dịch Vụ</th>
+                            <th style="width: 15%; text-align: center;">Số Lượng</th>
+                            <th style="width: 25%;">Thành Tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="item-name">Amplifier Accuphase P-800</div>
+                                <div class="item-desc">Công suất: 100W/8Ω (Class A) | THD: 0.03% | Thiết kế Dual Monaural | Công nghệ MCS+ Topology | Made in Japan</div>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td class="price">85,000,000 ₫</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="item-name">Pre-Amplifier Accuphase C-2620</div>
+                                <div class="item-desc">DAC tích hợp MDSD Type | 5 đầu vào Balanced XLR + 5 RCA | Phono Stage MM/MC | Remote Control | Màn hình OLED</div>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td class="price">55,000,000 ₫</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="item-name">Loa JBL 4343 (Cặp)</div>
+                                <div class="item-desc">Studio Monitor 4-way | Bass 15" | Midrange 10" + 5" | Tweeter 075 | SPL: 95dB | Vintage Classic 1980s | Tình trạng: Excellent</div>
+                            </td>
+                            <td style="text-align: center;">1 cặp</td>
+                            <td class="price">95,000,000 ₫</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="item-name">Biến Áp Plitron 3kVA</div>
+                                <div class="item-desc">Toroidal Transformer | 3000VA | Low Noise Design | Bảo vệ quá tải | Điện áp ổn định 220V±5% | Bảo hành 2 năm</div>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td class="price">17,000,000 ₫</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="item-name">Dịch Vụ Lắp Đặt Chuyên Nghiệp</div>
+                                <div class="item-desc">Thi công hệ thống điện riêng | Xử lý acoustic phòng nghe | Căn chỉnh loa (Room Calibration) | Hướng dẫn sử dụng | Bảo dưỡng 1 năm miễn phí</div>
+                            </td>
+                            <td style="text-align: center;">1</td>
+                            <td class="price">40,000,000 ₫</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="totals">
+                    <div class="totals-row subtotal">
+                        <span>Tạm tính:</span>
+                        <span>292,000,000 ₫</span>
+                    </div>
+                    <div class="totals-row vat">
+                        <span>VAT (10%):</span>
+                        <span>29,200,000 ₫</span>
+                    </div>
+                    <div class="totals-row grand-total">
+                        <span>TỔNG CỘNG:</span>
+                        <span>321,200,000 ₫</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>⏰ Thời gian giao hàng & lắp đặt:</strong> 7-10 ngày làm việc sau khi nhận đặt cọc<br>
+            <strong>💳 Thanh toán:</strong> Đặt cọc 50% | Thanh toán 50% còn lại sau khi hoàn tất lắp đặt<br>
+            <strong>🛡️ Bảo hành:</strong> Accuphase 2 năm | JBL 4343 1 năm | Biến áp 2 năm | Dịch vụ bảo dưỡng miễn phí 1 năm<br><br>
+            <em>Cảm ơn Quý khách đã tin tưởng WAAI Audio. Chúng tôi cam kết mang đến trải nghiệm âm thanh tuyệt hảo nhất!</em>
+        </div>
+    </div>
+</body>
+</html>
