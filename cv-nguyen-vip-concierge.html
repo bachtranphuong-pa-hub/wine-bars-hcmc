@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vu Thi Thao Nguyen - VIP Concierge CV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .cv-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 60px 70px;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .name {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .contact {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        .contact span {
+            margin: 0 15px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #2c3e50;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .summary {
+            font-size: 15px;
+            line-height: 1.8;
+            text-align: justify;
+            color: #444;
+        }
+        
+        .competencies {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .competency-item {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .competency-title {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .job {
+            margin-bottom: 30px;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+        
+        .job-company {
+            font-size: 17px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .job-title {
+            font-size: 15px;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .job-period {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .job-description {
+            margin-top: 12px;
+        }
+        
+        .job-description ul {
+            margin-left: 20px;
+        }
+        
+        .job-description li {
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        
+        .achievement {
+            background: #f8f9fa;
+            border-left: 4px solid #2c3e50;
+            padding: 12px 15px;
+            margin-top: 15px;
+            font-size: 14px;
+            font-style: italic;
+        }
+        
+        .achievement strong {
+            color: #2c3e50;
+        }
+        
+        .education {
+            font-size: 15px;
+        }
+        
+        .degree {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .skill-category {
+            margin-bottom: 15px;
+        }
+        
+        .skill-category-title {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .skill-category ul {
+            margin-left: 20px;
+        }
+        
+        .skill-category li {
+            margin-bottom: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 13px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .cv-container {
+                box-shadow: none;
+                padding: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cv-container {
+                padding: 30px 25px;
+            }
+            
+            .name {
+                font-size: 26px;
+            }
+            
+            .competencies,
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .job-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <div class="header">
+            <div class="name">VU THI THAO NGUYEN</div>
+            <div class="contact">
+                <span>📞 0967 195 979</span>
+                <span>✉️ thaonguyenvu23@gmail.com</span>
+                <span>📍 District 4, Ho Chi Minh City</span>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Professional Summary</div>
+            <div class="summary">
+                Dynamic hospitality and luxury service professional with 6+ years of experience building and managing relationships with high-net-worth clients across real estate, fine dining, and premium retail sectors. Proven track record in VIP guest acquisition, personalized service delivery, and converting first-time guests into long-term brand advocates. Fluent in understanding affluent client preferences and delivering exceptional, tailored experiences.
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Core Competencies</div>
+            <div class="competencies">
+                <div class="competency-item">
+                    <span class="competency-title">VIP Client Relationship Management</span><br>
+                    Building trust and loyalty with UHNW/HNW clientele
+                </div>
+                <div class="competency-item">
+                    <span class="competency-title">Guest Experience Design</span><br>
+                    Creating memorable, personalized service journeys
+                </div>
+                <div class="competency-item">
+                    <span class="competency-title">Luxury Brand Representation</span><br>
+                    Embodying premium brand values in every interaction
+                </div>
+                <div class="competency-item">
+                    <span class="competency-title">Referral & Retention Excellence</span><br>
+                    Achieving 70% organic referral rates through genuine care
+                </div>
+                <div class="competency-item">
+                    <span class="competency-title">Cross-Selling & Upselling</span><br>
+                    Natural connector across complementary luxury services
+                </div>
+                <div class="competency-item">
+                    <span class="competency-title">Discretion & Professionalism</span><br>
+                    Trusted advisor for sensitive, high-value transactions
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Professional Experience</div>
+            
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-company">HYLO – Nightlife & F&B Group</div>
+                    <div class="job-period">June 2019 – February 2025</div>
+                </div>
+                <div class="job-title">VIP Sales Manager</div>
+                <div class="job-description">
+                    <ul>
+                        <li>Managed relationships with 200+ high-net-worth guests across multiple 5-star venues</li>
+                        <li>Transformed venue operations into strategic networking hubs for elite clientele</li>
+                        <li>Increased average guest spending by 30% through personalized engagement and tailored recommendations</li>
+                        <li>Led a team of 8 service staff to consistently deliver "money-can't-buy" guest experiences</li>
+                        <li>Developed VIP membership program that became the premier social destination in its category</li>
+                        <li>Coordinated exclusive events, private dining experiences, and bespoke celebrations for top-tier guests</li>
+                    </ul>
+                    <div class="achievement">
+                        <strong>Key Achievement:</strong> Maintained 85%+ guest retention rate year-over-year through proactive relationship management and anticipatory service.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-company">CocoVu Bridal</div>
+                    <div class="job-period">August 2024 – Present</div>
+                </div>
+                <div class="job-title">Co-Founder & Client Relations Lead</div>
+                <div class="job-description">
+                    <ul>
+                        <li>Introduced premium international bridal brands to Vietnam's luxury wedding market</li>
+                        <li>Curated exclusive, invitation-only shopping experiences for Vietnam's top 1% affluent families</li>
+                        <li>Achieved 70% of business through organic client referrals and word-of-mouth recommendations</li>
+                        <li>Provided white-glove consultative service for high-value transactions (average sale: $15,000+)</li>
+                        <li>Built strategic partnerships with luxury hotels, wedding planners, and event designers</li>
+                    </ul>
+                    <div class="achievement">
+                        <strong>Key Achievement:</strong> Achieved profitability within 12 months of launch through relationship-driven sales and zero traditional advertising spend.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-company">Sai Gon Property</div>
+                    <div class="job-period">June 2020 – Present</div>
+                </div>
+                <div class="job-title">Co-Founder & VIP Client Advisor</div>
+                <div class="job-description">
+                    <ul>
+                        <li>Developed and maintained a proprietary database of UHNW real estate investors and buyers</li>
+                        <li>Provided discreet, personalized property advisory services for high-net-worth individuals</li>
+                        <li>Built a sales team achieving a 70% referral rate through client-first service philosophy</li>
+                        <li>Facilitated connections between clients and premium real estate opportunities across HCMC</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-company">CBRE Vietnam</div>
+                    <div class="job-period">June 2019 – March 2020</div>
+                </div>
+                <div class="job-title">Senior Real Estate Consultant</div>
+                <div class="job-description">
+                    <ul>
+                        <li>Ranked #1 in sales performance within 6 months of joining, outperforming 15+ senior colleagues</li>
+                        <li>Generated multi-million USD in property transactions through consultative selling approach</li>
+                        <li>Built a network of UHNW clients and industry partners from zero baseline</li>
+                        <li>Specialized in luxury residential and investment-grade commercial properties</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Education</div>
+            <div class="education">
+                <span class="degree">Bachelor of Marketing</span><br>
+                RMIT University, Vietnam
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">Professional Skills</div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="skill-category-title">Client Service Excellence</div>
+                    <ul>
+                        <li>Anticipatory service and needs-based problem solving</li>
+                        <li>Cultural sensitivity and multilingual guest engagement (Vietnamese, English)</li>
+                        <li>Confidentiality and discretion in all client interactions</li>
+                    </ul>
+                    
+                    <div class="skill-category-title" style="margin-top: 20px;">Relationship Management</div>
+                    <ul>
+                        <li>CRM proficiency and client database management</li>
+                        <li>Long-term relationship building and maintenance</li>
+                        <li>Referral generation and advocacy cultivation</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="skill-category-title">Luxury Market Understanding</div>
+                    <ul>
+                        <li>Deep knowledge of UHNW/HNW lifestyle preferences</li>
+                        <li>Familiarity with luxury brands, services, and experiences</li>
+                        <li>Ability to identify and fulfill unspoken client needs</li>
+                    </ul>
+                    
+                    <div class="skill-category-title" style="margin-top: 20px;">Operations & Coordination</div>
+                    <ul>
+                        <li>Event planning and execution for exclusive experiences</li>
+                        <li>Vendor coordination and quality assurance</li>
+                        <li>Cross-functional collaboration with hospitality teams</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">References</div>
+            <p style="font-size: 14px; font-style: italic;">Available upon request</p>
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> This CV is optimized for Concierge, VIP Guest Relations, or Luxury Client Manager roles in hospitality, private clubs, luxury retail, or premium service brands.
+        </div>
+    </div>
+</body>
+</html>
