@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RCC Dashboard — Le Meridien Saigon </title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Calibri,Arial,sans-serif;background:#EFEFEF;padding:20px;color:#222;font-size:12px}
+.page{background:#fff;max-width:1100px;margin:0 auto;padding:24px 28px;box-shadow:0 2px 16px rgba(0,0,0,.12)}
+
+/* Header */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #1B2A4A}
+.page-title{font-size:20px;font-weight:700;color:#1B2A4A}
+.page-sub{font-size:11px;color:#666;margin-top:3px}
+.badge{display:inline-block;padding:2px 8px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:.05em;margin-right:4px;margin-top:6px}
+.rdate{text-align:right;font-size:11px;color:#444}
+.rdate strong{font-size:15px;color:#1B2A4A;display:block}
+.rdate span{font-size:10px;color:#888}
+
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.kpi{border:1px solid #E0E0E0;padding:10px 12px;border-radius:3px}
+.kpi-label{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.kpi-value{font-size:18px;font-weight:700;color:#1B2A4A}
+.kpi-sub{font-size:10px;font-weight:700;margin-top:3px}
+
+/* Sparkline */
+.spark-section{margin-bottom:18px}
+.spark-title{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.spark-row{display:flex;align-items:flex-end;gap:6px;height:80px;border-bottom:1px solid #E0E0E0;padding-bottom:4px}
+.spark-col{display:flex;flex-direction:column;align-items:center;flex:1}
+.spark-bar{width:100%;background:#1B2A4A;border-radius:2px 2px 0 0;min-height:3px}
+.spark-label{font-size:9px;color:#888;margin-top:3px}
+.spark-val{font-size:8px;color:#aaa}
+
+/* Section */
+.section{margin-bottom:20px}
+.sec-header{background:#1B2A4A;color:#fff;font-size:11px;font-weight:700;padding:5px 10px;margin-bottom:0;display:inline-block}
+.sec-note{font-size:9px;color:#888;font-style:italic;margin:4px 0 6px}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:#F5F5F5;color:#555;font-size:9px;text-transform:uppercase;letter-spacing:.04em;padding:5px 6px;border:1px solid #E0E0E0;text-align:center;white-space:nowrap}
+th.left{text-align:left}
+td{border:1px solid #E8E8E8;padding:4px 6px;vertical-align:middle}
+tr.data-row:hover td{background:#FAFAFA}
+.dept-name{font-weight:600;color:#1B2A4A;white-space:nowrap;min-width:120px}
+.num-cell{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.gap{color:#888;font-size:10px}
+
+/* Progress bars */
+.bar-cell{padding:4px 8px;min-width:240px}
+.bar-track{position:relative;width:200px;height:14px;background:#D3D3D3;border-radius:2px;overflow:visible}
+.bar-fill{position:absolute;left:0;top:0;height:14px;border-radius:2px 0 0 2px}
+.day-line{position:absolute;top:-3px;bottom:-3px;width:2px;background:#8B0000;z-index:2}
+.target-mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:#8B0000;z-index:2}
+.bar-pct{font-size:9px;color:#555;margin-left:4px;vertical-align:middle}
+.bar-wrap{display:flex;align-items:center}
+
+/* Legend */
+.legend{display:flex;gap:16px;font-size:9px;color:#666;margin-bottom:6px;justify-content:flex-end}
+.leg{display:flex;align-items:center;gap:4px}
+.leg-box{width:10px;height:10px;border-radius:1px}
+.leg-line{width:20px;height:2px;background:#8B0000}
+
+/* Footer */
+.footer{margin-top:16px;text-align:center;font-size:9px;color:#AAAAAA;border-top:1px solid #E0E0E0;padding-top:10px}
+hr.div{border:none;border-top:1px solid #E8E8E8;margin:16px 0}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- Header -->
+<div class="page-header">
+  <div>
+    <div class="page-title">RCC Dashboard — Le Meridien Saigon</div>
+    <div class="page-sub">Sales Performance Report · </div>
+    <div>
+      <span class="badge" style="background:#1B2A4A;color:#fff">RCC CONFIDENTIAL</span>
+      <span class="badge" style="background:#8B0000;color:#fff">BOD ONLY</span>
+    </div>
+  </div>
+  <div class="rdate">
+    Report Date
+    <strong></strong>
+    <span>USD/VND: 26,800</span>
+  </div>
+</div>
+
+<!-- KPI -->
+<div class="kpi-row">
+  <div class="kpi" style="background:#F0FBF0">
+      <div class="kpi-label">Hotel YTD Actual</div>
+      <div class="kpi-value">98.1B</div>
+      <div class="kpi-sub" style="color:#2D5A2D">15.1% of annual target</div>
+    </div>
+  <div class="kpi" style="background:#FFF5F5">
+      <div class="kpi-label">Hotel MTD Actual</div>
+      <div class="kpi-value">34.5B</div>
+      <div class="kpi-sub" style="color:#C41E3A">-10.9% vs MTD target</div>
+    </div>
+  <div class="kpi" style="background:#FFF5F5">
+      <div class="kpi-label">La Victoire MTD</div>
+      <div class="kpi-value">280K USD</div>
+      <div class="kpi-sub" style="color:#C41E3A">-76.6% vs MTD target</div>
+    </div>
+  <div class="kpi" style="background:#FFF5F5">
+      <div class="kpi-label">Rooms MTD</div>
+      <div class="kpi-value">24.8B</div>
+      <div class="kpi-sub" style="color:#C41E3A">-16.5% vs MTD target</div>
+    </div>
+</div>
+
+<!-- Sparkline -->
+
+<div class="spark-section">
+  <div class="spark-title">Monthly Revenue Trend (Hotel Total)</div>
+  <div class="spark-row"><div class="spark-col"><div class="spark-bar" style="height:60px"></div><div class="spark-label">Jan</div><div class="spark-val">88.2B</div></div><div class="spark-col"><div class="spark-bar" style="height:29px"></div><div class="spark-label">Feb</div><div class="spark-val">42.6B</div></div></div>
+</div>
+
+<!-- Section 1: YTD -->
+<div class="section">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+    <div class="section-header">1. SALES | YTD | 2026</div>
+    <div class="legend">
+      <div class="leg"><div class="leg-box" style="background:#1B2A4A"></div> % Sales Progress</div>
+      <div class="leg"><div class="leg-line"></div> % Day Passed (16.2%)</div>
+    </div>
+  </div>
+  <div class="sec-note">Progress bar: ██ actual vs ▌ time elapsed (16.2% of year passed)</div>
+  <table>
+    <thead>
+      <tr>
+        <th class="left">Business Unit</th>
+        <th>2025 Target</th>
+        <th>YTD Actual</th>
+        <th>Progress vs Time</th>
+        <th>vs Day Passed</th>
+        <th>Days Left</th>
+        <th>Sales Gap</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr class="data-row">
+        <td class="dept-name">La Victoire</td>
+        <td class="num-cell">421.6B</td>
+        <td class="num-cell">30.2B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:14px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">7.2%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-9.0%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">391.4B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Hotel</td>
+        <td class="num-cell">651.9B</td>
+        <td class="num-cell">98.1B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:30px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">15.1%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-1.1%</td>
+        <td class="num-cell">—</td>
+        <td class="num-cell gap">553.7B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Room</td>
+        <td class="num-cell">460.7B</td>
+        <td class="num-cell">69.6B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:30px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">15.1%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-1.1%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">391.1B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Latest Recipe</td>
+        <td class="num-cell">58.6B</td>
+        <td class="num-cell">8.7B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:30px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">14.8%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-1.4%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">49.9B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Barson</td>
+        <td class="num-cell">19.9B</td>
+        <td class="num-cell">2.5B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:26px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">12.8%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-3.4%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">17.3B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">AKUNA</td>
+        <td class="num-cell">33.2B</td>
+        <td class="num-cell">4.7B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:28px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">14.2%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-2.0%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">28.5B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Banquet/Catering</td>
+        <td class="num-cell">45.1B</td>
+        <td class="num-cell">9.5B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:42px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">21.1%</span>
+        </td>
+        <td class="num-cell" style="color:#2D5A2D;background:#EFF7EF;font-weight:700">+4.9%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">35.6B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Art Cacao</td>
+        <td class="num-cell">5.9B</td>
+        <td class="num-cell">178M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:6px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:33px"></div>
+          </div>
+          <span class="bar-pct">3.0%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-13.4%</td>
+        <td class="num-cell">214</td>
+        <td class="num-cell gap">5.7B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">In-room Dining</td>
+        <td class="num-cell">6.9B</td>
+        <td class="num-cell">879M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:26px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:28px"></div>
+          </div>
+          <span class="bar-pct">12.8%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-1.0%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">6.0B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Mini Bar</td>
+        <td class="num-cell">873M</td>
+        <td class="num-cell">85M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:19px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">9.7%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-6.4%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">788M</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Speakeasy</td>
+        <td class="num-cell">602M</td>
+        <td class="num-cell">21M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:7px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">3.5%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-12.7%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">581M</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Other</td>
+        <td class="num-cell">20.2B</td>
+        <td class="num-cell">1.9B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:19px;background:#1B2A4A"></div>
+            <div class="day-line" style="left:32px"></div>
+          </div>
+          <span class="bar-pct">9.5%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-6.7%</td>
+        <td class="num-cell">306</td>
+        <td class="num-cell gap">18.3B</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div">
+
+<!-- Section 2: MTD -->
+<div class="section">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+    <div class="section-header">2. SALES | MTD | </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-box" style="background:#1B2A4A"></div> % vs MTD Target</div>
+      <div class="leg"><div class="leg-line"></div> 100% Target</div>
+    </div>
+  </div>
+  <div class="sec-note">Progress bar: ██ actual vs ▌ 100% monthly target</div>
+  <table>
+    <thead>
+      <tr>
+        <th class="left">Business Unit</th>
+        <th>Monthly Target</th>
+        <th>MTD Actual</th>
+        <th>Progress vs Target</th>
+        <th>vs MTD Target</th>
+        <th>Sales Gap</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr class="data-row">
+        <td class="dept-name">La Victoire</td>
+        <td class="num-cell">32.1B</td>
+        <td class="num-cell">7.5B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:29px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">23.4%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-76.6%</td>
+        <td class="num-cell gap">24.6B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Hotel</td>
+        <td class="num-cell">38.7B</td>
+        <td class="num-cell">34.5B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:111px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">89.1%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-10.9%</td>
+        <td class="num-cell gap">4.2B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Room</td>
+        <td class="num-cell">29.7B</td>
+        <td class="num-cell">24.8B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:104px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">83.5%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-16.5%</td>
+        <td class="num-cell gap">4.9B</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Latest Recipe</td>
+        <td class="num-cell">2.9B</td>
+        <td class="num-cell">3.9B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:170px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">135.7%</span>
+        </td>
+        <td class="num-cell" style="color:#2D5A2D;background:#EFF7EF;font-weight:700">+35.7%</td>
+        <td class="num-cell gap">—</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Barson</td>
+        <td class="num-cell">1.3B</td>
+        <td class="num-cell">1.0B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:103px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">82.6%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-17.4%</td>
+        <td class="num-cell gap">219M</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">AKUNA</td>
+        <td class="num-cell">1.5B</td>
+        <td class="num-cell">1.6B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:135px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">108.2%</span>
+        </td>
+        <td class="num-cell" style="color:#2D5A2D;background:#EFF7EF;font-weight:700">+8.2%</td>
+        <td class="num-cell gap">—</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Banquet/Catering</td>
+        <td class="num-cell">1.7B</td>
+        <td class="num-cell">2.4B</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:178px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">142.2%</span>
+        </td>
+        <td class="num-cell" style="color:#2D5A2D;background:#EFF7EF;font-weight:700">+42.2%</td>
+        <td class="num-cell gap">—</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Art Cacao</td>
+        <td class="num-cell">270M</td>
+        <td class="num-cell">85M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:39px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">31.5%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-68.5%</td>
+        <td class="num-cell gap">185M</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">In-room Dining</td>
+        <td class="num-cell">386M</td>
+        <td class="num-cell">346M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:112px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">89.5%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-10.5%</td>
+        <td class="num-cell gap">41M</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Mini Bar</td>
+        <td class="num-cell">48M</td>
+        <td class="num-cell">—</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:2px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">0.0%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-100.0%</td>
+        <td class="num-cell gap">48M</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Speakeasy</td>
+        <td class="num-cell">40M</td>
+        <td class="num-cell">21M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:64px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">51.6%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-48.4%</td>
+        <td class="num-cell gap">20M</td>
+      </tr>
+      <tr class="data-row">
+        <td class="dept-name">Other</td>
+        <td class="num-cell">978M</td>
+        <td class="num-cell">340M</td>
+        <td class="bar-cell">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:43px;background:#1B2A4A"></div>
+            <div class="target-mark" style="left:125px"></div>
+          </div>
+          <span class="bar-pct">34.7%</span>
+        </td>
+        <td class="num-cell" style="color:#C41E3A;background:#FFF0F0;font-weight:700">-65.3%</td>
+        <td class="num-cell gap">638M</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  Generated by Zera · 16:36:07 9/3/2026 · RCC Confidential — BOD Only
+</div>
+
+</div>
+</body>
+</html>
