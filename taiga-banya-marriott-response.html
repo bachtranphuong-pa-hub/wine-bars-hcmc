@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taiga Banya Vietnam — MIHC Questionnaire Response</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .header {
+    background: #1B2A4A;
+    color: white;
+    padding: 28px 40px 20px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+  .header h2 { font-size: 14px; font-weight: 400; opacity: 0.75; margin-top: 4px; }
+  .header .meta { margin-top: 10px; font-size: 12px; opacity: 0.6; }
+  .toc {
+    background: #fff;
+    border-left: 4px solid #1B2A4A;
+    margin: 24px 40px 0;
+    padding: 16px 24px;
+    border-radius: 0 4px 4px 0;
+  }
+  .toc h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #1B2A4A; margin-bottom: 10px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 20px; }
+  .toc a { color: #1B2A4A; text-decoration: none; font-size: 12px; }
+  .toc a:hover { text-decoration: underline; }
+  .container { padding: 24px 40px 60px; }
+  .section {
+    background: #fff;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .section-header {
+    background: #1B2A4A;
+    color: white;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-header .badge {
+    background: rgba(255,255,255,0.18);
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 400;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: #eef1f7;
+    padding: 9px 14px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555;
+    border-bottom: 1px solid #dde2ec;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: top;
+    font-size: 13px;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfd; }
+  td:first-child { color: #888; font-size: 12px; width: 32px; text-align: center; }
+  td:nth-child(2) { color: #444; width: 38%; font-style: italic; }
+  td:nth-child(3) { color: #222; }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .pill-red { background: #fde8e8; color: #c00; }
+  .pill-yellow { background: #fff8e0; color: #996600; }
+  .pill-green { background: #d4edda; color: #1a7a3a; }
+
+  /* Risk table */
+  .risk-table td:nth-child(1) { width: 30%; color: #222; font-style: normal; }
+  .risk-table td:nth-child(2) { width: 12%; }
+  .risk-table td:nth-child(3) { width: 58%; }
+
+  /* Flow section */
+  .flow-box {
+    padding: 20px 28px;
+    background: #f9fafc;
+  }
+  .flow-container {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .flow-lane {
+    flex: 1;
+    min-width: 180px;
+    max-width: 220px;
+    text-align: center;
+  }
+  .flow-lane h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #1B2A4A;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: #eef1f7;
+    border-radius: 4px;
+  }
+  .flow-step {
+    background: white;
+    border: 1px solid #dde2ec;
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #333;
+    position: relative;
+  }
+  .flow-step::after {
+    content: '↓';
+    display: block;
+    color: #aaa;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-merge {
+    text-align: center;
+    padding: 16px 0 8px;
+    width: 100%;
+    font-size: 12px;
+    color: #666;
+  }
+  .flow-merge::before { content: '↘ '; }
+  .flow-merge::after { content: ' ↙'; }
+
+  /* Follow-up Qs */
+  .faq-section { padding: 0; }
+  .faq-category { padding: 10px 20px 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #1B2A4A; font-weight: 700; background: #f5f7fb; border-bottom: 1px solid #eee; }
+  .faq-item { display: flex; gap: 12px; padding: 10px 20px; border-bottom: 1px solid #f0f0f0; }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-num { color: #1B2A4A; font-weight: 700; font-size: 13px; min-width: 24px; }
+  .faq-q { font-size: 13px; color: #333; }
+
+  /* Cost boxes */
+  .cost-box {
+    background: #fffbf0;
+    border-left: 3px solid #e6a800;
+    padding: 10px 16px;
+    margin: 8px 14px 14px;
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    color: #555;
+  }
+  .cost-box strong { color: #333; }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>TAIGA BANYA VIETNAM</h1>
+  <h2>Response to MIHC Pre-Lease Operational Questionnaire — Le Meridien Saigon, Floor 9</h2>
+  <div class="meta">Prepared by: RCC / Taiga Banya Vietnam JV &nbsp;|&nbsp; Draft v1 &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; Confidential</div>
+</div>
+
+<div class="toc">
+  <h3>Contents</h3>
+  <div class="toc-grid">
+    <a href="#s2">§2 Commercial Structure</a>
+    <a href="#s3">§3 Brand & Guest Experience</a>
+    <a href="#s4">§4 Front Office Impact</a>
+    <a href="#s5">§5 Housekeeping</a>
+    <a href="#s6">§6 Engineering</a>
+    <a href="#s7">§7 Pool Management</a>
+    <a href="#s8">§8 Fitness Center</a>
+    <a href="#s9">§9 F&B / Stewarding</a>
+    <a href="#s10">§10 HR & Staffing</a>
+    <a href="#s11">§11 Security & Risk</a>
+    <a href="#s12">§12 Marketing & Sales</a>
+    <a href="#flow">Operation Flow</a>
+    <a href="#risk">Risk Flags</a>
+    <a href="#faq">Follow-up Q&A → MIHC</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- S2 -->
+<div class="section" id="s2">
+  <div class="section-header">§2 — Commercial Structure <span class="badge">8 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Fixed rent / revenue share / hybrid?</td><td><strong>Hybrid preferred.</strong> Base rent (fixed floor) + revenue share above breakeven threshold. Proposed: fixed base + 8–12% GOR above agreed revenue tier. Provides MIHC downside protection while aligning incentives.</td></tr>
+      <tr><td>2</td><td>Minimum guarantee?</td><td>Taiga accepts minimum guarantee tied to ~60% treatment room utilization (projected breakeven). Soft opening waiver requested for first 3 months.</td></tr>
+      <tr><td>3</td><td>Rent escalation clause?</td><td>CPI-linked escalation, <strong>capped at 3% per annum</strong>. Resist fixed % above CPI — spa revenue growth is usage-dependent.</td></tr>
+      <tr><td>4</td><td>Contract term & exit?</td><td><strong>5-year initial term</strong> + 2×3-year renewal options. Exit: 6-month notice; mutual termination for material breach; force majeure carve-out.</td></tr>
+      <tr><td>5</td><td>Security deposit?</td><td>3 months' base rent. Propose phased release: ⅓ returned at Year 2 if no payment defaults.</td></tr>
+      <tr><td>6</td><td>Revenue definition?</td><td><strong>Gross Operating Revenue (GOR)</strong> = all spa / fitness / pool / retail billed to guests. Exclude: complimentary treatments, service charge remitted to staff, VAT. Define precisely in Lease Annex.</td></tr>
+      <tr><td>7</td><td>Payment cycle?</td><td>Monthly, within 15 days after month-end. Monthly revenue report to MIHC by Day 10.</td></tr>
+      <tr><td>8</td><td>Utilities — sub-metered or allocated?</td><td><strong>Sub-metered mandatory</strong> (electricity & water). Chiller: m² ratio allocation unless sub-metering feasible. Taiga bears sub-meter installation cost.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S3 -->
+<div class="section" id="s3">
+  <div class="section-header">§3 — Brand & Guest Experience Alignment <span class="badge">4 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Guest complaint escalation — who owns?</td><td><strong>Dual-track:</strong> In-room guests → MIHC FO Duty Manager. External guests → Taiga GM. Cross-category (e.g. billing dispute) → joint resolution within 24h. SLA: acknowledgement 2h / resolution 24h.</td></tr>
+      <tr><td>2</td><td>Cross-selling commission to concierge?</td><td><strong>10–15% commission</strong> on confirmed bookings from FO/Concierge referrals. Tracked via booking source code in Taiga POS. Monthly reconciliation to FO Manager.</td></tr>
+      <tr><td>3</td><td>PMS integration?</td><td>Taiga deploys <strong>Mindbody or Book4Time</strong> (MIHC-compatible). Room charge via Opera interface — request MIHC IT for PMS API specs. Integration timeline: 4–6 weeks post-handover.</td></tr>
+      <tr><td>4</td><td>Hotel website & marketing?</td><td>Request "Spa & Wellness" listing on LMS property page. If HWS policy restricts → accept QR/link at FO, in-room collateral, elevator signage. Propose joint photo shoot (Marriott-approved photographer).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S4 -->
+<div class="section" id="s4">
+  <div class="section-header">§4 — Front Office Impact <span class="badge">10 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Reservations through hotel system?</td><td>Taiga manages via own PMS. FO books via <strong>dedicated Taiga hotline or web widget</strong> in MIHC internal portal. No Opera dependency for scheduling.</td></tr>
+      <tr><td>2</td><td>Room charge integration?</td><td>Yes — in-house guests charge to room via Opera interface. Daily room charge report to FO Accounting. Settlement: weekly batch, reconciled against Opera folio.</td></tr>
+      <tr><td>3</td><td>Credit policy for in-house guests?</td><td>In-house: credit to room (standard). Walk-in/external: prepayment or card hold at booking. No credit to external guests without prior written approval.</td></tr>
+      <tr><td>4</td><td>FO upselling commission?</td><td>Covered under §3.2 — 10–15% per confirmed referral.</td></tr>
+      <tr><td>5</td><td>Late cancellation/no-show policy?</td><td><strong>24h cancellation</strong> for treatments >60 min; 4h for shorter. 50% charge on late cancel; 100% no-show. In-house: charged to room folio.</td></tr>
+      <tr><td>6</td><td>VIP handling?</td><td>Taiga GM / Senior Therapist = VIP Spa Host. MIHC shares daily VIP list by 14:00. Taiga prepares complimentary welcome amenity (herbal tea, banya ritual) for Ambassador Elite / STARS / Luminous reservations.</td></tr>
+      <tr><td>7</td><td>Complimentary treatments for VIPs?</td><td><strong>1× complimentary 30-min treatment/stay</strong> for MIHC-designated VIPs. Volume cap: 10 comps/month. MIHC reimburses Taiga at cost rate for volume above cap — defined in SLA Annex.</td></tr>
+      <tr><td>8</td><td>Service recovery budget?</td><td>Taiga carries own recovery budget for spa-originated issues. MIHC-gifted spa vouchers billed to MIHC at retail rate, settled monthly.</td></tr>
+      <tr><td>9</td><td>Spa desk location & staffing?</td><td>Taiga reception on Floor 9. Branded collateral display at FO lobby level (leaflets, vouchers). No Taiga staff stationed at MIHC FO — all queries via QR/hotline.</td></tr>
+      <tr><td>10</td><td>Reporting to FO Manager?</td><td>Daily occupancy + treatment count by <strong>09:00</strong>. Weekly revenue summary. Monthly P&L to MIHC GM.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S5 -->
+<div class="section" id="s5">
+  <div class="section-header">§5 — Housekeeping Impact <span class="badge">10 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Treatment room cleaning?</td><td><strong>Taiga staff</strong> — between guests and EOD. No MIHC HK required for treatment rooms.</td></tr>
+      <tr><td>2</td><td>Public spa areas?</td><td><strong>Taiga staff</strong> for all public spa areas (sauna, banya, relaxation lounge, pool deck).</td></tr>
+      <tr><td>3</td><td>Linen source?</td><td><strong>Taiga-owned linen</strong> — proprietary towels, robes, slippers branded "Taiga Banya." No MIHC linen dependency.</td></tr>
+      <tr><td>4</td><td>Towel usage (pool + spa)?</td><td>Separate inventories. If pool assigned to Taiga (§7): Taiga manages. If pool remains MIHC: clear handover at pool deck entry.</td></tr>
+      <tr><td>5</td><td>Laundry cost?</td><td><strong>Taiga 100%</strong> for own linen. Prefers external laundry contract. Request MIHC access policy for external vendors.</td></tr>
+      <tr><td>6</td><td>Linen replacement?</td><td>Taiga responsibility. 3× par reserve maintained at all times.</td></tr>
+      <tr><td>7</td><td>Deep cleaning?</td><td>Taiga: monthly deep clean (treatment rooms). MIHC: bi-annual structural areas (ceiling, HVAC, drains) — cost allocation by agreement.</td></tr>
+      <tr><td>8</td><td>Pest control?</td><td>MIHC coordinates building-wide — Taiga included. Taiga pays pro-rata by m².</td></tr>
+      <tr><td>9</td><td>Uniform laundry?</td><td>Taiga covers own staff uniform laundry externally.</td></tr>
+      <tr><td>10</td><td>Pool towel issuance?</td><td>RFID wristband system at towel kiosk. Count reconciled at EOD. Loss charged to guest at checkout.</td></tr>
+    </tbody>
+  </table>
+  <div class="cost-box">
+    <strong>💰 Cost Structure (HK):</strong> Laundry → external vendor (Taiga-contracted, no MIHC charge) &nbsp;|&nbsp; Additional MIHC HK manpower → N/A &nbsp;|&nbsp; Chemicals → Taiga-supplied for treatment rooms; MIHC for structural areas
+  </div>
+</div>
+
+<!-- S6 -->
+<div class="section" id="s6">
+  <div class="section-header">§6 — Engineering Impact <span class="badge">10 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>MEP load capacity assessment?</td><td><strong>Taiga commissions independent MEP assessment</strong> pre-fit-out (at Taiga's cost). Report shared with MIHC Engineering within 30 days of lease commencement.</td></tr>
+      <tr><td>2</td><td>Equipment loads?</td><td>Banya/sauna: 15–25 kW/unit. Wet treatment rooms: additional drainage + hot water demand. Full equipment schedule provided to MIHC Engineering at fit-out design stage.</td></tr>
+      <tr><td>3</td><td>Water consumption?</td><td>Estimated <strong>2–4 m³/day</strong>. Sub-metered; monthly report to MIHC.</td></tr>
+      <tr><td>4</td><td>Hot water impact?</td><td>High demand — banya steam and wet treatments require sustained supply. <strong>⚠️ Taiga requests MIHC Engineering to confirm boiler reserve capacity before fit-out.</strong> If insufficient: negotiate dedicated unit + capex allocation.</td></tr>
+      <tr><td>5</td><td>Drainage requirements?</td><td>High — banya splash pools + wet rooms. Fit-out contractor to assess Floor 9 drainage capacity. Upgrade cost: Taiga bears if tenant improvement; MIHC bears if structural.</td></tr>
+      <tr><td>6</td><td>Steam/sauna load?</td><td>~40–60 kW combined electrical. Generator backup required — request MIHC to confirm Floor 9 critical load coverage.</td></tr>
+      <tr><td>7</td><td>Preventive maintenance?</td><td><strong>Taiga maintains all spa equipment.</strong> MIHC maintains building systems (main HVAC, plumbing trunks, electrical panels).</td></tr>
+      <tr><td>8</td><td>Plant room access?</td><td>Escorted access only (with MIHC Engineering rep). No unescorted access. Key holding: MIHC Engineering.</td></tr>
+      <tr><td>9</td><td>Energy meter installation?</td><td><strong>Dedicated sub-meter mandatory.</strong> Taiga covers installation cost. Monthly read shared with MIHC by Day 5.</td></tr>
+      <tr><td>10</td><td>Emergency breakdown protocol?</td><td>Taiga GM contacts MIHC Engineering Duty Manager via dedicated line. SLA: 30-min acknowledgement / 2h on-site for critical (HVAC, water, power). Joint Emergency Response Annex proposed in lease.</td></tr>
+    </tbody>
+  </table>
+  <div class="cost-box">
+    <strong>💰 Engineering Charges:</strong> Electricity → sub-metered, MIHC blended tariff + 5% admin &nbsp;|&nbsp; Water → sub-metered, municipal rate + 5% admin &nbsp;|&nbsp; Chiller → m² allocation &nbsp;|&nbsp; Engineering standby → flat monthly retainer (to be negotiated)
+  </div>
+</div>
+
+<!-- S7 -->
+<div class="section" id="s7">
+  <div class="section-header">§7 — Pool Management <span class="badge">8 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Pool chemical treatment?</td><td><strong>Taiga</strong> — dedicated pool technician, daily water testing, HACCP-compliant logs available for MIHC inspection.</td></tr>
+      <tr><td>2</td><td>Pool maintenance?</td><td><strong>Taiga</strong> — daily cleaning, weekly deep clean, monthly equipment service.</td></tr>
+      <tr><td>3</td><td>Glassware at pool?</td><td>No glassware. Taiga uses acrylic/polycarbonate service ware exclusively. Aligned with MIHC standard.</td></tr>
+      <tr><td>4</td><td>Kids access?</td><td><strong>Adult-only concept (18+).</strong> No minors in spa or pool. FO briefing and signage to align.</td></tr>
+      <tr><td>5</td><td>Pool party policy?</td><td>Private hire available (members / corporate). MIHC GM notification 48h prior for events >20 pax. Capacity per fire code.</td></tr>
+      <tr><td>6</td><td>Music/noise control?</td><td>Taiga ambient system, max 70 dB at pool deck boundary. No live music without MIHC approval.</td></tr>
+      <tr><td>7</td><td>Opening hours?</td><td><strong>07:00–22:00 daily.</strong> Last entry 21:30. Extended to 23:00 for private bookings with MIHC notification.</td></tr>
+      <tr><td>8</td><td>Towel inventory control?</td><td>RFID-tag system at towel kiosk. EOD count reconciliation. Loss charged to guest at checkout.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S8 -->
+<div class="section" id="s8">
+  <div class="section-header">§8 — Fitness Center Operations <span class="badge">8 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Equipment ownership?</td><td><strong>Taiga-owned.</strong> Asset register shared with MIHC.</td></tr>
+      <tr><td>2</td><td>Equipment servicing?</td><td><strong>Taiga responsibility</strong> — annual service contract with manufacturer/authorized center.</td></tr>
+      <tr><td>3</td><td>Liability for injuries?</td><td>Taiga carries <strong>public liability insurance (min $2M/occurrence)</strong>, covering all guests in leased area. Certificate provided to MIHC before opening. MIHC named as additional insured.</td></tr>
+      <tr><td>4</td><td>Membership model?</td><td>Day pass + monthly/annual membership + hotel guest day access. Preferential rate for MIHC permanent staff (goodwill, subject to capacity).</td></tr>
+      <tr><td>5</td><td>Access control?</td><td>Taiga-managed RFID/keycard at Floor 9 entrance. Integration with MIHC room keycard system if technically feasible (request IT assessment).</td></tr>
+      <tr><td>6</td><td>Security control?</td><td>CCTV in all public areas (excluding treatment rooms). Footage retained 30 days. MIHC Security access on written request (incident investigation only).</td></tr>
+      <tr><td>7</td><td>Peak hour capacity?</td><td>Max occupancy posted at entrance. Online slot booking system to manage peak hours (07:00–09:00, 17:00–20:00).</td></tr>
+      <tr><td>8</td><td>Cleaning responsibility?</td><td><strong>Taiga</strong> — daily cleaning of all fitness equipment and floor areas.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S9 -->
+<div class="section" id="s9">
+  <div class="section-header">§9 — F&B / Kitchen / Stewarding <span class="badge">F&B supplied by MIHC (Latest Recipe / IRD)</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td colspan="3" style="background:#eef1f7;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#1B2A4A;padding:8px 14px;">COMMERCIAL</td></tr>
+      <tr><td>1</td><td>Separate spa menu?</td><td>Yes — <strong>Taiga Wellness Menu</strong>: light bites, herbal teas, cold-pressed juices, healthy snacks. Curated jointly with LMS F&B team. 10–15 SKUs max for operational simplicity.</td></tr>
+      <tr><td>2</td><td>Pricing structure?</td><td>Retail pricing set by Taiga. Internal transfer: MIHC charges Taiga at <strong>cost + 15%</strong>. Service charge collected by Taiga, distributed to Taiga F&B staff independently.</td></tr>
+      <tr><td>3</td><td>Transfer pricing?</td><td>Cost + 15%. Monthly invoice MIHC F&B → Taiga.</td></tr>
+      <tr><td>4</td><td>Service charge distribution?</td><td>Taiga collects SC from guests → Taiga internal SC pool. <strong>No commingling with MIHC SC pool.</strong></td></tr>
+      <tr><td>5</td><td>Minimum monthly consumption guarantee?</td><td>No minimum for first 6 months (ramp-up). From Month 7: proposed VND 50–80M/month (subject to menu scope negotiation).</td></tr>
+      <tr><td colspan="3" style="background:#eef1f7;font-size:11px;font-weight:700;letter-spacing:0.5px;color:#1B2A4A;padding:8px 14px;">STEWARDING</td></tr>
+      <tr><td>1</td><td>Hotel chinaware?</td><td>Taiga prefers <strong>own branded crockery</strong> (premium positioning alignment). MIHC chinaware as backup only.</td></tr>
+      <tr><td>2</td><td>Breakage responsibility?</td><td>Taiga covers own ware. MIHC ware breakage billed to Taiga at replacement cost.</td></tr>
+      <tr><td>3</td><td>Washing cost?</td><td>If using MIHC stewarding: per-rack charge at agreed rate. Taiga may opt for compact dishwasher on Floor 9 if volume warrants.</td></tr>
+      <tr><td>4</td><td>Glassware at pool?</td><td>No glass — acrylic/poly only (§7.3).</td></tr>
+      <tr><td>5</td><td>Equipment storage?</td><td>Dedicated storage allocated within Floor 9 leased area.</td></tr>
+    </tbody>
+  </table>
+  <div class="cost-box">
+    <strong>💰 F&B Delivery Questions for MIHC (Kitchen):</strong><br>
+    Will items be delivered fully plated from Level 9 or with finishing on Floor 9? &nbsp;|&nbsp; Service style: single delivery or multi-course? &nbsp;|&nbsp; Estimated delivery turnaround during peak meal periods (12:00–14:00, 18:00–21:00)? &nbsp;|&nbsp; Dedicated service elevator slot available? &nbsp;|&nbsp; Billing via IRD or consolidated guest bill with internal allocation?
+  </div>
+</div>
+
+<!-- S10 -->
+<div class="section" id="s10">
+  <div class="section-header">§10 — HR & Staffing <span class="badge">3 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Cafeteria cost per meal?</td><td>Taiga accepts standard MIHC staff cafeteria rate for Taiga employees. <strong>Request confirmed per-meal rate</strong> for budget planning.</td></tr>
+      <tr><td>2</td><td>Uniform laundry charges?</td><td>Taiga handles own uniform laundry externally — no MIHC cost.</td></tr>
+      <tr><td>3</td><td>Security ID card cost?</td><td>Accepts standard MIHC vendor ID fee per employee. <strong>Request fee schedule.</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S11 -->
+<div class="section" id="s11">
+  <div class="section-header">§11 — Security & Risk <span class="badge">8 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>CCTV integration?</td><td>Taiga CCTV operates independently on Floor 9. Integration with MIHC central console available on request — <strong>Taiga retains footage ownership.</strong></td></tr>
+      <tr><td>2</td><td>BOH access?</td><td>Taiga staff: Floor 9 leased area + staff corridors + cafeteria + loading dock (deliveries). All other BOH: MIHC escort required.</td></tr>
+      <tr><td>3</td><td>Key control?</td><td>Taiga master key for leased area. MIHC retains grandmaster (emergency access only). Semi-annual key audit.</td></tr>
+      <tr><td>4</td><td>Emergency evacuation?</td><td>Taiga integrates into MIHC Emergency Response Plan. <strong>Taiga GM = Floor 9 Emergency Warden.</strong> Joint fire drill participation required.</td></tr>
+      <tr><td>5</td><td>Fire safety certification?</td><td>All fit-out works comply with PCCC regulations. Certificate of Compliance provided before opening. Taiga carries own fire safety equipment for leased area.</td></tr>
+      <tr><td>6</td><td>Medical emergency SOP?</td><td>First aid kit + AED on Floor 9. Staff trained in CPR. Medical emergency → call MIHC Security (contacts 115) + notify MIHC Duty Manager immediately.</td></tr>
+      <tr><td>7</td><td>Data privacy compliance?</td><td>Taiga complies with <strong>Vietnam Decree 13/2023</strong> on Personal Data Protection. Guest data not shared with MIHC without consent (except billing reconciliation).</td></tr>
+      <tr><td>8</td><td>Incident reporting?</td><td>Taiga logs in own register + notifies MIHC GM within 2h. Copy to MIHC Security within 24h.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S12 -->
+<div class="section" id="s12">
+  <div class="section-header">§12 — Marketing & Sales <span class="badge">8 items</span></div>
+  <table>
+    <thead><tr><th>#</th><th>MIHC Question</th><th>Taiga Banya Position</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Hotel packages inclusion?</td><td>Strongly desired. Propose <strong>"Taiga Wellness Package"</strong> co-branded with LMS: room + spa credit. Revenue split: room → MIHC, spa → Taiga. Joint pricing control.</td></tr>
+      <tr><td>2</td><td>Corporate discounts?</td><td><strong>15% corporate rate</strong> aligned with MIHC corporate account agreements.</td></tr>
+      <tr><td>3</td><td>OTA listings?</td><td>Taiga lists independently on spa OTAs (Spafinder, local platforms). Co-promotion on MIHC OTAs (Booking.com, Expedia) if extranet allows third-party add-ons.</td></tr>
+      <tr><td>4</td><td>Influencer/media hosting?</td><td>Taiga initiates own influencer program. Joint visits: MIHC comms notified 5 days advance. Marriott approved photographer list applies for joint shoots. Taiga-only shoots: Taiga's discretion.</td></tr>
+      <tr><td>5</td><td>Photo usage rights?</td><td>Taiga requests rights to use Floor 9 photos for own marketing/social media regardless of HWS listing status. MIHC brand assets ("Le Meridien" name/logo) require written approval per use.</td></tr>
+      <tr><td>6</td><td>Joint promotions?</td><td>Quarterly joint promotion calendar (Q-plan). Taiga leads spa promotions; MIHC amplifies via in-room TV, FO collateral, Marriott Bonvoy app where feasible.</td></tr>
+      <tr><td>7</td><td>Membership database ownership?</td><td><strong>Taiga owns Taiga member data.</strong> MIHC owns hotel guest data. Cross-referral opt-in available with guest consent. No data transfer without written consent framework.</td></tr>
+      <tr><td>8</td><td>CRM integration?</td><td>Taiga CRM (Mindbody/Book4Time) independent. Integration limited to opt-in referral tracking for commission purposes. No full CRM merge proposed.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FLOW -->
+<div class="section" id="flow">
+  <div class="section-header">Proposed Operation Flow</div>
+  <div class="flow-box">
+    <div style="display:flex;gap:40px;justify-content:center;flex-wrap:wrap;">
+      <div style="text-align:center;min-width:160px;">
+        <div style="background:#1B2A4A;color:white;padding:8px 16px;border-radius:4px;font-size:12px;font-weight:700;">HOTEL GUEST</div>
+        <div class="flow-step">FO / Concierge referral<br><small style="color:#888">+10–15% commission</small></div>
+        <div class="flow-step">Booking via<br>Taiga hotline / widget</div>
+      </div>
+      <div style="text-align:center;padding-top:40px;font-size:24px;color:#aaa;">⇄</div>
+      <div style="text-align:center;min-width:160px;">
+        <div style="background:#1B2A4A;color:white;padding:8px 16px;border-radius:4px;font-size:12px;font-weight:700;">EXTERNAL GUEST</div>
+        <div class="flow-step">Direct booking<br>(Web / Phone / OTA)</div>
+        <div class="flow-step">Walk-in<br>Floor 9 Reception</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin:16px 0 8px;font-size:13px;color:#666;">↓ Converge at</div>
+    <div style="max-width:400px;margin:0 auto;">
+      <div class="flow-step" style="text-align:center;background:#eef1f7;border:1px solid #1B2A4A22;">Taiga Reception — Floor 9<br><small style="color:#888">Check-in · RFID wristband · PMS confirm</small></div>
+      <div style="display:flex;gap:12px;justify-content:center;margin:4px 0;">
+        <div class="flow-step" style="flex:1;text-align:center;">Treatment<br>Rooms</div>
+        <div class="flow-step" style="flex:1;text-align:center;">Banya /<br>Sauna</div>
+        <div class="flow-step" style="flex:1;text-align:center;">Fitness /<br>Pool</div>
+      </div>
+      <div class="flow-step" style="text-align:center;background:#fffbf0;border:1px solid #e6a800;">F&B Order → MIHC Kitchen → Floor 9 delivery<br><small style="color:#888">Taiga staff serves</small></div>
+      <div style="display:flex;gap:12px;justify-content:center;margin:4px 0;">
+        <div class="flow-step" style="flex:1;text-align:center;background:#d4edda;border-color:#1a7a3a22;font-size:12px;">Hotel guest<br>→ Room charge<br><small style="color:#888">Opera folio</small></div>
+        <div class="flow-step" style="flex:1;text-align:center;font-size:12px;">External guest<br>→ Direct payment<br><small style="color:#888">Card / cash / e-wallet</small></div>
+      </div>
+      <div class="flow-step" style="text-align:center;background:#eef1f7;">Daily reconciliation<br>Taiga → MIHC Accounting</div>
+    </div>
+  </div>
+</div>
+
+<!-- RISK -->
+<div class="section" id="risk">
+  <div class="section-header">⚠️ Risk Flags</div>
+  <table class="risk-table">
+    <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Hot water capacity insufficient for banya/steam load</td>
+        <td><span class="pill pill-red">🔴 HIGH</span></td>
+        <td>Confirm MIHC boiler reserve <strong>before fit-out</strong>. If gap → negotiate dedicated unit + capex split in lease.</td>
+      </tr>
+      <tr>
+        <td>Floor 9 drainage inadequate for wet rooms + banya splash pools</td>
+        <td><span class="pill pill-red">🔴 HIGH</span></td>
+        <td>Structural drainage assessment mandatory pre-fit-out. Upgrade cost allocation must be explicit in lease.</td>
+      </tr>
+      <tr>
+        <td>Opera PMS room charge integration delay</td>
+        <td><span class="pill pill-yellow">🟡 MEDIUM</span></td>
+        <td>Begin IT assessment Day 1 of lease. Manual room charge voucher as interim (max 4 weeks).</td>
+      </tr>
+      <tr>
+        <td>Marriott brand restrictions blocking HWS listing</td>
+        <td><span class="pill pill-yellow">🟡 MEDIUM</span></td>
+        <td>Agree in-hotel collateral placements as alternative. Do not rely on HWS for launch marketing plan.</td>
+      </tr>
+      <tr>
+        <td>Service charge pool commingling dispute</td>
+        <td><span class="pill pill-yellow">🟡 MEDIUM</span></td>
+        <td>Define in lease: Taiga SC collected separately, never pooled with MIHC SC. Written confirmation required.</td>
+      </tr>
+      <tr>
+        <td>Data privacy — guest data overlap</td>
+        <td><span class="pill pill-yellow">🟡 MEDIUM</span></td>
+        <td>Separate opt-in consent forms. No shared CRM without written framework. Comply Decree 13/2023.</td>
+      </tr>
+      <tr>
+        <td>VIP comp treatments exceeding monthly cap</td>
+        <td><span class="pill pill-green">🟢 LOW</span></td>
+        <td>Track monthly. Auto-alert at 8 comps used. MIHC reimburses above 10/month at cost rate.</td>
+      </tr>
+      <tr>
+        <td>External guests misidentified by MIHC Security</td>
+        <td><span class="pill pill-green">🟢 LOW</span></td>
+        <td>Pre-opening Security team briefing. Taiga RFID wristband = visible Floor 9 access identifier.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FAQ -->
+<div class="section" id="faq">
+  <div class="section-header">Follow-up Questions: Taiga → MIHC</div>
+  <div class="faq-section">
+    <div class="faq-category">Engineering — Critical (Pre-Fit-Out)</div>
+    <div class="faq-item"><div class="faq-num">1</div><div class="faq-q">What is the current hot water system capacity on Floor 9, and what reserve capacity exists to support continuous banya/steam operations during peak hours?</div></div>
+    <div class="faq-item"><div class="faq-num">2</div><div class="faq-q">What is the current drainage capacity on Floor 9? Has a hydraulic assessment been conducted for the proposed wet-room density in the Taiga fit-out layout?</div></div>
+    <div class="faq-item"><div class="faq-num">3</div><div class="faq-q">Is the existing Floor 9 generator/UPS circuit sufficient to support ~60 kW additional load (sauna, steam, treatment room HVAC)?</div></div>
+    <div class="faq-item"><div class="faq-num">4</div><div class="faq-q">If building hot water supply is insufficient, is plant room space available for a dedicated Taiga hot water storage unit?</div></div>
+    <div class="faq-category">Commercial</div>
+    <div class="faq-item"><div class="faq-num">5</div><div class="faq-q">What is the base rent per m² and total leased area (m²) being offered for Floor 9?</div></div>
+    <div class="faq-item"><div class="faq-num">6</div><div class="faq-q">Is there a rent-free fit-out period, and if so, how many months?</div></div>
+    <div class="faq-item"><div class="faq-num">7</div><div class="faq-q">What is MIHC's proposed revenue share threshold and percentage if a hybrid model is accepted?</div></div>
+    <div class="faq-category">Operations</div>
+    <div class="faq-item"><div class="faq-num">8</div><div class="faq-q">Will MIHC confirm in writing that Floor 9 access (via hotel lobby and elevator) is available to external (non-hotel) Taiga guests during all operating hours (07:00–22:00)?</div></div>
+    <div class="faq-item"><div class="faq-num">9</div><div class="faq-q">Is a recurring membership model (monthly/annual fees billed directly to members) compatible with MIHC brand standards for a tenant operation?</div></div>
+    <div class="faq-item"><div class="faq-num">10</div><div class="faq-q">For F&B delivery from Level 9 kitchen to Floor 9: what is the estimated delivery turnaround, and will MIHC designate a dedicated service elevator slot during Taiga's peak meal periods (12:00–14:00, 18:00–21:00)?</div></div>
+    <div class="faq-category">Brand & Marketing</div>
+    <div class="faq-item"><div class="faq-num">11</div><div class="faq-q">Is "Taiga Banya at Le Meridien Saigon" co-branding permissible under Marriott brand guidelines, or must Taiga operate with no reference to Le Meridien in external marketing?</div></div>
+    <div class="faq-item"><div class="faq-num">12</div><div class="faq-q">What is the estimated timeline for lifting the MIHC audit-period restriction on newsletter and digital signage visibility for Taiga?</div></div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<footer>Taiga Banya Vietnam — Confidential Draft v1 — March 2026 | Prepared by Zera / RCC</footer>
+
+</body>
+</html>
