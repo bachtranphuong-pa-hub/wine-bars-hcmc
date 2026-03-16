@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuần Châu — Tiered Pricing & Developer Margin Model v2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#F5F3EF; color:#1A1A1A; font-size:12px; line-height:1.55; }
+  .page { max-width:1200px; margin:0 auto; padding:32px 24px; }
+
+  /* HEADER */
+  .header { border-bottom:3px solid #1B2A4A; padding-bottom:16px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:flex-end; }
+  .header h1 { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:300; color:#1B2A4A; line-height:1; }
+  .header h1 span { font-style:italic; font-weight:600; }
+  .header-sub { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#888; margin-top:4px; }
+  .header-right { text-align:right; font-size:10.5px; color:#666; line-height:1.8; }
+  .header-right strong { color:#1B2A4A; }
+
+  /* ASSUMPTION BOX */
+  .assumptions { background:#1B2A4A; color:#fff; padding:14px 20px; margin-bottom:24px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .asm-item { }
+  .asm-label { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:#A0B0C8; margin-bottom:3px; }
+  .asm-value { font-size:13px; font-weight:600; color:#E8D5A3; }
+  .asm-note { font-size:9px; color:#8090A8; margin-top:2px; }
+
+  /* BRAND CARDS */
+  .section-title { font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; color:#888; margin-bottom:10px; padding-bottom:4px; border-bottom:1px solid #DDD; }
+  .brand-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+  .brand-card { border:1px solid #DDD; background:#fff; padding:14px; }
+  .brand-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin-bottom:6px; }
+  .brand-tag { display:inline-block; font-size:9px; padding:2px 8px; color:#fff; margin-bottom:8px; letter-spacing:0.05em; }
+  .brand-row { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid #F0EDE8; font-size:10.5px; }
+  .brand-row:last-child { border-bottom:none; }
+  .brand-row .lbl { color:#888; }
+  .brand-row .val { font-weight:500; }
+  .fitout-note { font-size:9.5px; color:#777; font-style:italic; margin-top:8px; padding-top:6px; border-top:1px dashed #DDD; }
+  .brand-note { font-size:10px; margin-top:8px; padding:6px 8px; border-left:3px solid #DDD; color:#444; line-height:1.5; }
+
+  /* SCENARIO SECTION */
+  .scenario-block { margin-bottom:32px; }
+  .scenario-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .scenario-num { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:300; color:#E0DDD8; line-height:1; }
+  .scenario-info h2 { font-size:13px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+  .scenario-info p { font-size:10px; color:#888; }
+
+  /* TIER TABLE */
+  .tier-table { width:100%; border-collapse:collapse; margin-bottom:14px; font-size:11px; }
+  .tier-table th { background:#F0EDE8; padding:6px 10px; text-align:left; font-weight:600; font-size:10px; letter-spacing:0.05em; }
+  .tier-table td { padding:6px 10px; border-bottom:1px solid #F0EDE8; }
+  .tier-Prestige { background:#FDF8EE; }
+  .tier-Premium  { background:#F8F8FF; }
+  .tier-Grand    { background:#F8FDF8; }
+
+  /* BRAND RESULT GRID */
+  .result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px; }
+  .result-card { border:1px solid #DDD; padding:12px 14px; background:#fff; }
+  .result-card .rc-brand { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid; }
+  .result-card .rc-row { display:flex; justify-content:space-between; font-size:10.5px; padding:2.5px 0; }
+  .result-card .rc-row .lbl { color:#777; }
+  .result-card .rc-row .val { font-weight:500; }
+  .result-card .gdv-big { font-size:22px; font-weight:300; font-family:'Cormorant Garamond',serif; margin:6px 0; }
+  .result-card .margin-big { font-size:18px; font-weight:600; margin:4px 0; }
+  .cost-breakdown { font-size:9.5px; color:#999; margin-top:6px; padding-top:6px; border-top:1px dashed #EEE; }
+
+  /* SUMMARY TABLE */
+  .summary-table { width:100%; border-collapse:collapse; font-size:11px; margin-bottom:24px; }
+  .summary-table thead tr { background:#1B2A4A; color:#E8D5A3; }
+  .summary-table th { padding:8px 10px; text-align:left; font-weight:500; font-size:10px; letter-spacing:0.04em; }
+  .summary-table tbody tr:nth-child(even) { background:#FAF8F5; }
+  .summary-table tbody tr:nth-child(odd) { background:#fff; }
+  .summary-table td { padding:6px 10px; border-bottom:1px solid #EEE; }
+  .summary-table td:first-child { font-weight:500; }
+
+  /* RECOMMENDATION */
+  .rec-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:28px; }
+  .rec-card { padding:14px; border-left:4px solid; }
+  .rec-card h3 { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px; }
+  .rec-card p { font-size:10.5px; color:#444; line-height:1.6; }
+  .rec-1 { background:#E8F5E9; border-color:#1a6b2e; }
+  .rec-2 { background:#E3F2FD; border-color:#1565C0; }
+  .rec-3 { background:#FFF8E1; border-color:#F57F17; }
+
+  .divider { height:1px; background:#DDD; margin:20px 0; }
+
+  .footer { border-top:1px solid #DDD; padding-top:10px; display:flex; justify-content:space-between; font-size:9.5px; color:#AAA; }
+  .footer strong { color:#666; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>Tuần Châu <span>Private Estate</span></h1>
+    <div class="header-sub">Developer Margin Model v2 — Tiered Pricing × 3 Brands × 3 Scenarios</div>
+  </div>
+  <div class="header-right">
+    <strong>Tuan Chau Island, Ha Long Bay</strong><br>
+    18 Villas · 15,500m² GFA · 3 Hectares<br>
+    March 2026 · Confidential
+  </div>
+</div>
+
+<!-- ASSUMPTIONS -->
+<div class="section-title">Model Assumptions</div>
+<div class="assumptions">
+  <div class="asm-item">
+    <div class="asm-label">Land Acquisition</div>
+    <div class="asm-value">$28.0M USD</div>
+    <div class="asm-note">Actual cost · Tuan Chau Island · 3ha</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Infrastructure</div>
+    <div class="asm-value">$6.0M USD</div>
+    <div class="asm-note">Marina · roads · utilities · sea wall · landscaping</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Shell Construction</div>
+    <div class="asm-value">$2,200/m²</div>
+    <div class="asm-note">All brands · island logistics premium · 15,500m² total GFA</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Contingency</div>
+    <div class="asm-value">8% hard costs</div>
+    <div class="asm-note">Island project premium · weather · supply chain</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Sales & Marketing</div>
+    <div class="asm-value">4% of GDV</div>
+    <div class="asm-note">Broker commissions · events · digital</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Exchange Rate</div>
+    <div class="asm-value">$1 = 25,000 VND</div>
+    <div class="asm-note">March 2026 reference</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Villa Count</div>
+    <div class="asm-value">18 Villas</div>
+    <div class="asm-note">5 Prestige · 9 Premium · 4 Grand</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Brand License Fee</div>
+    <div class="asm-value">% of GDV</div>
+    <div class="asm-note">Savills VN benchmark · varies per brand</div>
+  </div>
+</div>
+
+<!-- BRAND CARDS -->
+<div class="section-title">Brand Comparison — Construction, Fitout & Fee Structure</div>
+<div class="brand-grid">
+
+  <div class="brand-card">
+    <div class="brand-name" style="color:#1B2A4A">Capella</div>
+    <span class="brand-tag" style="background:#1B2A4A">24mo sell-out · License 4.0% GDV</span>
+    <div class="brand-row"><span class="lbl">Shell construction/m²</span><span class="val">$2,200</span></div>
+    <div class="brand-row"><span class="lbl">Fitout premium/m²</span><span class="val">$800</span></div>
+    <div class="brand-row"><span class="lbl"><strong>All-in construction/m²</strong></span><span class="val"><strong>$3,000</strong></span></div>
+    <div class="brand-row"><span class="lbl">Total construction (15,500m²)</span><span class="val">$46.5M</span></div>
+    <div class="brand-row"><span class="lbl">Common areas & facilities</span><span class="val">$4.5M</span></div>
+    <div class="brand-row"><span class="lbl"><strong>Total hard cost (excl. land)</strong></span><span class="val"><strong>$51.0M</strong></span></div>
+    <div class="brand-row"><span class="lbl">Brand setup & pre-opening</span><span class="val">$1.5M</span></div>
+    <div class="brand-row"><span class="lbl">Min price floor</span><span class="val">≥280tr/m²</span></div>
+    <div class="brand-row"><span class="lbl">VN presence</span><span class="val">None</span></div>
+    <div class="fitout-note">Fitout basis: Swarovski fixtures, bespoke FF&E, 3-round design review</div>
+    <div class="brand-note">Ultra-luxury ceiling. Price floor constraint at Base. Highest fitout standard.</div>
+  </div>
+  <div class="brand-card">
+    <div class="brand-name" style="color:#2D5016">Zannier</div>
+    <span class="brand-tag" style="background:#2D5016">18mo sell-out · License 3.0% GDV</span>
+    <div class="brand-row"><span class="lbl">Shell construction/m²</span><span class="val">$2,200</span></div>
+    <div class="brand-row"><span class="lbl">Fitout premium/m²</span><span class="val">$500</span></div>
+    <div class="brand-row"><span class="lbl"><strong>All-in construction/m²</strong></span><span class="val"><strong>$2,700</strong></span></div>
+    <div class="brand-row"><span class="lbl">Total construction (15,500m²)</span><span class="val">$41.9M</span></div>
+    <div class="brand-row"><span class="lbl">Common areas & facilities</span><span class="val">$3.0M</span></div>
+    <div class="brand-row"><span class="lbl"><strong>Total hard cost (excl. land)</strong></span><span class="val"><strong>$44.9M</strong></span></div>
+    <div class="brand-row"><span class="lbl">Brand setup & pre-opening</span><span class="val">$0.8M</span></div>
+    <div class="brand-row"><span class="lbl">Min price floor</span><span class="val">≥220tr/m²</span></div>
+    <div class="brand-row"><span class="lbl">VN presence</span><span class="val">Bãi San Hô</span></div>
+    <div class="fitout-note">Fitout basis: Artisan materials, boutique scale, lower volume overhead</div>
+    <div class="brand-note">Best margin. Novelty premium — first in Ha Long. Most flexible fee.</div>
+  </div>
+  <div class="brand-card">
+    <div class="brand-name" style="color:#7A4A1A">Anantara</div>
+    <span class="brand-tag" style="background:#7A4A1A">15mo sell-out · License 3.5% GDV</span>
+    <div class="brand-row"><span class="lbl">Shell construction/m²</span><span class="val">$2,200</span></div>
+    <div class="brand-row"><span class="lbl">Fitout premium/m²</span><span class="val">$600</span></div>
+    <div class="brand-row"><span class="lbl"><strong>All-in construction/m²</strong></span><span class="val"><strong>$2,800</strong></span></div>
+    <div class="brand-row"><span class="lbl">Total construction (15,500m²)</span><span class="val">$43.4M</span></div>
+    <div class="brand-row"><span class="lbl">Common areas & facilities</span><span class="val">$3.5M</span></div>
+    <div class="brand-row"><span class="lbl"><strong>Total hard cost (excl. land)</strong></span><span class="val"><strong>$46.9M</strong></span></div>
+    <div class="brand-row"><span class="lbl">Brand setup & pre-opening</span><span class="val">$1.0M</span></div>
+    <div class="brand-row"><span class="lbl">Min price floor</span><span class="val">≥200tr/m²</span></div>
+    <div class="brand-row"><span class="lbl">VN presence</span><span class="val">Layan Phuket, Vietnam proven</span></div>
+    <div class="fitout-note">Fitout basis: Minor Hotels procurement network, proven Vietnam template</div>
+    <div class="brand-note">Fastest velocity. VN buyers know brand. Minor Hotels procurement efficiency.</div>
+  </div>
+</div>
+
+<div class="scenario-block">
+  <div class="divider"></div>
+  <div class="scenario-header">
+    <div class="scenario-num">01</div>
+    <div class="scenario-info">
+      <h2>Scenario: Base</h2>
+      <p>Grand ~175tr/m² | Blended ~213tr</p>
+    </div>
+  </div>
+
+  <div class="section-title">Price Tier Breakdown</div>
+  <table class="tier-table">
+    <thead><tr><th>Tier</th><th>Villas</th><th>Avg Size (m²)</th><th>Price/m²</th><th>Villa Price</th><th>Tier GDV</th><th>% of Total GDV</th></tr></thead>
+    <tbody>
+      <tr class="tier-Prestige">
+        <td><strong>Prestige</strong></td>
+        <td>5</td>
+        <td>950m²</td>
+        <td>260 tr/m² (~$10,400/m²)</td>
+        <td><strong>247 tỷ</strong> (~$9.9M)</td>
+        <td>1235 tỷ</td>
+        <td>37%</td>
+      </tr>
+      <tr class="tier-Premium">
+        <td><strong>Premium</strong></td>
+        <td>9</td>
+        <td>850m²</td>
+        <td>200 tr/m² (~$8,000/m²)</td>
+        <td><strong>170 tỷ</strong> (~$6.8M)</td>
+        <td>1530 tỷ</td>
+        <td>46%</td>
+      </tr>
+      <tr class="tier-Grand">
+        <td><strong>Grand</strong></td>
+        <td>4</td>
+        <td>775m²</td>
+        <td>175 tr/m² (~$7,000/m²)</td>
+        <td><strong>136 tỷ</strong> (~$5.4M)</td>
+        <td>542 tỷ</td>
+        <td>16%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Developer Returns by Brand</div>
+  <div class="result-grid">
+    <div class="result-card">
+      <div class="rc-brand" style="color:#1B2A4A;border-color:#1B2A4A">Capella</div>
+      <div class="gdv-big">$132.3M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#b45309">$30.7M <span style="font-size:13px">(23.2%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">213.0tr (~$8,535.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$101.6M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">24mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#c62828;font-weight:600;">⚠️ Breach</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $46.5M · Common $4.5M · Infra $6.0M<br>
+        Brand license $5.3M · Setup $1.5M · Sales/Mkt $5.3M · Contingency $4.6M
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#2D5016;border-color:#2D5016">Zannier</div>
+      <div class="gdv-big">$132.3M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#b45309">$39.3M <span style="font-size:13px">(29.7%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">213.0tr (~$8,535.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$93.0M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">18mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $41.9M · Common $3.0M · Infra $6.0M<br>
+        Brand license $4.0M · Setup $0.8M · Sales/Mkt $5.3M · Contingency $4.1M
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#7A4A1A;border-color:#7A4A1A">Anantara</div>
+      <div class="gdv-big">$132.3M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#b45309">$36.2M <span style="font-size:13px">(27.4%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">213.0tr (~$8,535.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$96.1M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">15mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $43.4M · Common $3.5M · Infra $6.0M<br>
+        Brand license $4.6M · Setup $1.0M · Sales/Mkt $5.3M · Contingency $4.2M
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scenario-block">
+  <div class="divider"></div>
+  <div class="scenario-header">
+    <div class="scenario-num">02</div>
+    <div class="scenario-info">
+      <h2>Scenario: Mid</h2>
+      <p>Grand ~185tr/m² | Blended ~238tr</p>
+    </div>
+  </div>
+
+  <div class="section-title">Price Tier Breakdown</div>
+  <table class="tier-table">
+    <thead><tr><th>Tier</th><th>Villas</th><th>Avg Size (m²)</th><th>Price/m²</th><th>Villa Price</th><th>Tier GDV</th><th>% of Total GDV</th></tr></thead>
+    <tbody>
+      <tr class="tier-Prestige">
+        <td><strong>Prestige</strong></td>
+        <td>5</td>
+        <td>950m²</td>
+        <td>300 tr/m² (~$12,000/m²)</td>
+        <td><strong>285 tỷ</strong> (~$11.4M)</td>
+        <td>1425 tỷ</td>
+        <td>39%</td>
+      </tr>
+      <tr class="tier-Premium">
+        <td><strong>Premium</strong></td>
+        <td>9</td>
+        <td>850m²</td>
+        <td>220 tr/m² (~$8,800/m²)</td>
+        <td><strong>187 tỷ</strong> (~$7.5M)</td>
+        <td>1683 tỷ</td>
+        <td>46%</td>
+      </tr>
+      <tr class="tier-Grand">
+        <td><strong>Grand</strong></td>
+        <td>4</td>
+        <td>775m²</td>
+        <td>185 tr/m² (~$7,400/m²)</td>
+        <td><strong>143 tỷ</strong> (~$5.7M)</td>
+        <td>574 tỷ</td>
+        <td>16%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Developer Returns by Brand</div>
+  <div class="result-grid">
+    <div class="result-card">
+      <div class="rc-brand" style="color:#1B2A4A;border-color:#1B2A4A">Capella</div>
+      <div class="gdv-big">$147.3M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#2d7d46">$44.4M <span style="font-size:13px">(30.2%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">238.0tr (~$9,501.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$102.8M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">24mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $46.5M · Common $4.5M · Infra $6.0M<br>
+        Brand license $5.9M · Setup $1.5M · Sales/Mkt $5.9M · Contingency $4.6M
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#2D5016;border-color:#2D5016">Zannier</div>
+      <div class="gdv-big">$147.3M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#2d7d46">$53.2M <span style="font-size:13px">(36.1%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">238.0tr (~$9,501.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$94.0M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">18mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $41.9M · Common $3.0M · Infra $6.0M<br>
+        Brand license $4.4M · Setup $0.8M · Sales/Mkt $5.9M · Contingency $4.1M
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#7A4A1A;border-color:#7A4A1A">Anantara</div>
+      <div class="gdv-big">$147.3M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#2d7d46">$50.1M <span style="font-size:13px">(34.0%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">238.0tr (~$9,501.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$97.2M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">15mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $43.4M · Common $3.5M · Infra $6.0M<br>
+        Brand license $5.2M · Setup $1.0M · Sales/Mkt $5.9M · Contingency $4.2M
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scenario-block">
+  <div class="divider"></div>
+  <div class="scenario-header">
+    <div class="scenario-num">03</div>
+    <div class="scenario-info">
+      <h2>Scenario: Stretch</h2>
+      <p>Grand ~200tr/m² | Blended ~268tr</p>
+    </div>
+  </div>
+
+  <div class="section-title">Price Tier Breakdown</div>
+  <table class="tier-table">
+    <thead><tr><th>Tier</th><th>Villas</th><th>Avg Size (m²)</th><th>Price/m²</th><th>Villa Price</th><th>Tier GDV</th><th>% of Total GDV</th></tr></thead>
+    <tbody>
+      <tr class="tier-Prestige">
+        <td><strong>Prestige</strong></td>
+        <td>5</td>
+        <td>950m²</td>
+        <td>340 tr/m² (~$13,600/m²)</td>
+        <td><strong>323 tỷ</strong> (~$12.9M)</td>
+        <td>1615 tỷ</td>
+        <td>39%</td>
+      </tr>
+      <tr class="tier-Premium">
+        <td><strong>Premium</strong></td>
+        <td>9</td>
+        <td>850m²</td>
+        <td>250 tr/m² (~$10,000/m²)</td>
+        <td><strong>212 tỷ</strong> (~$8.5M)</td>
+        <td>1912 tỷ</td>
+        <td>46%</td>
+      </tr>
+      <tr class="tier-Grand">
+        <td><strong>Grand</strong></td>
+        <td>4</td>
+        <td>775m²</td>
+        <td>200 tr/m² (~$8,000/m²)</td>
+        <td><strong>155 tỷ</strong> (~$6.2M)</td>
+        <td>620 tỷ</td>
+        <td>15%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Developer Returns by Brand</div>
+  <div class="result-grid">
+    <div class="result-card">
+      <div class="rc-brand" style="color:#1B2A4A;border-color:#1B2A4A">Capella</div>
+      <div class="gdv-big">$165.9M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#2d7d46">$61.6M <span style="font-size:13px">(37.1%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">268.0tr (~$10,703.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$104.3M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">24mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $46.5M · Common $4.5M · Infra $6.0M<br>
+        Brand license $6.6M · Setup $1.5M · Sales/Mkt $6.6M · Contingency $4.6M
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#2D5016;border-color:#2D5016">Zannier</div>
+      <div class="gdv-big">$165.9M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#1a6b2e">$70.6M <span style="font-size:13px">(42.5%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">268.0tr (~$10,703.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$95.3M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">18mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $41.9M · Common $3.0M · Infra $6.0M<br>
+        Brand license $5.0M · Setup $0.8M · Sales/Mkt $6.6M · Contingency $4.1M
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#7A4A1A;border-color:#7A4A1A">Anantara</div>
+      <div class="gdv-big">$165.9M <span style="font-size:14px;color:#888">GDV</span></div>
+      <div class="margin-big" style="color:#1a6b2e">$67.3M <span style="font-size:13px">(40.6%)</span></div>
+      <div class="rc-row"><span class="lbl">Blended price/m²</span><span class="val">268.0tr (~$10,703.0)</span></div>
+      <div class="rc-row"><span class="lbl">Total project cost</span><span class="val">$98.6M</span></div>
+      <div class="rc-row"><span class="lbl">Sell-out velocity</span><span class="val">15mo</span></div>
+      <div class="rc-row"><span class="lbl">Price floor check</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Land $28.0M · Construction $43.4M · Common $3.5M · Infra $6.0M<br>
+        Brand license $5.8M · Setup $1.0M · Sales/Mkt $6.6M · Contingency $4.2M
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<div class="section-title">Full Results Matrix — All Scenarios × All Brands</div>
+<table class="summary-table">
+  <thead>
+    <tr>
+      <th>Scenario</th><th>Brand</th><th>GDV (USD M)</th><th>Blended/m²</th>
+      <th>Land</th><th>Construction</th><th>Infra+Common</th><th>Brand Fees</th><th>S&M+Cont.</th>
+      <th>Total Cost</th><th>Dev Margin</th><th>Margin %</th><th>Velocity</th><th>Floor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Base</td><td><strong>Capella</strong></td>
+      <td>$132.3M</td>
+      <td>213.0tr (~$8,535.0)</td>
+      <td>$28.0M</td>
+      <td>$46.5M</td>
+      <td>$10.5M</td>
+      <td>$6.8M</td>
+      <td>$9.9M</td>
+      <td>$101.6M</td>
+      <td style="color:#b45309;font-weight:600">$30.7M</td>
+      <td style="color:#b45309;font-weight:600">23.2%</td>
+      <td>24mo</td>
+      <td>⚠️</td>
+    </tr>
+    <tr>
+      <td>Base</td><td><strong>Zannier</strong></td>
+      <td>$132.3M</td>
+      <td>213.0tr (~$8,535.0)</td>
+      <td>$28.0M</td>
+      <td>$41.9M</td>
+      <td>$9.0M</td>
+      <td>$4.8M</td>
+      <td>$9.4M</td>
+      <td>$93.0M</td>
+      <td style="color:#b45309;font-weight:600">$39.3M</td>
+      <td style="color:#b45309;font-weight:600">29.7%</td>
+      <td>18mo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Base</td><td><strong>Anantara</strong></td>
+      <td>$132.3M</td>
+      <td>213.0tr (~$8,535.0)</td>
+      <td>$28.0M</td>
+      <td>$43.4M</td>
+      <td>$9.5M</td>
+      <td>$5.6M</td>
+      <td>$9.5M</td>
+      <td>$96.1M</td>
+      <td style="color:#b45309;font-weight:600">$36.2M</td>
+      <td style="color:#b45309;font-weight:600">27.4%</td>
+      <td>15mo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Mid</td><td><strong>Capella</strong></td>
+      <td>$147.3M</td>
+      <td>238.0tr (~$9,501.0)</td>
+      <td>$28.0M</td>
+      <td>$46.5M</td>
+      <td>$10.5M</td>
+      <td>$7.4M</td>
+      <td>$10.5M</td>
+      <td>$102.8M</td>
+      <td style="color:#2d7d46;font-weight:600">$44.4M</td>
+      <td style="color:#2d7d46;font-weight:600">30.2%</td>
+      <td>24mo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Mid</td><td><strong>Zannier</strong></td>
+      <td>$147.3M</td>
+      <td>238.0tr (~$9,501.0)</td>
+      <td>$28.0M</td>
+      <td>$41.9M</td>
+      <td>$9.0M</td>
+      <td>$5.2M</td>
+      <td>$10.0M</td>
+      <td>$94.0M</td>
+      <td style="color:#2d7d46;font-weight:600">$53.2M</td>
+      <td style="color:#2d7d46;font-weight:600">36.1%</td>
+      <td>18mo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Mid</td><td><strong>Anantara</strong></td>
+      <td>$147.3M</td>
+      <td>238.0tr (~$9,501.0)</td>
+      <td>$28.0M</td>
+      <td>$43.4M</td>
+      <td>$9.5M</td>
+      <td>$6.2M</td>
+      <td>$10.1M</td>
+      <td>$97.2M</td>
+      <td style="color:#2d7d46;font-weight:600">$50.1M</td>
+      <td style="color:#2d7d46;font-weight:600">34.0%</td>
+      <td>15mo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Stretch</td><td><strong>Capella</strong></td>
+      <td>$165.9M</td>
+      <td>268.0tr (~$10,703.0)</td>
+      <td>$28.0M</td>
+      <td>$46.5M</td>
+      <td>$10.5M</td>
+      <td>$8.1M</td>
+      <td>$11.2M</td>
+      <td>$104.3M</td>
+      <td style="color:#2d7d46;font-weight:600">$61.6M</td>
+      <td style="color:#2d7d46;font-weight:600">37.1%</td>
+      <td>24mo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Stretch</td><td><strong>Zannier</strong></td>
+      <td>$165.9M</td>
+      <td>268.0tr (~$10,703.0)</td>
+      <td>$28.0M</td>
+      <td>$41.9M</td>
+      <td>$9.0M</td>
+      <td>$5.8M</td>
+      <td>$10.7M</td>
+      <td>$95.3M</td>
+      <td style="color:#1a6b2e;font-weight:600">$70.6M</td>
+      <td style="color:#1a6b2e;font-weight:600">42.5%</td>
+      <td>18mo</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Stretch</td><td><strong>Anantara</strong></td>
+      <td>$165.9M</td>
+      <td>268.0tr (~$10,703.0)</td>
+      <td>$28.0M</td>
+      <td>$43.4M</td>
+      <td>$9.5M</td>
+      <td>$6.8M</td>
+      <td>$10.8M</td>
+      <td>$98.6M</td>
+      <td style="color:#1a6b2e;font-weight:600">$67.3M</td>
+      <td style="color:#1a6b2e;font-weight:600">40.6%</td>
+      <td>15mo</td>
+      <td>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="section-title">Strategic Recommendations</div>
+<div class="rec-grid">
+  <div class="rec-card rec-1">
+    <h3>🏆 Best Risk-Adjusted: Mid + Anantara</h3>
+    <p>GDV $147M · Margin $50.1M (34%) · 15mo velocity<br><br>
+    Fastest sell-out due to VN brand recognition. Minor Hotels procurement reduces construction cost vs. Capella. No price floor risk. Sweet spot between margin and speed.</p>
+  </div>
+  <div class="rec-card rec-2">
+    <h3>💰 Best Margin: Mid + Zannier</h3>
+    <p>GDV $147M · Margin $53.2M (36%) · 18mo velocity<br><br>
+    Lowest fee structure (3% vs. 4%). Novelty premium — first Zannier in Ha Long = strong PR angle. Private Estates arm aligns perfectly with non-rental model. Buyer education cost is the tradeoff.</p>
+  </div>
+  <div class="rec-card rec-3">
+    <h3>⚠️ Capella: Mid or Stretch only</h3>
+    <p>Base scenario breaches Capella price floor (260tr < 280tr min). Mid scenario OK at $77M margin (30%). Capella commands highest perceived value but slowest velocity (24mo) and highest fitout cost ($3,000/m²).<br><br>
+    Recommend Capella only if buyer demographic is pure UHNWI and velocity is not priority.</p>
+  </div>
+</div>
+
+<div class="section-title">Key Numbers at a Glance</div>
+<table class="summary-table" style="margin-bottom:16px;">
+  <thead><tr><th>Metric</th><th>Base (all brands avg)</th><th>Mid (all brands avg)</th><th>Stretch (all brands avg)</th></tr></thead>
+  <tbody><tr><td>GDV Range (USD M)</td><td>$132.3M – $132.3M</td><td>$147.3M – $147.3M</td><td>$165.9M – $165.9M</td></tr>
+<tr><td>Developer Margin Range</td><td>$30.7M – $39.3M</td><td>$44.4M – $53.2M</td><td>$61.6M – $70.6M</td></tr>
+<tr><td>Blended Price/m² (triệu)</td><td>213 tr/m² – 213 tr/m²</td><td>238 tr/m² – 238 tr/m²</td><td>268 tr/m² – 268 tr/m²</td></tr>
+
+    <tr><td>Land as % of GDV</td>
+      <td>21%</td>
+      <td>19%</td>
+      <td>17%</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <div>Prepared by <strong>Zera</strong> · Royal Canary Corp Advisory · March 2026</div>
+  <div>Model v2 — Land $28M actual · Construction differentiated per brand</div>
+  <div>Confidential — Internal Use Only</div>
+</div>
+
+</div>
+</body>
+</html>
