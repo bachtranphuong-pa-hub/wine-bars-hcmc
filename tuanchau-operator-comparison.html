@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuần Châu Villa — Operator Comparison & Fee Benchmark</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f5f7; color: #222; font-size: 14px; line-height: 1.6; }
+
+  .header { background: #1B2A4A; color: white; padding: 32px 48px 24px; }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+  .header h2 { font-size: 13px; font-weight: 400; opacity: 0.7; margin-top: 4px; }
+  .header .meta { margin-top: 12px; font-size: 11px; opacity: 0.5; }
+
+  .container { padding: 32px 48px 64px; max-width: 1200px; margin: 0 auto; }
+
+  /* Positioning Statement */
+  .positioning { background: #fff; border-left: 5px solid #1B2A4A; border-radius: 0 8px 8px 0; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .positioning h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #1B2A4A; margin-bottom: 12px; }
+  .positioning p { font-size: 14px; line-height: 1.8; color: #333; }
+  .positioning .tagline { font-size: 16px; font-weight: 700; color: #1B2A4A; margin-bottom: 10px; }
+
+  /* Section headers */
+  .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #1B2A4A; font-weight: 700; margin: 32px 0 12px; border-bottom: 2px solid #1B2A4A22; padding-bottom: 6px; }
+
+  /* Operator cards */
+  .operator-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 32px; }
+  .operator-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+  .card-header { padding: 14px 20px 10px; border-bottom: 1px solid #f0f0f0; }
+  .card-header .brand { font-size: 15px; font-weight: 700; color: #1B2A4A; }
+  .card-header .sub { font-size: 11px; color: #888; margin-top: 2px; }
+  .status-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; margin-top: 6px; }
+  .status-pending { background: #fff8e0; color: #996600; }
+  .status-potential { background: #d4edda; color: #1a7a3a; }
+  .status-conditional { background: #fde8e8; color: #c00; }
+
+  .card-body { padding: 14px 20px; }
+  .card-row { display: flex; margin-bottom: 8px; font-size: 12.5px; }
+  .card-label { color: #888; min-width: 130px; flex-shrink: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; padding-top: 1px; }
+  .card-value { color: #222; flex: 1; }
+  .card-value strong { color: #1B2A4A; }
+
+  .fit-bar { display: flex; gap: 3px; margin-top: 2px; }
+  .fit-dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; }
+  .fit-dot.filled { background: #1B2A4A; }
+
+  .card-footer { background: #f9fafc; padding: 10px 20px; font-size: 11.5px; color: #555; border-top: 1px solid #f0f0f0; }
+  .card-footer strong { color: #333; }
+
+  /* Side-by-side comparison table */
+  .compare-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 32px; }
+  .compare-table th { background: #1B2A4A; color: white; padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; text-align: left; }
+  .compare-table th:first-child { width: 180px; }
+  .compare-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; font-size: 12.5px; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: #fafbfd; }
+  .compare-table .row-label { background: #eef1f7; font-weight: 600; font-size: 11px; color: #1B2A4A; text-transform: uppercase; letter-spacing: 0.3px; }
+  .tick { color: #1a7a3a; font-weight: 700; }
+  .cross { color: #c00; font-weight: 700; }
+  .partial { color: #996600; font-weight: 700; }
+
+  /* Fee benchmark */
+  .fee-section { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 32px; }
+  .fee-header { background: #1B2A4A; color: white; padding: 12px 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+  .fee-table { width: 100%; border-collapse: collapse; }
+  .fee-table th { background: #eef1f7; padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: #555; border-bottom: 1px solid #dde2ec; text-align: left; }
+  .fee-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; font-size: 12.5px; vertical-align: top; }
+  .fee-table tr:last-child td { border-bottom: none; }
+  .fee-table .highlight { background: #d4edda; font-weight: 600; color: #1a7a3a; }
+  .fee-table .note-row td { background: #fffbf0; font-size: 11.5px; color: #666; font-style: italic; }
+
+  /* Recommendation box */
+  .rec-box { background: #1B2A4A; color: white; border-radius: 8px; padding: 24px 28px; margin-bottom: 32px; }
+  .rec-box h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.7; margin-bottom: 14px; }
+  .rec-item { display: flex; gap: 14px; margin-bottom: 12px; align-items: flex-start; }
+  .rec-num { background: rgba(255,255,255,0.15); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .rec-text { font-size: 13px; line-height: 1.6; }
+  .rec-text strong { color: #ffe080; }
+
+  footer { text-align: center; padding: 16px; color: #aaa; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>TUẦN CHÂU PRIVATE ESTATE COLLECTION — OPERATOR SELECTION</h1>
+  <h2>Operator Comparison · Positioning Statement · Fee Benchmark</h2>
+  <div class="meta">Internal Working Document &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; Confidential &nbsp;|&nbsp; 18 Villas · 3ha · Đảo Tuần Châu, Hạ Long</div>
+</div>
+
+<div class="container">
+
+  <!-- POSITIONING STATEMENT -->
+  <div class="positioning">
+    <h3>Positioning & Management Direction</h3>
+    <div class="tagline">Tuần Châu Private Estate Collection — An Exclusive Enclave for Vietnam's Most Discerning Families</div>
+    <p>
+      The Tuần Châu Private Estate Collection is conceived as Vietnam's first ultra-luxury, non-rental private estate enclave — 18 individually crafted villas (800–1,000m²) set within 3 hectares of curated landscape on Tuần Châu Island, overlooking Hạ Long Bay. Each villa is designed as a permanent private sanctuary: not a hotel, not an investment product, but a <strong>family legacy home</strong>.
+    </p>
+    <br>
+    <p>
+      The target owner is a Hanoi or Haiphong-based ultra-high-net-worth family (net worth USD 20M+), seeking a private retreat for personal use, multi-generational family gatherings, and discreet corporate entertainment — not rental income. The operative word is <strong>exclusivity</strong>: no strangers, no check-in desks, no public access. Ownership here is membership in a closed community of 18 families who share a world-class landscape and a white-glove estate management service.
+    </p>
+    <br>
+    <p>
+      The management model is <strong>Private Estate Management</strong> — not hotel operations. A dedicated estate team (resident manager, butler corps, maintenance, culinary concierge) serves owners on-demand, with the brand's service philosophy embedded in every interaction. The estate operator does not manage occupancy, RevPAR, or yield — they manage <strong>readiness, personalization, and seamless owner experience</strong> at all times.
+    </p>
+  </div>
+
+  <!-- OPERATOR CARDS -->
+  <div class="section-title">Operator Profiles — Shortlist of 4</div>
+  <div class="operator-grid">
+
+    <!-- Capella -->
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Capella Hotels & Residences</div>
+        <div class="sub">Singapore-based · Ultra-luxury boutique · 5-star</div>
+        <span class="status-badge status-pending">🟡 Meeting Pending</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Segment fit</div><div class="card-value">Ultra-luxury UHNWI — <strong>perfect brand alignment</strong> with 250-300 tỷ tier</div></div>
+        <div class="card-row"><div class="card-label">Vietnam presence</div><div class="card-value">Capella Hanoi (operational) — strong brand recognition with target owner profile</div></div>
+        <div class="card-row"><div class="card-label">Residences model</div><div class="card-value">Capella Residences arm exists; separate from hotel ops; can manage non-rental private collections</div></div>
+        <div class="card-row"><div class="card-label">Key concern</div><div class="card-value"><strong>Capital-heavy fitout standard</strong> — Capella design specs are strict and cost-intensive for developer</div></div>
+        <div class="card-row"><div class="card-label">Scale fit</div><div class="card-value">18 villas is at lower end of comfort zone — needs strong location narrative to compensate</div></div>
+        <div class="card-row"><div class="card-label">Fit score</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot"></div></div>
+          <small style="color:#888;font-size:10px;">Brand ⭐⭐⭐⭐⭐ | Flexibility ⭐⭐⭐</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Strategy:</strong> In meeting, direct conversation to Residences arm — not hotel development team. Push on phased fitout standard and negotiate design adaptation.</div>
+    </div>
+
+    <!-- Zannier -->
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Zannier Hotels & Private Estates</div>
+        <div class="sub">Belgium-based · Boutique ultra-luxury · Conservation DNA</div>
+        <span class="status-badge status-potential">🟢 High Potential</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Segment fit</div><div class="card-value">Strong — boutique, exclusive, nature-led; DNA matches Hạ Long Bay setting perfectly</div></div>
+        <div class="card-row"><div class="card-label">Vietnam presence</div><div class="card-value">Zannier Hotels Bãi San Hô, Phú Yên (73 villas) — established Vietnam operator, regulatory experience</div></div>
+        <div class="card-row"><div class="card-label">Private Estates model</div><div class="card-value">Zannier Private Estates currently = <strong>individual family homes for short/long-term rental</strong> (European estates). Non-rental management contract for a collection = <strong>not yet confirmed precedent</strong></div></div>
+        <div class="card-row"><div class="card-label">Key concern</div><div class="card-value">Unknown willingness to do pure management contract (no rental, no yield) for 18-villa collection. Needs direct clarification.</div></div>
+        <div class="card-row"><div class="card-label">Scale fit</div><div class="card-value">18 villas is actually ideal for Zannier's boutique model — they don't do mass scale</div></div>
+        <div class="card-row"><div class="card-label">Fit score</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div></div>
+          <small style="color:#888;font-size:10px;">Brand ⭐⭐⭐⭐⭐ | Flexibility ⭐⭐⭐⭐ (if model confirmed)</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Key question to ask:</strong> "Would Zannier consider a Master Estate Management Agreement for a collection of 18 private villas under a single owner/HOA, non-rental model?" — Yes = top pick.</div>
+    </div>
+
+    <!-- Minor / Anantara -->
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Minor Hotels — Anantara Residences</div>
+        <div class="sub">Thailand-based · Full-service luxury · SEA leader</div>
+        <span class="status-badge status-potential">🟢 High Potential</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Segment fit</div><div class="card-value">Good — Anantara is premium but not ultra-luxury; slight brand tier gap vs. 250-300 tỷ price point, but compensated by flexibility</div></div>
+        <div class="card-row"><div class="card-label">Vietnam presence</div><div class="card-value">Anantara Mũi Né, Anantara Quy Nhơn — strong track record, local regulatory expertise</div></div>
+        <div class="card-row"><div class="card-label">Residences model</div><div class="card-value">Anantara Residences = active arm, separate from hotel ops. Have done villa collection management in Phuket (Layan), Desaru (Malaysia). <strong>Most flexible on contract structure</strong></div></div>
+        <div class="card-row"><div class="card-label">Key concern</div><div class="card-value">Brand perceived as slightly below Capella/Zannier for UHNWI segment — may require narrative positioning to justify to Hanoi/Haiphong buyers</div></div>
+        <div class="card-row"><div class="card-label">Scale fit</div><div class="card-value">18 villas = comfortable — have managed similar or smaller collections</div></div>
+        <div class="card-row"><div class="card-label">Fit score</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot"></div></div>
+          <small style="color:#888;font-size:10px;">Brand ⭐⭐⭐⭐ | Flexibility ⭐⭐⭐⭐⭐</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Strategy:</strong> Contact Anantara Residences Asia Pacific directly (not hotel development). Best option if closing timeline is tight — fastest to contract.</div>
+    </div>
+
+    <!-- Rosewood -->
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Rosewood Private Estates</div>
+        <div class="sub">Hong Kong-based · Ultra-luxury · Aggressive SEA expansion 2025-26</div>
+        <span class="status-badge status-pending">⏳ Not Yet Approached</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Segment fit</div><div class="card-value"><strong>Strongest brand-tier match</strong> — Rosewood Private Estates positioned exactly at UHNWI, non-rental, family estate model</div></div>
+        <div class="card-row"><div class="card-label">Vietnam presence</div><div class="card-value">Rosewood Phu Quoc (operational) + Hanoi pipeline — brand known to Vietnamese UHNWI</div></div>
+        <div class="card-row"><div class="card-label">Residences model</div><div class="card-value">Rosewood Private Estates = dedicated arm for boutique villa collections 10-25 units, non-rental. Actively scouting SEA 2025-2026. <strong>Timing is favorable</strong></div></div>
+        <div class="card-row"><div class="card-label">Key concern</div><div class="card-value">Not yet approached — unknown response. May have preference for locations they already have hotel presence (Phú Quốc, potential Hanoi)</div></div>
+        <div class="card-row"><div class="card-label">Scale fit</div><div class="card-value">18 villas = within their sweet spot for Private Estates program</div></div>
+        <div class="card-row"><div class="card-label">Fit score</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div></div>
+          <small style="color:#888;font-size:10px;">Brand ⭐⭐⭐⭐⭐ | Flexibility ⭐⭐⭐⭐ (TBC)</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Strategy:</strong> Approach Rosewood Residences APAC (Singapore office) immediately. Frame as "first mover ultra-luxury non-rental collection in Hạ Long" — this is their exact target segment.</div>
+    </div>
+
+  </div>
+
+  <!-- SIDE BY SIDE TABLE -->
+  <div class="section-title">Side-by-Side Comparison</div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>Capella Residences</th>
+        <th>Zannier Private Estates</th>
+        <th>Anantara Residences</th>
+        <th>Rosewood Private Estates</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="row-label">Brand tier</td>
+        <td>Ultra-luxury ⭐⭐⭐⭐⭐</td>
+        <td>Ultra-boutique ⭐⭐⭐⭐⭐</td>
+        <td>Luxury ⭐⭐⭐⭐</td>
+        <td>Ultra-luxury ⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr>
+        <td class="row-label">Vietnam track record</td>
+        <td><span class="tick">✓</span> Capella Hanoi</td>
+        <td><span class="tick">✓</span> Zannier Phú Yên</td>
+        <td><span class="tick">✓</span> Mũi Né + Quy Nhơn</td>
+        <td><span class="tick">✓</span> Rosewood Phú Quốc</td>
+      </tr>
+      <tr>
+        <td class="row-label">Non-rental model</td>
+        <td><span class="tick">✓</span> Residences arm</td>
+        <td><span class="partial">~</span> Needs clarification</td>
+        <td><span class="tick">✓</span> Confirmed precedent</td>
+        <td><span class="tick">✓</span> Core model</td>
+      </tr>
+      <tr>
+        <td class="row-label">18-villa scale fit</td>
+        <td><span class="partial">~</span> Low end of comfort</td>
+        <td><span class="tick">✓</span> Ideal size</td>
+        <td><span class="tick">✓</span> Comfortable</td>
+        <td><span class="tick">✓</span> Sweet spot</td>
+      </tr>
+      <tr>
+        <td class="row-label">Fitout flexibility</td>
+        <td><span class="cross">✗</span> Strict standards, high cost</td>
+        <td><span class="tick">✓</span> Design-led, adaptable</td>
+        <td><span class="tick">✓</span> Most flexible</td>
+        <td><span class="partial">~</span> Standards exist but negotiable</td>
+      </tr>
+      <tr>
+        <td class="row-label">Owner service DNA</td>
+        <td>Butler + Personal Assistants</td>
+        <td>Family estate concierge + local experiences</td>
+        <td>Anantara Home services + culinary</td>
+        <td>Estate manager + Ultra-private protocol</td>
+      </tr>
+      <tr>
+        <td class="row-label">UHNWI buyer recognition</td>
+        <td><span class="tick">✓</span> High — Capella Hanoi known</td>
+        <td><span class="partial">~</span> Medium — niche but respected</td>
+        <td><span class="partial">~</span> Medium — known but not top-of-mind for estate</td>
+        <td><span class="tick">✓</span> High — Rosewood = global UHNWI signal</td>
+      </tr>
+      <tr>
+        <td class="row-label">Contract speed</td>
+        <td><span class="partial">~</span> Meeting pending, complex</td>
+        <td><span class="partial">~</span> Need model clarification first</td>
+        <td><span class="tick">✓</span> Fastest — most pragmatic</td>
+        <td><span class="partial">~</span> Not yet approached</td>
+      </tr>
+      <tr>
+        <td class="row-label">Est. mgmt fee/villa/mo</td>
+        <td>$6,000–9,000</td>
+        <td>$5,000–7,000</td>
+        <td>$4,000–6,000</td>
+        <td>$6,000–9,000</td>
+      </tr>
+      <tr>
+        <td class="row-label">Brand license fee</td>
+        <td>$800k–1.2M one-time</td>
+        <td>$300–500k one-time</td>
+        <td>$400–700k one-time</td>
+        <td>$700k–1.2M one-time</td>
+      </tr>
+      <tr>
+        <td class="row-label">Current status</td>
+        <td>Meeting pending</td>
+        <td>Engaged, model TBC</td>
+        <td>High potential — not yet approached</td>
+        <td>Not yet approached</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FEE BENCHMARK -->
+  <div class="section-title">Fee Benchmark — Market Reference</div>
+
+  <div style="font-size:12px;color:#666;margin-bottom:12px;">
+    Benchmarked against comparable branded villa/residence projects in Vietnam and SEA at similar price tier (250–300 tỷ VND / ~$10–12M USD per unit). Non-rental model — fee structure based on estate services retainer only, excluding rental management.
+  </div>
+
+  <div class="fee-section">
+    <div class="fee-header">Comparable Projects — Vietnam & SEA Reference</div>
+    <table class="fee-table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Location</th>
+          <th>Unit Price</th>
+          <th>Brand</th>
+          <th>Service Charge / mgmt fee</th>
+          <th>Model</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>The Grand Hà Nội</strong><br><small>Ritz-Carlton Residences</small></td>
+          <td>Hà Nội</td>
+          <td>$3–8M/unit</td>
+          <td>Ritz-Carlton</td>
+          <td>~$15–25/m²/month<br><small>≈ $8,000–15,000/unit/mo for large apartments</small></td>
+          <td>Hotel-linked residences</td>
+        </tr>
+        <tr>
+          <td><strong>Grand Marina Saigon</strong><br><small>Marriott Residences</small></td>
+          <td>HCM</td>
+          <td>$2–5M/unit</td>
+          <td>Marriott</td>
+          <td>~$12–18/m²/month<br><small>≈ $6,000–10,000/unit/mo</small></td>
+          <td>Hotel-linked residences</td>
+        </tr>
+        <tr>
+          <td><strong>Layan Residences</strong><br><small>by Anantara</small></td>
+          <td>Phuket, Thailand</td>
+          <td>$4–12M/villa</td>
+          <td>Anantara</td>
+          <td>~$3,500–6,000/villa/month<br><small>Non-rental private villa management</small></td>
+          <td>Optional rental + private</td>
+        </tr>
+        <tr>
+          <td><strong>Capella Private Villas</strong><br><small>Various SEA</small></td>
+          <td>SEA</td>
+          <td>$5–15M/villa</td>
+          <td>Capella</td>
+          <td>~$6,000–10,000/villa/month<br><small>Full estate management services</small></td>
+          <td>Private non-rental</td>
+        </tr>
+        <tr>
+          <td><strong>Zannier Hotels Phú Yên</strong><br><small>Bãi San Hô</small></td>
+          <td>Phú Yên, VN</td>
+          <td>Hotel-operated villas</td>
+          <td>Zannier</td>
+          <td>N/A (hotel model)<br><small>Reference for service standards only</small></td>
+          <td>Hotel villas</td>
+        </tr>
+        <tr>
+          <td><strong>Rosewood Residences Phú Quốc</strong></td>
+          <td>Phú Quốc, VN</td>
+          <td>$8–20M/unit</td>
+          <td>Rosewood</td>
+          <td>~$5,000–9,000/unit/month<br><small>Private estate services</small></td>
+          <td>Non-rental private</td>
+        </tr>
+        <tr class="note-row">
+          <td colspan="6">⚠ Note: Above figures are estimated market ranges based on published and industry-sourced data. Actual negotiated fees for Tuần Châu collection will depend on scope of services, shared infrastructure, and operator contract terms.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ADJUSTED FEE MODEL FOR TUẦN CHÂU -->
+  <div class="fee-section">
+    <div class="fee-header">Proposed Fee Structure — Tuần Châu Private Estate Collection (Adjusted)</div>
+    <table class="fee-table">
+      <thead>
+        <tr>
+          <th>Fee Component</th>
+          <th>Range</th>
+          <th>Rationale / Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Brand License Fee</strong><br><small>(one-time, developer pays)</small></td>
+          <td>$400k – $1.2M</td>
+          <td>Varies by brand tier. Zannier/Anantara lower end; Capella/Rosewood upper end. Paid at contract signing or linked to sales milestones.</td>
+        </tr>
+        <tr>
+          <td><strong>Annual Brand Royalty</strong><br><small>(post-opening)</small></td>
+          <td>0.3% – 0.8% of GDV/year</td>
+          <td>Non-rental model = no revenue base → royalty calculated on GDV or fixed annual fee. Typical: $150–300k/year for 18 villas at this price tier.</td>
+        </tr>
+        <tr>
+          <td><strong>Estate Management Retainer</strong><br><small>(per villa, monthly, paid by owner)</small></td>
+          <td>$4,500 – $7,500 / villa / month</td>
+          <td>Covers: resident estate manager, butler-on-call (min. 4h/day), security, preventive maintenance, villa readiness protocol, 24/7 concierge line. <strong>Owner pays ongoing.</strong></td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>Recommended Range — Tuần Châu</strong><br><small>(adjusted for Vietnam context + non-rental model)</small></td>
+          <td><strong>$5,000 – $6,500 / villa / month</strong><br><small>= ~250–325M VND/villa/year</small></td>
+          <td>Positioned below Capella/Rosewood international benchmarks (~20% discount for Vietnam market); above Anantara Layan to reflect exclusivity and Hạ Long Bay prestige. Total collection: ~$90k–117k/month operational cost.</td>
+        </tr>
+        <tr>
+          <td><strong>Onboarding / Owner Setup Fee</strong><br><small>(one-time, per villa sale)</small></td>
+          <td>$15,000 – $25,000 / villa</td>
+          <td>New owner onboarding: villa personalization documentation, owner preferences profiling, service charter briefing, system setup. Collected at handover.</td>
+        </tr>
+        <tr>
+          <td><strong>À La Carte Services</strong><br><small>(billed per use)</small></td>
+          <td>At cost + 15–20% margin</td>
+          <td>Private chef, event catering, helicopter/seaplane arrangement, additional butler hours, in-villa spa, boat charter coordination. Not included in base retainer.</td>
+        </tr>
+        <tr class="note-row">
+          <td colspan="3">💡 For buyer presentation: monthly retainer of $5,000–6,500/villa (~$2.5–3.2M VND/day) is positioned as a fraction of asset ownership cost and equivalent to a 5-star hotel room rate — a compelling value narrative for UHNWI buyers accustomed to serviced ultra-luxury.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RECOMMENDATION -->
+  <div class="rec-box">
+    <h3>Recommended Approach — Priority Order</h3>
+    <div class="rec-item">
+      <div class="rec-num">1</div>
+      <div class="rec-text"><strong>Rosewood Private Estates APAC</strong> — Approach Singapore office immediately. Strongest brand-tier match, active SEA expansion, non-rental model is their core DNA. Frame pitch as "first UHNWI non-rental estate collection in Hạ Long Bay — first mover opportunity." Best outcome: LOI within 4-6 weeks.</div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">2</div>
+      <div class="rec-text"><strong>Anantara Residences APAC</strong> — Fastest to contract, most flexible. Best fallback if timeline pressure requires LOI before closing. Vietnam regulatory experience = minimal friction. Approach parallel to Rosewood.</div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">3</div>
+      <div class="rec-text"><strong>Zannier — Clarify Master Contract Model</strong> — Ask directly: "Would Zannier consider a Master Estate Management Agreement for a non-rental 18-villa collection?" If yes, Zannier moves to top of list (best brand DNA + Hạ Long landscape fit + Vietnam experience).</div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">4</div>
+      <div class="rec-text"><strong>Capella Residences — Manage in Meeting</strong> — Ensure conversation is with Residences arm, not hotel development. Explore phased fitout standard and design adaptation. Keep as high-prestige option if timeline allows.</div>
+    </div>
+  </div>
+
+</div>
+<footer>Tuần Châu Private Estate Collection — Internal Working Document · Confidential · March 2026</footer>
+</body>
+</html>
