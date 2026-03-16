@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuần Châu — So Sánh Đơn Vị Vận Hành & Benchmark Phí</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f5f7; color: #222; font-size: 14px; line-height: 1.6; }
+  .header { background: #1B2A4A; color: white; padding: 32px 48px 24px; }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+  .header h2 { font-size: 13px; font-weight: 400; opacity: 0.7; margin-top: 4px; }
+  .header .meta { margin-top: 12px; font-size: 11px; opacity: 0.5; }
+  .container { padding: 32px 48px 64px; max-width: 1200px; margin: 0 auto; }
+  .positioning { background: #fff; border-left: 5px solid #1B2A4A; border-radius: 0 8px 8px 0; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .positioning h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #1B2A4A; margin-bottom: 12px; }
+  .positioning .tagline { font-size: 16px; font-weight: 700; color: #1B2A4A; margin-bottom: 10px; }
+  .positioning p { font-size: 14px; line-height: 1.8; color: #333; }
+  .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #1B2A4A; font-weight: 700; margin: 32px 0 12px; border-bottom: 2px solid #1B2A4A22; padding-bottom: 6px; }
+  .operator-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 32px; }
+  .operator-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+  .card-header { padding: 14px 20px 10px; border-bottom: 1px solid #f0f0f0; }
+  .card-header .brand { font-size: 15px; font-weight: 700; color: #1B2A4A; }
+  .card-header .sub { font-size: 11px; color: #888; margin-top: 2px; }
+  .status-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; margin-top: 6px; }
+  .status-pending { background: #fff8e0; color: #996600; }
+  .status-potential { background: #d4edda; color: #1a7a3a; }
+  .card-body { padding: 14px 20px; }
+  .card-row { display: flex; margin-bottom: 8px; font-size: 12.5px; }
+  .card-label { color: #888; min-width: 140px; flex-shrink: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; padding-top: 1px; }
+  .card-value { color: #222; flex: 1; }
+  .card-value strong { color: #1B2A4A; }
+  .fit-bar { display: flex; gap: 3px; margin-top: 2px; }
+  .fit-dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; }
+  .fit-dot.filled { background: #1B2A4A; }
+  .card-footer { background: #f9fafc; padding: 10px 20px; font-size: 11.5px; color: #555; border-top: 1px solid #f0f0f0; }
+  .compare-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 32px; }
+  .compare-table th { background: #1B2A4A; color: white; padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; text-align: left; }
+  .compare-table th:first-child { width: 180px; }
+  .compare-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; font-size: 12.5px; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: #fafbfd; }
+  .compare-table .row-label { background: #eef1f7; font-weight: 600; font-size: 11px; color: #1B2A4A; text-transform: uppercase; letter-spacing: 0.3px; }
+  .tick { color: #1a7a3a; font-weight: 700; }
+  .cross { color: #c00; font-weight: 700; }
+  .partial { color: #996600; font-weight: 700; }
+  .fee-section { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 32px; }
+  .fee-header { background: #1B2A4A; color: white; padding: 12px 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+  .fee-table { width: 100%; border-collapse: collapse; }
+  .fee-table th { background: #eef1f7; padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: #555; border-bottom: 1px solid #dde2ec; text-align: left; }
+  .fee-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; font-size: 12.5px; vertical-align: top; }
+  .fee-table tr:last-child td { border-bottom: none; }
+  .fee-table .highlight { background: #d4edda; font-weight: 600; color: #1a7a3a; }
+  .fee-table .note-row td { background: #fffbf0; font-size: 11.5px; color: #666; font-style: italic; }
+  .rec-box { background: #1B2A4A; color: white; border-radius: 8px; padding: 24px 28px; margin-bottom: 32px; }
+  .rec-box h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.7; margin-bottom: 14px; }
+  .rec-item { display: flex; gap: 14px; margin-bottom: 12px; align-items: flex-start; }
+  .rec-num { background: rgba(255,255,255,0.15); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .rec-text { font-size: 13px; line-height: 1.6; }
+  .rec-text strong { color: #ffe080; }
+  footer { text-align: center; padding: 16px; color: #aaa; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>TUẦN CHÂU PRIVATE ESTATE COLLECTION — LỰA CHỌN ĐƠN VỊ VẬN HÀNH</h1>
+  <h2>So Sánh Đơn Vị Vận Hành · Định Vị Dự Án · Benchmark Phí Quản Lý</h2>
+  <div class="meta">Tài liệu nội bộ &nbsp;|&nbsp; Tháng 3/2026 &nbsp;|&nbsp; Bảo mật &nbsp;|&nbsp; 18 Villa · 3ha · Đảo Tuần Châu, Hạ Long</div>
+</div>
+
+<div class="container">
+
+  <!-- ĐỊNH VỊ -->
+  <div class="positioning">
+    <h3>Định Vị & Định Hướng Quản Lý</h3>
+    <div class="tagline">Tuần Châu Private Estate Collection — Khu Biệt Thự Riêng Tư Dành Cho Những Gia Đình Đặc Biệt Nhất Việt Nam</div>
+    <p>
+      Tuần Châu Private Estate Collection được định vị là khu biệt thự private estate đầu tiên tại Việt Nam theo mô hình <strong>không cho thuê</strong> — 18 biệt thự riêng lẻ (800–1.000m²/căn) nằm trong khuôn viên 3ha được quy hoạch tinh tế trên Đảo Tuần Châu, hướng nhìn ra Vịnh Hạ Long. Mỗi biệt thự là một <strong>ngôi nhà riêng tư dành cho gia đình</strong>, không phải khách sạn, không phải sản phẩm đầu tư sinh lời — mà là một tài sản di sản được lưu truyền qua nhiều thế hệ.
+    </p>
+    <br>
+    <p>
+      Chủ sở hữu mục tiêu là các gia đình UHNWI tại Hà Nội và Hải Phòng (tổng tài sản từ 20 triệu USD trở lên), tìm kiếm một không gian nghỉ dưỡng riêng tư phục vụ mục đích cá nhân, tụ họp gia đình nhiều thế hệ và tiếp khách doanh nghiệp kín đáo — không phải khai thác cho thuê. Từ khóa cốt lõi là <strong>độc quyền</strong>: không có người lạ, không có quầy check-in, không có khu vực công cộng. Sở hữu tại đây là tư cách thành viên trong một cộng đồng khép kín của 18 gia đình chia sẻ cảnh quan đẳng cấp thế giới và dịch vụ quản lý biệt thự theo tiêu chuẩn white-glove.
+    </p>
+    <br>
+    <p>
+      Mô hình quản lý là <strong>Private Estate Management</strong> — không phải vận hành khách sạn. Đội ngũ quản lý riêng (estate manager thường trú, đội butler, kỹ thuật bảo trì, concierge ẩm thực) phục vụ chủ nhà theo yêu cầu, với triết lý dịch vụ của thương hiệu được tích hợp vào từng tương tác. Đơn vị vận hành không quản lý công suất phòng hay doanh thu — họ quản lý <strong>sự sẵn sàng, cá nhân hóa và trải nghiệm liền mạch của chủ nhà</strong> ở mọi thời điểm.
+    </p>
+  </div>
+
+  <!-- OPERATOR CARDS -->
+  <div class="section-title">Hồ Sơ Đơn Vị Vận Hành — Danh Sách Rút Gọn 4 Thương Hiệu</div>
+  <div class="operator-grid">
+
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Capella Hotels & Residences</div>
+        <div class="sub">Singapore · Ultra-luxury boutique · 5 sao</div>
+        <span class="status-badge status-pending">🟡 Đang chờ họp</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Phù hợp phân khúc</div><div class="card-value">Ultra-luxury UHNWI — <strong>phù hợp hoàn hảo</strong> với mức giá 250–300 tỷ</div></div>
+        <div class="card-row"><div class="card-label">Hiện diện tại VN</div><div class="card-value">Capella Hà Nội (đang hoạt động) — thương hiệu được nhận biết tốt với nhóm khách hàng mục tiêu</div></div>
+        <div class="card-row"><div class="card-label">Mô hình residences</div><div class="card-value">Có bộ phận Capella Residences riêng biệt với hotel; có thể quản lý bộ sưu tập biệt thự không cho thuê</div></div>
+        <div class="card-row"><div class="card-label">Rủi ro chính</div><div class="card-value"><strong>Tiêu chuẩn fitout rất cao</strong> — yêu cầu thiết kế nghiêm ngặt, chi phí hoàn thiện lớn cho chủ đầu tư</div></div>
+        <div class="card-row"><div class="card-label">Phù hợp quy mô</div><div class="card-value">18 villa nằm ở ngưỡng thấp của vùng an toàn — cần narrative vị trí mạnh để bù đắp</div></div>
+        <div class="card-row"><div class="card-label">Điểm phù hợp</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot"></div></div>
+          <small style="color:#888;font-size:10px;">Thương hiệu ⭐⭐⭐⭐⭐ | Linh hoạt ⭐⭐⭐</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Chiến lược:</strong> Trong buổi họp, đảm bảo làm việc với bộ phận Residences — không phải hotel development. Đàm phán về tiêu chuẩn fitout theo giai đoạn và khả năng điều chỉnh thiết kế.</div>
+    </div>
+
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Zannier Hotels & Private Estates</div>
+        <div class="sub">Bỉ · Ultra-boutique luxury · DNA bảo tồn thiên nhiên</div>
+        <span class="status-badge status-potential">🟢 Tiềm năng cao</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Phù hợp phân khúc</div><div class="card-value">Tốt — boutique, độc quyền, gắn với thiên nhiên; DNA hoàn toàn phù hợp với bối cảnh Vịnh Hạ Long</div></div>
+        <div class="card-row"><div class="card-label">Hiện diện tại VN</div><div class="card-value">Zannier Hotels Bãi San Hô, Phú Yên (73 villa) — kinh nghiệm vận hành tại Việt Nam, am hiểu pháp lý</div></div>
+        <div class="card-row"><div class="card-label">Mô hình Private Estates</div><div class="card-value">Zannier Private Estates hiện tại = <strong>cho thuê ngắn/dài hạn từng ngôi nhà riêng lẻ</strong> (chủ yếu tại châu Âu). Hợp đồng quản lý thuần (không cho thuê) cho bộ sưu tập 18 villa = <strong>chưa có tiền lệ xác nhận</strong></div></div>
+        <div class="card-row"><div class="card-label">Rủi ro chính</div><div class="card-value">Chưa rõ mức độ sẵn sàng ký hợp đồng quản lý tổng thể cho bộ sưu tập không cho thuê. Cần xác nhận trực tiếp.</div></div>
+        <div class="card-row"><div class="card-label">Phù hợp quy mô</div><div class="card-value">18 villa là quy mô lý tưởng với mô hình boutique của Zannier — họ không làm đại trà</div></div>
+        <div class="card-row"><div class="card-label">Điểm phù hợp</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div></div>
+          <small style="color:#888;font-size:10px;">Thương hiệu ⭐⭐⭐⭐⭐ | Linh hoạt ⭐⭐⭐⭐ (nếu xác nhận được mô hình)</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Câu hỏi then chốt cần hỏi Zannier:</strong> "Zannier có xem xét ký Master Estate Management Agreement cho bộ sưu tập 18 villa tư nhân không cho thuê không?" — Nếu có → lựa chọn hàng đầu.</div>
+    </div>
+
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Minor Hotels — Anantara Residences</div>
+        <div class="sub">Thái Lan · Luxury đầy đủ dịch vụ · Dẫn đầu SEA</div>
+        <span class="status-badge status-potential">🟢 Tiềm năng cao</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Phù hợp phân khúc</div><div class="card-value">Tốt — Anantara là premium nhưng chưa đến ultra-luxury; có chênh lệch nhẹ về tier thương hiệu so với mức 250–300 tỷ, bù lại bằng sự linh hoạt vượt trội</div></div>
+        <div class="card-row"><div class="card-label">Hiện diện tại VN</div><div class="card-value">Anantara Mũi Né, Anantara Quy Nhơn — track record tốt, am hiểu pháp lý địa phương</div></div>
+        <div class="card-row"><div class="card-label">Mô hình residences</div><div class="card-value">Anantara Residences = bộ phận hoạt động độc lập, tách biệt với hotel. Đã quản lý bộ sưu tập villa tại Phuket (Layan), Desaru (Malaysia). <strong>Linh hoạt nhất về cấu trúc hợp đồng</strong></div></div>
+        <div class="card-row"><div class="card-label">Rủi ro chính</div><div class="card-value">Thương hiệu được nhận biết ở tầm thấp hơn Capella/Zannier trong phân khúc UHNWI — cần xây dựng narrative định vị thuyết phục với khách hàng Hà Nội/Hải Phòng</div></div>
+        <div class="card-row"><div class="card-label">Phù hợp quy mô</div><div class="card-value">18 villa hoàn toàn trong vùng thoải mái — đã quản lý các bộ sưu tập tương tự hoặc nhỏ hơn</div></div>
+        <div class="card-row"><div class="card-label">Điểm phù hợp</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot"></div></div>
+          <small style="color:#888;font-size:10px;">Thương hiệu ⭐⭐⭐⭐ | Linh hoạt ⭐⭐⭐⭐⭐</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Chiến lược:</strong> Liên hệ trực tiếp bộ phận Anantara Residences Asia Pacific (không phải hotel development). Lựa chọn tốt nhất nếu tiến độ đang gấp — nhanh nhất đến hợp đồng.</div>
+    </div>
+
+    <div class="operator-card">
+      <div class="card-header">
+        <div class="brand">Rosewood Private Estates</div>
+        <div class="sub">Hong Kong · Ultra-luxury · Đang mở rộng mạnh tại SEA 2025–26</div>
+        <span class="status-badge status-pending">⏳ Chưa tiếp cận</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><div class="card-label">Phù hợp phân khúc</div><div class="card-value"><strong>Phù hợp thương hiệu tốt nhất</strong> — Rosewood Private Estates được định vị đúng cho UHNWI, không cho thuê, mô hình gia đình estate</div></div>
+        <div class="card-row"><div class="card-label">Hiện diện tại VN</div><div class="card-value">Rosewood Phú Quốc (đang hoạt động) + pipeline Hà Nội — thương hiệu được UHNWI Việt Nam nhận biết</div></div>
+        <div class="card-row"><div class="card-label">Mô hình residences</div><div class="card-value">Rosewood Private Estates = bộ phận riêng cho bộ sưu tập villa boutique 10–25 căn, không cho thuê. Đang tích cực tìm kiếm dự án tại SEA 2025–2026. <strong>Timing thuận lợi</strong></div></div>
+        <div class="card-row"><div class="card-label">Rủi ro chính</div><div class="card-value">Chưa tiếp cận — chưa biết phản hồi. Có thể ưu tiên địa điểm đã có hotel (Phú Quốc, Hà Nội tiềm năng)</div></div>
+        <div class="card-row"><div class="card-label">Phù hợp quy mô</div><div class="card-value">18 villa nằm trong vùng lý tưởng của chương trình Private Estates</div></div>
+        <div class="card-row"><div class="card-label">Điểm phù hợp</div><div class="card-value">
+          <div class="fit-bar"><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div><div class="fit-dot filled"></div></div>
+          <small style="color:#888;font-size:10px;">Thương hiệu ⭐⭐⭐⭐⭐ | Linh hoạt ⭐⭐⭐⭐ (chưa xác nhận)</small>
+        </div></div>
+      </div>
+      <div class="card-footer"><strong>Chiến lược:</strong> Tiếp cận Rosewood Residences APAC (văn phòng Singapore) ngay. Framing: "Bộ sưu tập private estate ultra-luxury không cho thuê đầu tiên tại Hạ Long — cơ hội first-mover." Đây chính xác là phân khúc mục tiêu của họ.</div>
+    </div>
+
+  </div>
+
+  <!-- SO SÁNH -->
+  <div class="section-title">So Sánh Trực Tiếp</div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Tiêu chí</th>
+        <th>Capella Residences</th>
+        <th>Zannier Private Estates</th>
+        <th>Anantara Residences</th>
+        <th>Rosewood Private Estates</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="row-label">Hạng thương hiệu</td><td>Ultra-luxury ⭐⭐⭐⭐⭐</td><td>Ultra-boutique ⭐⭐⭐⭐⭐</td><td>Luxury ⭐⭐⭐⭐</td><td>Ultra-luxury ⭐⭐⭐⭐⭐</td></tr>
+      <tr><td class="row-label">Track record tại VN</td><td><span class="tick">✓</span> Capella Hà Nội</td><td><span class="tick">✓</span> Zannier Phú Yên</td><td><span class="tick">✓</span> Mũi Né + Quy Nhơn</td><td><span class="tick">✓</span> Rosewood Phú Quốc</td></tr>
+      <tr><td class="row-label">Mô hình không cho thuê</td><td><span class="tick">✓</span> Bộ phận Residences</td><td><span class="partial">~</span> Cần xác nhận</td><td><span class="tick">✓</span> Đã có tiền lệ</td><td><span class="tick">✓</span> Mô hình cốt lõi</td></tr>
+      <tr><td class="row-label">Phù hợp 18 villa</td><td><span class="partial">~</span> Ngưỡng thấp</td><td><span class="tick">✓</span> Quy mô lý tưởng</td><td><span class="tick">✓</span> Thoải mái</td><td><span class="tick">✓</span> Vùng lý tưởng</td></tr>
+      <tr><td class="row-label">Linh hoạt fitout</td><td><span class="cross">✗</span> Tiêu chuẩn nghiêm, chi phí cao</td><td><span class="tick">✓</span> Định hướng thiết kế, linh hoạt</td><td><span class="tick">✓</span> Linh hoạt nhất</td><td><span class="partial">~</span> Có tiêu chuẩn nhưng có thể đàm phán</td></tr>
+      <tr><td class="row-label">DNA dịch vụ chủ nhà</td><td>Butler + Trợ lý cá nhân</td><td>Concierge gia đình + trải nghiệm địa phương</td><td>Anantara Home services + ẩm thực</td><td>Estate manager + giao thức ultra-private</td></tr>
+      <tr><td class="row-label">Nhận biết của UHNWI VN</td><td><span class="tick">✓</span> Cao — Capella HN đã biết</td><td><span class="partial">~</span> Trung bình — niche nhưng được trân trọng</td><td><span class="partial">~</span> Trung bình — biết nhưng chưa top-of-mind về estate</td><td><span class="tick">✓</span> Cao — Rosewood = tín hiệu UHNWI toàn cầu</td></tr>
+      <tr><td class="row-label">Tốc độ ký hợp đồng</td><td><span class="partial">~</span> Đang họp, phức tạp</td><td><span class="partial">~</span> Cần xác nhận mô hình trước</td><td><span class="tick">✓</span> Nhanh nhất — thực dụng nhất</td><td><span class="partial">~</span> Chưa tiếp cận</td></tr>
+      <tr><td class="row-label">Phí ước tính/villa/tháng</td><td>6.000–9.000 USD</td><td>5.000–7.000 USD</td><td>4.000–6.000 USD</td><td>6.000–9.000 USD</td></tr>
+      <tr><td class="row-label">Phí license thương hiệu</td><td>800k–1,2M USD (1 lần)</td><td>300–500k USD (1 lần)</td><td>400–700k USD (1 lần)</td><td>700k–1,2M USD (1 lần)</td></tr>
+      <tr><td class="row-label">Trạng thái hiện tại</td><td>Đang chờ họp</td><td>Đã tiếp cận, mô hình TBD</td><td>Tiềm năng cao — chưa tiếp cận</td><td>Chưa tiếp cận</td></tr>
+    </tbody>
+  </table>
+
+  <!-- BENCHMARK PHÍ -->
+  <div class="section-title">Benchmark Phí Quản Lý — Tham Chiếu Thị Trường</div>
+  <div style="font-size:12px;color:#666;margin-bottom:12px;">
+    Tham chiếu từ các dự án branded residences có thể so sánh tại Việt Nam và SEA ở tầm giá tương đương (250–300 tỷ VND/căn). Mô hình không cho thuê — phí chỉ tính trên dịch vụ quản lý biệt thự, không bao gồm quản lý cho thuê. Minh bạch nguồn: ✅ = đã xác minh có nguồn công khai | ⚠ = ước tính chuyên ngành, chưa công bố.
+  </div>
+
+  <div class="fee-section">
+    <div class="fee-header">Dự Án Tham Chiếu — Việt Nam & SEA</div>
+    <table class="fee-table">
+      <thead>
+        <tr><th>Dự án</th><th>Vị trí</th><th>Giá căn</th><th>Thương hiệu</th><th>Phí dịch vụ / quản lý</th><th>Nguồn</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Grand Marina Saigon</strong><br><small>Marriott & JW Marriott Residences</small></td>
+          <td>TP.HCM</td>
+          <td>~15.000–20.000 USD/m²</td>
+          <td>Marriott / JW Marriott</td>
+          <td><strong>Tòa Marriott: 8 USD/m²/tháng</strong><br><strong>Tòa JW Marriott: 9 USD/m²/tháng</strong><br><small>VD: căn 150m² ≈ 28–32 triệu đồng/tháng</small></td>
+          <td>✅ Cafebiz (7/2024), thông báo chủ đầu tư</td>
+        </tr>
+        <tr>
+          <td><strong>The Grand Hà Nội</strong><br><small>Ritz-Carlton Residences</small></td>
+          <td>Hà Nội</td>
+          <td>3–8M USD/căn</td>
+          <td>Ritz-Carlton</td>
+          <td><strong>Chưa công bố</strong><br><small>Ước tính 12–20 USD/m²/tháng dựa trên chuẩn quốc tế Ritz-Carlton và điều chỉnh thị trường VN. Căn lớn (500m²+) ≈ 6.000–10.000 USD/tháng ước tính.</small></td>
+          <td>⚠ Ước tính chuyên ngành — chưa có nguồn xác minh</td>
+        </tr>
+        <tr>
+          <td><strong>Layan Residences by Anantara</strong><br><small>Phuket, Thái Lan</small></td>
+          <td>Phuket</td>
+          <td>4–12M USD/villa<br><small>(3–7 phòng ngủ)</small></td>
+          <td>Anantara</td>
+          <td><strong>Cấu trúc xác nhận: chủ nhà đóng phí bảo trì + quản lý + tiện ích riêng</strong><br><small>Số tiền cụ thể: chưa công bố. Ước tính 2.500–5.000 USD/villa/tháng.</small></td>
+          <td>✅ Cấu trúc xác nhận (layanresidences-anantara.com) | ⚠ Số tiền = ước tính</td>
+        </tr>
+        <tr>
+          <td><strong>Zannier Hotels Bãi San Hô</strong><br><small>Phú Yên, Việt Nam</small></td>
+          <td>Phú Yên</td>
+          <td>Vận hành hotel (không bán)</td>
+          <td>Zannier</td>
+          <td>N/A — mô hình hotel<br><small>Tham chiếu tiêu chuẩn dịch vụ và track record Zannier tại VN. Zannier Private Estates = cho thuê tại châu Âu, không áp dụng mô hình phí tại đây.</small></td>
+          <td>✅ Website Zannier Hotels (chỉ tham chiếu)</td>
+        </tr>
+        <tr>
+          <td><strong>New World Phu Quoc Resort</strong><br><small>Vận hành bởi Rosewood Hotel Group</small></td>
+          <td>Phú Quốc</td>
+          <td>Hotel (không bán)</td>
+          <td>New World (thuộc Rosewood Hotel Group)</td>
+          <td>N/A — mô hình hotel<br><small>Lưu ý: Đây là thương hiệu New World (upper-upscale), KHÔNG phải Rosewood ultra-luxury. Chưa có Rosewood-branded private residences tại Việt Nam. Chỉ tham chiếu sự hiện diện của tập đoàn tại VN.</small></td>
+          <td>✅ Hospitalitynet (11/2023) — làm rõ thương hiệu</td>
+        </tr>
+        <tr class="note-row">
+          <td colspan="6"><strong>Lưu ý kiểm định:</strong> Dữ liệu phí quản lý biệt thự private estate ultra-luxury (không cho thuê) được công bố công khai cực kỳ hạn chế — các đơn vị vận hành không tiết lộ con số này. Điểm dữ liệu Việt Nam duy nhất được xác minh đầy đủ là Grand Marina Saigon ($8–9 USD/m²/tháng, Marriott/JW Marriott). Tất cả các con số còn lại là ước tính chuyên ngành. Khuyến nghị: yêu cầu bảng phí thực tế từ từng đơn vị vận hành trong quá trình đàm phán RFP.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PHẠM VI PHÍ ĐỀ XUẤT -->
+  <div class="fee-section">
+    <div class="fee-header">Cơ Cấu Phí Đề Xuất — Tuần Châu Private Estate Collection (Đã Điều Chỉnh)</div>
+    <table class="fee-table">
+      <thead>
+        <tr><th>Hạng mục phí</th><th>Phạm vi</th><th>Cơ sở / Ghi chú</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Phí license thương hiệu</strong><br><small>(1 lần, chủ đầu tư trả)</small></td>
+          <td>400k – 1,2M USD</td>
+          <td>Tùy theo hạng thương hiệu. Zannier/Anantara ở ngưỡng thấp; Capella/Rosewood ở ngưỡng cao. Thanh toán khi ký hợp đồng hoặc theo tiến độ bán hàng.</td>
+        </tr>
+        <tr>
+          <td><strong>Phí bản quyền thương hiệu hàng năm</strong><br><small>(sau khai trương)</small></td>
+          <td>0,3% – 0,8% GDV/năm</td>
+          <td>Mô hình không cho thuê = không có doanh thu làm cơ sở → phí bản quyền tính trên GDV hoặc phí cố định hàng năm. Điển hình: 150–300k USD/năm cho 18 villa ở phân khúc này.</td>
+        </tr>
+        <tr>
+          <td><strong>Phí quản lý biệt thự hàng tháng</strong><br><small>(theo villa, chủ nhà trả)</small></td>
+          <td>4.500 – 7.000 USD / villa / tháng</td>
+          <td>Bao gồm: estate manager thường trú, butler theo yêu cầu (tối thiểu 4h/ngày), bảo vệ, bảo trì phòng ngừa, quy trình sẵn sàng villa, đường dây concierge 24/7. <strong>Chủ nhà trả định kỳ.</strong></td>
+        </tr>
+        <tr class="highlight">
+          <td><strong>Phạm vi ước tính — Tuần Châu</strong><br><small>(điều chỉnh cho bối cảnh VN + mô hình không cho thuê)</small></td>
+          <td><strong>4.500 – 7.000 USD / villa / tháng</strong><br><small>≈ 225–350 triệu VND/villa/năm</small><br><small style="color:#555;font-weight:400;">⚠ Ước tính chuyên ngành — cần xác nhận qua RFP</small></td>
+          <td>
+            Cơ sở tính toán: (1) Grand Marina Saigon $8–9/m² × 800m² ≈ 6.400–7.200 USD/tháng làm ngưỡng trên cho hotel-linked residences; (2) Chiết khấu thị trường VN so với SEA ultra-luxury (Phuket/Singapore thấp hơn ~20–30%); (3) Mô hình không cho thuê = không có chi phí quản lý doanh thu → thấp hơn nhẹ so với rental-pool models.<br><br>
+            <strong>Ngưỡng thấp 4.500 USD:</strong> Quản lý cơ bản (bảo trì, bảo vệ, sẵn sàng villa, concierge theo yêu cầu) — tương đương Anantara/Minor.<br>
+            <strong>Ngưỡng cao 7.000 USD:</strong> White-glove đầy đủ (butler thường trú, estate manager riêng, dịch vụ lifestyle, phản hồi 24/7) — tương đương Capella/Rosewood.<br><br>
+            Tổng ước tính cho bộ sưu tập: <strong>~81k–126k USD/tháng</strong> cho 18 villa. <em>Cần xác nhận qua RFP trước khi trình bày với khách hàng.</em>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Phí onboarding chủ nhà</strong><br><small>(1 lần, mỗi villa bán)</small></td>
+          <td>15.000 – 25.000 USD / villa</td>
+          <td>Onboarding chủ nhà mới: lập hồ sơ cá nhân hóa villa, ghi nhận preference của chủ nhà, briefing service charter, cài đặt hệ thống. Thu tại thời điểm bàn giao.</td>
+        </tr>
+        <tr>
+          <td><strong>Dịch vụ theo yêu cầu</strong><br><small>(tính theo lần sử dụng)</small></td>
+          <td>Chi phí thực tế + 15–20% margin</td>
+          <td>Bếp trưởng riêng, tiệc catering, sắp xếp trực thăng/thủy phi cơ, giờ butler bổ sung, spa tại villa, thuê thuyền. Không tính trong phí quản lý cơ bản.</td>
+        </tr>
+        <tr class="note-row">
+          <td colspan="3">💡 Gợi ý cho presentation với khách hàng: phí quản lý hàng tháng 4.500–7.000 USD/villa (~2–3,5 triệu đồng/ngày) bằng chi phí 1 đêm tại khách sạn 5 sao — một cách diễn đạt thuyết phục về value proposition với UHNWI quen với dịch vụ ultra-luxury có phí.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- KHUYẾN NGHỊ -->
+  <div class="rec-box">
+    <h3>Khuyến Nghị — Thứ Tự Ưu Tiên</h3>
+    <div class="rec-item">
+      <div class="rec-num">1</div>
+      <div class="rec-text"><strong>Rosewood Private Estates APAC</strong> — Tiếp cận văn phòng Singapore ngay. Phù hợp thương hiệu tốt nhất, đang mở rộng SEA tích cực, mô hình không cho thuê là DNA cốt lõi của họ. Framing: "Bộ sưu tập estate ultra-luxury không cho thuê đầu tiên tại Hạ Long — cơ hội first-mover." Kết quả kỳ vọng: LOI trong 4–6 tuần.</div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">2</div>
+      <div class="rec-text"><strong>Anantara Residences APAC</strong> — Ký hợp đồng nhanh nhất, linh hoạt nhất. Lựa chọn dự phòng tốt nhất nếu tiến độ gấp cần LOI trước closing. Kinh nghiệm pháp lý Việt Nam = ít ma sát nhất. Tiếp cận song song với Rosewood.</div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">3</div>
+      <div class="rec-text"><strong>Zannier — Xác nhận mô hình hợp đồng tổng thể</strong> — Hỏi thẳng: "Zannier có xem xét Master Estate Management Agreement cho bộ sưu tập 18 villa không cho thuê không?" Nếu có, Zannier lên đầu danh sách (DNA thương hiệu phù hợp nhất + cảnh quan Hạ Long + kinh nghiệm Việt Nam).</div>
+    </div>
+    <div class="rec-item">
+      <div class="rec-num">4</div>
+      <div class="rec-text"><strong>Capella Residences — Quản lý trong buổi họp</strong> — Đảm bảo làm việc với bộ phận Residences, không phải hotel development. Khám phá tiêu chuẩn fitout theo giai đoạn và khả năng điều chỉnh thiết kế. Giữ làm lựa chọn high-prestige nếu tiến độ cho phép.</div>
+    </div>
+  </div>
+
+</div>
+<footer>Tuần Châu Private Estate Collection — Tài Liệu Nội Bộ · Bảo Mật · Tháng 3/2026</footer>
+</body>
+</html>
