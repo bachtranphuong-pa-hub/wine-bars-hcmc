@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Park90 — HCMC Market Visit Brief | March 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #FAF8F5;
+    color: #1A1A1A;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: #fff;
+    padding: 14mm 14mm 12mm 14mm;
+    position: relative;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #1A1A1A;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+  .header-left h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: #1A1A1A;
+    line-height: 1;
+  }
+  .header-left h1 span {
+    font-weight: 600;
+    font-style: italic;
+  }
+  .header-left .subtitle {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-top: 4px;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 10px;
+    color: #888;
+    line-height: 1.7;
+  }
+  .header-right strong {
+    color: #1A1A1A;
+    font-size: 11px;
+  }
+
+  /* INTRO STRIP */
+  .intro-strip {
+    background: #1A1A1A;
+    color: #fff;
+    padding: 9px 14px;
+    margin-bottom: 14px;
+    font-size: 10.5px;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+  .intro-strip strong {
+    font-weight: 600;
+    color: #E8D5A3;
+  }
+
+  /* GRID 2 COL */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #E0DDD8;
+  }
+
+  /* CARD */
+  .card {
+    background: #FAF8F5;
+    border: 1px solid #E8E4DE;
+    padding: 10px 11px;
+  }
+  .card.dark {
+    background: #1A1A1A;
+    border-color: #1A1A1A;
+    color: #fff;
+  }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    line-height: 1.2;
+  }
+  .card.dark h3 { color: #E8D5A3; }
+  .card .time-badge {
+    display: inline-block;
+    background: #1A1A1A;
+    color: #E8D5A3;
+    font-size: 9px;
+    padding: 2px 7px;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .card.dark .time-badge {
+    background: #E8D5A3;
+    color: #1A1A1A;
+  }
+  .card .address {
+    font-size: 9.5px;
+    color: #777;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .card.dark .address { color: #B0A89A; }
+  .card .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+  .tag {
+    font-size: 8.5px;
+    padding: 1.5px 6px;
+    border: 1px solid #C8C2B8;
+    color: #555;
+    letter-spacing: 0.05em;
+  }
+  .tag.gold {
+    border-color: #C4A35A;
+    color: #9A7A2A;
+    background: #FDF8EE;
+  }
+  .tag.white {
+    border-color: #888;
+    color: #ccc;
+    background: transparent;
+  }
+  .card ul {
+    padding-left: 12px;
+    font-size: 10px;
+    color: #444;
+  }
+  .card.dark ul { color: #C8C2B8; }
+  .card ul li { margin-bottom: 2px; }
+
+  /* DAY HEADER */
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .day-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    color: #E0DDD8;
+    line-height: 1;
+  }
+  .day-info h2 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+  }
+  .day-info p {
+    font-size: 9.5px;
+    color: #888;
+  }
+
+  /* COMPARISON TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+  thead tr {
+    background: #1A1A1A;
+    color: #E8D5A3;
+  }
+  thead th {
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    font-size: 9.5px;
+  }
+  tbody tr:nth-child(even) { background: #FAF8F5; }
+  tbody tr:nth-child(odd) { background: #fff; }
+  tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #EEEBE6;
+    color: #333;
+    vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 500; color: #1A1A1A; }
+  .check { color: #2E7D32; font-weight: 600; }
+  .warn { color: #B45309; }
+  .cross { color: #C62828; }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid #E0DDD8;
+    padding-top: 7px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    color: #AAA;
+  }
+  .footer strong { color: #555; }
+
+  /* RECOMMENDATION BOX */
+  .rec-box {
+    border-left: 3px solid #C4A35A;
+    background: #FDF8EE;
+    padding: 8px 11px;
+    margin-bottom: 12px;
+    font-size: 10.5px;
+    line-height: 1.6;
+    color: #3A3020;
+  }
+  .rec-box strong { color: #9A7A2A; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: #E0DDD8;
+    margin: 12px 0;
+  }
+
+  @media print {
+    body { background: white; }
+    .page { margin: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>HCMC <span>Market Visit</span></h1>
+      <div class="subtitle">Premium Wine Bar Landscape — Site Survey Brief</div>
+    </div>
+    <div class="header-right">
+      <strong>29 – 30 March 2026</strong><br>
+      Ho Chi Minh City, Vietnam<br>
+      Prepared for Park90
+    </div>
+  </div>
+
+  <!-- INTRO STRIP -->
+  <div class="intro-strip">
+    <strong>Purpose:</strong> Two-day immersion visit to benchmark HCMC's leading premium wine bars and evaluate two high-potential site locations for a new concept entry.
+    &nbsp;&nbsp;<strong>Zones covered:</strong> Thảo Điền (District 2) — established expat-affluent cluster &nbsp;|&nbsp; Heritage Villa Belt (District 3) — emerging, low-competition opportunity.
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day-header">
+    <div class="day-num">01</div>
+    <div class="day-info">
+      <h2>Sunday, 29 March — Benchmark Visits</h2>
+      <p>Evening circuit: 3 benchmark wine bars across Thảo Điền & District 3</p>
+    </div>
+  </div>
+
+  <div class="three-col">
+
+    <!-- MAD -->
+    <div class="card">
+      <div class="time-badge">18:00 – 19:30</div>
+      <h3>MAD Wine Bar</h3>
+      <div class="address">63 Xuân Thủy, Thảo Điền, D2</div>
+      <div class="tag-row">
+        <span class="tag">Danish-founded</span>
+        <span class="tag">Since 2020</span>
+        <span class="tag">Courtyard</span>
+      </div>
+      <ul>
+        <li>20+ wines by the glass</li>
+        <li>French bistro comfort food</li>
+        <li>Mixed expat-local crowd</li>
+        <li>Cozy neighbourhood format</li>
+        <li><strong>Observe:</strong> Courtyard layout, spend per cover, peak crowd time</li>
+      </ul>
+    </div>
+
+    <!-- LUA -->
+    <div class="card">
+      <div class="time-badge">19:45 – 21:15</div>
+      <h3>Lửa</h3>
+      <div class="address">2 Đường Số 11, Thảo Điền, D2</div>
+      <div class="tag-row">
+        <span class="tag gold">MICHELIN Selected 2025</span>
+        <span class="tag gold">Sommelier Award</span>
+      </div>
+      <ul>
+        <li>Sommelier Yu Yamamoto</li>
+        <li>French × Vietnamese × Japanese</li>
+        <li>Star Wine List — Asia Short List</li>
+        <li>Serious wine destination format</li>
+        <li><strong>Observe:</strong> Wine program depth, reservation demand, pricing ceiling</li>
+      </ul>
+    </div>
+
+    <!-- NEPHELE -->
+    <div class="card dark">
+      <div class="time-badge">21:30 onwards</div>
+      <h3>Nephele</h3>
+      <div class="address">125/12 Nguyễn Cửu Vân, Bình Thạnh</div>
+      <div class="tag-row">
+        <span class="tag white">MICHELIN Selected 2025</span>
+        <span class="tag white">TATLER Best New 2025</span>
+      </div>
+      <ul>
+        <li>Chef Francis Thuận Trần</li>
+        <li>Wood-fired, Vietnamese identity</li>
+        <li>Reservation-only, tasting menu</li>
+        <li>Renovated French colonial villa</li>
+        <li><strong>Observe:</strong> Theatrical wine service, price point ceiling, exclusivity model</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- KEY INSIGHT DAY 1 -->
+  <div class="rec-box">
+    <strong>Market Read:</strong> HCMC's premium wine bar scene has bifurcated — <em>neighbourhood casual</em> (MAD, high volume, accessible) vs. <em>destination fine</em> (Lửa, Nephele, reservation-only, high margin). The white space is a <strong>mid-luxury PDR-focused concept</strong> with retail integration: curated list, sommelier-led, private dining capable, without the exclusivity barrier of reservation-only.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DAY 2 -->
+  <div class="day-header">
+    <div class="day-num">02</div>
+    <div class="day-info">
+      <h2>Monday, 30 March — Site Survey</h2>
+      <p>Morning–afternoon: Zone A (Thảo Điền) → Zone B (District 3 Heritage Belt)</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- ZONE A -->
+    <div class="card">
+      <div class="section-label">Zone A — Thảo Điền</div>
+      <h3 style="font-size:13px; margin-bottom:4px;">Nguyễn Văn Hưởng Corridor</h3>
+      <div class="address">Block 50–215, Thảo Điền Ward, Thu Đức</div>
+      <ul style="margin-bottom:8px;">
+        <li>HCMC's highest-density premium villa street</li>
+        <li>Proven wine consumer base (MAD + Lửa cluster)</li>
+        <li>Target resident: expat C-suite, UHNW Vietnamese, diplomats</li>
+        <li>Standalone villa with garden = signature format</li>
+        <li>Est. lease: ₫100–120M/month / 200–350m²</li>
+        <li>Walk from Lửa → note available G/F commercial units</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag gold">Proven market</span>
+        <span class="tag">Wine-educated foot traffic</span>
+        <span class="tag">Garden potential</span>
+      </div>
+    </div>
+
+    <!-- ZONE B -->
+    <div class="card">
+      <div class="section-label">Zone B — D3 Heritage Belt</div>
+      <h3 style="font-size:13px; margin-bottom:4px;">Tú Xương + Trần Đình Xu</h3>
+      <div class="address">District 3, Central HCMC</div>
+      <ul style="margin-bottom:8px;">
+        <li>Best-preserved French colonial villa streets in Saigon</li>
+        <li>Trần Đình Xu: confirmed fine dining precedent (No. 122/2)</li>
+        <li>Nephele (D3) → reservation-only premium viable here</li>
+        <li>Near D1 CBD; insulated from tourist noise</li>
+        <li>Heritage narrative: "old Saigon, old money" positioning</li>
+        <li>Walk Tú Xương (Điện Biên Phủ → Nam Kỳ Khởi Nghĩa) + Trần Đình Xu</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag gold">Lower competition</span>
+        <span class="tag">Heritage story</span>
+        <span class="tag">D1 proximity</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="section-label">Zone Comparison Matrix</div>
+  <table style="margin-bottom:12px;">
+    <thead>
+      <tr>
+        <th>Criteria</th>
+        <th>Zone A — Thảo Điền</th>
+        <th>Zone B — D3 Heritage Belt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Primary customer</td>
+        <td>Expat community + UHNW Vietnamese</td>
+        <td>Local affluent + cultural visitors</td>
+      </tr>
+      <tr>
+        <td>Existing wine cluster</td>
+        <td><span class="check">✓</span> Established (MAD, Lửa)</td>
+        <td><span class="warn">~</span> Emerging (Nephele nearby)</td>
+      </tr>
+      <tr>
+        <td>Heritage property availability</td>
+        <td><span class="check">✓</span> Modern villa, garden units</td>
+        <td><span class="check">✓</span> French colonial villa</td>
+      </tr>
+      <tr>
+        <td>Lease competition</td>
+        <td><span class="warn">Medium</span> — wine bars already here</td>
+        <td><span class="check">Low</span> — first-mover advantage</td>
+      </tr>
+      <tr>
+        <td>Foot traffic pattern</td>
+        <td>Weekend-heavy, evening clusters</td>
+        <td>Weekday dinner + CBD overflow</td>
+      </tr>
+      <tr>
+        <td>Storytelling / brand narrative</td>
+        <td>Contemporary Saigon lifestyle</td>
+        <td>Old Saigon, colonial heritage</td>
+      </tr>
+      <tr>
+        <td>Demand creation cost</td>
+        <td><span class="check">Low</span> — market educated</td>
+        <td><span class="warn">Medium</span> — requires positioning</td>
+      </tr>
+      <tr>
+        <td>Risk profile</td>
+        <td>Proven but competitive entry</td>
+        <td>Lower competition, higher brand investment</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- RECOMMENDATION -->
+  <div class="rec-box">
+    <strong>Recommendation:</strong> Zone A (Thảo Điền, Nguyễn Văn Hưởng) as <strong>Phase 1 priority</strong> — validated demand, wine-literate customer base, and standalone villa format enables immediate brand expression. Zone B (D3 Heritage) as <strong>Phase 2 or flagship</strong> if the brand story emphasizes Saigon heritage over contemporary lifestyle.
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>Prepared by <strong>Zera</strong> · Royal Canary Corp · March 2026</div>
+    <div>Confidential — For Park90 Internal Use Only</div>
+    <div>29–30 March 2026 · Ho Chi Minh City</div>
+  </div>
+
+</div>
+</body>
+</html>
