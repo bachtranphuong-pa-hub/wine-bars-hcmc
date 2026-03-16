@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuần Châu — Operator Selection & Delay Impact Model v4</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#F5F3EF; color:#1A1A1A; font-size:11.5px; line-height:1.5; }
+  .page { max-width:1280px; margin:0 auto; padding:32px 24px; }
+
+  .header { border-bottom:3px solid #1B2A4A; padding-bottom:16px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:flex-end; }
+  .header h1 { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; color:#1B2A4A; line-height:1; }
+  .header h1 span { font-style:italic; font-weight:600; }
+  .header-sub { font-size:9.5px; letter-spacing:0.15em; text-transform:uppercase; color:#888; margin-top:4px; }
+  .header-right { text-align:right; font-size:10px; color:#666; line-height:1.8; }
+  .header-right strong { color:#1B2A4A; }
+
+  .fx-banner { background:#8B0000; color:#fff; padding:7px 18px; margin-bottom:18px; display:flex; align-items:center; gap:14px; font-size:11px; border-radius:2px; }
+  .fx-banner strong { font-size:13px; }
+
+  .assumptions { background:#1B2A4A; color:#fff; padding:12px 18px; margin-bottom:20px; display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+  .asm-label { font-size:8.5px; letter-spacing:0.1em; text-transform:uppercase; color:#A0B0C8; margin-bottom:2px; }
+  .asm-value { font-size:12px; font-weight:600; color:#E8D5A3; }
+  .asm-note { font-size:8.5px; color:#7080A0; margin-top:1px; }
+
+  .section-title { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; color:#888; margin-bottom:8px; padding-bottom:4px; border-bottom:1px solid #DDD; }
+  .divider { height:1px; background:#DDD; margin:18px 0; }
+
+  /* MAIN TABLE */
+  .result-table { width:100%; border-collapse:collapse; font-size:10.5px; margin-bottom:22px; }
+  .result-table thead tr { background:#1B2A4A; color:#E8D5A3; }
+  .result-table th { padding:7px 9px; text-align:left; font-weight:500; font-size:9.5px; letter-spacing:0.04em; white-space:nowrap; }
+  .result-table td { padding:5px 9px; border-bottom:1px solid #EEE; white-space:nowrap; }
+  .result-table tbody tr:nth-child(odd)  { background:#fff; }
+  .result-table tbody tr:nth-child(even) { background:#FAF8F5; }
+  .result-table tbody tr:hover { background:#F0EDE8; }
+  .ontime { background:#F0FFF4 !important; }
+  .delay6 { background:#FFFBF0 !important; }
+  .delay12 { background:#FFF5F5 !important; }
+
+  .op-capella  { color:#1B2A4A; font-weight:600; }
+  .op-zannier  { color:#2D5016; font-weight:600; }
+  .op-anantara { color:#7A4A1A; font-weight:600; }
+
+  .badge-ok { display:inline-block; background:#d4edda; color:#155724; padding:1px 6px; border-radius:2px; font-size:9px; }
+  .badge-warn { display:inline-block; background:#fff3cd; color:#856404; padding:1px 6px; border-radius:2px; font-size:9px; }
+  .badge-delay { display:inline-block; background:#e2e8f0; color:#475569; padding:1px 6px; border-radius:2px; font-size:9px; }
+  .badge-delay6 { display:inline-block; background:#fef3c7; color:#92400e; padding:1px 6px; border-radius:2px; font-size:9px; }
+  .badge-delay12 { display:inline-block; background:#fee2e2; color:#991b1b; padding:1px 6px; border-radius:2px; font-size:9px; }
+
+  /* DELAY IMPACT */
+  .delay-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:22px; }
+  .delay-card { background:#fff; border:1px solid #DDD; padding:14px; }
+  .delay-card h3 { font-size:11px; font-weight:600; margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid; }
+  .delay-row { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid #F5F5F5; font-size:10.5px; }
+  .delay-row:last-child { border-bottom:none; }
+  .delay-key { color:#666; }
+  .delay-val { font-weight:500; }
+  .delta-neg { color:#c62828; }
+  .delta-pos { color:#1a6b2e; }
+
+  /* COST BREAKDOWN */
+  .cost-table { width:100%; border-collapse:collapse; font-size:10.5px; margin-bottom:22px; }
+  .cost-table th { background:#F0EDE8; padding:6px 9px; font-weight:600; font-size:9.5px; }
+  .cost-table td { padding:5px 9px; border-bottom:1px solid #EEE; }
+  .cost-table .total-row { background:#1B2A4A; color:#E8D5A3; font-weight:600; }
+  .cost-bar { height:8px; display:inline-block; vertical-align:middle; border-radius:1px; }
+
+  /* RECOMMENDATION */
+  .rec-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:22px; }
+  .rec-card { padding:14px; border-left:4px solid; }
+  .rec-1 { background:#E8F5E9; border-color:#1a6b2e; }
+  .rec-2 { background:#E3F2FD; border-color:#1565C0; }
+  .rec-3 { background:#FFF8E1; border-color:#F57F17; }
+  .rec-card h3 { font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; }
+  .rec-card p { font-size:10.5px; color:#444; line-height:1.6; }
+
+  .footer { border-top:1px solid #DDD; padding-top:10px; display:flex; justify-content:space-between; font-size:9px; color:#AAA; margin-top:10px; }
+  .footer strong { color:#666; }
+  .usd { color:#aaa; font-size:9px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div>
+    <h1>Tuần Châu <span>Private Estate</span></h1>
+    <div class="header-sub">Operator Selection Model v4 — Leveraged Returns × 3 Brands × 3 Scenarios × Delay Impact</div>
+  </div>
+  <div class="header-right">
+    <strong>Đảo Tuần Châu · Vịnh Hạ Long · 18 Căn · 15,525m² GFA</strong><br>
+    Model gốc: Project TC – Quảng Ninh | Cập nhật tháng 3/2026<br>
+    Confidential — Nội bộ
+  </div>
+</div>
+
+<div class="fx-banner">
+  <strong>⚠️ Tỷ giá 27,000 VND/$</strong>
+  <span>Phản ánh diễn biến Iran–Mỹ (tháng 3/2026). Chi phí fitout operator quy đổi theo tỷ giá mới. Chi phí đất & acquisition giữ nguyên theo giá gốc đã cam kết.</span>
+</div>
+
+<div class="section-title">Giả Định Mô Hình (Theo File Gốc Project TC)</div>
+<div class="assumptions">
+  <div>
+    <div class="asm-label">Xây thô villa</div>
+    <div class="asm-value">45 tr/m²</div>
+    <div class="asm-note">Gốc: 45 VNDmn/sqm · ~$1,667/m²</div>
+  </div>
+  <div>
+    <div class="asm-label">Dự phòng & Soft cost</div>
+    <div class="asm-value">5% + 8%</div>
+    <div class="asm-note">Contingency 5% · Soft cost 8% hard costs</div>
+  </div>
+  <div>
+    <div class="asm-label">Lãi suất vay</div>
+    <div class="asm-value">9.5% / 10.5%</div>
+    <div class="asm-note">Const loan 9.5% · Acq loan 10.5% p.a.</div>
+  </div>
+  <div>
+    <div class="asm-label">Chi phí mua lại</div>
+    <div class="asm-value">404,756 tỷ VND</div>
+    <div class="asm-note">Jen Capital 50.91% @$30M entry val · 26,500</div>
+  </div>
+  <div>
+    <div class="asm-label">Vay / Tổng chi phí</div>
+    <div class="asm-value">70% LTV</div>
+    <div class="asm-note">Const loan 70% · Acq loan 70% · Min eq 30%</div>
+  </div>
+  <div>
+    <div class="asm-label">VAT / CIT</div>
+    <div class="asm-value">10% / 20%</div>
+    <div class="asm-note">Prepaid tax on cash 1%</div>
+  </div>
+  <div>
+    <div class="asm-label">SG&A</div>
+    <div class="asm-value">6% doanh thu</div>
+    <div class="asm-note">Hoa hồng · marketing · events</div>
+  </div>
+  <div>
+    <div class="asm-label">Bàn giao / LURC</div>
+    <div class="asm-value">Q2/2028 / Q3/2028</div>
+    <div class="asm-note">Khởi công Q3/2026 · Mở bán Q4/2026</div>
+  </div>
+  <div>
+    <div class="asm-label">Tỷ suất chiết khấu</div>
+    <div class="asm-value">10% p.a.</div>
+    <div class="asm-note">Sponsor level (gốc: 10%)</div>
+  </div>
+  <div>
+    <div class="asm-label">Tỷ giá</div>
+    <div class="asm-value">27,000 VND/$</div>
+    <div class="asm-note">Cập nhật · Gốc: 26,500</div>
+  </div>
+</div>
+<div class="section-title">Kết Quả Toàn Bộ — 3 Scenarios × 3 Operators × 3 Delay Scenarios</div>
+<table class="result-table"><thead><tr><th>Scenario</th><th>Operator</th><th>Tiến độ</th><th>GDV (tỷ VND)</th><th>Blended /m²</th><th>Chi phí cứng</th><th>Lợi nhuận</th><th>Biên %</th><th>IRR (p.a.)</th><th>MOIC</th><th>NPV @10%</th><th>Sàn giá</th><th>Tốc độ</th><th>Extra Int.</th></tr></thead><tbody>
+<tr class="ontime">
+      <td><strong>Base</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#b45309;font-weight:600">798 tỷ</td>
+      <td style="color:#b45309;font-weight:600">24.1%</td>
+      <td style="color:#1a6b2e;font-weight:600">228%</td>
+      <td style="font-weight:500">2.07x</td>
+      <td>688 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>8 q (4mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Base</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#b45309;font-weight:600">749 tỷ</td>
+      <td style="color:#b45309;font-weight:600">22.7%</td>
+      <td style="color:#2d7d46;font-weight:600">196%</td>
+      <td style="font-weight:500">1.64x</td>
+      <td>663 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>10 q (5mo)</td>
+      <td>34 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Base</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#c62828;font-weight:600">701 tỷ</td>
+      <td style="color:#c62828;font-weight:600">21.2%</td>
+      <td style="color:#2d7d46;font-weight:600">117%</td>
+      <td style="font-weight:500">1.78x</td>
+      <td>521 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>12 q (6mo)</td>
+      <td>67 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Base</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,020 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">30.9%</td>
+      <td style="color:#1a6b2e;font-weight:600">293%</td>
+      <td style="font-weight:500">2.74x</td>
+      <td>870 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>6 q (3mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Base</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">975 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">29.5%</td>
+      <td style="color:#1a6b2e;font-weight:600">221%</td>
+      <td style="font-weight:500">1.93x</td>
+      <td>833 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>8 q (4mo)</td>
+      <td>31 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Base</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">929 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">28.1%</td>
+      <td style="color:#2d7d46;font-weight:600">136%</td>
+      <td style="font-weight:500">2.31x</td>
+      <td>690 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>10 q (5mo)</td>
+      <td>62 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Base</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">942 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">28.5%</td>
+      <td style="color:#1a6b2e;font-weight:600">270%</td>
+      <td style="font-weight:500">2.47x</td>
+      <td>805 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>5 q (2mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Base</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#b45309;font-weight:600">895 tỷ</td>
+      <td style="color:#b45309;font-weight:600">27.1%</td>
+      <td style="color:#1a6b2e;font-weight:600">213%</td>
+      <td style="font-weight:500">1.82x</td>
+      <td>773 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>7 q (3mo)</td>
+      <td>32 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Base</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>3,308 tỷ</strong> <span class="usd">($122M)</span></td>
+      <td>213 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#b45309;font-weight:600">848 tỷ</td>
+      <td style="color:#b45309;font-weight:600">25.6%</td>
+      <td style="color:#2d7d46;font-weight:600">130%</td>
+      <td style="font-weight:500">2.10x</td>
+      <td>631 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>9 q (4mo)</td>
+      <td>64 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Mid</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,087 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">29.5%</td>
+      <td style="color:#1a6b2e;font-weight:600">274%</td>
+      <td style="font-weight:500">2.64x</td>
+      <td>925 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>8 q (4mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Mid</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,038 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">28.2%</td>
+      <td style="color:#1a6b2e;font-weight:600">225%</td>
+      <td style="font-weight:500">1.91x</td>
+      <td>889 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>10 q (5mo)</td>
+      <td>34 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Mid</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#b45309;font-weight:600">989 tỷ</td>
+      <td style="color:#b45309;font-weight:600">26.9%</td>
+      <td style="color:#2d7d46;font-weight:600">136%</td>
+      <td style="font-weight:500">2.24x</td>
+      <td>734 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>12 q (6mo)</td>
+      <td>67 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Mid</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,313 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">35.7%</td>
+      <td style="color:#1a6b2e;font-weight:600">346%</td>
+      <td style="font-weight:500">3.62x</td>
+      <td>1,110 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>6 q (3mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Mid</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,267 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">34.4%</td>
+      <td style="color:#1a6b2e;font-weight:600">250%</td>
+      <td style="font-weight:500">2.24x</td>
+      <td>1,063 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>8 q (4mo)</td>
+      <td>31 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Mid</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,221 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">33.2%</td>
+      <td style="color:#2d7d46;font-weight:600">154%</td>
+      <td style="font-weight:500">2.98x</td>
+      <td>906 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>10 q (5mo)</td>
+      <td>62 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Mid</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,232 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">33.5%</td>
+      <td style="color:#1a6b2e;font-weight:600">320%</td>
+      <td style="font-weight:500">3.22x</td>
+      <td>1,044 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>5 q (2mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Mid</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,185 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">32.2%</td>
+      <td style="color:#1a6b2e;font-weight:600">242%</td>
+      <td style="font-weight:500">2.12x</td>
+      <td>1,001 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>7 q (3mo)</td>
+      <td>32 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Mid</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>3,682 tỷ</strong> <span class="usd">($136M)</span></td>
+      <td>238 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,139 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">30.9%</td>
+      <td style="color:#2d7d46;font-weight:600">148%</td>
+      <td style="font-weight:500">2.68x</td>
+      <td>845 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>9 q (4mo)</td>
+      <td>64 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Stretch</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,446 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">34.9%</td>
+      <td style="color:#1a6b2e;font-weight:600">331%</td>
+      <td style="font-weight:500">3.59x</td>
+      <td>1,221 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>8 q (4mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Stretch</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,398 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">33.7%</td>
+      <td style="color:#1a6b2e;font-weight:600">259%</td>
+      <td style="font-weight:500">2.26x</td>
+      <td>1,172 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>10 q (5mo)</td>
+      <td>34 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Stretch</strong></td>
+      <td class="op-capella">Capella</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>1,131 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,349 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">32.5%</td>
+      <td style="color:#2d7d46;font-weight:600">157%</td>
+      <td style="font-weight:500">2.98x</td>
+      <td>999 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>12 q (6mo)</td>
+      <td>67 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Stretch</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,677 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">40.4%</td>
+      <td style="color:#1a6b2e;font-weight:600">415%</td>
+      <td style="font-weight:500">5.24x</td>
+      <td>1,410 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>6 q (3mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Stretch</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,631 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">39.3%</td>
+      <td style="color:#1a6b2e;font-weight:600">285%</td>
+      <td style="font-weight:500">2.66x</td>
+      <td>1,349 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>8 q (4mo)</td>
+      <td>31 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Stretch</strong></td>
+      <td class="op-zannier">Zannier</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>970 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,585 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">38.2%</td>
+      <td style="color:#2d7d46;font-weight:600">174%</td>
+      <td style="font-weight:500">4.14x</td>
+      <td>1,174 tỷ</td>
+      <td><span class="badge-warn">⚠ Vi phạm</span></td>
+      <td>10 q (5mo)</td>
+      <td>62 tỷ</td>
+    </tr>
+<tr class="ontime">
+      <td><strong>Stretch</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay">On-time</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,594 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">38.4%</td>
+      <td style="color:#1a6b2e;font-weight:600">385%</td>
+      <td style="font-weight:500">4.54x</td>
+      <td>1,342 tỷ</td>
+      <td><span class="badge-ok">✓ OK</span></td>
+      <td>5 q (2mo)</td>
+      <td>—</td>
+    </tr>
+<tr class="delay6">
+      <td><strong>Stretch</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay6">+6 tháng</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,547 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">37.3%</td>
+      <td style="color:#1a6b2e;font-weight:600">276%</td>
+      <td style="font-weight:500">2.51x</td>
+      <td>1,285 tỷ</td>
+      <td><span class="badge-ok">✓ OK</span></td>
+      <td>7 q (3mo)</td>
+      <td>32 tỷ</td>
+    </tr>
+<tr class="delay12">
+      <td><strong>Stretch</strong></td>
+      <td class="op-anantara">Anantara</td>
+      <td><span class="badge-delay12">+12 tháng</span></td>
+      <td><strong>4,148 tỷ</strong> <span class="usd">($154M)</span></td>
+      <td>268 tr/m²</td>
+      <td>1,024 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,500 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">36.2%</td>
+      <td style="color:#2d7d46;font-weight:600">169%</td>
+      <td style="font-weight:500">3.66x</td>
+      <td>1,112 tỷ</td>
+      <td><span class="badge-ok">✓ OK</span></td>
+      <td>9 q (4mo)</td>
+      <td>64 tỷ</td>
+    </tr>
+</tbody></table>
+<div class="divider"></div>
+<div class="section-title">Ảnh Hưởng Tiến Độ — Scenario Mid (Tiêu Biểu) | Leveraged IRR & Cost Erosion</div>
+<div class="delay-grid">
+<div class="delay-card">
+      <h3 style="color:#1B2A4A;border-color:#1B2A4A">Capella — Tác Động Trễ Tiến Độ</h3>
+      <div class="delay-row"><span class="delay-key">GDV</span><span class="delay-val">3,682 tỷ VND</span></div>
+      <div class="delay-row"><span class="delay-key">IRR — On-time</span><span class="delay-val" style="color:#1a6b2e">274% p.a.</span></div>
+      <div class="delay-row"><span class="delay-key">IRR — +6 tháng</span><span class="delay-val" style="color:#1a6b2e">225% <span class="delta-neg">(▼49pp)</span></span></div>
+      <div class="delay-row"><span class="delay-key">IRR — +12 tháng</span><span class="delay-val" style="color:#2d7d46">136% <span class="delta-neg">(▼138pp)</span></span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — On-time</span><span class="delay-val">2.64x</span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — +6 tháng</span><span class="delay-val">1.91x <span class="delta-neg">(▼0.74x)</span></span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — +12 tháng</span><span class="delay-val">2.24x <span class="delta-neg">(▼0.40x)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — On-time</span><span class="delay-val">1,087 tỷ (29.5%)</span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — +6 tháng</span><span class="delay-val">1,038 tỷ <span class="delta-neg">(▼49 tỷ)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — +12 tháng</span><span class="delay-val">989 tỷ <span class="delta-neg">(▼97 tỷ)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lãi phát sinh thêm +6mo</span><span class="delta-neg">34 tỷ</span></div>
+      <div class="delay-row"><span class="delay-key">Lãi phát sinh thêm +12mo</span><span class="delta-neg">67 tỷ</span></div>
+      <div class="delay-row"><span class="delay-key">Tốc độ bán (on-time)</span><span class="delay-val">8 quý (4mo)</span></div>
+    </div>
+<div class="delay-card">
+      <h3 style="color:#2D5016;border-color:#2D5016">Zannier — Tác Động Trễ Tiến Độ</h3>
+      <div class="delay-row"><span class="delay-key">GDV</span><span class="delay-val">3,682 tỷ VND</span></div>
+      <div class="delay-row"><span class="delay-key">IRR — On-time</span><span class="delay-val" style="color:#1a6b2e">346% p.a.</span></div>
+      <div class="delay-row"><span class="delay-key">IRR — +6 tháng</span><span class="delay-val" style="color:#1a6b2e">250% <span class="delta-neg">(▼96pp)</span></span></div>
+      <div class="delay-row"><span class="delay-key">IRR — +12 tháng</span><span class="delay-val" style="color:#2d7d46">154% <span class="delta-neg">(▼192pp)</span></span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — On-time</span><span class="delay-val">3.62x</span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — +6 tháng</span><span class="delay-val">2.24x <span class="delta-neg">(▼1.38x)</span></span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — +12 tháng</span><span class="delay-val">2.98x <span class="delta-neg">(▼0.64x)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — On-time</span><span class="delay-val">1,313 tỷ (35.7%)</span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — +6 tháng</span><span class="delay-val">1,267 tỷ <span class="delta-neg">(▼46 tỷ)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — +12 tháng</span><span class="delay-val">1,221 tỷ <span class="delta-neg">(▼92 tỷ)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lãi phát sinh thêm +6mo</span><span class="delta-neg">31 tỷ</span></div>
+      <div class="delay-row"><span class="delay-key">Lãi phát sinh thêm +12mo</span><span class="delta-neg">62 tỷ</span></div>
+      <div class="delay-row"><span class="delay-key">Tốc độ bán (on-time)</span><span class="delay-val">6 quý (3mo)</span></div>
+    </div>
+<div class="delay-card">
+      <h3 style="color:#7A4A1A;border-color:#7A4A1A">Anantara — Tác Động Trễ Tiến Độ</h3>
+      <div class="delay-row"><span class="delay-key">GDV</span><span class="delay-val">3,682 tỷ VND</span></div>
+      <div class="delay-row"><span class="delay-key">IRR — On-time</span><span class="delay-val" style="color:#1a6b2e">320% p.a.</span></div>
+      <div class="delay-row"><span class="delay-key">IRR — +6 tháng</span><span class="delay-val" style="color:#1a6b2e">242% <span class="delta-neg">(▼79pp)</span></span></div>
+      <div class="delay-row"><span class="delay-key">IRR — +12 tháng</span><span class="delay-val" style="color:#2d7d46">148% <span class="delta-neg">(▼172pp)</span></span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — On-time</span><span class="delay-val">3.22x</span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — +6 tháng</span><span class="delay-val">2.12x <span class="delta-neg">(▼1.10x)</span></span></div>
+      <div class="delay-row"><span class="delay-key">MOIC — +12 tháng</span><span class="delay-val">2.68x <span class="delta-neg">(▼0.54x)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — On-time</span><span class="delay-val">1,232 tỷ (33.5%)</span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — +6 tháng</span><span class="delay-val">1,185 tỷ <span class="delta-neg">(▼47 tỷ)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lợi nhuận — +12 tháng</span><span class="delay-val">1,139 tỷ <span class="delta-neg">(▼94 tỷ)</span></span></div>
+      <div class="delay-row"><span class="delay-key">Lãi phát sinh thêm +6mo</span><span class="delta-neg">32 tỷ</span></div>
+      <div class="delay-row"><span class="delay-key">Lãi phát sinh thêm +12mo</span><span class="delta-neg">64 tỷ</span></div>
+      <div class="delay-row"><span class="delay-key">Tốc độ bán (on-time)</span><span class="delay-val">5 quý (2mo)</span></div>
+    </div>
+</div>
+<div class="divider"></div>
+<div class="section-title">Chi Tiết Chi Phí — Scenario Mid × On-time (VND tỷ)</div>
+<table class="cost-table"><thead><tr><th>Operator</th><th>GDV</th><th>Xây dựng (cứng)</th><th>Chi phí mua lại</th><th>Lãi vay</th><th>License brand</th><th>Setup</th><th>SG&A</th><th>Thuế CIT</th><th>Lợi nhuận</th><th>Biên %</th></tr></thead><tbody>
+<tr>
+      <td class="op-capella">Capella</td>
+      <td><strong>3,682 tỷ</strong></td>
+      <td>1,131 tỷ <div class="cost-bar" style="width:31px;background:#1B2A4A"></div></td>
+      <td>405 tỷ <div class="cost-bar" style="width:11px;background:#5B6A8A"></div></td>
+      <td>177 tỷ <div class="cost-bar" style="width:5px;background:#8B5CF6"></div></td>
+      <td>147 tỷ <div class="cost-bar" style="width:4px;background:#F59E0B"></div></td>
+      <td>40 tỷ</td>
+      <td>221 tỷ</td>
+      <td>473 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,087 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">29.5%</td>
+    </tr>
+<tr>
+      <td class="op-zannier">Zannier</td>
+      <td><strong>3,682 tỷ</strong></td>
+      <td>970 tỷ <div class="cost-bar" style="width:26px;background:#1B2A4A"></div></td>
+      <td>405 tỷ <div class="cost-bar" style="width:11px;background:#5B6A8A"></div></td>
+      <td>168 tỷ <div class="cost-bar" style="width:5px;background:#8B5CF6"></div></td>
+      <td>110 tỷ <div class="cost-bar" style="width:3px;background:#F59E0B"></div></td>
+      <td>22 tỷ</td>
+      <td>221 tỷ</td>
+      <td>473 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,313 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">35.7%</td>
+    </tr>
+<tr>
+      <td class="op-anantara">Anantara</td>
+      <td><strong>3,682 tỷ</strong></td>
+      <td>1,024 tỷ <div class="cost-bar" style="width:28px;background:#1B2A4A"></div></td>
+      <td>405 tỷ <div class="cost-bar" style="width:11px;background:#5B6A8A"></div></td>
+      <td>171 tỷ <div class="cost-bar" style="width:5px;background:#8B5CF6"></div></td>
+      <td>129 tỷ <div class="cost-bar" style="width:4px;background:#F59E0B"></div></td>
+      <td>27 tỷ</td>
+      <td>221 tỷ</td>
+      <td>473 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,232 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">33.5%</td>
+    </tr>
+</tbody></table>
+<div class="divider"></div>
+<div class="section-title">Khuyến Nghị</div>
+<div class="rec-grid">
+  <div class="rec-card rec-1">
+    <h3>🏆 Tối ưu Risk-Adjusted: Mid + Anantara</h3>
+    <p><strong>GDV 3,682 tỷ · Lợi nhuận 1,232 tỷ (33.5%) · IRR 320% · MOIC 3.22x</strong><br><br>
+    Tốc độ nhanh nhất (15 tháng = 5 quý). Brand được người mua VN biết đến → giảm thời gian education. Procurement Minor Hotels giảm chi phí fitout. License 3.5% thấp hơn Capella.<br><br>
+    <strong>Delay sensitivity:</strong> +6 tháng → IRR 242% (▼78pp) · +12 tháng → IRR 148% (▼172pp). Cần kiểm soát chặt tiến độ thi công.</p>
+  </div>
+  <div class="rec-card rec-2">
+    <h3>💰 Biên cao nhất: Mid + Zannier</h3>
+    <p><strong>GDV 3,682 tỷ · Lợi nhuận 1,313 tỷ (35.7%) · IRR 346% · MOIC 3.62x</strong><br><br>
+    License thấp nhất (3%). Novelty premium — Zannier đầu tiên tại Hạ Long. Private Estates arm phù hợp hoàn toàn non-rental model. Fitout nhẹ hơn Capella/Anantara.<br><br>
+    <strong>Delay sensitivity:</strong> +6 tháng → IRR 251% (▼96pp) · +12 tháng → IRR 154% (▼192pp). Thời gian bán dài hơn (18 tháng) → rủi ro delay cao hơn tương đối.</p>
+  </div>
+  <div class="rec-card rec-3">
+    <h3>⚠️ Premium tier: Stretch + Capella</h3>
+    <p><strong>GDV 4,148 tỷ · Lợi nhuận 1,446 tỷ (34.9%) · IRR 331% · MOIC 3.59x</strong><br><br>
+    Base scenario vi phạm sàn giá Capella (≥280 tr/m²). Chỉ viable từ Mid trở lên. Fitout đắt nhất ($800/m²) + License 4% + velocity chậm (24 tháng).<br><br>
+    <strong>Delay sensitivity:</strong> +6 tháng → IRR 259% (▼72pp) · +12 tháng → IRR 158% (▼174pp). Velocity chậm nhất → tổng thời gian dài nhất khi delay.</p>
+  </div>
+</div>
+<div class="footer">
+  <div>Chuẩn bị bởi <strong>Zera</strong> · Royal Canary Corp Advisory · Tháng 3/2026</div>
+  <div>Model v4 — Assumptions từ Project TC Financial Model · FX 27,000 VND/$ · Leveraged structure</div>
+  <div>Confidential — Nội bộ</div>
+</div>
+
+</div></body></html>
