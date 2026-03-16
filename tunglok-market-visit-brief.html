@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tung Lok Group — HCMC Market Visit Brief | 31 Mar – 1 Apr 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #FAF8F5;
+    color: #1A1A1A;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    background: #fff;
+    padding: 14mm 14mm 12mm 14mm;
+    position: relative;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #8B1A1A;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+  .header-left h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: #1A1A1A;
+    line-height: 1;
+  }
+  .header-left h1 span {
+    font-weight: 600;
+    font-style: italic;
+    color: #8B1A1A;
+  }
+  .header-left .subtitle {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-top: 4px;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 10px;
+    color: #888;
+    line-height: 1.7;
+  }
+  .header-right strong {
+    color: #1A1A1A;
+    font-size: 11px;
+  }
+
+  /* INTRO STRIP */
+  .intro-strip {
+    background: #8B1A1A;
+    color: #fff;
+    padding: 9px 14px;
+    margin-bottom: 14px;
+    font-size: 10.5px;
+    line-height: 1.6;
+  }
+  .intro-strip strong { color: #F5D0A9; font-weight: 600; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #888;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #E0DDD8;
+  }
+
+  /* DAY HEADER */
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .day-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    color: #E8D0D0;
+    line-height: 1;
+  }
+  .day-info h2 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+  }
+  .day-info p { font-size: 9.5px; color: #888; }
+
+  /* GRID */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+    margin-bottom: 11px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 11px;
+  }
+
+  /* CARD */
+  .card {
+    background: #FAF8F5;
+    border: 1px solid #E8E4DE;
+    padding: 10px 11px;
+  }
+  .card.dark {
+    background: #1A1A1A;
+    color: #fff;
+    border-color: #1A1A1A;
+  }
+  .card.red {
+    background: #8B1A1A;
+    color: #fff;
+    border-color: #8B1A1A;
+  }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    line-height: 1.2;
+  }
+  .card.dark h3, .card.red h3 { color: #F5D0A9; }
+
+  .time-badge {
+    display: inline-block;
+    background: #8B1A1A;
+    color: #F5D0A9;
+    font-size: 9px;
+    padding: 2px 7px;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .card.dark .time-badge {
+    background: #F5D0A9;
+    color: #1A1A1A;
+  }
+  .card.red .time-badge {
+    background: #fff;
+    color: #8B1A1A;
+  }
+
+  .address {
+    font-size: 9.5px;
+    color: #777;
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .card.dark .address, .card.red .address { color: #D0B8B8; }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 7px;
+  }
+  .tag {
+    font-size: 8.5px;
+    padding: 1.5px 6px;
+    border: 1px solid #C8C2B8;
+    color: #555;
+    letter-spacing: 0.04em;
+  }
+  .tag.gold {
+    border-color: #C4A35A;
+    color: #9A7A2A;
+    background: #FDF8EE;
+  }
+  .tag.red {
+    border-color: #C4606060;
+    color: #8B1A1A;
+    background: #FDF0F0;
+  }
+  .tag.white {
+    border-color: #999;
+    color: #ccc;
+    background: transparent;
+  }
+
+  .card ul {
+    padding-left: 12px;
+    font-size: 10px;
+    color: #444;
+  }
+  .card.dark ul, .card.red ul { color: #D8C8C8; }
+  .card ul li { margin-bottom: 2px; }
+
+  /* CALLOUT */
+  .callout {
+    border-left: 3px solid #8B1A1A;
+    background: #FDF0F0;
+    padding: 8px 11px;
+    margin-bottom: 11px;
+    font-size: 10.5px;
+    line-height: 1.6;
+    color: #3A1515;
+  }
+  .callout strong { color: #8B1A1A; }
+
+  .callout.neutral {
+    border-color: #C4A35A;
+    background: #FDF8EE;
+    color: #3A3020;
+  }
+  .callout.neutral strong { color: #9A7A2A; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  thead tr { background: #8B1A1A; color: #F5D0A9; }
+  thead th {
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    font-size: 9.5px;
+  }
+  tbody tr:nth-child(even) { background: #FAF8F5; }
+  tbody tr:nth-child(odd) { background: #fff; }
+  tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #EEEBE6;
+    color: #333;
+    vertical-align: top;
+  }
+  tbody td:first-child { font-weight: 500; color: #1A1A1A; }
+  .star { color: #C4A35A; }
+  .check { color: #2E7D32; font-weight: 600; }
+
+  /* TIMELINE STRIP */
+  .timeline {
+    display: flex;
+    gap: 0;
+    margin-bottom: 12px;
+    border: 1px solid #E0DDD8;
+    overflow: hidden;
+  }
+  .tl-item {
+    flex: 1;
+    padding: 7px 9px;
+    border-right: 1px solid #E0DDD8;
+    font-size: 9.5px;
+  }
+  .tl-item:last-child { border-right: none; }
+  .tl-item .tl-time {
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #8B1A1A;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+  }
+  .tl-item .tl-name { font-weight: 600; color: #1A1A1A; font-size: 10px; }
+  .tl-item .tl-note { color: #888; font-size: 9px; margin-top: 1px; }
+  .tl-item.highlight { background: #FDF0F0; }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid #E0DDD8;
+    padding-top: 7px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    color: #AAA;
+  }
+  .footer strong { color: #555; }
+
+  .divider { height: 1px; background: #E0DDD8; margin: 11px 0; }
+
+  @media print {
+    body { background: white; }
+    .page { margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>HCMC <span>Chinese Dining</span> Survey</h1>
+      <div class="subtitle">Upscale Cantonese Restaurant Landscape — Site & Market Brief</div>
+    </div>
+    <div class="header-right">
+      <strong>31 March – 1 April 2026</strong><br>
+      Ho Chi Minh City, Vietnam<br>
+      Prepared for Tung Lok Group
+    </div>
+  </div>
+
+  <!-- INTRO STRIP -->
+  <div class="intro-strip">
+    <strong>Purpose:</strong> Two-day immersion to benchmark HCMC's top upscale Chinese restaurants in the Central District corridor.
+    &nbsp;&nbsp;<strong>Structure:</strong> Day 1 (31/03) — full day; dinner at Michelin-starred venue.
+    Day 2 (01/04) — morning dim sum benchmark + debrief before afternoon departure.
+    &nbsp;&nbsp;<strong>Focus:</strong> Cantonese fine dining · dim sum operations · private dining rooms · customer mix · price positioning.
+  </div>
+
+  <!-- BENCHMARK OVERVIEW TIMELINE -->
+  <div class="section-label">Visit Schedule at a Glance</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-time">31/03 · 12:00</div>
+      <div class="tl-name">Dim Tu Tac</div>
+      <div class="tl-note">Michelin Bib Gourmand · Lunch</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">31/03 · 15:00</div>
+      <div class="tl-name">Shang Palace</div>
+      <div class="tl-note">Heritage Cantonese · Tea & walk-through</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-name">31/03 · 15:30</div>
+      <div class="tl-name" style="font-weight:400; color:#888; font-size:9px;">↓ walk</div>
+      <div class="tl-note">D1 neighbourhood walk — Lý Tự Trọng → Đồng Khởi</div>
+    </div>
+    <div class="tl-item highlight">
+      <div class="tl-time">31/03 · 19:00</div>
+      <div class="tl-name">Long Triều ★</div>
+      <div class="tl-note">Michelin 1-Star · Dinner · Reservation req.</div>
+    </div>
+    <div class="tl-item highlight">
+      <div class="tl-time">01/04 · 10:30</div>
+      <div class="tl-name">Li Bai</div>
+      <div class="tl-note">Sheraton · Weekend dim sum · Final stop</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DAY 1 -->
+  <div class="day-header">
+    <div class="day-num">01</div>
+    <div class="day-info">
+      <h2>Tuesday, 31 March — Full Day Benchmark</h2>
+      <p>Lunch · Heritage visit · Evening: Michelin-starred dinner</p>
+    </div>
+  </div>
+
+  <div class="three-col">
+
+    <!-- DIM TU TAC -->
+    <div class="card">
+      <div class="time-badge">12:00 – 13:30 · Lunch</div>
+      <h3>Dim Tu Tac</h3>
+      <div class="address">55 Đồng Du, Bến Nghé, Quận 1</div>
+      <div class="tag-row">
+        <span class="tag gold">Michelin Bib Gourmand</span>
+        <span class="tag">Since 2015</span>
+        <span class="tag">Chain · 6 outlets</span>
+      </div>
+      <ul>
+        <li>Vietnam's most-recognised Cantonese chain</li>
+        <li>Signature: dim sum + Peking duck</li>
+        <li>Volume-driven, mid-premium positioning</li>
+        <li>Strong local Vietnamese-Chinese clientele</li>
+        <li><strong>Observe:</strong> Turnover rate, dim sum variety & freshness, queue management, price/cover</li>
+      </ul>
+    </div>
+
+    <!-- SHANG PALACE -->
+    <div class="card">
+      <div class="time-badge">15:00 – 16:00 · Tea & Walk-Through</div>
+      <h3>Shang Palace</h3>
+      <div class="address">1/F Norfolk Mansion, 17–21 Lý Tự Trọng, Quận 1</div>
+      <div class="tag-row">
+        <span class="tag red">Since 2007 · Heritage</span>
+        <span class="tag">Daily dim sum</span>
+        <span class="tag">Hotel-anchored</span>
+      </div>
+      <ul>
+        <li>Saigon's longest-running upscale Cantonese</li>
+        <li>Extensive dim sum + à la carte</li>
+        <li>Loyal expat & Vietnamese-Chinese community base</li>
+        <li>Warm, traditional ambiance — heritage property</li>
+        <li><strong>Observe:</strong> Décor & private room setup, loyal customer profile, service style</li>
+      </ul>
+    </div>
+
+    <!-- LONG TRIEU -->
+    <div class="card dark">
+      <div class="time-badge">19:00 onwards · Dinner</div>
+      <h3>Long Triều ★</h3>
+      <div class="address">The Reverie Saigon, 22–36 Nguyễn Huệ, Quận 1</div>
+      <div class="tag-row">
+        <span class="tag white">Michelin 1-Star 2024 & 2025</span>
+        <span class="tag white">Reservation only</span>
+      </div>
+      <ul>
+        <li>Chef Wong Fu Keung — 25+ yrs Cantonese expertise</li>
+        <li>HCMC's only Michelin-starred Chinese restaurant</li>
+        <li>Traditional Cantonese: roasted meats, seafood, dim sum</li>
+        <li>Luxury hotel context — ultra-premium positioning</li>
+        <li><strong>Observe:</strong> Service choreography, wine/tea pairing, private room capacity, price ceiling</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- DAY 1 CALLOUT -->
+  <div class="callout">
+    <strong>Day 1 Read:</strong> Three tiers of the market in one day — <em>Bib Gourmand mass-premium</em> (Dim Tu Tac) → <em>heritage institution</em> (Shang Palace) → <em>Michelin fine dining</em> (Long Triều). Post-dinner debrief: note where each venue wins on experience vs. price vs. format replicability.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DAY 2 -->
+  <div class="day-header">
+    <div class="day-num">02</div>
+    <div class="day-info">
+      <h2>Wednesday, 1 April — Morning Only (depart afternoon)</h2>
+      <p>Weekend dim sum benchmark · Internal debrief · Airport by 13:00</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- LI BAI -->
+    <div class="card">
+      <div class="time-badge">10:30 – 12:00 · Dim Sum Brunch</div>
+      <h3>Li Bai</h3>
+      <div class="address">2/F Sheraton Saigon Grand Opera, 80 Đồng Du, Quận 1</div>
+      <div class="tag-row">
+        <span class="tag gold">Weekend Dim Sum Buffet</span>
+        <span class="tag">Marriott-anchored</span>
+        <span class="tag">Recently refurbished</span>
+      </div>
+      <ul>
+        <li>Authentic Cantonese in a luxury hotel setting</li>
+        <li>Weekend dim sum buffet — wide selection</li>
+        <li>Refined ambiance, strong business dining profile</li>
+        <li>~₫1,000,000/person price range</li>
+        <li>Directly comparable to Tung Lok's hotel-anchored format</li>
+        <li><strong>Observe:</strong> Buffet vs. à la carte mix, service ratio, banquet/PDR availability</li>
+      </ul>
+    </div>
+
+    <!-- DEBRIEF -->
+    <div class="card red">
+      <div class="section-label" style="color:#D8C8C8;">12:00 – 13:00 · Debrief</div>
+      <h3 style="font-size:13px; margin-bottom:6px;">Key Questions to Resolve</h3>
+      <ul>
+        <li>Which format fits Tung Lok HCMC best: standalone vs. hotel-anchored?</li>
+        <li>Price positioning: Bib Gourmand tier vs. Michelin fine dining?</li>
+        <li>Dim sum as anchor (lunch traffic) vs. dinner-first strategy?</li>
+        <li>Private Dining Room capacity: minimum viable for HCMC corporate market?</li>
+        <li>Local partner model: JV with Vietnamese F&B group or direct entry?</li>
+        <li>Customer mix target: expat community vs. affluent Vietnamese vs. Chinese diaspora?</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- BENCHMARK COMPARISON TABLE -->
+  <div class="section-label">Benchmark Comparison — 4 Venues</div>
+  <table style="margin-bottom:11px;">
+    <thead>
+      <tr>
+        <th>Venue</th>
+        <th>Format</th>
+        <th>Cuisine Tier</th>
+        <th>Avg. Spend/pax</th>
+        <th>Dim Sum</th>
+        <th>PDR Available</th>
+        <th>Tung Lok Relevance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dim Tu Tac</td>
+        <td>Chain, standalone</td>
+        <td><span class="star">★★★</span> Bib Gourmand</td>
+        <td>₫300–600K</td>
+        <td><span class="check">✓</span> Anchor</td>
+        <td>Limited</td>
+        <td>Volume benchmark, not target tier</td>
+      </tr>
+      <tr>
+        <td>Shang Palace</td>
+        <td>Hotel-anchored (Norfolk)</td>
+        <td><span class="star">★★★★</span> Heritage</td>
+        <td>₫600K–1M</td>
+        <td><span class="check">✓</span> Daily</td>
+        <td>Yes</td>
+        <td>Closest format analogue — 20-yr market anchor</td>
+      </tr>
+      <tr>
+        <td>Long Triều</td>
+        <td>Hotel fine dining (Reverie)</td>
+        <td><span class="star">★★★★★</span> Michelin ★</td>
+        <td>₫1.5–3M+</td>
+        <td><span class="check">✓</span> Premium</td>
+        <td>Yes — luxury</td>
+        <td>Ceiling benchmark — aspirational tier</td>
+      </tr>
+      <tr>
+        <td>Li Bai</td>
+        <td>Hotel-anchored (Sheraton)</td>
+        <td><span class="star">★★★★</span> Premium</td>
+        <td>₫800K–1.2M</td>
+        <td><span class="check">✓</span> Weekend buffet</td>
+        <td>Yes</td>
+        <td>Direct format comp — hotel Cantonese, similar price band</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- MARKET READ -->
+  <div class="callout neutral">
+    <strong>Market Read:</strong> HCMC's upscale Chinese dining is dominated by <em>hotel-anchored Cantonese</em> (Shang Palace, Li Bai, Long Triều) — the same model Tung Lok operates in Singapore. The standalone premium format (Dim Tu Tac) captures volume but not margin. <strong>White space:</strong> A contemporary Cantonese concept in D1 or D3 with strong private dining capacity, modern interior, and a serious dim sum lunch program targeting the corporate segment — currently underserved above Dim Tu Tac but below Long Triều's price ceiling.
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>Prepared by <strong>Zera</strong> · Royal Canary Corp · March 2026</div>
+    <div>Confidential — For Tung Lok Group Internal Use Only</div>
+    <div>31 March – 1 April 2026 · Ho Chi Minh City</div>
+  </div>
+
+</div>
+</body>
+</html>
