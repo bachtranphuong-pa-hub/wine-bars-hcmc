@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuần Châu — Tiered Pricing & Developer Margin Model v3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#F5F3EF; color:#1A1A1A; font-size:12px; line-height:1.55; }
+  .page { max-width:1200px; margin:0 auto; padding:32px 24px; }
+
+  .header { border-bottom:3px solid #1B2A4A; padding-bottom:16px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:flex-end; }
+  .header h1 { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:300; color:#1B2A4A; line-height:1; }
+  .header h1 span { font-style:italic; font-weight:600; }
+  .header-sub { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#888; margin-top:4px; }
+  .header-right { text-align:right; font-size:10.5px; color:#666; line-height:1.8; }
+  .header-right strong { color:#1B2A4A; }
+
+  .fx-banner { background:#8B0000; color:#fff; padding:8px 20px; margin-bottom:20px; display:flex; align-items:center; gap:16px; font-size:11px; }
+  .fx-banner strong { font-size:14px; letter-spacing:0.05em; }
+  .fx-banner .fx-note { opacity:0.85; }
+
+  .assumptions { background:#1B2A4A; color:#fff; padding:14px 20px; margin-bottom:24px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .asm-item { }
+  .asm-label { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:#A0B0C8; margin-bottom:3px; }
+  .asm-value { font-size:13px; font-weight:600; color:#E8D5A3; }
+  .asm-note { font-size:9px; color:#8090A8; margin-top:2px; }
+
+  .section-title { font-size:9.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; color:#888; margin-bottom:10px; padding-bottom:4px; border-bottom:1px solid #DDD; }
+  .brand-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+  .brand-card { border:1px solid #DDD; background:#fff; padding:14px; }
+  .brand-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin-bottom:6px; }
+  .brand-tag { display:inline-block; font-size:9px; padding:2px 8px; color:#fff; margin-bottom:8px; letter-spacing:0.05em; }
+  .brand-row { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid #F0EDE8; font-size:10.5px; }
+  .brand-row:last-child { border-bottom:none; }
+  .brand-row .lbl { color:#888; }
+  .brand-row .val { font-weight:500; }
+  .fitout-note { font-size:9.5px; color:#777; font-style:italic; margin-top:8px; padding-top:6px; border-top:1px dashed #DDD; }
+  .brand-note { font-size:10px; margin-top:8px; padding:6px 8px; border-left:3px solid #DDD; color:#444; line-height:1.5; }
+
+  .scenario-block { margin-bottom:32px; }
+  .scenario-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .scenario-num { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:300; color:#E0DDD8; line-height:1; }
+  .scenario-info h2 { font-size:13px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+  .scenario-info p { font-size:10px; color:#888; }
+
+  .tier-table { width:100%; border-collapse:collapse; margin-bottom:14px; font-size:11px; }
+  .tier-table th { background:#F0EDE8; padding:6px 10px; text-align:left; font-weight:600; font-size:10px; letter-spacing:0.05em; }
+  .tier-table td { padding:6px 10px; border-bottom:1px solid #F0EDE8; }
+  .tier-Prestige { background:#FDF8EE; }
+  .tier-Premium  { background:#F8F8FF; }
+  .tier-Grand    { background:#F8FDF8; }
+
+  .result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px; }
+  .result-card { border:1px solid #DDD; padding:12px 14px; background:#fff; }
+  .result-card .rc-brand { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid; }
+  .result-card .rc-row { display:flex; justify-content:space-between; font-size:10.5px; padding:2.5px 0; }
+  .result-card .rc-row .lbl { color:#777; }
+  .result-card .rc-row .val { font-weight:500; }
+  .result-card .gdv-big { font-size:22px; font-weight:300; font-family:'Cormorant Garamond',serif; margin:6px 0; }
+  .result-card .margin-big { font-size:18px; font-weight:600; margin:4px 0; }
+  .cost-breakdown { font-size:9.5px; color:#999; margin-top:6px; padding-top:6px; border-top:1px dashed #EEE; }
+
+  .summary-table { width:100%; border-collapse:collapse; font-size:11px; margin-bottom:24px; }
+  .summary-table thead tr { background:#1B2A4A; color:#E8D5A3; }
+  .summary-table th { padding:8px 10px; text-align:left; font-weight:500; font-size:10px; letter-spacing:0.04em; }
+  .summary-table tbody tr:nth-child(even) { background:#FAF8F5; }
+  .summary-table tbody tr:nth-child(odd) { background:#fff; }
+  .summary-table td { padding:6px 10px; border-bottom:1px solid #EEE; }
+  .summary-table td:first-child { font-weight:500; }
+
+  .rec-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:28px; }
+  .rec-card { padding:14px; border-left:4px solid; }
+  .rec-card h3 { font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px; }
+  .rec-card p { font-size:10.5px; color:#444; line-height:1.6; }
+  .rec-1 { background:#E8F5E9; border-color:#1a6b2e; }
+  .rec-2 { background:#E3F2FD; border-color:#1565C0; }
+  .rec-3 { background:#FFF8E1; border-color:#F57F17; }
+
+  .divider { height:1px; background:#DDD; margin:20px 0; }
+  .footer { border-top:1px solid #DDD; padding-top:10px; display:flex; justify-content:space-between; font-size:9.5px; color:#AAA; }
+  .footer strong { color:#666; }
+  .usd-ref { color:#aaa; font-size:9.5px; font-weight:400; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>Tuần Châu <span>Private Estate</span></h1>
+    <div class="header-sub">Developer Margin Model v3 — Tiered Pricing × 3 Brands × 3 Scenarios · VND Primary</div>
+  </div>
+  <div class="header-right">
+    <strong>Đảo Tuần Châu, Vịnh Hạ Long</strong><br>
+    18 Căn · 15,500m² GFA · 3 Ha<br>
+    Tháng 3/2026 · Confidential
+  </div>
+</div>
+
+<!-- FX BANNER -->
+<div class="fx-banner">
+  <strong>⚠️ Tỷ giá cập nhật: $1 USD = 27,000 VND</strong>
+  <span class="fx-note">Phản ánh diễn biến căng thẳng Iran–Mỹ (tháng 3/2026). Tất cả phép tính chuyển đổi sang VND theo tỷ giá này. USD chỉ để tham khảo.</span>
+</div>
+
+<!-- ASSUMPTIONS -->
+<div class="section-title">Giả Định Mô Hình</div>
+<div class="assumptions">
+  <div class="asm-item">
+    <div class="asm-label">Chi Phí Đất</div>
+    <div class="asm-value">756 tỷ VND</div>
+    <div class="asm-note">Giá thực tế · Đảo Tuần Châu · 3ha <span style="color:#6080A0">($28M)</span></div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Hạ Tầng</div>
+    <div class="asm-value">162 tỷ VND</div>
+    <div class="asm-note">Bến tàu · đường · tiện ích · kè biển · cảnh quan <span style="color:#6080A0">($6M)</span></div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Xây Dựng Phần Thô</div>
+    <div class="asm-value">59.4 tr/m²</div>
+    <div class="asm-note">Tất cả brand · phụ phí logistics đảo <span style="color:#6080A0">($2,200/m²)</span></div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Dự Phòng</div>
+    <div class="asm-value">8% chi phí cứng</div>
+    <div class="asm-note">Phụ phí dự án đảo · thời tiết · chuỗi cung ứng</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Sales & Marketing</div>
+    <div class="asm-value">4% GDV</div>
+    <div class="asm-note">Hoa hồng môi giới · sự kiện · digital</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Tỷ Giá</div>
+    <div class="asm-value">27,000 VND/$</div>
+    <div class="asm-note">Cập nhật tháng 3/2026 · Iran–Mỹ escalation</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Số Lượng Villa</div>
+    <div class="asm-value">18 Căn</div>
+    <div class="asm-note">5 Prestige · 9 Premium · 4 Grand</div>
+  </div>
+  <div class="asm-item">
+    <div class="asm-label">Phí License Brand</div>
+    <div class="asm-value">% của GDV</div>
+    <div class="asm-note">Benchmark Savills VN · khác nhau theo brand</div>
+  </div>
+</div>
+
+<!-- BRAND CARDS -->
+<div class="section-title">So Sánh Brand — Xây Dựng, Hoàn Thiện & Phí</div>
+<div class="brand-grid">
+
+  <div class="brand-card">
+    <div class="brand-name" style="color:#1B2A4A">Capella</div>
+    <span class="brand-tag" style="background:#1B2A4A">Bán 24 tháng · License 4.0% GDV</span>
+    <div class="brand-row"><span class="lbl">Xây thô/m²</span><span class="val">59.4 tr <span class="usd-ref">($2,200)</span></span></div>
+    <div class="brand-row"><span class="lbl">Hoàn thiện/m²</span><span class="val">21.6 tr <span class="usd-ref">($800)</span></span></div>
+    <div class="brand-row"><span class="lbl"><strong>Tổng XD/m²</strong></span><span class="val"><strong>81.0 tr <span class="usd-ref">($3,000)</span></strong></span></div>
+    <div class="brand-row"><span class="lbl">Tổng XD (15,500m²)</span><span class="val">1,255.5 tỷ <span class="usd-ref">($46.5M)</span></span></div>
+    <div class="brand-row"><span class="lbl">Khu vực chung</span><span class="val">121.5 tỷ <span class="usd-ref">($4.5M)</span></span></div>
+    <div class="brand-row"><span class="lbl"><strong>Tổng chi phí cứng (trừ đất)</strong></span><span class="val"><strong>1,377 tỷ <span class="usd-ref">($51.0M)</span></strong></span></div>
+    <div class="brand-row"><span class="lbl">Setup & pre-opening</span><span class="val">40.5 tỷ <span class="usd-ref">($1.5M)</span></span></div>
+    <div class="brand-row"><span class="lbl">Sàn giá tối thiểu</span><span class="val">≥280 tr/m²</span></div>
+    <div class="brand-row"><span class="lbl">Hiện diện VN</span><span class="val">Chưa có</span></div>
+    <div class="fitout-note">Hoàn thiện: Thiết bị Swarovski, FF&E đặt riêng, 3 vòng review thiết kế</div>
+    <div class="brand-note">Đỉnh ultra-luxury. Ràng buộc sàn giá ở Scenario Base. Tiêu chuẩn cao nhất.</div>
+  </div>
+
+  <div class="brand-card">
+    <div class="brand-name" style="color:#2D5016">Zannier</div>
+    <span class="brand-tag" style="background:#2D5016">Bán 18 tháng · License 3.0% GDV</span>
+    <div class="brand-row"><span class="lbl">Xây thô/m²</span><span class="val">59.4 tr <span class="usd-ref">($2,200)</span></span></div>
+    <div class="brand-row"><span class="lbl">Hoàn thiện/m²</span><span class="val">13.5 tr <span class="usd-ref">($500)</span></span></div>
+    <div class="brand-row"><span class="lbl"><strong>Tổng XD/m²</strong></span><span class="val"><strong>72.9 tr <span class="usd-ref">($2,700)</span></strong></span></div>
+    <div class="brand-row"><span class="lbl">Tổng XD (15,500m²)</span><span class="val">1,129.95 tỷ <span class="usd-ref">($41.9M)</span></span></div>
+    <div class="brand-row"><span class="lbl">Khu vực chung</span><span class="val">81.0 tỷ <span class="usd-ref">($3.0M)</span></span></div>
+    <div class="brand-row"><span class="lbl"><strong>Tổng chi phí cứng (trừ đất)</strong></span><span class="val"><strong>1,210.95 tỷ <span class="usd-ref">($44.9M)</span></strong></span></div>
+    <div class="brand-row"><span class="lbl">Setup & pre-opening</span><span class="val">21.6 tỷ <span class="usd-ref">($0.8M)</span></span></div>
+    <div class="brand-row"><span class="lbl">Sàn giá tối thiểu</span><span class="val">≥220 tr/m²</span></div>
+    <div class="brand-row"><span class="lbl">Hiện diện VN</span><span class="val">Bãi San Hô</span></div>
+    <div class="fitout-note">Hoàn thiện: Vật liệu thủ công, quy mô boutique, overhead thấp hơn</div>
+    <div class="brand-note">Biên lợi nhuận tốt nhất. Novelty premium — đầu tiên tại Hạ Long. Phí linh hoạt nhất.</div>
+  </div>
+
+  <div class="brand-card">
+    <div class="brand-name" style="color:#7A4A1A">Anantara</div>
+    <span class="brand-tag" style="background:#7A4A1A">Bán 15 tháng · License 3.5% GDV</span>
+    <div class="brand-row"><span class="lbl">Xây thô/m²</span><span class="val">59.4 tr <span class="usd-ref">($2,200)</span></span></div>
+    <div class="brand-row"><span class="lbl">Hoàn thiện/m²</span><span class="val">16.2 tr <span class="usd-ref">($600)</span></span></div>
+    <div class="brand-row"><span class="lbl"><strong>Tổng XD/m²</strong></span><span class="val"><strong>75.6 tr <span class="usd-ref">($2,800)</span></strong></span></div>
+    <div class="brand-row"><span class="lbl">Tổng XD (15,500m²)</span><span class="val">1,171.8 tỷ <span class="usd-ref">($43.4M)</span></span></div>
+    <div class="brand-row"><span class="lbl">Khu vực chung</span><span class="val">94.5 tỷ <span class="usd-ref">($3.5M)</span></span></div>
+    <div class="brand-row"><span class="lbl"><strong>Tổng chi phí cứng (trừ đất)</strong></span><span class="val"><strong>1,266.3 tỷ <span class="usd-ref">($46.9M)</span></strong></span></div>
+    <div class="brand-row"><span class="lbl">Setup & pre-opening</span><span class="val">27.0 tỷ <span class="usd-ref">($1.0M)</span></span></div>
+    <div class="brand-row"><span class="lbl">Sàn giá tối thiểu</span><span class="val">≥200 tr/m²</span></div>
+    <div class="brand-row"><span class="lbl">Hiện diện VN</span><span class="val">Layan Phuket, đã chứng minh tại VN</span></div>
+    <div class="fitout-note">Hoàn thiện: Mạng lưới mua sắm Minor Hotels, template VN đã được kiểm chứng</div>
+    <div class="brand-note">Tốc độ bán nhanh nhất. Người mua VN đã biết brand. Hiệu quả procurement.</div>
+  </div>
+</div>
+
+<!-- SCENARIO 1: BASE -->
+<div class="scenario-block">
+  <div class="divider"></div>
+  <div class="scenario-header">
+    <div class="scenario-num">01</div>
+    <div class="scenario-info">
+      <h2>Scenario: Base</h2>
+      <p>Grand ~175 tr/m² · Blended ~213 tr/m²</p>
+    </div>
+  </div>
+
+  <div class="section-title">Phân Tầng Giá</div>
+  <table class="tier-table">
+    <thead><tr><th>Tầng</th><th>Căn</th><th>Diện tích TB</th><th>Giá/m²</th><th>Giá/căn</th><th>GDV tầng</th><th>% tổng GDV</th></tr></thead>
+    <tbody>
+      <tr class="tier-Prestige">
+        <td><strong>Prestige</strong></td><td>5</td><td>950m²</td>
+        <td>260 tr/m² <span class="usd-ref">($9,630/m²)</span></td>
+        <td><strong>247 tỷ</strong> <span class="usd-ref">($9.1M)</span></td>
+        <td>1,235 tỷ</td><td>37%</td>
+      </tr>
+      <tr class="tier-Premium">
+        <td><strong>Premium</strong></td><td>9</td><td>850m²</td>
+        <td>200 tr/m² <span class="usd-ref">($7,407/m²)</span></td>
+        <td><strong>170 tỷ</strong> <span class="usd-ref">($6.3M)</span></td>
+        <td>1,530 tỷ</td><td>46%</td>
+      </tr>
+      <tr class="tier-Grand">
+        <td><strong>Grand</strong></td><td>4</td><td>775m²</td>
+        <td>175 tr/m² <span class="usd-ref">($6,481/m²)</span></td>
+        <td><strong>136 tỷ</strong> <span class="usd-ref">($5.0M)</span></td>
+        <td>542 tỷ</td><td>16%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Base results: GDV = 3,307 tỷ = $122.5M
+       Capella total cost: Land 756 + Const 1255.5 + Common 121.5 + Infra 162 + License(4%)132.3 + Setup 40.5 + SM(4%)132.3 + Cont(8% hard) = 756+1255.5+121.5+162+132.3+40.5+132.3+135.3(8% of 1540) = 2,735.4tỷ → Margin 571.6tỷ
+       Let me recalculate properly.
+       GDV = 1235+1530+542 = 3307 tỷ
+       Hard costs (excl land): Capella const 1255.5 + common 121.5 + infra 162 = 1539 tỷ
+       Contingency 8% of 1539 = 123.1 tỷ
+       Brand license 4% of 3307 = 132.3 tỷ
+       Setup 40.5 tỷ
+       SM 4% of 3307 = 132.3 tỷ
+       Land 756 tỷ
+       Total cost = 756+1539+123.1+132.3+40.5+132.3 = 2723.2 tỷ
+       Margin = 3307 - 2723.2 = 583.8 tỷ = 17.6%
+
+       Zannier: hard costs: 1129.95+81+162 = 1372.95 tỷ
+       Cont 8% = 109.8 tỷ
+       License 3% = 99.2 tỷ
+       Setup 21.6 tỷ
+       SM 4% = 132.3 tỷ
+       Total = 756+1372.95+109.8+99.2+21.6+132.3 = 2491.85 tỷ
+       Margin = 3307 - 2491.85 = 815.15 tỷ = 24.6%
+
+       Anantara: hard costs: 1171.8+94.5+162 = 1428.3 tỷ
+       Cont 8% = 114.3 tỷ
+       License 3.5% = 115.7 tỷ
+       Setup 27 tỷ
+       SM 4% = 132.3 tỷ
+       Total = 756+1428.3+114.3+115.7+27+132.3 = 2573.6 tỷ
+       Margin = 3307 - 2573.6 = 733.4 tỷ = 22.2%
+  -->
+
+  <div class="section-title">Lợi Nhuận Nhà Phát Triển — Theo Brand</div>
+  <div class="result-grid">
+    <div class="result-card">
+      <div class="rc-brand" style="color:#1B2A4A;border-color:#1B2A4A">Capella</div>
+      <div class="gdv-big">3,307 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($122.5M)</span></span></div>
+      <div class="margin-big" style="color:#b45309">584 tỷ <span style="font-size:13px">(17.6%) <span class="usd-ref">($21.6M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">213 tr/m² <span class="usd-ref">($7,889)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,723 tỷ <span class="usd-ref">($100.9M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">24 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#c62828;font-weight:600;">⚠️ Vi phạm</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,255.5 tỷ · Khu chung 121.5 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 132.3 tỷ · Setup 40.5 tỷ · S&M 132.3 tỷ · Dự phòng 123.1 tỷ
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#2D5016;border-color:#2D5016">Zannier</div>
+      <div class="gdv-big">3,307 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($122.5M)</span></span></div>
+      <div class="margin-big" style="color:#b45309">815 tỷ <span style="font-size:13px">(24.6%) <span class="usd-ref">($30.2M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">213 tr/m² <span class="usd-ref">($7,889)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,492 tỷ <span class="usd-ref">($92.3M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">18 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,129.95 tỷ · Khu chung 81 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 99.2 tỷ · Setup 21.6 tỷ · S&M 132.3 tỷ · Dự phòng 109.8 tỷ
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#7A4A1A;border-color:#7A4A1A">Anantara</div>
+      <div class="gdv-big">3,307 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($122.5M)</span></span></div>
+      <div class="margin-big" style="color:#b45309">733 tỷ <span style="font-size:13px">(22.2%) <span class="usd-ref">($27.2M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">213 tr/m² <span class="usd-ref">($7,889)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,574 tỷ <span class="usd-ref">($95.3M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">15 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,171.8 tỷ · Khu chung 94.5 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 115.7 tỷ · Setup 27 tỷ · S&M 132.3 tỷ · Dự phòng 114.3 tỷ
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENARIO 2: MID -->
+<!-- GDV Mid: Prestige 300tr×950×5=1425tỷ + Premium 220tr×850×9=1683tỷ + Grand 185tr×775×4=574tỷ = 3682 tỷ
+     Capella: license 4%=147.3tỷ, SM 4%=147.3tỷ, hard=1539tỷ, cont=123.1, setup=40.5, land=756
+     Total=756+1539+123.1+147.3+40.5+147.3=2753.2 → Margin=3682-2753.2=928.8tỷ=25.2%
+     Zannier: license 3%=110.5tỷ, SM=147.3, hard=1372.95, cont=109.8, setup=21.6, land=756
+     Total=756+1372.95+109.8+110.5+21.6+147.3=2518.15 → Margin=3682-2518.15=1163.85tỷ=31.6%
+     Anantara: license 3.5%=128.9tỷ, SM=147.3, hard=1428.3, cont=114.3, setup=27, land=756
+     Total=756+1428.3+114.3+128.9+27+147.3=2601.8 → Margin=3682-2601.8=1080.2tỷ=29.3%
+-->
+<div class="scenario-block">
+  <div class="divider"></div>
+  <div class="scenario-header">
+    <div class="scenario-num">02</div>
+    <div class="scenario-info">
+      <h2>Scenario: Mid</h2>
+      <p>Grand ~185 tr/m² · Blended ~238 tr/m²</p>
+    </div>
+  </div>
+
+  <div class="section-title">Phân Tầng Giá</div>
+  <table class="tier-table">
+    <thead><tr><th>Tầng</th><th>Căn</th><th>Diện tích TB</th><th>Giá/m²</th><th>Giá/căn</th><th>GDV tầng</th><th>% tổng GDV</th></tr></thead>
+    <tbody>
+      <tr class="tier-Prestige">
+        <td><strong>Prestige</strong></td><td>5</td><td>950m²</td>
+        <td>300 tr/m² <span class="usd-ref">($11,111/m²)</span></td>
+        <td><strong>285 tỷ</strong> <span class="usd-ref">($10.6M)</span></td>
+        <td>1,425 tỷ</td><td>39%</td>
+      </tr>
+      <tr class="tier-Premium">
+        <td><strong>Premium</strong></td><td>9</td><td>850m²</td>
+        <td>220 tr/m² <span class="usd-ref">($8,148/m²)</span></td>
+        <td><strong>187 tỷ</strong> <span class="usd-ref">($6.9M)</span></td>
+        <td>1,683 tỷ</td><td>46%</td>
+      </tr>
+      <tr class="tier-Grand">
+        <td><strong>Grand</strong></td><td>4</td><td>775m²</td>
+        <td>185 tr/m² <span class="usd-ref">($6,852/m²)</span></td>
+        <td><strong>143 tỷ</strong> <span class="usd-ref">($5.3M)</span></td>
+        <td>574 tỷ</td><td>16%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Lợi Nhuận Nhà Phát Triển — Theo Brand</div>
+  <div class="result-grid">
+    <div class="result-card">
+      <div class="rc-brand" style="color:#1B2A4A;border-color:#1B2A4A">Capella</div>
+      <div class="gdv-big">3,682 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($136.4M)</span></span></div>
+      <div class="margin-big" style="color:#2d7d46">929 tỷ <span style="font-size:13px">(25.2%) <span class="usd-ref">($34.4M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">238 tr/m² <span class="usd-ref">($8,815)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,753 tỷ <span class="usd-ref">($102.0M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">24 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,255.5 tỷ · Khu chung 121.5 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 147.3 tỷ · Setup 40.5 tỷ · S&M 147.3 tỷ · Dự phòng 123.1 tỷ
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#2D5016;border-color:#2D5016">Zannier</div>
+      <div class="gdv-big">3,682 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($136.4M)</span></span></div>
+      <div class="margin-big" style="color:#2d7d46">1,164 tỷ <span style="font-size:13px">(31.6%) <span class="usd-ref">($43.1M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">238 tr/m² <span class="usd-ref">($8,815)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,518 tỷ <span class="usd-ref">($93.3M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">18 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,129.95 tỷ · Khu chung 81 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 110.5 tỷ · Setup 21.6 tỷ · S&M 147.3 tỷ · Dự phòng 109.8 tỷ
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#7A4A1A;border-color:#7A4A1A">Anantara</div>
+      <div class="gdv-big">3,682 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($136.4M)</span></span></div>
+      <div class="margin-big" style="color:#2d7d46">1,080 tỷ <span style="font-size:13px">(29.3%) <span class="usd-ref">($40.0M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">238 tr/m² <span class="usd-ref">($8,815)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,602 tỷ <span class="usd-ref">($96.4M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">15 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,171.8 tỷ · Khu chung 94.5 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 128.9 tỷ · Setup 27 tỷ · S&M 147.3 tỷ · Dự phòng 114.3 tỷ
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENARIO 3: STRETCH -->
+<!-- GDV Stretch: Prestige 340tr×950×5=1615tỷ + Premium 250tr×850×9=1912.5tỷ + Grand 200tr×775×4=620tỷ = 4147.5 tỷ
+     Capella: license 4%=165.9, SM 4%=165.9, hard=1539, cont=123.1, setup=40.5, land=756
+     Total=756+1539+123.1+165.9+40.5+165.9=2790.4 → Margin=4147.5-2790.4=1357.1tỷ=32.7%
+     Zannier: license 3%=124.4, SM=165.9, hard=1372.95, cont=109.8, setup=21.6, land=756
+     Total=756+1372.95+109.8+124.4+21.6+165.9=2550.65 → Margin=4147.5-2550.65=1596.85tỷ=38.5%
+     Anantara: license 3.5%=145.2, SM=165.9, hard=1428.3, cont=114.3, setup=27, land=756
+     Total=756+1428.3+114.3+145.2+27+165.9=2636.7 → Margin=4147.5-2636.7=1510.8tỷ=36.4%
+-->
+<div class="scenario-block">
+  <div class="divider"></div>
+  <div class="scenario-header">
+    <div class="scenario-num">03</div>
+    <div class="scenario-info">
+      <h2>Scenario: Stretch</h2>
+      <p>Grand ~200 tr/m² · Blended ~268 tr/m²</p>
+    </div>
+  </div>
+
+  <div class="section-title">Phân Tầng Giá</div>
+  <table class="tier-table">
+    <thead><tr><th>Tầng</th><th>Căn</th><th>Diện tích TB</th><th>Giá/m²</th><th>Giá/căn</th><th>GDV tầng</th><th>% tổng GDV</th></tr></thead>
+    <tbody>
+      <tr class="tier-Prestige">
+        <td><strong>Prestige</strong></td><td>5</td><td>950m²</td>
+        <td>340 tr/m² <span class="usd-ref">($12,593/m²)</span></td>
+        <td><strong>323 tỷ</strong> <span class="usd-ref">($11.9M)</span></td>
+        <td>1,615 tỷ</td><td>39%</td>
+      </tr>
+      <tr class="tier-Premium">
+        <td><strong>Premium</strong></td><td>9</td><td>850m²</td>
+        <td>250 tr/m² <span class="usd-ref">($9,259/m²)</span></td>
+        <td><strong>212 tỷ</strong> <span class="usd-ref">($7.9M)</span></td>
+        <td>1,912.5 tỷ</td><td>46%</td>
+      </tr>
+      <tr class="tier-Grand">
+        <td><strong>Grand</strong></td><td>4</td><td>775m²</td>
+        <td>200 tr/m² <span class="usd-ref">($7,407/m²)</span></td>
+        <td><strong>155 tỷ</strong> <span class="usd-ref">($5.7M)</span></td>
+        <td>620 tỷ</td><td>15%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">Lợi Nhuận Nhà Phát Triển — Theo Brand</div>
+  <div class="result-grid">
+    <div class="result-card">
+      <div class="rc-brand" style="color:#1B2A4A;border-color:#1B2A4A">Capella</div>
+      <div class="gdv-big">4,148 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($153.6M)</span></span></div>
+      <div class="margin-big" style="color:#2d7d46">1,357 tỷ <span style="font-size:13px">(32.7%) <span class="usd-ref">($50.3M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">268 tr/m² <span class="usd-ref">($9,926)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,790 tỷ <span class="usd-ref">($103.3M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">24 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,255.5 tỷ · Khu chung 121.5 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 165.9 tỷ · Setup 40.5 tỷ · S&M 165.9 tỷ · Dự phòng 123.1 tỷ
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#2D5016;border-color:#2D5016">Zannier</div>
+      <div class="gdv-big">4,148 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($153.6M)</span></span></div>
+      <div class="margin-big" style="color:#1a6b2e">1,597 tỷ <span style="font-size:13px">(38.5%) <span class="usd-ref">($59.1M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">268 tr/m² <span class="usd-ref">($9,926)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,551 tỷ <span class="usd-ref">($94.5M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">18 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,129.95 tỷ · Khu chung 81 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 124.4 tỷ · Setup 21.6 tỷ · S&M 165.9 tỷ · Dự phòng 109.8 tỷ
+      </div>
+    </div>
+    <div class="result-card">
+      <div class="rc-brand" style="color:#7A4A1A;border-color:#7A4A1A">Anantara</div>
+      <div class="gdv-big">4,148 tỷ <span style="font-size:14px;color:#888">GDV <span class="usd-ref">($153.6M)</span></span></div>
+      <div class="margin-big" style="color:#1a6b2e">1,511 tỷ <span style="font-size:13px">(36.4%) <span class="usd-ref">($56.0M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Blended giá/m²</span><span class="val">268 tr/m² <span class="usd-ref">($9,926)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tổng chi phí dự án</span><span class="val">2,637 tỷ <span class="usd-ref">($97.7M)</span></span></div>
+      <div class="rc-row"><span class="lbl">Tốc độ bán</span><span class="val">15 tháng</span></div>
+      <div class="rc-row"><span class="lbl">Kiểm tra sàn giá</span><span class="val"><span style="color:#1a6b2e;font-weight:600;">✅ OK</span></span></div>
+      <div class="cost-breakdown">
+        Đất 756 tỷ · Xây dựng 1,171.8 tỷ · Khu chung 94.5 tỷ · Hạ tầng 162 tỷ<br>
+        License brand 145.2 tỷ · Setup 27 tỷ · S&M 165.9 tỷ · Dự phòng 114.3 tỷ
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FULL MATRIX -->
+<div class="divider"></div>
+<div class="section-title">Ma Trận Kết Quả Đầy Đủ — Tất Cả Scenarios × Tất Cả Brands</div>
+<table class="summary-table">
+  <thead>
+    <tr>
+      <th>Scenario</th><th>Brand</th><th>GDV (tỷ VND)</th><th>Blended/m²</th>
+      <th>Đất</th><th>Xây dựng</th><th>HT+Khu chung</th><th>Brand Fees</th><th>S&M+Dự phòng</th>
+      <th>Tổng CP</th><th>Lợi nhuận</th><th>Biên %</th><th>Tốc độ</th><th>Sàn giá</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Base</td><td><strong>Capella</strong></td>
+      <td>3,307 tỷ</td><td>213 tr/m²</td>
+      <td>756 tỷ</td><td>1,255.5 tỷ</td><td>283.5 tỷ</td><td>172.8 tỷ</td><td>255.4 tỷ</td>
+      <td>2,723 tỷ</td>
+      <td style="color:#b45309;font-weight:600">584 tỷ</td>
+      <td style="color:#b45309;font-weight:600">17.6%</td>
+      <td>24 tháng</td><td>⚠️</td>
+    </tr>
+    <tr>
+      <td>Base</td><td><strong>Zannier</strong></td>
+      <td>3,307 tỷ</td><td>213 tr/m²</td>
+      <td>756 tỷ</td><td>1,129.95 tỷ</td><td>243 tỷ</td><td>120.8 tỷ</td><td>242.1 tỷ</td>
+      <td>2,492 tỷ</td>
+      <td style="color:#b45309;font-weight:600">815 tỷ</td>
+      <td style="color:#b45309;font-weight:600">24.6%</td>
+      <td>18 tháng</td><td>✅</td>
+    </tr>
+    <tr>
+      <td>Base</td><td><strong>Anantara</strong></td>
+      <td>3,307 tỷ</td><td>213 tr/m²</td>
+      <td>756 tỷ</td><td>1,171.8 tỷ</td><td>256.5 tỷ</td><td>143.0 tỷ</td><td>246.6 tỷ</td>
+      <td>2,574 tỷ</td>
+      <td style="color:#b45309;font-weight:600">733 tỷ</td>
+      <td style="color:#b45309;font-weight:600">22.2%</td>
+      <td>15 tháng</td><td>✅</td>
+    </tr>
+    <tr>
+      <td>Mid</td><td><strong>Capella</strong></td>
+      <td>3,682 tỷ</td><td>238 tr/m²</td>
+      <td>756 tỷ</td><td>1,255.5 tỷ</td><td>283.5 tỷ</td><td>187.8 tỷ</td><td>270.4 tỷ</td>
+      <td>2,753 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">929 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">25.2%</td>
+      <td>24 tháng</td><td>✅</td>
+    </tr>
+    <tr>
+      <td>Mid</td><td><strong>Zannier</strong></td>
+      <td>3,682 tỷ</td><td>238 tr/m²</td>
+      <td>756 tỷ</td><td>1,129.95 tỷ</td><td>243 tỷ</td><td>131.0 tỷ</td><td>257.1 tỷ</td>
+      <td>2,518 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,164 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">31.6%</td>
+      <td>18 tháng</td><td>✅</td>
+    </tr>
+    <tr>
+      <td>Mid</td><td><strong>Anantara</strong></td>
+      <td>3,682 tỷ</td><td>238 tr/m²</td>
+      <td>756 tỷ</td><td>1,171.8 tỷ</td><td>256.5 tỷ</td><td>156.2 tỷ</td><td>261.6 tỷ</td>
+      <td>2,602 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,080 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">29.3%</td>
+      <td>15 tháng</td><td>✅</td>
+    </tr>
+    <tr>
+      <td>Stretch</td><td><strong>Capella</strong></td>
+      <td>4,148 tỷ</td><td>268 tr/m²</td>
+      <td>756 tỷ</td><td>1,255.5 tỷ</td><td>283.5 tỷ</td><td>206.4 tỷ</td><td>289.0 tỷ</td>
+      <td>2,790 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">1,357 tỷ</td>
+      <td style="color:#2d7d46;font-weight:600">32.7%</td>
+      <td>24 tháng</td><td>✅</td>
+    </tr>
+    <tr>
+      <td>Stretch</td><td><strong>Zannier</strong></td>
+      <td>4,148 tỷ</td><td>268 tr/m²</td>
+      <td>756 tỷ</td><td>1,129.95 tỷ</td><td>243 tỷ</td><td>148.8 tỷ</td><td>275.7 tỷ</td>
+      <td>2,551 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,597 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">38.5%</td>
+      <td>18 tháng</td><td>✅</td>
+    </tr>
+    <tr>
+      <td>Stretch</td><td><strong>Anantara</strong></td>
+      <td>4,148 tỷ</td><td>268 tr/m²</td>
+      <td>756 tỷ</td><td>1,171.8 tỷ</td><td>256.5 tỷ</td><td>173.1 tỷ</td><td>280.2 tỷ</td>
+      <td>2,637 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">1,511 tỷ</td>
+      <td style="color:#1a6b2e;font-weight:600">36.4%</td>
+      <td>15 tháng</td><td>✅</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- RECOMMENDATIONS -->
+<div class="section-title">Khuyến Nghị Chiến Lược</div>
+<div class="rec-grid">
+  <div class="rec-card rec-1">
+    <h3>🏆 Risk-Adjusted tốt nhất: Mid + Anantara</h3>
+    <p>GDV 3,682 tỷ · Lợi nhuận 1,080 tỷ (29.3%) · Bán 15 tháng<br><br>
+    Tốc độ nhanh nhất nhờ brand quen thuộc với người mua VN. Procurement Minor Hotels giảm chi phí so với Capella. Không rủi ro vi phạm sàn giá. Cân bằng tốt giữa biên lợi nhuận và tốc độ.</p>
+  </div>
+  <div class="rec-card rec-2">
+    <h3>💰 Biên tốt nhất: Mid + Zannier</h3>
+    <p>GDV 3,682 tỷ · Lợi nhuận 1,164 tỷ (31.6%) · Bán 18 tháng<br><br>
+    Phí thấp nhất (3% vs. 4%). Novelty premium — Zannier đầu tiên tại Hạ Long = góc PR mạnh. Private Estates phù hợp hoàn toàn với mô hình non-rental. Đánh đổi: cần educate người mua về brand.</p>
+  </div>
+  <div class="rec-card rec-3">
+    <h3>⚠️ Capella: Chỉ Mid hoặc Stretch</h3>
+    <p>Base scenario vi phạm sàn giá Capella (260 tr &lt; 280 tr min). Mid scenario OK với lợi nhuận 929 tỷ (25.2%). Capella có giá trị cảm nhận cao nhất nhưng tốc độ chậm nhất (24 tháng) và fitout đắt nhất (81 tr/m²).<br><br>
+    Đề xuất Capella chỉ khi buyer là UHNWI thuần túy và tốc độ không phải ưu tiên.</p>
+  </div>
+</div>
+
+<!-- KEY NUMBERS -->
+<div class="section-title">Tổng Hợp Nhanh</div>
+<table class="summary-table" style="margin-bottom:16px;">
+  <thead><tr><th>Chỉ số</th><th>Base (avg 3 brands)</th><th>Mid (avg 3 brands)</th><th>Stretch (avg 3 brands)</th></tr></thead>
+  <tbody>
+    <tr><td>GDV (tỷ VND)</td><td>3,307 tỷ</td><td>3,682 tỷ</td><td>4,148 tỷ</td></tr>
+    <tr><td>Lợi nhuận (range)</td><td>584 – 815 tỷ</td><td>929 – 1,164 tỷ</td><td>1,357 – 1,597 tỷ</td></tr>
+    <tr><td>Biên lợi nhuận (range)</td><td>17.6% – 24.6%</td><td>25.2% – 31.6%</td><td>32.7% – 38.5%</td></tr>
+    <tr><td>Blended giá/m²</td><td>213 tr/m²</td><td>238 tr/m²</td><td>268 tr/m²</td></tr>
+    <tr><td>Đất % GDV</td><td>22.9%</td><td>20.5%</td><td>18.2%</td></tr>
+    <tr><td>USD equiv. GDV <span class="usd-ref">(@27,000)</span></td><td>$122.5M</td><td>$136.4M</td><td>$153.6M</td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <div>Chuẩn bị bởi <strong>Zera</strong> · Royal Canary Corp Advisory · Tháng 3/2026</div>
+  <div>Model v3 — Tỷ giá 27,000 VND/$ · Đất thực tế 756 tỷ · XD phân tầng theo brand</div>
+  <div>Confidential — Nội bộ</div>
+</div>
+
+</div>
+</body>
+</html>
