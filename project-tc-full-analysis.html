@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project TC — Phân Tích Toàn Diện: Validate · FX · Sponsor Returns · Ép Giá · Post-Acquisition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#F5F3EF;color:#1A1A1A;font-size:11.5px;line-height:1.5}
+  .page{max-width:1320px;margin:0 auto;padding:32px 24px}
+
+  /* HEADER */
+  .header{border-bottom:3px solid #1B2A4A;padding-bottom:16px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end}
+  .header h1{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#1B2A4A;line-height:1.1}
+  .header h1 span{font-style:italic;font-weight:600}
+  .header-sub{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-top:4px}
+  .header-right{text-align:right;font-size:9.5px;color:#666;line-height:1.8}
+  .header-right strong{color:#1B2A4A}
+
+  /* NAV */
+  .nav{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+  .nav a{padding:6px 14px;background:#1B2A4A;color:#E8D5A3;text-decoration:none;font-size:10px;font-weight:600;letter-spacing:0.05em;border-radius:2px}
+  .nav a:hover{background:#8B0000}
+
+  /* SECTION */
+  .section{margin-bottom:32px}
+  .section-hdr{background:#1B2A4A;color:#E8D5A3;padding:10px 18px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .section-hdr .sec-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;opacity:.6}
+  .section-hdr h2{font-size:14px;font-weight:500;letter-spacing:0.06em}
+  .section-hdr .sec-sub{font-size:9.5px;color:#A0B0C8;margin-left:auto}
+
+  /* TABLES */
+  table{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:14px}
+  thead tr{background:#E8EDF4}
+  th{padding:7px 10px;text-align:left;font-weight:600;font-size:9.5px;letter-spacing:.04em;color:#1B2A4A;white-space:nowrap}
+  td{padding:5px 10px;border-bottom:1px solid #EEE;white-space:nowrap}
+  tr:hover td{background:#F0EDE8}
+  .highlight-row td{background:#E8F5E9!important;font-weight:600}
+  .warn-row td{background:#FFF8E1!important}
+  .diff-pos{color:#1a6b2e;font-weight:600}
+  .diff-neg{color:#c62828;font-weight:600}
+  .diff-neu{color:#666}
+
+  /* CARDS */
+  .card-grid{display:grid;gap:12px;margin-bottom:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  .g4{grid-template-columns:1fr 1fr 1fr 1fr}
+  .card{background:#fff;border:1px solid #DDD;padding:14px}
+  .card.navy{background:#1B2A4A;color:#fff}
+  .card.green{background:#E8F5E9;border-color:#A5D6A7}
+  .card.amber{background:#FFF8E1;border-color:#FFE082}
+  .card.red{background:#FFEBEE;border-color:#EF9A9A}
+  .card.blue{background:#E3F2FD;border-color:#90CAF9}
+  .card h3{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(0,0,0,.1)}
+  .card.navy h3{color:#E8D5A3;border-color:rgba(255,255,255,.2)}
+  .kv{display:flex;justify-content:space-between;padding:2.5px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+  .kv:last-child{border-bottom:none}
+  .kv .k{color:#666;font-size:10px}
+  .kv .v{font-weight:500;font-size:10.5px}
+  .card.navy .k{color:#A0B0C8}
+  .card.navy .v{color:#fff}
+
+  /* INSIGHT BOXES */
+  .insight{border-left:4px solid;padding:10px 14px;margin:10px 0;background:#fff}
+  .insight.green{border-color:#1a6b2e;background:#F1FDF4}
+  .insight.amber{border-color:#d97706;background:#FFFBF0}
+  .insight.red{border-color:#c62828;background:#FFF5F5}
+  .insight.navy{border-color:#1B2A4A;background:#F0F2F8}
+  .insight h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .insight p{font-size:10.5px;color:#444;line-height:1.6}
+
+  /* TACTICS */
+  .tactic{background:#fff;border:1px solid #DDD;padding:12px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+  .tactic .num{font-family:'Cormorant Garamond',serif;font-size:28px;color:#1B2A4A;opacity:.3;line-height:1;flex-shrink:0;width:32px}
+  .tactic .body h4{font-size:11px;font-weight:700;color:#1B2A4A;margin-bottom:4px}
+  .tactic .body p{font-size:10.5px;color:#444;line-height:1.6}
+  .tactic .body .law{display:inline-block;background:#1B2A4A;color:#E8D5A3;padding:2px 8px;font-size:9px;border-radius:1px;margin-top:4px;margin-right:4px}
+  .tactic .body .target{display:inline-block;background:#8B0000;color:#fff;padding:2px 8px;font-size:9px;border-radius:1px;margin-top:4px;margin-right:4px}
+  .tactic .body .saving{display:inline-block;background:#E8F5E9;color:#1a6b2e;padding:2px 8px;font-size:9px;border-radius:1px;margin-top:4px;font-weight:600}
+
+  /* POST-ACQ */
+  .resp-table{width:100%;border-collapse:collapse;font-size:10.5px}
+  .resp-table th{background:#1B2A4A;color:#E8D5A3;padding:7px 12px;text-align:left;font-size:9.5px;letter-spacing:.04em}
+  .resp-table td{padding:6px 12px;border-bottom:1px solid #EEE;vertical-align:top}
+  .resp-table tr:nth-child(even) td{background:#FAF8F5}
+  .badge-cp{display:inline-block;background:#E8F5E9;color:#155724;padding:2px 8px;font-size:9px;font-weight:700;border-radius:2px}
+  .badge-self{display:inline-block;background:#E3F2FD;color:#1565C0;padding:2px 8px;font-size:9px;font-weight:700;border-radius:2px}
+  .badge-share{display:inline-block;background:#FFF3E0;color:#E65100;padding:2px 8px;font-size:9px;font-weight:700;border-radius:2px}
+  .badge-urgent{display:inline-block;background:#FFEBEE;color:#C62828;padding:2px 8px;font-size:9px;font-weight:700;border-radius:2px;margin-left:4px}
+  .priority-h{color:#c62828;font-weight:600}
+  .priority-m{color:#d97706;font-weight:500}
+  .priority-l{color:#666}
+
+  .footer{border-top:1px solid #DDD;padding-top:10px;display:flex;justify-content:space-between;font-size:9px;color:#AAA;margin-top:20px}
+  .footer strong{color:#666}
+  .usd{color:#AAA;font-size:9px}
+  .sep{height:1px;background:linear-gradient(to right,#1B2A4A,#8B0000,transparent);margin:20px 0}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div>
+    <h1>Project TC — Đảo Tuần Châu<br><span>Phân Tích Toàn Diện Mua Lại & Phát Triển</span></h1>
+    <div class="header-sub">A · Validate vs v3 &nbsp;|&nbsp; B · FX Update 27,000 &nbsp;|&nbsp; C · Sponsor Returns &nbsp;|&nbsp; + Chiến Thuật Ép Giá &nbsp;|&nbsp; + Post-Acquisition Playbook</div>
+  </div>
+  <div class="header-right">
+    <strong>18 Villa · 15,525 m² GFA · Vịnh Hạ Long · Quảng Ninh</strong><br>
+    JV gốc: Jen Capital 50.9% + Đảo Ngọc 49.1%<br>
+    Phân tích cho RCC — Bên mua &amp; tiếp tục phát triển<br>
+    <strong>Tháng 3/2026 · Confidential</strong>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#sA">A · Validate vs v3</a>
+  <a href="#sB">B · FX 27,000</a>
+  <a href="#sC">C · Sponsor Returns</a>
+  <a href="#sD">Chiến Thuật Ép Giá</a>
+  <a href="#sE">Post-Acquisition Playbook</a>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION A: VALIDATE vs v3
+═══════════════════════════════════════════ -->
+<div class="section" id="sA">
+<div class="section-hdr">
+  <div class="sec-num">A</div>
+  <h2>VALIDATE — Model Gốc (File Excel) vs. RCC Model v3</h2>
+  <div class="sec-sub">Reconciliation · Key Divergences · Credibility Assessment</div>
+</div>
+
+<div class="card-grid g2">
+  <div class="card navy">
+    <h3>Model Gốc — Project TC Excel (Jen Capital)</h3>
+    <div class="kv"><span class="k">FX rate</span><span class="v">26,500 VND/$</span></div>
+    <div class="kv"><span class="k">Giá bán (before VAT)</span><span class="v">150 tr/m²</span></div>
+    <div class="kv"><span class="k">Giá bán (after VAT)</span><span class="v">165 tr/m²</span></div>
+    <div class="kv"><span class="k">Chi phí xây (shell)</span><span class="v">45 tr/m²</span></div>
+    <div class="kv"><span class="k">Tổng GDV (18 villas)</span><span class="v">2,395 tỷ VND (~$90.4M)</span></div>
+    <div class="kv"><span class="k">CIT</span><span class="v">307,582 tr (~12.84% doanh thu)</span></div>
+    <div class="kv"><span class="k">Scenario 1 Sponsor IRR</span><span class="v">33.5%</span></div>
+    <div class="kv"><span class="k">Scenario 1 Sponsor MOIC</span><span class="v">2.18x</span></div>
+    <div class="kv"><span class="k">Contingency</span><span class="v">5%</span></div>
+    <div class="kv"><span class="k">Construction loan</span><span class="v">180,467 tr · 9.5% p.a.</span></div>
+    <div class="kv"><span class="k">Acquisition loan</span><span class="v">283,329 tr · 10.5% p.a.</span></div>
+    <div class="kv"><span class="k">JV structure</span><span class="v">Jen Capital 50.91% / Đảo Ngọc 49.09%</span></div>
+    <div class="kv"><span class="k">Bàn giao</span><span class="v">Q2/2028 · LURC Q3/2028</span></div>
+  </div>
+  <div class="card navy">
+    <h3>RCC Model v3 (Buyer's Model)</h3>
+    <div class="kv"><span class="k">FX rate</span><span class="v">27,000 VND/$ <span style="color:#F59E0B">← Cập nhật</span></span></div>
+    <div class="kv"><span class="k">Giá bán — Base</span><span class="v">175–260 tr/m² (blended ~213)</span></div>
+    <div class="kv"><span class="k">Giá bán — Mid</span><span class="v">185–300 tr/m² (blended ~238)</span></div>
+    <div class="kv"><span class="k">Giá bán — Stretch</span><span class="v">200–340 tr/m² (blended ~268)</span></div>
+    <div class="kv"><span class="k">Chi phí xây (shell)</span><span class="v">45 tr/m² <span style="color:#4CAF50">← Giữ nguyên</span></span></div>
+    <div class="kv"><span class="k">Fitout — Anantara</span><span class="v">16.2 tr/m² (~$600/m²@27k)</span></div>
+    <div class="kv"><span class="k">Fitout — Zannier</span><span class="v">13.5 tr/m² (~$500/m²@27k)</span></div>
+    <div class="kv"><span class="k">Fitout — Capella</span><span class="v">21.6 tr/m² (~$800/m²@27k)</span></div>
+    <div class="kv"><span class="k">Contingency</span><span class="v">5% <span style="color:#4CAF50">← Theo gốc</span></span></div>
+    <div class="kv"><span class="k">Acquisition cost</span><span class="v">404,756 tr (historical, locked)</span></div>
+    <div class="kv"><span class="k">Mục tiêu IRR</span><span class="v">320%+ (leveraged, buyer)</span></div>
+    <div class="kv"><span class="k">Phương pháp CIT</span><span class="v">12.84% × GDV (scale ratio)</span></div>
+    <div class="kv"><span class="k">Cấu trúc</span><span class="v">RCC mua 100% / tiếp tục phát triển</span></div>
+  </div>
+</div>
+
+<table>
+<thead><tr>
+  <th>Biến số</th><th>Model Gốc (TC Excel)</th><th>RCC Model v3</th><th>Khác biệt</th><th>Lý do / Đánh giá</th>
+</tr></thead>
+<tbody>
+<tr><td><strong>FX rate</strong></td><td>26,500</td><td>27,000</td><td class="diff-neg">+500 (+1.9%)</td><td>Iran–Mỹ leo thang tháng 3/2026 → RCC cập nhật đúng</td></tr>
+<tr><td><strong>Giá bán (blended)</strong></td><td>150 tr/m²</td><td>185–268 tr/m²</td><td class="diff-pos">+35–118 tr (+23–79%)</td><td>TC Excel dùng 2025 comps; v3 dùng Hạ Long luxury premium + branded operator uplift</td></tr>
+<tr><td><strong>GDV tổng</strong></td><td>2,395 tỷ (~$90M)</td><td>3,308–4,148 tỷ</td><td class="diff-pos">+913–1,753 tỷ</td><td>Giá bán cao hơn → GDV cao hơn tương ứng</td></tr>
+<tr><td><strong>Chi phí xây thô</strong></td><td>45 tr/m²</td><td>45 tr/m²</td><td style="color:#1a6b2e">= Khớp</td><td>Giữ nguyên theo gốc — nhất quán</td></tr>
+<tr><td><strong>Contingency</strong></td><td>5%</td><td>5%</td><td style="color:#1a6b2e">= Khớp</td><td>v2 dùng 8% (island premium) nhưng v3 đã điều chỉnh về 5% theo gốc ✓</td></tr>
+<tr><td><strong>Fitout operator</strong></td><td>N/A (không có trong TC)</td><td>$500–800/m²</td><td>—</td><td>TC không include fitout brand — v3 thêm vào → chính xác hơn cho buyer</td></tr>
+<tr><td><strong>Lãi suất vay</strong></td><td>9.5% / 10.5%</td><td>9.5% / 10.5%</td><td style="color:#1a6b2e">= Khớp</td><td>Nhất quán</td></tr>
+<tr><td><strong>LTV</strong></td><td>70%</td><td>70%</td><td style="color:#1a6b2e">= Khớp</td><td>Nhất quán</td></tr>
+<tr><td><strong>SG&A</strong></td><td>~9.2% (từ P&L)</td><td>6%</td><td class="diff-pos">-3.2pp</td><td>TC gốc include nhiều overhead hơn; v3 dùng market benchmark — kiểm tra lại</td></tr>
+<tr><td><strong>Cấu trúc</strong></td><td>JV (50.9/49.1%)</td><td>Full buyout (100%)</td><td>—</td><td>RCC mua lại Jen Capital + deal với Đảo Ngọc → khác cơ bản về structure</td></tr>
+<tr><td><strong>Sponsor IRR</strong></td><td>33.5% (Sc.1) / 43.3% (Sc.2)</td><td>320%+ (leveraged)</td><td>—</td><td>TC dùng unlevered project IRR; v3 dùng leveraged equity IRR → không so sánh trực tiếp</td></tr>
+<tr class="highlight-row"><td><strong>Kết luận validate</strong></td><td colspan="2"><strong>v3 CONSISTENT với gốc về cost structure</strong></td><td colspan="2"><strong>Khác biệt chủ yếu: giá bán cao hơn (thesis buyer) + fitout brand + full buyout structure → không phải sai, mà là khác góc nhìn</strong></td></tr>
+</tbody>
+</table>
+
+<div class="insight navy">
+  <h4>Verdict — Section A</h4>
+  <p><strong>Model gốc TC định giá thấp vì:</strong> (1) Dùng giá bán thị trường 2025 không có branded operator premium; (2) Không include fitout cost; (3) Tính Sponsor IRR theo JV structure 50.9% không phải full buyout. RCC model v3 phản ánh đúng hơn thực tế khi buyer mua toàn bộ và phát triển tiếp với branded operator. <strong>Hai model không mâu thuẫn — TC là floor, v3 là upside thesis.</strong></p>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION B: FX UPDATE 27,000
+═══════════════════════════════════════════ -->
+<div class="section" id="sB">
+<div class="section-hdr">
+  <div class="sec-num">B</div>
+  <h2>FX UPDATE — Impact của 27,000 VND/$ vs. 26,500 Model Gốc</h2>
+  <div class="sec-sub">+1.9% FX shift · Cost impact · Margin erosion · Mid scenario</div>
+</div>
+
+<div class="card-grid g4">
+  <div class="card amber">
+    <h3>FX Shift: +500 VND/$</h3>
+    <div class="kv"><span class="k">Gốc</span><span class="v">26,500 VND/$</span></div>
+    <div class="kv"><span class="k">Cập nhật</span><span class="v">27,000 VND/$</span></div>
+    <div class="kv"><span class="k">Tăng</span><span class="v">+1.9%</span></div>
+    <div class="kv"><span class="k">Nguyên nhân</span><span class="v">Iran–Mỹ leo thang</span></div>
+  </div>
+  <div class="card">
+    <h3>Chi Phí Fitout Tăng (Mid · Anantara)</h3>
+    <div class="kv"><span class="k">@26,500: $600/m²</span><span class="v">15.9 tr/m²</span></div>
+    <div class="kv"><span class="k">@27,000: $600/m²</span><span class="v">16.2 tr/m²</span></div>
+    <div class="kv"><span class="k">Diff/m²</span><span class="v class="diff-neg">+0.3 tr/m²</span></div>
+    <div class="kv"><span class="k">Tổng diff (villa GFA)</span><span class="v diff-neg">+3.9 tỷ VND</span></div>
+  </div>
+  <div class="card">
+    <h3>Common Area & Setup Tăng</h3>
+    <div class="kv"><span class="k">Anantara common @26.5k</span><span class="v">92.75 tỷ</span></div>
+    <div class="kv"><span class="k">Anantara common @27k</span><span class="v">94.5 tỷ</span></div>
+    <div class="kv"><span class="k">Diff</span><span class="v diff-neg">+1.75 tỷ</span></div>
+    <div class="kv"><span class="k">Setup diff</span><span class="v diff-neg">+0.5 tỷ</span></div>
+  </div>
+  <div class="card green">
+    <h3>Acquisition Cost — Không Đổi</h3>
+    <div class="kv"><span class="k">Lý do</span><span class="v">Historical / committed</span></div>
+    <div class="kv"><span class="k">@26,500</span><span class="v">404,756 tr</span></div>
+    <div class="kv"><span class="k">@27,000</span><span class="v">404,756 tr</span></div>
+    <div class="kv"><span class="k">Diff</span><span class="v" style="color:#1a6b2e">0 (locked)</span></div>
+  </div>
+</div>
+
+<table>
+<thead><tr>
+  <th>Khoản mục</th>
+  <th>@26,500 VND/$ (tỷ)</th>
+  <th>@27,000 VND/$ (tỷ)</th>
+  <th>Chênh lệch (tỷ)</th>
+  <th>% thay đổi</th>
+  <th>Ghi chú</th>
+</tr></thead>
+<tbody>
+<tr><td>Fitout Anantara (villa GFA)</td><td>211.7</td><td>215.6</td><td class="diff-neg">+3.9</td><td class="diff-neg">+1.9%</td><td>$600/m² × FX shift</td></tr>
+<tr><td>Common Area (Anantara)</td><td>92.75</td><td>94.5</td><td class="diff-neg">+1.75</td><td class="diff-neg">+1.9%</td><td>$3.5M × FX shift</td></tr>
+<tr><td>Setup (Anantara)</td><td>26.5</td><td>27.0</td><td class="diff-neg">+0.5</td><td class="diff-neg">+1.9%</td><td>$1M × FX shift</td></tr>
+<tr><td>Acquisition cost</td><td>404.8</td><td>404.8</td><td style="color:#1a6b2e">0</td><td style="color:#1a6b2e">0%</td><td>Historical, locked</td></tr>
+<tr><td>Construction thô (VND)</td><td>591.9</td><td>591.9</td><td style="color:#1a6b2e">0</td><td style="color:#1a6b2e">0%</td><td>VND-denominated, không đổi</td></tr>
+<tr class="highlight-row"><td><strong>Tổng chi phí tăng thêm</strong></td><td>—</td><td>—</td><td class="diff-neg"><strong>+6.15 tỷ</strong></td><td class="diff-neg"><strong>+0.6% tổng chi phí</strong></td><td>Nhỏ — FX impact hạn chế do cost chủ yếu VND</td></tr>
+<tr class="warn-row"><td>Margin tương ứng (Mid · Anantara)</td><td>~1,238 tỷ (33.6%)</td><td>1,232 tỷ (33.5%)</td><td class="diff-neg">-6.15 tỷ (-0.17%pp)</td><td>—</td><td>Impact biên tế nhỏ — model v3 đã phản ánh đúng</td></tr>
+</tbody>
+</table>
+
+<div class="insight green">
+  <h4>Verdict — Section B</h4>
+  <p><strong>FX shift từ 26,500 → 27,000 (+1.9%) có ảnh hưởng RẤT NHỎ</strong> đến model vì chi phí chủ yếu VND (xây thô, đất, acquisition). Chỉ fitout + common area + setup là USD-denominated → tổng tăng ~6.15 tỷ VND (~$228k). Margin Mid+Anantara chỉ giảm 0.17pp. <strong>Model v3 đã đúng khi dùng 27,000 — phản ánh thực tế thị trường.</strong></p>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION C: SPONSOR RETURNS ANALYSIS
+═══════════════════════════════════════════ -->
+<div class="section" id="sC">
+<div class="section-hdr">
+  <div class="sec-num">C</div>
+  <h2>SPONSOR RETURNS — RCC Buyer Perspective vs. Jen Capital Seller</h2>
+  <div class="sec-sub">IRR · MOIC · NPV · Entry price sensitivity · Return breakdown</div>
+</div>
+
+<div class="card-grid g3">
+  <div class="card navy">
+    <h3>Jen Capital (Seller) — Model Gốc Returns</h3>
+    <div class="kv"><span class="k">Scenario 1 IRR</span><span class="v">33.5% p.a.</span></div>
+    <div class="kv"><span class="k">Scenario 1 MOIC</span><span class="v">2.18x</span></div>
+    <div class="kv"><span class="k">Scenario 2 IRR</span><span class="v">43.3% p.a.</span></div>
+    <div class="kv"><span class="k">Scenario 2 MOIC</span><span class="v">1.97x</span></div>
+    <div class="kv"><span class="k">Discount rate</span><span class="v">10% p.a.</span></div>
+    <div class="kv"><span class="k">Entry (Jen VĐL + loan)</span><span class="v">124,309 + 158,770 = 283,079 tr</span></div>
+    <div class="kv"><span class="k">Cấu trúc</span><span class="v">JV 50.91% — không control</span></div>
+    <div class="kv"><span class="k">Giá bán dùng</span><span class="v">150 tr/m² (base, no brand)</span></div>
+    <div class="kv"><span class="k">Timeline</span><span class="v">Jan 2026 → Sep 2028</span></div>
+  </div>
+  <div class="card green">
+    <h3>RCC (Buyer) — Leveraged Equity Returns (Mid · Anantara)</h3>
+    <div class="kv"><span class="k">IRR — On-time</span><span class="v" style="color:#1a6b2e;font-weight:700">320% p.a.</span></div>
+    <div class="kv"><span class="k">MOIC — On-time</span><span class="v" style="color:#1a6b2e;font-weight:700">3.22x</span></div>
+    <div class="kv"><span class="k">IRR — +6 tháng</span><span class="v">242% p.a. (▼78pp)</span></div>
+    <div class="kv"><span class="k">MOIC — +6 tháng</span><span class="v">2.12x (▼1.10x)</span></div>
+    <div class="kv"><span class="k">IRR — +12 tháng</span><span class="v">148% p.a. (▼172pp)</span></div>
+    <div class="kv"><span class="k">MOIC — +12 tháng</span><span class="v">2.68x (▼0.54x)</span></div>
+    <div class="kv"><span class="k">NPV @10%</span><span class="v">1,044 tỷ VND (~$38.7M)</span></div>
+    <div class="kv"><span class="k">Dev Margin</span><span class="v">1,232 tỷ (33.5% of GDV)</span></div>
+    <div class="kv"><span class="k">GDV</span><span class="v">3,682 tỷ (~$136.4M)</span></div>
+  </div>
+  <div class="card blue">
+    <h3>Tại Sao RCC Returns Cao Hơn Jen Capital?</h3>
+    <div class="kv"><span class="k">①  Giá bán cao hơn</span><span class="v">+59% vs. TC base (150→238 blended)</span></div>
+    <div class="kv"><span class="k">②  Full control</span><span class="v">100% vs. 50.9% JV → capture toàn bộ upside</span></div>
+    <div class="kv"><span class="k">③  Branded operator</span><span class="v">Anantara premium → cao hơn no-brand</span></div>
+    <div class="kv"><span class="k">④  Leveraged equity</span><span class="v">IRR tính trên equity, không toàn bộ project</span></div>
+    <div class="kv"><span class="k">⑤  IRR ngắn hơn</span><span class="v">Nếu bán nhanh → IRR% rất cao dù MOIC thấp hơn</span></div>
+    <div class="kv"><span class="k">Lưu ý</span><span class="v">Cần verify: TC bán unlevered IRR, v3 bán leveraged equity</span></div>
+  </div>
+</div>
+
+<table>
+<thead><tr>
+  <th>Scenario</th><th>Operator</th><th>Delay</th><th>GDV (tỷ)</th><th>Margin (tỷ)</th><th>Biên %</th><th>IRR (p.a.)</th><th>MOIC</th><th>NPV @10% (tỷ)</th><th>Extra Int (tỷ)</th>
+</tr></thead>
+<tbody>
+<tr><td>Mid</td><td style="color:#1B2A4A;font-weight:600">Capella</td><td>On-time</td><td>3,682</td><td>1,087</td><td>29.5%</td><td style="color:#2d7d46;font-weight:600">274%</td><td>2.64x</td><td>925</td><td>—</td></tr>
+<tr><td>Mid</td><td style="color:#1B2A4A;font-weight:600">Capella</td><td>+6mo</td><td>3,682</td><td>1,038</td><td>28.2%</td><td style="color:#b45309">225%</td><td>1.91x</td><td>889</td><td>33.7</td></tr>
+<tr><td>Mid</td><td style="color:#1B2A4A;font-weight:600">Capella</td><td>+12mo</td><td>3,682</td><td>989</td><td>26.9%</td><td style="color:#b45309">136%</td><td>2.24x</td><td>734</td><td>67.4</td></tr>
+<tr class="highlight-row"><td>Mid</td><td style="color:#7A4A1A;font-weight:600">Anantara</td><td>On-time</td><td>3,682</td><td><strong>1,232</strong></td><td><strong>33.5%</strong></td><td style="color:#1a6b2e;font-weight:700">320%</td><td><strong>3.22x</strong></td><td><strong>1,044</strong></td><td>—</td></tr>
+<tr><td>Mid</td><td style="color:#7A4A1A;font-weight:600">Anantara</td><td>+6mo</td><td>3,682</td><td>1,185</td><td>32.2%</td><td style="color:#2d7d46">242%</td><td>2.12x</td><td>1,001</td><td>31.9</td></tr>
+<tr><td>Mid</td><td style="color:#7A4A1A;font-weight:600">Anantara</td><td>+12mo</td><td>3,682</td><td>1,139</td><td>30.9%</td><td style="color:#b45309">148%</td><td>2.68x</td><td>845</td><td>63.8</td></tr>
+<tr><td>Mid</td><td style="color:#2D5016;font-weight:600">Zannier</td><td>On-time</td><td>3,682</td><td>1,313</td><td>35.7%</td><td style="color:#1a6b2e;font-weight:700">346%</td><td>3.62x</td><td>1,110</td><td>—</td></tr>
+<tr><td>Mid</td><td style="color:#2D5016;font-weight:600">Zannier</td><td>+6mo</td><td>3,682</td><td>1,267</td><td>34.4%</td><td style="color:#2d7d46">251%</td><td>2.24x</td><td>1,063</td><td>31.0</td></tr>
+<tr><td>Mid</td><td style="color:#2D5016;font-weight:600">Zannier</td><td>+12mo</td><td>3,682</td><td>1,221</td><td>33.2%</td><td style="color:#b45309">154%</td><td>2.98x</td><td>906</td><td>62.0</td></tr>
+<tr><td>Stretch</td><td style="color:#7A4A1A;font-weight:600">Anantara</td><td>On-time</td><td>4,148</td><td>1,594</td><td>38.4%</td><td style="color:#1a6b2e;font-weight:700">385%</td><td>4.54x</td><td>1,342</td><td>—</td></tr>
+<tr><td>Base</td><td style="color:#7A4A1A;font-weight:600">Anantara</td><td>On-time</td><td>3,308</td><td>942</td><td>28.5%</td><td style="color:#2d7d46">270%</td><td>2.47x</td><td>805</td><td>—</td></tr>
+</tbody>
+</table>
+
+<div class="insight amber">
+  <h4>Entry Price Sensitivity — Tại Đâu IRR Vẫn Hấp Dẫn?</h4>
+  <p>Nếu RCC mua Jen Capital's stake với premium cao hơn $30M (giá entry trong TC model):<br>
+  • <strong>@$30M (theo gốc = 404,756 tr VND):</strong> Mid+Anantara → IRR 320%, MOIC 3.22x ✅<br>
+  • <strong>@$25M (~338k tr VND → -16%):</strong> Margin tăng thêm ~66 tỷ, IRR ~360% ✅✅<br>
+  • <strong>@$35M (~445k tr VND → +10%):</strong> Margin giảm ~40 tỷ, IRR ~290% ✅<br>
+  • <strong>@$40M (~540k tr VND → +33%):</strong> Margin giảm ~135 tỷ, IRR ~250% → vẫn acceptable<br>
+  <strong>→ RCC có room đến ~$38–40M trước khi returns dưới 250% leveraged.</strong></p>
+</div>
+
+<div class="insight navy">
+  <h4>Verdict — Section C</h4>
+  <p>Jen Capital exit @$30M entry val → họ book MOIC 2.18x từ JV structure. RCC mua vào @$30M và phát triển tiếp với Anantara Mid → <strong>IRR 320% leveraged</strong>. Khoảng cách lớn vì: (1) RCC dùng branded operator nâng giá bán +59%; (2) RCC có full control không bị chia 50%; (3) IRR leverage effect. <strong>Đây là deal hấp dẫn nếu RCC tin vào branded luxury villa market tại Hạ Long.</strong></p>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION D: CHIẾN THUẬT ÉP GIÁ
+═══════════════════════════════════════════ -->
+<div class="section" id="sD">
+<div class="section-hdr">
+  <div class="sec-num">D</div>
+  <h2>CHIẾN THUẬT ÉP GIÁ — Hạ Entry Value & Cơ Sở Pháp Lý</h2>
+  <div class="sec-sub">7 đòn ép · Luật tương ứng · Tiết kiệm ước tính · Thực tế đàm phán</div>
+</div>
+
+<div class="insight red">
+  <h4>⚠️ Bối cảnh đàm phán hiện tại</h4>
+  <p>Jen Capital đang cần exit. TC model tính entry @$30M (~404,756 tr VND). RCC là buyer tiếp tục phát triển → có leverage lớn vì: (1) Thị trường buyer; (2) Jen cần liquidate; (3) Iran war → FX rủi ro tăng; (4) Dự án chưa khởi công → rủi ro cao với Jen. <strong>Mục tiêu: ép về $22–26M range (giảm $4–8M = 100–216 tỷ VND).</strong></p>
+</div>
+
+<div class="tactic">
+  <div class="num">1</div>
+  <div class="body">
+    <h4>Định Giá Lại Đất — Thẩm Định Độc Lập (Due Diligence Clause)</h4>
+    <p>Yêu cầu thẩm định giá đất độc lập do RCC thuê. Đất 18ha trên đảo Tuần Châu có vấn đề pháp lý phức tạp (đất biển đảo, QSĐ 50 năm). Thẩm định thường cho ra giá thấp hơn 15–25% so với giá "kỳ vọng" của seller. Dùng số này làm anchor trong đàm phán.<br>
+    <span class="law">Luật Đất đai 2024 — Điều 158 (Tư vấn thẩm định giá)</span>
+    <span class="law">Luật Kinh doanh BĐS 2023 — Điều 57 (Due diligence)</span>
+    <span class="target">Target: -$3–5M vs. asking price</span>
+    <span class="saving">Tiết kiệm: 81–135 tỷ VND</span>
+    </p>
+  </div>
+</div>
+
+<div class="tactic">
+  <div class="num">2</div>
+  <div class="body">
+    <h4>Điều Kiện Hoàn Thành Pháp Lý (Condition Precedent — CP)</h4>
+    <p>Đặt điều kiện: giá $30M chỉ có hiệu lực NẾU Jen Capital hoàn thiện đầy đủ hồ sơ pháp lý (giấy phép xây dựng đầy đủ, quy hoạch chi tiết 1/500, ĐTM). Hiện tại dự án chưa có đủ → dùng để ép discount ngay lập tức hoặc defer giá 1 phần.<br>
+    <span class="law">Luật Xây dựng 2020 — Điều 102 (Giấy phép xây dựng)</span>
+    <span class="law">Luật Đầu tư 2020 — Điều 33 (Điều chỉnh dự án)</span>
+    <span class="target">Target: Giữ lại $3–5M trong escrow đến khi pháp lý hoàn tất</span>
+    <span class="saving">Tiết kiệm: Time value + rủi ro giảm 81–135 tỷ VND</span>
+    </p>
+  </div>
+</div>
+
+<div class="tactic">
+  <div class="num">3</div>
+  <div class="body">
+    <h4>Rủi Ro Môi Trường & EIA — Vùng Biển UNESCO</h4>
+    <p>Tuần Châu nằm kề Hạ Long Bay — Di sản UNESCO. Bất kỳ dự án nào cần ĐTM (Đánh giá tác động môi trường) đặc biệt. Dùng chi phí comply UNESCO buffer zone làm argument giảm giá. Thực tế: chi phí ĐTM + monitoring có thể thêm $500k–1M.<br>
+    <span class="law">Luật Bảo vệ Môi trường 2020 — Điều 35 (ĐTM dự án đặc biệt)</span>
+    <span class="law">Nghị định 08/2022/NĐ-CP — Phụ lục III (Danh mục dự án cần ĐTM)</span>
+    <span class="target">Target: -$1–2M discount cho environmental compliance cost</span>
+    <span class="saving">Tiết kiệm: 27–54 tỷ VND</span>
+    </p>
+  </div>
+</div>
+
+<div class="tactic">
+  <div class="num">4</div>
+  <div class="body">
+    <h4>Điều Khoản Earn-Out (Deferred Payment Linked to Milestones)</h4>
+    <p>Đề xuất: Trả $22M upfront + $8M earnout khi đạt milestones (giấy phép xây dựng, bán X villas, LURC). Jen Capital nhận $22M ngay (họ cần cash) còn $8M phụ thuộc vào kết quả thực tế. Nếu earnout trigger không đạt, RCC không phải trả phần còn lại. Thực tế earnout thường chỉ đạt 60–70% → effective price $26.8–27.6M.<br>
+    <span class="law">Luật Doanh nghiệp 2020 — Điều 51 (Chuyển nhượng phần vốn góp)</span>
+    <span class="law">Luật Thương mại 2005 — Điều 57 (Điều kiện hợp đồng)</span>
+    <span class="target">Effective price: $26.8–27.6M vs. $30M asking</span>
+    <span class="saving">Tiết kiệm: 65–87 tỷ VND (thực nhận)</span>
+    </p>
+  </div>
+</div>
+
+<div class="tactic">
+  <div class="num">5</div>
+  <div class="body">
+    <h4>Đòn FX & Force Majeure — Iran War Premium</h4>
+    <p>FX đã tăng 1.9% (26,500→27,000) và có thể tiếp tục xấu đi. Đưa vào hợp đồng: giá cố định bằng VND (không phải USD) HOẶC yêu cầu Jen accept FX risk nếu deal close sau 30 ngày. Nếu VND tiếp tục yếu, Jen chịu thiệt — họ sẽ rush close hoặc accept discount để close nhanh.<br>
+    <span class="law">Bộ luật Dân sự 2015 — Điều 420 (Hoàn cảnh thay đổi cơ bản)</span>
+    <span class="law">Luật Ngoại hối 2005 (sửa đổi 2013) — Điều 4 (Giao dịch ngoại hối)</span>
+    <span class="target">Target: Lock VND price hoặc ép close nhanh với discount 1–2%</span>
+    <span class="saving">Tiết kiệm: 8–16 tỷ VND từ FX timing</span>
+    </p>
+  </div>
+</div>
+
+<div class="tactic">
+  <div class="num">6</div>
+  <div class="body">
+    <h4>Đảo Ngọc Leverage — Đối Tác JV Nội Địa</h4>
+    <p>Đảo Ngọc (49.09%) là đối tác JV nội địa. Nếu RCC có thể tiếp cận Đảo Ngọc độc lập (trực tiếp hoặc qua kênh local), có thể tạo áp lực "Đảo Ngọc muốn bán cho bên khác" hoặc "Đảo Ngọc sẽ không hợp tác nếu Jen bán cho đối thủ của tôi". Dùng để tạo urgency cho Jen close với RCC.<br>
+    <span class="law">Luật Doanh nghiệp 2020 — Điều 52 (Quyền ưu tiên mua phần vốn)</span>
+    <span class="law">Điều lệ JV — ROFR clause (nếu có)</span>
+    <span class="target">Leverage: Tạo urgency, giảm BATNA của Jen</span>
+    <span class="saving">Tiết kiệm: Tình huống, có thể -$2–4M nếu Jen bị isolate</span>
+    </p>
+  </div>
+</div>
+
+<div class="tactic">
+  <div class="num">7</div>
+  <div class="body">
+    <h4>Rủi Ro Xây Dựng "Đảo Phức Tạp" — Chi Phí Logistics Premium</h4>
+    <p>Xây trên đảo = chi phí logistics vật liệu tăng 20–35% so với đất liền (cần phà, bến bãi, thời tiết). Model gốc TC dùng 45 tr/m² shell — thực tế đảo có thể 52–58 tr/m². Dùng điều này để argue risk adjustment trong giá mua. Nếu Jen không chấp nhận, yêu cầu representation & warranty về chi phí xây.<br>
+    <span class="law">Luật Xây dựng 2020 — Điều 35 (Dự toán chi phí)</span>
+    <span class="law">Yêu cầu: Representation & Warranty về construction cost</span>
+    <span class="target">Target: -$1–2M discount hoặc RW coverage $5M</span>
+    <span class="saving">Tiết kiệm: 27–54 tỷ VND hoặc risk transfer</span>
+    </p>
+  </div>
+</div>
+
+<div class="card-grid g2">
+  <div class="card navy">
+    <h3>Tổng Tiết Kiệm Tiềm Năng</h3>
+    <div class="kv"><span class="k">Thẩm định đất độc lập (#1)</span><span class="v">$3–5M (81–135 tỷ)</span></div>
+    <div class="kv"><span class="k">Condition Precedent pháp lý (#2)</span><span class="v">$3–5M (escrow)</span></div>
+    <div class="kv"><span class="k">Environmental compliance (#3)</span><span class="v">$1–2M (27–54 tỷ)</span></div>
+    <div class="kv"><span class="k">Earn-out structure (#4)</span><span class="v">$2–4M (54–108 tỷ)</span></div>
+    <div class="kv"><span class="k">FX timing (#5)</span><span class="v">$0.3–0.6M (8–16 tỷ)</span></div>
+    <div class="kv"><span class="k">Đảo Ngọc leverage (#6)</span><span class="v">$2–4M (tình huống)</span></div>
+    <div class="kv"><span class="k">Construction RW (#7)</span><span class="v">$1–2M (27–54 tỷ)</span></div>
+    <div class="kv" style="border-top:2px solid rgba(255,255,255,.3);margin-top:6px;padding-top:6px"><span class="k" style="color:#E8D5A3;font-weight:600">Tổng tiết kiệm thực tế</span><span class="v" style="color:#4CAF50;font-size:14px;font-weight:700">$5–10M (-17% to -33%)</span></div>
+    <div class="kv"><span class="k">Giá mua mục tiêu</span><span class="v" style="color:#E8D5A3">$20–25M vs. $30M asking</span></div>
+  </div>
+  <div class="card">
+    <h3>Ưu Tiên Đòn Ép (Khả Thi Nhất → Khó Nhất)</h3>
+    <div class="kv"><span class="k" style="color:#c62828">① Earnout structure</span><span class="v">Khả thi nhất — cấu trúc thương mại</span></div>
+    <div class="kv"><span class="k" style="color:#c62828">② CP pháp lý (escrow)</span><span class="v">Rất khả thi — pháp lý chưa đủ là fact</span></div>
+    <div class="kv"><span class="k" style="color:#d97706">③ Thẩm định đất</span><span class="v">Khả thi — chuẩn DD process</span></div>
+    <div class="kv"><span class="k" style="color:#d97706">④ FX timing</span><span class="v">Khả thi — thị trường hỗ trợ</span></div>
+    <div class="kv"><span class="k" style="color:#d97706">⑤ Construction RW</span><span class="v">Khả thi nếu có luật sư giỏi</span></div>
+    <div class="kv"><span class="k" style="color:#1a6b2e">⑥ Environmental</span><span class="v">Medium — cần data UNESCO buffer</span></div>
+    <div class="kv"><span class="k" style="color:#1a6b2e">⑦ Đảo Ngọc leverage</span><span class="v">Phức tạp nhất — cần tiếp cận trực tiếp</span></div>
+  </div>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION E: POST-ACQUISITION PLAYBOOK
+═══════════════════════════════════════════ -->
+<div class="section" id="sE">
+<div class="section-hdr">
+  <div class="sec-num">E</div>
+  <h2>POST-ACQUISITION PLAYBOOK — CP vs. Tự Xử Lý</h2>
+  <div class="sec-sub">Sau khi RCC mua được · Phân loại 100% rõ ràng · Timeline & trách nhiệm</div>
+</div>
+
+<div class="card-grid g3">
+  <div class="card green">
+    <h3>CP (Chính Phủ / Nhà Nước) xử lý</h3>
+    <p style="font-size:10.5px;color:#444;margin-top:4px">Không thể bypass — chỉ có thể facilitate và theo dõi sát. Thường mất 3–18 tháng.</p>
+  </div>
+  <div class="card blue">
+    <h3>RCC Tự Xử Lý</h3>
+    <p style="font-size:10.5px;color:#444;margin-top:4px">Trong tầm kiểm soát của RCC. Cần timeline rõ ràng và người phụ trách cụ thể từ ngày 1.</p>
+  </div>
+  <div class="card amber">
+    <h3>CP + RCC Phối Hợp</h3>
+    <p style="font-size:10.5px;color:#444;margin-top:4px">RCC chuẩn bị hồ sơ, CP phê duyệt. RCC có thể accelerate bằng cách chuẩn bị đúng.</p>
+  </div>
+</div>
+
+<table class="resp-table">
+<thead><tr>
+  <th>Vấn đề</th>
+  <th>Phân loại</th>
+  <th>Priority</th>
+  <th>Timeline thực tế</th>
+  <th>Cơ quan / Bên xử lý</th>
+  <th>Action của RCC</th>
+</tr></thead>
+<tbody>
+
+<tr><td colspan="6" style="background:#E8EDF4;font-weight:700;font-size:10px;letter-spacing:.06em;padding:8px 12px;text-transform:uppercase;color:#1B2A4A">① PHÁP LÝ ĐẤT & DỰ ÁN</td></tr>
+
+<tr>
+  <td><strong>Điều chỉnh chủ trương đầu tư</strong><br><span style="font-size:9.5px;color:#666">Thay đổi cổ đông (Jen → RCC)</span></td>
+  <td><span class="badge-share">CP + RCC</span></td>
+  <td><span class="priority-h">🔴 Cao nhất</span></td>
+  <td>3–6 tháng</td>
+  <td>UBND Quảng Ninh / Sở KH&ĐT</td>
+  <td>Nộp hồ sơ thay đổi cổ đông trong vòng 30 ngày sau closing. Chuẩn bị: giấy tờ pháp nhân RCC, năng lực tài chính, kế hoạch dự án.</td>
+</tr>
+
+<tr>
+  <td><strong>Giấy phép xây dựng</strong><br><span style="font-size:9.5px;color:#666">Chưa có — dự án chưa khởi công</span></td>
+  <td><span class="badge-share">CP + RCC</span> <span class="badge-urgent">URGENT</span></td>
+  <td><span class="priority-h">🔴 Cao nhất</span></td>
+  <td>4–8 tháng</td>
+  <td>Sở Xây dựng Quảng Ninh</td>
+  <td>Thuê CĐT/thiết kế lập HSXD ngay tuần 1. Không có GP → không thể rút vay xây dựng.</td>
+</tr>
+
+<tr>
+  <td><strong>Quy hoạch chi tiết 1/500</strong><br><span style="font-size:9.5px;color:#666">Cần phê duyệt trước GP xây dựng</span></td>
+  <td><span class="badge-share">CP + RCC</span></td>
+  <td><span class="priority-h">🔴 Cao nhất</span></td>
+  <td>3–5 tháng</td>
+  <td>UBND Quảng Ninh / Sở Xây dựng</td>
+  <td>Review quy hoạch hiện trạng ngay sau closing. Nếu chưa có → ưu tiên #1 cùng GP xây dựng.</td>
+</tr>
+
+<tr>
+  <td><strong>Đánh giá tác động môi trường (ĐTM)</strong><br><span style="font-size:9.5px;color:#666">Bắt buộc — vùng UNESCO buffer</span></td>
+  <td><span class="badge-share">CP + RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>6–12 tháng</td>
+  <td>Bộ TN&MT / Sở TN&MT Quảng Ninh</td>
+  <td>Thuê đơn vị lập ĐTM ngay. Chi phí ~$200–400k. Timeline dài — bắt đầu sớm nhất có thể.</td>
+</tr>
+
+<tr>
+  <td><strong>LURC (Giấy chứng nhận QSD đất)</strong><br><span style="font-size:9.5px;color:#666">Sau bàn giao — 50 năm QSĐ</span></td>
+  <td><span class="badge-cp">CP</span></td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+  <td>3–6 tháng sau bàn giao</td>
+  <td>Sở TN&MT / Văn phòng ĐKQSDĐ</td>
+  <td>Chuẩn bị hồ sơ buyer trước. RCC không kiểm soát được timeline CP — chỉ expedite bằng cách submit đúng và đủ.</td>
+</tr>
+
+<tr>
+  <td><strong>Đăng ký thay đổi JV / điều lệ</strong><br><span style="font-size:9.5px;color:#666">Đảo Ngọc vẫn là đối tác 49%</span></td>
+  <td><span class="badge-share">CP + RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>1–2 tháng</td>
+  <td>Phòng ĐKDN / Sở KH&ĐT</td>
+  <td>Làm ngay sau closing. Cập nhật điều lệ, thay đổi người đại diện pháp luật.</td>
+</tr>
+
+<tr><td colspan="6" style="background:#E8EDF4;font-weight:700;font-size:10px;letter-spacing:.06em;padding:8px 12px;text-transform:uppercase;color:#1B2A4A">② TÀI CHÍNH & VỐN</td></tr>
+
+<tr>
+  <td><strong>Rút vốn vay xây dựng</strong><br><span style="font-size:9.5px;color:#666">180,467 tr — cần GP xây dựng trước</span></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>Ngay khi có GP xây dựng</td>
+  <td>Ngân hàng tài trợ (VietinBank/BIDV)</td>
+  <td>Negotiate loan agreement ngay sau closing. Không đợi GP mới bắt đầu — chuẩn bị hồ sơ vay song song.</td>
+</tr>
+
+<tr>
+  <td><strong>Cơ cấu lại shareholder loan Đảo Ngọc</strong><br><span style="font-size:9.5px;color:#666">179,248 tr — điều kiện chưa rõ</span></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>Tuần 1–4 sau closing</td>
+  <td>Đàm phán trực tiếp Đảo Ngọc</td>
+  <td>Clarify: lãi suất, kỳ hạn, quyền chuyển đổi (nếu có). Nếu điều kiện bất lợi → negotiate ngay lúc closing.</td>
+</tr>
+
+<tr>
+  <td><strong>Mở tài khoản ProjectCo</strong><br><span style="font-size:9.5px;color:#666">Kiểm soát cashflow dự án</span></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+  <td>Tuần 1–2</td>
+  <td>CFO RCC</td>
+  <td>Mở tài khoản riêng cho ProjectCo. Thiết lập approval matrix cho các khoản chi.</td>
+</tr>
+
+<tr>
+  <td><strong>Audit sổ sách hiện tại (Jen Capital period)</strong></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>30 ngày đầu</td>
+  <td>Big4 / Kiểm toán độc lập</td>
+  <td>Bắt buộc. Xác minh: đã chi bao nhiêu, còn lại bao nhiêu, có khoản nào hidden không.</td>
+</tr>
+
+<tr><td colspan="6" style="background:#E8EDF4;font-weight:700;font-size:10px;letter-spacing:.06em;padding:8px 12px;text-transform:uppercase;color:#1B2A4A">③ PHÁT TRIỂN & XÂY DỰNG</td></tr>
+
+<tr>
+  <td><strong>Chọn và ký hợp đồng brand operator</strong><br><span style="font-size:9.5px;color:#666">Anantara / Zannier / Capella</span></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao nhất</span></td>
+  <td>Tháng 1–2 sau closing</td>
+  <td>RCC BD + Operator HMA team</td>
+  <td>Bắt đầu LOI ngay từ <em>trước</em> closing nếu có thể. Brand quyết định giá bán, thiết kế, timeline. Không có brand = không có premium.</td>
+</tr>
+
+<tr>
+  <td><strong>Chọn tổng thầu xây dựng (GC)</strong></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>Tháng 2–3 sau closing</td>
+  <td>RCC PM team</td>
+  <td>Tender ít nhất 3 GC có kinh nghiệm đảo/resort. Chi phí đảo cao hơn 20–35% đất liền — cần GC đã biết context Hạ Long.</td>
+</tr>
+
+<tr>
+  <td><strong>Project management office (PMO)</strong></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>Tuần 2–4 sau closing</td>
+  <td>RCC hoặc thuê PMSC</td>
+  <td>Nếu RCC không có PM internal → thuê ngay PMSC chuyên resort. Delay 1 quý = mất ~32–64 tỷ extra interest.</td>
+</tr>
+
+<tr>
+  <td><strong>Thiết kế kiến trúc (DA)</strong><br><span style="font-size:9.5px;color:#666">Align với brand standards</span></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+  <td>Tháng 2–4</td>
+  <td>RCC + Operator design team</td>
+  <td>Chọn kiến trúc sư phải được operator approve. Zannier/Anantara có design guidelines cụ thể.</td>
+</tr>
+
+<tr>
+  <td><strong>Hạ tầng điện nước đảo</strong><br><span style="font-size:9.5px;color:#666">Phụ thuộc vào hạ tầng đảo Tuần Châu</span></td>
+  <td><span class="badge-share">CP + RCC</span></td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+  <td>Tháng 3–6</td>
+  <td>Điện lực Quảng Ninh / Cảng vụ</td>
+  <td>Assess ngay: đảo có đủ điện/nước cho 18 villas không? Nếu không → CP cần đầu tư hạ tầng, RCC cần lobby.</td>
+</tr>
+
+<tr><td colspan="6" style="background:#E8EDF4;font-weight:700;font-size:10px;letter-spacing:.06em;padding:8px 12px;text-transform:uppercase;color:#1B2A4A">④ BÁN HÀNG & MARKETING</td></tr>
+
+<tr>
+  <td><strong>Lập chiến lược bán hàng & pricing</strong></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>Tháng 1–2 (song song)</td>
+  <td>RCC Sales + Operator</td>
+  <td>Target: mở bán Q4/2026. Cần: pricing matrix, payment terms, incentive structure. Model v3 Mid scenario = target.</td>
+</tr>
+
+<tr>
+  <td><strong>Thuê sàn giao dịch / agency</strong></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+  <td>Tháng 3–5</td>
+  <td>CBRE/Savills Hà Nội + HN private broker</td>
+  <td>Luxury villa cần UHNW network. CBRE + local top brokers (Hà Nội là buyer pool chính cho Hạ Long). SG&A 6% đã include trong model.</td>
+</tr>
+
+<tr>
+  <td><strong>Hợp đồng đặt chỗ (Booking form)</strong><br><span style="font-size:9.5px;color:#666">Trước khi đủ pháp lý bán chính thức</span></td>
+  <td><span class="badge-self">RCC</span> <span class="badge-cp">CP</span></td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+  <td>Tháng 4–6</td>
+  <td>Luật sư + Sở XD (nếu cần phê duyệt)</td>
+  <td>Đặt cọc booking (không phải hợp đồng mua bán chính thức) có thể thực hiện sớm hơn. Cần tư vấn pháp lý về timing và format.</td>
+</tr>
+
+<tr><td colspan="6" style="background:#E8EDF4;font-weight:700;font-size:10px;letter-spacing:.06em;padding:8px 12px;text-transform:uppercase;color:#1B2A4A">⑤ QUAN HỆ ĐỐI TÁC — ĐẢO NGỌC (49.1%)</td></tr>
+
+<tr>
+  <td><strong>Clarify role Đảo Ngọc sau khi RCC vào</strong><br><span style="font-size:9.5px;color:#666">Đất + shareholder loan 179 tỷ</span></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao nhất</span></td>
+  <td>Trước / lúc closing</td>
+  <td>Đàm phán trực tiếp</td>
+  <td>Key questions: (1) Đảo Ngọc có muốn exit không? (2) Nếu không → họ có quyền gì? (3) Shareholder loan có convert không? (4) Có ROFR/tag-along không? Đây là rủi ro lớn nhất của deal.</td>
+</tr>
+
+<tr>
+  <td><strong>Option mua lại 49.1% Đảo Ngọc</strong></td>
+  <td><span class="badge-self">RCC</span></td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+  <td>Tháng 6–12 sau closing</td>
+  <td>RCC M&A team</td>
+  <td>Ideal: RCC mua luôn 49.1% Đảo Ngọc để có full control. Giá = land valuation + shareholder loan. Nếu không được → governance agreement chặt chẽ.</td>
+</tr>
+
+</tbody>
+</table>
+
+<div class="card-grid g2">
+  <div class="card navy">
+    <h3>Timeline Tổng Hợp — 90 Ngày Đầu (Critical Path)</h3>
+    <div class="kv"><span class="k">Tuần 1–2</span><span class="v">Audit sổ sách · Mở tài khoản · Nộp đăng ký thay đổi JV</span></div>
+    <div class="kv"><span class="k">Tuần 2–4</span><span class="v">Đàm phán Đảo Ngọc · Setup PMO · Lập hồ sơ GP xây dựng</span></div>
+    <div class="kv"><span class="k">Tháng 2</span><span class="v">Ký LOI operator · Tender GC · Loan agreement ngân hàng</span></div>
+    <div class="kv"><span class="k">Tháng 3</span><span class="v">Nộp hồ sơ ĐTM · Chọn thiết kế kiến trúc · Pricing strategy</span></div>
+    <div class="kv"><span class="k">Tháng 4–6</span><span class="v">GP xây dựng (nếu suôn sẻ) · Ký operator chính thức · Bắt đầu marketing</span></div>
+    <div class="kv"><span class="k">Tháng 6–9</span><span class="v">Khởi công · Mở booking · Rút vốn vay xây dựng</span></div>
+    <div class="kv"><span class="k">Tháng 12+</span><span class="v">Mở bán chính thức Q4/2026 (theo model)</span></div>
+  </div>
+  <div class="card red">
+    <h3>⚠️ Top 5 Rủi Ro Post-Acquisition</h3>
+    <div class="kv"><span class="k" style="color:#c62828">① Đảo Ngọc không hợp tác</span><span class="v">Rủi ro cao nhất — JV dispute</span></div>
+    <div class="kv"><span class="k" style="color:#c62828">② GP xây dựng trễ >8 tháng</span><span class="v">Mỗi quý trễ = -32–64 tỷ interest</span></div>
+    <div class="kv"><span class="k" style="color:#c62828">③ ĐTM bị từ chối (UNESCO)</span><span class="v">Dự án dừng hoàn toàn nếu xảy ra</span></div>
+    <div class="kv"><span class="k" style="color:#d97706">④ Operator không đạt thỏa thuận</span><span class="v">Quay về no-brand → giá bán 150 tr/m²</span></div>
+    <div class="kv"><span class="k" style="color:#d97706">⑤ Chi phí xây thực tế >45 tr/m²</span><span class="v">Đảo = premium logistics → 52–58 tr/m²</span></div>
+  </div>
+</div>
+</div>
+
+<div class="footer">
+  <div>Chuẩn bị bởi <strong>Zera</strong> · Royal Canary Corp Advisory</div>
+  <div>Project TC Tuần Châu · Phân tích toàn diện · FX 27,000 VND/$ · Tháng 3/2026</div>
+  <div>Confidential — Nội bộ RCC</div>
+</div>
+
+</div>
+</body>
+</html>
