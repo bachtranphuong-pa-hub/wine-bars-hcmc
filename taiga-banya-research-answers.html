@@ -87,6 +87,26 @@
 </style>
 </head>
 <body>
+
+<div class="export-bar">
+  <span>Taiga Banya — Research Answers &nbsp;|&nbsp; <strong style="color:#E8D5A3">Add comments below each question → Export when done</strong></span>
+  <div class="btn-group">
+    <span style="color:#A0B0C8;font-size:10px;align-self:center">Comments <span class="comment-count" id="comment-count" style="display:none">0</span></span>
+    <button class="btn-save" id="btn-save" onclick="saveLocal()">Save Draft</button>
+    <button class="btn-copy" onclick="showExport()">Export All Comments</button>
+    <button class="btn-clear" onclick="clearAll()">Clear All</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+  <div class="modal">
+    <h3>All Comments — Copy & Share</h3>
+    <pre id="export-content"></pre>
+    <button class="close-btn" onclick="document.getElementById('modal-overlay').classList.remove('active')">Close</button>
+    <button class="copy-all" onclick="copyAll()">Copy All</button>
+  </div>
+</div>
+
 <div class="page">
 
 <div class="header">
@@ -156,7 +176,11 @@
 
     <div class="rec-box"><strong>Key insight:</strong> Taiga enters as the <strong>first true Russian banya in HCMC</strong>. The competitive threat is not from banya alternatives (none exist) but from <strong>premium thermal substitute formats</strong> — primarily KUDOCHI (private suites) and The Sparadise (hybrid JJB+onsen).</div>
     <div class="source">Sources: sizspa.com (Jul 2025), vietnamteachingjobs.com (Jan 2026), minera.vn (Sept 2025), kinhotel.com/kudochi, TripAdvisor, Trip.com</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q1.1 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q1.1" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q2: Basic ticket -->
@@ -181,7 +205,11 @@
     </table>
     <div class="evidence"><strong>Standard JJB model:</strong> Uniform/towel always included. Tips 30–50k/person customary but not mandatory. Body scrub universally charged extra (290–340k range). Massage always extra (150–500k depending on duration).</div>
     <div class="gap-box"><strong>Data gap:</strong> Exact upsell menus, upsell attachment rate, and average extras per visit require mystery visit confirmation.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q1.2 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q1.2" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q3: Package offers -->
@@ -219,7 +247,11 @@
       </div>
     </div>
     <div class="gap-box"><strong>Data gap:</strong> Actual best-seller breakdown requires staff interview or mystery visit + discreet conversation with reception.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q1.3 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q1.3" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q4: Peak occupancy -->
@@ -243,7 +275,11 @@
     </table>
     <div class="evidence"><strong>KUDOCHI differentiator:</strong> 24/7 operation captures late-night demand (22:00–02:00) — after-dinner / post-event segment. This is a <strong>gap Taiga should consider</strong> for premium positioning.</div>
     <div class="gap-box"><strong>Data gap:</strong> Actual occupancy rates require mystery visits at different hours across 2–3 visits per facility (weekday morning, weekday evening, Saturday afternoon).</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q1.4 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q1.4" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 </div>
 
@@ -281,7 +317,11 @@
     </table>
     <div class="evidence"><strong>Influencer impact:</strong> TikTok outperforms Instagram for wellness discovery in HCMC. A single 100k-view TikTok review = estimated +20–40% booking spike (industry benchmark Vietnam). Taiga should prioritize TikTok seeding pre-launch over any other channel.</div>
     <div class="rec-box"><strong>Corporate angle is underexploited:</strong> Russian banya has a natural team bonding narrative (sauna culture as trust-building). Potential to position Taiga corporate packages as "the alternative to karaoke" for upper-management groups.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q2.1 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q2.1" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q: Privacy preference -->
@@ -308,7 +348,11 @@
     </tbody>
     </table>
     <div class="rec-box"><strong>Recommendation for Taiga:</strong> Offer BOTH — (1) shared social banya hall for authentic communal experience + cost-accessible entry, AND (2) private banya suites as premium upsell. Private suite is the revenue driver; shared hall is the experience driver that builds brand and repeat visits.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q2.2 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q2.2" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q: Duration vs bill -->
@@ -334,7 +378,11 @@
       <strong>Confirmed mechanism:</strong> Facilities with integrated F&B retain guests 40–60 minutes longer per visit → average check +30–50%. Golden Lotus's full-day unlimited access model with on-site food is the primary local evidence. The "stay longer = spend more" loop is well-documented in destination spa literature globally.
     </div>
     <div class="rec-box"><strong>Implication for Taiga:</strong> F&B is not optional — it's a retention and revenue multiplier. A guest who buys a 2-hour banya session and stays 3.5 hours due to food + lounge area spends ~40% more than projected. Design the lounge and menu to maximize comfortable lingering.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q2.3 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q2.3" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q: Venik perception -->
@@ -366,7 +414,11 @@
     </table>
     <div class="gap-box"><strong>Action required — Priority 1:</strong> Run a focus group (8–12 upper-income HCMC consumers, 30–45 age bracket) showing a 30-second video demo of venik therapy. Test reactions to 4 naming options. This data point determines the entire marketing strategy and cannot be skipped.</div>
     <div class="rec-box"><strong>Timeline implication:</strong> Begin education-phase content marketing 3–6 months before opening. TikTok series showing venik process (pleasant, sensory, not painful) should launch before any hard booking opens.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q2.4 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q2.4" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q: Gender segregation -->
@@ -393,7 +445,11 @@
     </tbody>
     </table>
     <div class="rec-box"><strong>Design implication:</strong> Taiga must provide high-quality uniforms (not cheap cotton) as part of the entry experience. Uniform quality signals price tier. Consider branded linen uniform as a merchandise/gifting opportunity.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q2.5 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q2.5" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 </div>
 
@@ -434,7 +490,11 @@
     <div class="evidence">
       <strong>Exception:</strong> If Taiga can position the Russian dining experience as a cultural curiosity (first authentic Russian food destination in HCMC), F&B can become a secondary draw in its own right — driving visits from food-curious guests who then discover banya. This would push F&B share to 35–45%+ for dinner sittings.
     </div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q3.1 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q3.1" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q: Top items -->
@@ -462,7 +522,11 @@
     </tbody>
     </table>
     <div class="gap-box"><strong>Data gap:</strong> Actual top-selling items and F&B average check at Golden Lotus and Sparadise require mystery visit + menu documentation + observation of what other guests are ordering.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q3.2 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q3.2" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 <!-- Q: Russian food receptivity -->
@@ -503,7 +567,11 @@
       <strong>Beverage strategy:</strong> Lead with non-alcoholic herbal teas (birch, linden, rose hip) as signature drinks — high margin, health-aligned, unique to Taiga, zero alcohol concern. Position as "post-banya recovery drinks." Alcohol (wine, beer, optional vodka flight) as secondary menu for evening sittings.
     </div>
     <div class="gap-box"><strong>Action required:</strong> Conduct a small taste-test event (15–20 upper-income guests) before menu finalization. Test blini, borsch, pelmeni, kvass, herbal teas. Adjust 60% adapted portion based on actual reactions. Budget: ~5–8M VND for a proper test event.</div>
-  </div>
+  <div class="comment-box">
+  <label>💬 Comment on Q3.3 <span style="font-weight:400;color:#CCC">— type your feedback here</span></label>
+  <textarea data-q="Q3.3" placeholder="Add comment, correction, or follow-up question..."></textarea>
+</div>
+    </div>
 </div>
 
 </div>
@@ -552,5 +620,88 @@
 </div>
 
 </div>
+
+<script>
+// Track all comment textareas
+function getAllComments() {
+  const areas = document.querySelectorAll('.comment-box textarea');
+  const results = [];
+  areas.forEach(ta => {
+    if (ta.value.trim()) {
+      results.push({ q: ta.dataset.q, comment: ta.value.trim() });
+    }
+  });
+  return results;
+}
+
+function updateCount() {
+  const c = getAllComments().length;
+  const badge = document.getElementById('comment-count');
+  badge.textContent = c;
+  badge.style.display = c > 0 ? 'inline-block' : 'none';
+}
+
+function showExport() {
+  const comments = getAllComments();
+  if (comments.length === 0) { alert('No comments yet.'); return; }
+  let text = 'TAIGA BANYA — RESEARCH COMMENTS\n';
+  text += '================================\n';
+  text += 'Exported: ' + new Date().toLocaleString() + '\n\n';
+  comments.forEach(c => {
+    text += '--- ' + c.q + ' ---\n';
+    text += c.comment + '\n\n';
+  });
+  document.getElementById('export-content').textContent = text;
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function copyAll() {
+  const text = document.getElementById('export-content').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-all');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = 'Copy All', 2000);
+  });
+}
+
+function clearAll() {
+  if (!confirm('Clear all comments?')) return;
+  document.querySelectorAll('.comment-box textarea').forEach(ta => {
+    ta.value = '';
+    ta.classList.remove('has-content');
+    localStorage.removeItem('taiga_' + ta.dataset.q);
+  });
+  updateCount();
+}
+
+function saveLocal() {
+  document.querySelectorAll('.comment-box textarea').forEach(ta => {
+    if (ta.value.trim()) localStorage.setItem('taiga_' + ta.dataset.q, ta.value);
+    else localStorage.removeItem('taiga_' + ta.dataset.q);
+  });
+  const btn = document.getElementById('btn-save');
+  btn.textContent = '✅ Saved!';
+  setTimeout(() => btn.textContent = 'Save Draft', 2000);
+}
+
+function loadLocal() {
+  document.querySelectorAll('.comment-box textarea').forEach(ta => {
+    const saved = localStorage.getItem('taiga_' + ta.dataset.q);
+    if (saved) { ta.value = saved; ta.classList.add('has-content'); }
+  });
+  updateCount();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadLocal();
+  document.querySelectorAll('.comment-box textarea').forEach(ta => {
+    ta.addEventListener('input', function() {
+      this.classList.toggle('has-content', this.value.trim().length > 0);
+      updateCount();
+    });
+  });
+});
+</script>
+
 </body>
 </html>
