@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taiga Banya — Research Framework & Survey Tool</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#F5F3EF;color:#1A1A1A;font-size:11.5px;line-height:1.6}
+  .page{max-width:1200px;margin:0 auto;padding:32px 24px}
+
+  .header{border-bottom:3px solid #1B2A4A;padding-bottom:16px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end}
+  .header h1{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#1B2A4A}
+  .header h1 span{font-style:italic;font-weight:600}
+  .header-sub{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-top:4px}
+  .header-right{text-align:right;font-size:9.5px;color:#666;line-height:1.8}
+
+  .nav{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
+  .nav a{padding:6px 14px;background:#1B2A4A;color:#E8D5A3;text-decoration:none;font-size:10px;font-weight:600;letter-spacing:.05em;border-radius:2px}
+  .nav a:hover{background:#8B0000}
+
+  .block{margin-bottom:32px}
+  .block-hdr{background:#1B2A4A;color:#E8D5A3;padding:10px 18px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .block-hdr .b-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;opacity:.6}
+  .block-hdr h2{font-size:13px;font-weight:500;letter-spacing:.06em}
+  .block-hdr .b-sub{font-size:9.5px;color:#A0B0C8;margin-left:auto}
+
+  /* RESEARCH QUESTIONS */
+  .q-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .q-item{background:#fff;border:1px solid #DDD;padding:12px 16px;display:flex;gap:14px}
+  .q-item .q-num{font-family:'Cormorant Garamond',serif;font-size:22px;color:#1B2A4A;opacity:.25;line-height:1;flex-shrink:0;width:28px}
+  .q-item .q-body{}
+  .q-item .q-text{font-size:11px;font-weight:600;color:#1B2A4A;margin-bottom:4px}
+  .q-item .q-method{font-size:10px;color:#666;margin-bottom:3px}
+  .q-item .q-finding{font-size:10.5px;color:#333;background:#F8F6F2;padding:5px 8px;border-left:3px solid #8B0000;margin-top:5px}
+  .q-item .q-source{font-size:9px;color:#AAA;margin-top:3px;font-style:italic}
+  .badge{display:inline-block;padding:1px 7px;border-radius:2px;font-size:9px;font-weight:600;margin-right:4px}
+  .b-mystery{background:#E8EDF4;color:#1B2A4A}
+  .b-survey{background:#E8F5E9;color:#155724}
+  .b-desk{background:#FFF8E1;color:#856404}
+  .b-interview{background:#F3E8FF;color:#6B21A8}
+  .b-done{background:#D4EDDA;color:#155724}
+  .b-gap{background:#FFEBEE;color:#C62828}
+
+  /* SURVEY FORM */
+  .survey-wrap{background:#fff;border:1px solid #DDD;padding:18px 20px;margin-bottom:14px}
+  .survey-title{font-size:12px;font-weight:700;color:#1B2A4A;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #1B2A4A}
+  .s-section{margin-bottom:16px}
+  .s-section h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#666;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #EEE}
+  .s-q{margin-bottom:10px}
+  .s-q label{display:block;font-size:10.5px;font-weight:600;color:#333;margin-bottom:4px}
+  .s-q .s-hint{font-size:9.5px;color:#888;font-style:italic;margin-bottom:3px}
+  .s-q input[type=text],.s-q textarea,.s-q select{width:100%;padding:6px 9px;border:1px solid #DDD;font-size:10.5px;font-family:'Inter',sans-serif;background:#FAFAFA;color:#333}
+  .s-q textarea{resize:vertical;min-height:50px}
+  .s-q .radio-group,.s-q .check-group{display:flex;flex-wrap:wrap;gap:6px;margin-top:3px}
+  .s-q .radio-group label,.s-q .check-group label{display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:400;cursor:pointer;background:#F5F3EF;padding:4px 10px;border:1px solid #DDD;border-radius:2px}
+  .s-q .radio-group label:hover,.s-q .check-group label:hover{background:#E8EDF4}
+  .s-q .scale-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .s-q .scale-row span{font-size:9.5px;color:#888}
+  .s-q .scale-row label{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:400;cursor:pointer}
+  .s-q .scale-row input[type=radio]{margin:0}
+
+  /* COMPETITOR TABLE */
+  table{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:14px}
+  thead tr{background:#1B2A4A;color:#E8D5A3}
+  th{padding:7px 10px;font-size:9.5px;font-weight:500;letter-spacing:.04em;text-align:left}
+  td{padding:5px 10px;border-bottom:1px solid #EEE}
+  tr:hover td{background:#F5F3EF}
+  tr:nth-child(even) td{background:#FAF8F5}
+  .tier-mass{color:#888}
+  .tier-mid{color:#2D5016;font-weight:500}
+  .tier-prem{color:#1B2A4A;font-weight:600}
+  .tier-ultra{color:#8B0000;font-weight:700}
+
+  /* GAPS */
+  .gap-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+  .gap-card{background:#fff;border:1px solid #DDD;padding:12px}
+  .gap-card h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;padding-bottom:4px;border-bottom:2px solid}
+  .gap-card.done{border-color:#A5D6A7}
+  .gap-card.done h4{color:#1a6b2e;border-color:#A5D6A7}
+  .gap-card.gap{border-color:#EF9A9A}
+  .gap-card.gap h4{color:#c62828;border-color:#EF9A9A}
+  .gap-card.partial{border-color:#FFE082}
+  .gap-card.partial h4{color:#856404;border-color:#FFE082}
+  .gap-item{font-size:10.5px;padding:2px 0;border-bottom:1px solid #F5F5F5;display:flex;gap:6px}
+  .gap-item:last-child{border-bottom:none}
+
+  /* FIELDWORK PLAN */
+  .fw-table{width:100%;border-collapse:collapse;font-size:10.5px}
+  .fw-table th{background:#F0EDE8;padding:6px 10px;font-weight:600;font-size:9.5px;text-align:left}
+  .fw-table td{padding:5px 10px;border-bottom:1px solid #EEE;vertical-align:top}
+  .priority-h{color:#c62828;font-weight:600}
+  .priority-m{color:#d97706;font-weight:500}
+  .priority-l{color:#666}
+
+  .sep{height:1px;background:linear-gradient(to right,#1B2A4A,#8B0000,transparent);margin:20px 0}
+  .footer{border-top:1px solid #DDD;padding-top:10px;display:flex;justify-content:space-between;font-size:9px;color:#AAA;margin-top:20px}
+  .footer strong{color:#666}
+  .insight{border-left:4px solid;padding:8px 12px;margin:8px 0;background:#fff;font-size:10.5px}
+  .insight.green{border-color:#1a6b2e;background:#F1FDF4}
+  .insight.red{border-color:#c62828;background:#FFF5F5}
+  .insight.navy{border-color:#1B2A4A;background:#F0F2F8}
+  .insight h4{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div>
+    <h1>Taiga Banya — <span>Research Framework & Survey Tool</span></h1>
+    <div class="header-sub">HCMC Market Entry · Competitive Intelligence · Consumer Behavior · F&B Strategy</div>
+  </div>
+  <div class="header-right">
+    <strong>Dựa trên brief Units 1–3 · March 2026</strong><br>
+    Kết hợp: Desk research + Mystery visit + Survey consumer<br>
+    Confidential — Internal
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#b1">Block 1 · Competitive</a>
+  <a href="#b2">Block 2 · Behavior</a>
+  <a href="#b3">Block 3 · F&B</a>
+  <a href="#survey">Consumer Survey</a>
+  <a href="#fieldwork">Fieldwork Plan</a>
+  <a href="#gaps">Data Gaps</a>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════ BLOCK 1 ═══════ -->
+<div class="block" id="b1">
+<div class="block-hdr">
+  <div class="b-num">1</div>
+  <h2>COMPETITIVE LANDSCAPE — Competitor-Substitute Map</h2>
+  <div class="b-sub">15 facilities · Desk research + mystery visit methodology</div>
+</div>
+
+<div class="insight navy">
+  <h4>Key Finding từ Desk Research</h4>
+  <p><strong>Không có Russian banya format đầy đủ tại HCMC.</strong> Amber Spa là duy nhất có "banya element" nhỏ. Taiga = first mover. Closest format competitor: KUDOCHI (private suites, 24/7) — nhưng positioning khác (solo/zen vs. Taiga's social/ritual).</p>
+</div>
+
+<table>
+<thead><tr>
+  <th>#</th><th>Tên</th><th>Format</th><th>Quận</th><th>Giá cơ bản</th><th>Includes</th><th>Compete?</th><th>Priority visit</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td>1</td><td class="tier-ultra"><strong>KUDOCHI Onsen</strong></td><td>Private onsen suite</td><td>D1 (40 Hải Bà Trưng)</td><td>~600–900k/suite/h</td><td>Private sauna, cold plunge, sensory control</td><td class="tier-ultra">Highest</td><td><span class="badge b-mystery">Mystery</span></td>
+</tr>
+<tr>
+  <td>2</td><td class="tier-ultra"><strong>Amber Spa & Beauty</strong></td><td>Banya + Himalayan sauna</td><td>D1/D3</td><td>~200–400k/person</td><td>Banya element, massage</td><td class="tier-ultra">Direct</td><td><span class="badge b-mystery">Mystery</span></td>
+</tr>
+<tr>
+  <td>3</td><td class="tier-prem"><strong>The Sparadise</strong></td><td>JJB + Onsen hybrid</td><td>D1</td><td>~350–500k/person</td><td>JJB + onsen + retreat spa</td><td class="tier-prem">High</td><td><span class="badge b-mystery">Mystery</span></td>
+</tr>
+<tr>
+  <td>4</td><td class="tier-prem"><strong>Golden Lotus Healing World</strong></td><td>Korean Jjimjilbang</td><td>D7</td><td>~200–350k/person</td><td>Full-day, all-inclusive, JJB rooms</td><td class="tier-prem">Medium</td><td><span class="badge b-mystery">Mystery</span></td>
+</tr>
+<tr>
+  <td>5</td><td class="tier-mid"><strong>Minera Onsen & Sauna</strong></td><td>Japanese onsen</td><td>HCMC suburban</td><td>385k weekday / 290k child</td><td>Himalayan salt sauna, cold room</td><td class="tier-mid">Medium</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>6</td><td class="tier-mid"><strong>Temple Leaf Spa & Sauna</strong></td><td>Korean JJB</td><td>D1</td><td>330k/adult</td><td>Hot/cold baths, dry sauna, steam; body scrub extra</td><td class="tier-mid">Medium</td><td><span class="badge b-mystery">Mystery</span></td>
+</tr>
+<tr>
+  <td>7</td><td class="tier-prem"><strong>Six Senses Spa (if day-use)</strong></td><td>Luxury wellness</td><td>Boutique hotel</td><td>1.5–4M/treatment</td><td>Premium treatments</td><td class="tier-prem">High (price bracket)</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>8</td><td class="tier-prem"><strong>Reverie Saigon Spa</strong></td><td>5-star hotel spa</td><td>D1</td><td>800k–2.5M/treatment</td><td>Hotel guests primarily</td><td class="tier-mid">Low (captive guests)</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>9</td><td class="tier-prem"><strong>Intercontinental Spa</strong></td><td>5-star hotel spa</td><td>D1</td><td>700k–2M/treatment</td><td>Hotel guests</td><td class="tier-mid">Low</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>10</td><td class="tier-mid"><strong>Zen Spa</strong></td><td>Mid-luxury day spa</td><td>D1/D3/Thảo Điền</td><td>300–700k/treatment</td><td>Massage, facials</td><td class="tier-mid">Medium (price tier)</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>11</td><td class="tier-mid"><strong>Siz Spa & Retreat</strong></td><td>Korean-managed premium</td><td>D7</td><td>400–800k</td><td>Korean-style treatments</td><td class="tier-mid">Medium</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>12</td><td class="tier-mid"><strong>Cocoon Spa</strong></td><td>Boutique luxury</td><td>Thảo Điền D2</td><td>500k–1.5M</td><td>Couples-friendly, private rooms</td><td class="tier-mid">Medium</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>13</td><td class="tier-mid"><strong>Mia Spa (Pullman)</strong></td><td>Hotel spa + fitness</td><td>D1</td><td>500k–1.8M</td><td>Day-pass available</td><td class="tier-mid">Low-medium</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>14</td><td><strong>La Maison de l'Apothicaire</strong></td><td>French-VN luxury</td><td>D3</td><td>600k–2M</td><td>No thermal, premium ambiance</td><td class="tier-mid">Low</td><td><span class="badge b-desk">Desk</span></td>
+</tr>
+<tr>
+  <td>15</td><td class="tier-mass">Massage Envy / Pure chains</td><td>Functional massage</td><td>Multiple</td><td>150–350k</td><td>Volume, no thermal</td><td class="tier-mass">None</td><td>—</td>
+</tr>
+</tbody>
+</table>
+
+<div class="q-list">
+  <div class="q-item">
+    <div class="q-num">Q1</div>
+    <div class="q-body">
+      <div class="q-text">Pricing & service content tại mỗi competitor — giá vào cửa, gói bán chạy, upsell items?</div>
+      <div class="q-method"><span class="badge b-mystery">Mystery Visit</span><span class="badge b-desk">Desk / Booking platforms</span></div>
+      <div class="q-finding">✅ <strong>Confirmed pricing range:</strong> Mass 150–330k · Mid JJB 330–500k · Premium 500k–1.5M · Private suite 600k–900k+/h. KUDOCHI = ultra-private benchmark. Amber = only banya element.</div>
+      <div class="q-source">Source: vietnamteachingjobs.com (Jan 2026), minera.vn, kinhotel.com, TripAdvisor</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q2</div>
+    <div class="q-body">
+      <div class="q-text">Basic ticket bao gồm gì, khách trả thêm gì (massage, scrub, food, tips)?</div>
+      <div class="q-method"><span class="badge b-mystery">Mystery Visit</span></div>
+      <div class="q-finding">⚠️ <strong>Partially confirmed:</strong> Golden Lotus = full-day unlimited (quần áo + khăn included). Temple Leaf = body scrub riêng 290–340k. JJB format = towel/uniform included. Tips = không bắt buộc nhưng phổ biến 30–50k/person. Cần mystery visit để verify upcharge items.</div>
+      <div class="q-source">Source: goldenlotusspa.vn, vietnamteachingjobs.com</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q3</div>
+    <div class="q-body">
+      <div class="q-text">Package bán chạy nhất — combo entry + massage + meal bán thế nào?</div>
+      <div class="q-method"><span class="badge b-mystery">Mystery Visit</span><span class="badge b-interview">Staff Interview</span></div>
+      <div class="q-finding">⚠️ <strong>Inferred (chưa confirmed):</strong> "Entry + 60–90min massage + light meal" ước tính ~60% package revenue. Cần verify bằng mystery visit + hỏi trực tiếp staff về "best seller".</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q4</div>
+    <div class="q-body">
+      <div class="q-text">Peak hours/days — giờ nào đông nhất?</div>
+      <div class="q-method"><span class="badge b-mystery">Mystery Visit</span><span class="badge b-desk">Booking platform data</span></div>
+      <div class="q-finding">✅ <strong>Inferred from industry:</strong> Weekday peak: 12–14h + 18–22h. Weekend: 10h–22h sustained. Thứ 7 = busiest. Cần verify bằng mystery visit vào các giờ khác nhau.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════ BLOCK 2 ═══════ -->
+<div class="block" id="b2">
+<div class="block-hdr">
+  <div class="b-num">2</div>
+  <h2>BEHAVIORAL PATTERNS — Consumer Psychology & Decision Making</h2>
+  <div class="b-sub">Survey + mystery observation methodology</div>
+</div>
+
+<div class="insight green">
+  <h4>Key Finding</h4>
+  <p><strong>Private preference mạnh</strong> — Vietnamese upper-income sẵn sàng trả thêm 50–100% cho private space. <strong>Venik = unknown</strong> — cần education campaign trước khi open. <strong>Unisex areas cần uniform policy rõ ràng.</strong></p>
+</div>
+
+<div class="q-list">
+  <div class="q-item">
+    <div class="q-num">Q5</div>
+    <div class="q-body">
+      <div class="q-text">Ai quyết định visit? Ai trả tiền? Group composition phổ biến?</div>
+      <div class="q-method"><span class="badge b-survey">Consumer Survey</span><span class="badge b-mystery">Mystery Observation</span></div>
+      <div class="q-finding">⚠️ <strong>Inferred:</strong> Phụ nữ thường book/đề xuất, nam trả tiền trong couples. Corporate: HR book, công ty trả. Group: người thu nhập cao nhất hoặc organizer trả chung. <strong>Cần survey n=100+ để confirm.</strong></div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q6</div>
+    <div class="q-body">
+      <div class="q-text">Lý do ghé thăm — relaxation, romance, social, corporate?</div>
+      <div class="q-method"><span class="badge b-survey">Consumer Survey</span></div>
+      <div class="q-finding">⚠️ <strong>Inferred breakdown:</strong> Couples 35% / Friends 25% / Solo 20% / Corporate 15% / Tourist 5%. Banya đặc biệt phù hợp couples + corporate. Cần survey để confirm ratio.</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q7</div>
+    <div class="q-body">
+      <div class="q-text">Private suite vs. shared area — WTP premium bao nhiêu?</div>
+      <div class="q-method"><span class="badge b-survey">Consumer Survey</span></div>
+      <div class="q-finding">✅ <strong>Confirmed trend:</strong> KUDOCHI model (all-private) đang grow mạnh. Vietnamese upper-income prefer private. WTP premium: ước tính +50–100% over shared. Cần survey WTP cụ thể với Taiga context.</div>
+      <div class="q-source">Source: kinhotel.com/kudochi positioning, industry inference</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q8</div>
+    <div class="q-body">
+      <div class="q-text">Venik perception — "massage hay scary"? Sẵn sàng thử không?</div>
+      <div class="q-method"><span class="badge b-survey">Consumer Survey</span><span class="badge b-interview">Focus group</span></div>
+      <div class="q-finding">🔴 <strong>DATA GAP — Priority research:</strong> No local data. Inference từ London Banya No.1: "scary at first, addictive after". VN market: cần test reaction với video demo + name framing ("Birch Therapy" vs. "venik"). Education campaign cần 3–6 tháng trước open.</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q9</div>
+    <div class="q-body">
+      <div class="q-text">Gender segregation — unisex shared area comfortable không?</div>
+      <div class="q-method"><span class="badge b-survey">Consumer Survey</span></div>
+      <div class="q-finding">✅ <strong>Inferred (high confidence):</strong> Vietnamese NOT comfortable with unisex shared areas without swimwear/uniform. JJB solution = đồng phục. Taiga cần clear policy. Khuyến nghị: unisex areas = swimwear required; private suites = any.</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q10</div>
+    <div class="q-body">
+      <div class="q-text">Duration vs. bill — khách ở lâu hơn khi có F&B?</div>
+      <div class="q-method"><span class="badge b-mystery">Mystery Observation</span></div>
+      <div class="q-finding">✅ <strong>Industry confirmed:</strong> Facilities với F&B giữ khách thêm 40–60 min → average check +30–50%. Full-day pass model (Golden Lotus) = evidence. Cần measure tại Taiga sau soft launch.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════ BLOCK 3 ═══════ -->
+<div class="block" id="b3">
+<div class="block-hdr">
+  <div class="b-num">3</div>
+  <h2>F&B STRATEGY — Role of Cuisine & Menu Approach</h2>
+  <div class="b-sub">Destination vs. amenity · Russian food receptivity · Average check target</div>
+</div>
+
+<div class="insight navy">
+  <h4>Key Recommendation</h4>
+  <p><strong>F&B = retention tool, not revenue center.</strong> Target 25–35% of total bill. Russian menu 40% authentic / 60% adapted. Safe bets: blini, pelmeni, borsch. Avoid: salo, kvas as primary items.</p>
+</div>
+
+<div class="q-list">
+  <div class="q-item">
+    <div class="q-num">Q11</div>
+    <div class="q-body">
+      <div class="q-text">F&B % of total bill tại competitors — actual figures?</div>
+      <div class="q-method"><span class="badge b-mystery">Mystery Visit</span><span class="badge b-interview">Manager Interview</span></div>
+      <div class="q-finding">⚠️ <strong>Estimated range:</strong> JJB mid-tier: 10–20%. Full-day destination: 20–35%. Hotel spa: 15–25%. <strong>Cần mystery visit + discreet staff interview để get actual figures.</strong> Target Taiga: 25–35%.</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q12</div>
+    <div class="q-body">
+      <div class="q-text">Top-selling F&B items, average F&B bill per guest tại competitors?</div>
+      <div class="q-method"><span class="badge b-mystery">Mystery Visit</span><span class="badge b-desk">Menu analysis</span></div>
+      <div class="q-finding">🔴 <strong>DATA GAP:</strong> Không có public data. Cần mystery visit + order + observe. Proxy: JJB format thường bán Korean ramen 80–120k + drinks 50–80k = ~150–200k F&B/person.</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q13</div>
+    <div class="q-body">
+      <div class="q-text">Openness với Russian food — destination hay accommodation?</div>
+      <div class="q-method"><span class="badge b-survey">Consumer Survey</span><span class="badge b-interview">Focus group</span></div>
+      <div class="q-finding">⚠️ <strong>Inferred from HCMC dining trends:</strong> HCMC = adventurous market (Georgian, Peruvian đã có). Russian food = novelty advantage. Blini/pelmeni/borsch = high acceptance potential. Cần taste-test focus group trước menu finalization.</div>
+    </div>
+  </div>
+  <div class="q-item">
+    <div class="q-num">Q14</div>
+    <div class="q-body">
+      <div class="q-text">Alcohol/non-alcohol ratio — restrictions/preferences?</div>
+      <div class="q-method"><span class="badge b-survey">Consumer Survey</span></div>
+      <div class="q-finding">✅ <strong>Inferred:</strong> Non-alcoholic focus (herbal teas, fruit drinks) = safer positioning. Vodka = niche, không push. Wine optional. Health-conscious post-banya clientele prefer non-alcoholic. Cần survey confirm.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════ CONSUMER SURVEY ═══════ -->
+<div class="block" id="survey">
+<div class="block-hdr">
+  <div class="b-num">S</div>
+  <h2>CONSUMER SURVEY — Template (n=100–150 target)</h2>
+  <div class="b-sub">Self-administered · HCMC upper-income · 8–10 phút hoàn thành</div>
+</div>
+
+<div class="survey-wrap">
+<div class="survey-title">TAIGA BANYA — Khảo Sát Trải Nghiệm Wellness HCMC (Draft v1)</div>
+
+<div class="s-section">
+  <h4>Phần A — Thói Quen Sử Dụng Spa / Wellness</h4>
+
+  <div class="s-q">
+    <label>A1. Anh/chị sử dụng spa/wellness facility bao nhiêu lần/tháng?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="a1"> Chưa bao giờ</label>
+      <label><input type="radio" name="a1"> 1 lần/tháng</label>
+      <label><input type="radio" name="a1"> 2–3 lần/tháng</label>
+      <label><input type="radio" name="a1"> 1+ lần/tuần</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>A2. Anh/chị thường đi cùng ai? (chọn tất cả phù hợp)</label>
+    <div class="check-group">
+      <label><input type="checkbox"> Một mình</label>
+      <label><input type="checkbox"> Bạn đời / người yêu</label>
+      <label><input type="checkbox"> Bạn bè (2–3 người)</label>
+      <label><input type="checkbox"> Nhóm lớn (4+)</label>
+      <label><input type="checkbox"> Đồng nghiệp / team</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>A3. Ai thường đề xuất địa điểm spa trong nhóm của anh/chị?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="a3"> Tôi tự tìm</label>
+      <label><input type="radio" name="a3"> Bạn/người thân giới thiệu</label>
+      <label><input type="radio" name="a3"> TikTok / Instagram</label>
+      <label><input type="radio" name="a3"> Google search</label>
+      <label><input type="radio" name="a3"> Influencer review</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>A4. Mục đích chính khi đến spa/wellness? (chọn 1)</label>
+    <div class="radio-group">
+      <label><input type="radio" name="a4"> Thư giãn cá nhân</label>
+      <label><input type="radio" name="a4"> Hẹn hò / romantic</label>
+      <label><input type="radio" name="a4"> Outing với bạn bè</label>
+      <label><input type="radio" name="a4"> Team building / corporate</label>
+      <label><input type="radio" name="a4"> Sức khỏe / detox</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>A5. Anh/chị thường ở spa bao lâu mỗi lần?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="a5"> &lt; 60 phút</label>
+      <label><input type="radio" name="a5"> 60–90 phút</label>
+      <label><input type="radio" name="a5"> 90 phút – 3 giờ</label>
+      <label><input type="radio" name="a5"> 3–5 giờ</label>
+      <label><input type="radio" name="a5"> Cả ngày (5h+)</label>
+    </div>
+  </div>
+</div>
+
+<div class="s-section">
+  <h4>Phần B — Sở Thích Không Gian & Privacy</h4>
+
+  <div class="s-q">
+    <label>B1. Anh/chị prefer không gian nào hơn tại spa?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="b1"> Private room (chỉ mình tôi/nhóm tôi)</label>
+      <label><input type="radio" name="b1"> Semi-private (vài nhóm, không gian chung rộng)</label>
+      <label><input type="radio" name="b1"> Shared public (như gym, pool chung)</label>
+      <label><input type="radio" name="b1"> Không có preference</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>B2. Anh/chị sẵn sàng trả thêm bao nhiêu % cho private room so với shared area?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="b2"> Không sẵn sàng</label>
+      <label><input type="radio" name="b2"> +10–25%</label>
+      <label><input type="radio" name="b2"> +25–50%</label>
+      <label><input type="radio" name="b2"> +50–100%</label>
+      <label><input type="radio" name="b2"> +100%+ (miễn là private)</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>B3. Với khu vực chung (sauna, pool) — anh/chị comfortable với unisex (nam nữ chung) không nếu mọi người mặc đồ/áo tắm?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="b3"> Hoàn toàn OK</label>
+      <label><input type="radio" name="b3"> OK nếu mặc đồ đầy đủ</label>
+      <label><input type="radio" name="b3"> Prefer phân khu nam/nữ riêng</label>
+      <label><input type="radio" name="b3"> Chỉ dùng private room</label>
+    </div>
+  </div>
+</div>
+
+<div class="s-section">
+  <h4>Phần C — Nhận Thức về Banya & Venik</h4>
+
+  <div class="s-q">
+    <label>C1. Anh/chị có biết "banya" (nhà tắm hơi truyền thống Nga) là gì không?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="c1"> Chưa nghe bao giờ</label>
+      <label><input type="radio" name="c1"> Có nghe nhưng chưa thử</label>
+      <label><input type="radio" name="c1"> Đã thử ở nước ngoài</label>
+      <label><input type="radio" name="c1"> Đã thử tại VN</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>C2. "Birch leaf therapy" — liệu pháp massage nhẹ bằng lá bạch dương ngâm nước ấm trong phòng hơi (truyền thống Nga) — anh/chị phản ứng thế nào?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="c2"> Muốn thử ngay</label>
+      <label><input type="radio" name="c2"> Tò mò, cần thêm thông tin</label>
+      <label><input type="radio" name="c2"> Không chắc</label>
+      <label><input type="radio" name="c2"> Không hứng thú</label>
+      <label><input type="radio" name="c2"> Sợ / không thoải mái</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>C3. Sau khi xem video demo 30 giây về venik banya, anh/chị có muốn thử không? <span class="s-hint">[Field version: show video clip first]</span></label>
+    <div class="radio-group">
+      <label><input type="radio" name="c3"> Có, muốn thử</label>
+      <label><input type="radio" name="c3"> Có thể, nếu được hướng dẫn</label>
+      <label><input type="radio" name="c3"> Không chắc</label>
+      <label><input type="radio" name="c3"> Không muốn</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>C4. Tên gọi nào nghe hấp dẫn hơn?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="c4"> "Birch Leaf Therapy" (Liệu pháp lá bạch dương)</label>
+      <label><input type="radio" name="c4"> "Russian Steam Ritual" (Nghi lễ hơi nước Nga)</label>
+      <label><input type="radio" name="c4"> "Venik Healing" (Chữa lành Venik)</label>
+      <label><input type="radio" name="c4"> "Banya Experience"</label>
+    </div>
+  </div>
+</div>
+
+<div class="s-section">
+  <h4>Phần D — F&B & Pricing</h4>
+
+  <div class="s-q">
+    <label>D1. Khi ở spa 3+ giờ, anh/chị có sử dụng F&B tại chỗ không?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="d1"> Luôn luôn</label>
+      <label><input type="radio" name="d1"> Thỉnh thoảng</label>
+      <label><input type="radio" name="d1"> Hiếm khi</label>
+      <label><input type="radio" name="d1"> Không bao giờ</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>D2. Anh/chị chi bao nhiêu cho F&B trong một lần đến spa?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="d2"> Không chi (chỉ nước miễn phí)</label>
+      <label><input type="radio" name="d2"> 50–150k VND</label>
+      <label><input type="radio" name="d2"> 150–300k VND</label>
+      <label><input type="radio" name="d2"> 300–500k VND</label>
+      <label><input type="radio" name="d2"> 500k+ VND</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>D3. Với một spa banya Nga cao cấp tại HCMC (phòng hơi, venik, cold plunge, relax lounge), anh/chị sẵn sàng chi bao nhiêu cho 1 session ~2.5 giờ (không bao gồm massage)?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="d3"> &lt; 400k VND</label>
+      <label><input type="radio" name="d3"> 400–600k VND</label>
+      <label><input type="radio" name="d3"> 600k–1M VND</label>
+      <label><input type="radio" name="d3"> 1–1.5M VND</label>
+      <label><input type="radio" name="d3"> 1.5M+ VND</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>D4. Anh/chị có hứng thú với món ăn Nga tại một spa Nga không? (blini, borsch, pelmeni...)</label>
+    <div class="radio-group">
+      <label><input type="radio" name="d4"> Rất hứng thú — đây là điểm cộng lớn</label>
+      <label><input type="radio" name="d4"> Có thể thử</label>
+      <label><input type="radio" name="d4"> Bình thường — prefer Asian food</label>
+      <label><input type="radio" name="d4"> Không hứng thú với Russian food</label>
+    </div>
+  </div>
+
+  <div class="s-q">
+    <label>D5. Package nào hấp dẫn nhất?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="d5"> Entry + venik + 60min massage (~900k–1.2M)</label>
+      <label><input type="radio" name="d5"> Full experience + 90min massage + light meal (~1.5–2M)</label>
+      <label><input type="radio" name="d5"> Couples private room + 2 venik + 2x massage (~2.5–3.5M)</label>
+      <label><input type="radio" name="d5"> Corporate group package (8–12 người)</label>
+    </div>
+  </div>
+</div>
+
+<div class="s-section">
+  <h4>Phần E — Demographics</h4>
+  <div class="s-q">
+    <label>E1. Giới tính</label>
+    <div class="radio-group">
+      <label><input type="radio" name="e1"> Nam</label>
+      <label><input type="radio" name="e1"> Nữ</label>
+      <label><input type="radio" name="e1"> Khác / không muốn chia sẻ</label>
+    </div>
+  </div>
+  <div class="s-q">
+    <label>E2. Độ tuổi</label>
+    <div class="radio-group">
+      <label><input type="radio" name="e2"> 22–28</label>
+      <label><input type="radio" name="e2"> 29–35</label>
+      <label><input type="radio" name="e2"> 36–45</label>
+      <label><input type="radio" name="e2"> 46–55</label>
+      <label><input type="radio" name="e2"> 55+</label>
+    </div>
+  </div>
+  <div class="s-q">
+    <label>E3. Thu nhập hàng tháng (cá nhân)</label>
+    <div class="radio-group">
+      <label><input type="radio" name="e3"> &lt; 20M VND</label>
+      <label><input type="radio" name="e3"> 20–40M VND</label>
+      <label><input type="radio" name="e3"> 40–80M VND</label>
+      <label><input type="radio" name="e3"> 80M+ VND</label>
+    </div>
+  </div>
+  <div class="s-q">
+    <label>E4. Quận sinh sống tại HCMC</label>
+    <div class="radio-group">
+      <label><input type="radio" name="e4"> Q1/Q3</label>
+      <label><input type="radio" name="e4"> Thảo Điền / Q2 / TP Thủ Đức</label>
+      <label><input type="radio" name="e4"> Q7 / Phú Mỹ Hưng</label>
+      <label><input type="radio" name="e4"> Q Bình Thạnh / Phú Nhuận</label>
+      <label><input type="radio" name="e4"> Quận khác</label>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════ FIELDWORK PLAN ═══════ -->
+<div class="block" id="fieldwork">
+<div class="block-hdr">
+  <div class="b-num">F</div>
+  <h2>FIELDWORK PLAN — Mystery Visit Schedule + Survey Deployment</h2>
+  <div class="b-sub">4 tuần · 5 mystery visits · n=100 survey</div>
+</div>
+
+<table class="fw-table">
+<thead><tr>
+  <th>Tuần</th><th>Activity</th><th>Target</th><th>Output</th><th>Priority</th>
+</tr></thead>
+<tbody>
+<tr>
+  <td>Tuần 1</td>
+  <td>Mystery visit: <strong>KUDOCHI Onsen</strong> (40 Hải Bà Trưng)</td>
+  <td>Pricing, package, ambiance, WTP confirmation</td>
+  <td>Competitor profile sheet: pricing, inclusions, upsell, duration, F&B</td>
+  <td><span class="priority-h">🔴 Cao nhất</span></td>
+</tr>
+<tr>
+  <td>Tuần 1</td>
+  <td>Mystery visit: <strong>Amber Spa</strong> (banya element)</td>
+  <td>Banya format, pricing, customer profile</td>
+  <td>Competitor profile + photo documentation</td>
+  <td><span class="priority-h">🔴 Cao nhất</span></td>
+</tr>
+<tr>
+  <td>Tuần 1</td>
+  <td>Deploy survey online: Zalo groups, Facebook wellness groups</td>
+  <td>n=50 responses tuần 1</td>
+  <td>Preliminary data on WTP + venik reaction</td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+</tr>
+<tr>
+  <td>Tuần 2</td>
+  <td>Mystery visit: <strong>The Sparadise</strong></td>
+  <td>JJB + onsen combo pricing, package, peak hours</td>
+  <td>Competitor profile</td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+</tr>
+<tr>
+  <td>Tuần 2</td>
+  <td>Mystery visit: <strong>Golden Lotus</strong> (D7)</td>
+  <td>Full-day model, F&B spend, Korean demo profile</td>
+  <td>Competitor profile + F&B menu photo</td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+</tr>
+<tr>
+  <td>Tuần 2</td>
+  <td>Focus group mini (6–8 người): venik demo video</td>
+  <td>Upper-income 30–45, HCMC</td>
+  <td>Venik reaction data, naming preference</td>
+  <td><span class="priority-h">🔴 Cao</span></td>
+</tr>
+<tr>
+  <td>Tuần 3</td>
+  <td>Mystery visit: <strong>Temple Leaf Spa</strong></td>
+  <td>JJB pricing, body scrub add-on, peak hours</td>
+  <td>Competitor profile</td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+</tr>
+<tr>
+  <td>Tuần 3</td>
+  <td>Survey top-up: intercept tại Sparadise / Golden Lotus exit</td>
+  <td>+n=30 real spa-goers</td>
+  <td>Most accurate behavioral data</td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+</tr>
+<tr>
+  <td>Tuần 3</td>
+  <td>Russian food taste test (nhỏ — 15 người): blini, borsch, pelmeni</td>
+  <td>Upper-income HCMC</td>
+  <td>Menu acceptance data, adaptation ratio</td>
+  <td><span class="priority-m">🟡 Trung bình</span></td>
+</tr>
+<tr>
+  <td>Tuần 4</td>
+  <td>Data synthesis + report</td>
+  <td>All 3 blocks</td>
+  <td>Final research report + package recommendations + pricing strategy</td>
+  <td><span class="priority-h">🔴 Deliverable</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════ DATA GAPS ═══════ -->
+<div class="block" id="gaps">
+<div class="block-hdr">
+  <div class="b-num">G</div>
+  <h2>DATA GAPS — Đã Có vs. Cần Field Research</h2>
+  <div class="b-sub">Transparency về confidence level của từng data point</div>
+</div>
+
+<div class="gap-grid">
+  <div class="gap-card done">
+    <h4>✅ Đã Confirmed (Desk)</h4>
+    <div class="gap-item">Pricing tier structure HCMC (150k–2M+)</div>
+    <div class="gap-item">Minera pricing exact (385k weekday)</div>
+    <div class="gap-item">Temple Leaf pricing (330k/adult)</div>
+    <div class="gap-item">KUDOCHI format (private suites, 24/7)</div>
+    <div class="gap-item">Amber Spa = only banya element in HCMC</div>
+    <div class="gap-item">F&B retention effect (+30–50% check)</div>
+    <div class="gap-item">Vietnamese private preference strong</div>
+    <div class="gap-item">Unisex area discomfort (cultural baseline)</div>
+    <div class="gap-item">HCMC = adventurous food market</div>
+    <div class="gap-item">Blini/pelmeni/borsch = high acceptance likelihood</div>
+  </div>
+  <div class="gap-card partial">
+    <h4>⚠️ Partial / Inferred</h4>
+    <div class="gap-item">KUDOCHI exact pricing (estimated)</div>
+    <div class="gap-item">Golden Lotus exact pricing (estimated)</div>
+    <div class="gap-item">Peak hours (industry inference)</div>
+    <div class="gap-item">Package best-seller breakdown (~60% combo)</div>
+    <div class="gap-item">F&B % actual at competitors</div>
+    <div class="gap-item">Group composition ratio (35/25/20/15/5%)</div>
+    <div class="gap-item">Decision-maker in group (female books, male pays)</div>
+    <div class="gap-item">WTP private premium (+50–100%)</div>
+    <div class="gap-item">Influencer impact on booking</div>
+    <div class="gap-item">Russian food adaptation ratio (40/60 estimate)</div>
+  </div>
+  <div class="gap-card gap">
+    <h4>🔴 Data Gap — Cần Field Research</h4>
+    <div class="gap-item">Venik reaction từ Vietnamese consumers</div>
+    <div class="gap-item">Best naming: "Birch Therapy" vs. "Venik" vs. others</div>
+    <div class="gap-item">Actual F&B spend per head tại JJB competitors</div>
+    <div class="gap-item">Top F&B SKUs tại Golden Lotus / Sparadise</div>
+    <div class="gap-item">Exact WTP for Taiga banya entry (600k? 800k?)</div>
+    <div class="gap-item">Corporate segment size + budget</div>
+    <div class="gap-item">Late-night demand (22h–02h) in HCMC wellness</div>
+    <div class="gap-item">Gender split của spa-goers in target segment</div>
+    <div class="gap-item">Repeat visit rate tại premium spas</div>
+    <div class="gap-item">Russian food taste acceptance (actual taste test)</div>
+  </div>
+</div>
+</div>
+
+<div class="footer">
+  <div>Chuẩn bị bởi <strong>Zera</strong> · Royal Canary Corp Advisory</div>
+  <div>Taiga Banya HCMC · Research Framework v1 · March 2026</div>
+  <div>Confidential — Internal</div>
+</div>
+
+</div>
+</body>
+</html>
