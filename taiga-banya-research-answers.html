@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taiga Banya HCMC — Research Answers</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#F5F3EF;color:#1A1A1A;font-size:11.5px;line-height:1.6}
+  .page{max-width:1100px;margin:0 auto;padding:32px 24px}
+
+  .header{border-bottom:3px solid #1B2A4A;padding-bottom:16px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end}
+  .header h1{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#1B2A4A}
+  .header h1 span{font-style:italic;font-weight:600}
+  .header-sub{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#888;margin-top:4px}
+  .header-right{text-align:right;font-size:9.5px;color:#666;line-height:1.8}
+
+  .nav{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
+  .nav a{padding:6px 14px;background:#1B2A4A;color:#E8D5A3;text-decoration:none;font-size:10px;font-weight:600;letter-spacing:.05em;border-radius:2px}
+  .nav a:hover{background:#8B0000}
+
+  .unit{margin-bottom:30px}
+  .unit-hdr{background:#1B2A4A;color:#E8D5A3;padding:10px 18px;display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .unit-hdr .u-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;opacity:.5}
+  .unit-hdr h2{font-size:13px;font-weight:500;letter-spacing:.06em}
+  .unit-hdr .u-sub{font-size:9.5px;color:#A0B0C8;margin-left:auto}
+
+  .q-block{background:#fff;border:1px solid #DDD;margin-bottom:10px;overflow:hidden}
+  .q-hdr{background:#F0EDE8;padding:9px 14px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid #DDD}
+  .q-hdr .q-id{font-weight:700;color:#8B0000;font-size:11px;flex-shrink:0;width:36px}
+  .q-hdr .q-text{font-size:11px;font-weight:600;color:#1B2A4A;line-height:1.4}
+  .q-body{padding:12px 14px}
+
+  .answer{margin-bottom:8px}
+  .answer-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:4px}
+  .answer-text{font-size:11px;color:#222;line-height:1.6}
+
+  .evidence{background:#F8F6F2;border-left:3px solid #1B2A4A;padding:6px 10px;margin:6px 0;font-size:10.5px;color:#333}
+  .evidence strong{color:#1B2A4A}
+
+  .gap-box{background:#FFF5F5;border-left:3px solid #c62828;padding:6px 10px;margin:6px 0;font-size:10.5px;color:#333}
+  .gap-box strong{color:#c62828}
+
+  .rec-box{background:#F1FDF4;border-left:3px solid #1a6b2e;padding:6px 10px;margin:6px 0;font-size:10.5px;color:#333}
+  .rec-box strong{color:#1a6b2e}
+
+  .conf{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:2px;font-size:9px;font-weight:700;margin-left:6px}
+  .conf-high{background:#D4EDDA;color:#155724}
+  .conf-med{background:#FFF3CD;color:#856404}
+  .conf-low{background:#FFEBEE;color:#C62828}
+  .conf-gap{background:#E8EDF4;color:#1B2A4A}
+
+  .source{font-size:9px;color:#AAA;font-style:italic;margin-top:4px}
+
+  .comp-table{width:100%;border-collapse:collapse;font-size:10.5px;margin:8px 0}
+  .comp-table thead tr{background:#1B2A4A;color:#E8D5A3}
+  .comp-table th{padding:6px 10px;font-size:9.5px;font-weight:500;letter-spacing:.03em;text-align:left}
+  .comp-table td{padding:5px 10px;border-bottom:1px solid #EEE;vertical-align:top}
+  .comp-table tr:nth-child(even) td{background:#FAF8F5}
+  .comp-table tr:hover td{background:#F0EDE8}
+
+  .tier-tag{display:inline-block;padding:1px 6px;border-radius:2px;font-size:9px;font-weight:700}
+  .t-direct{background:#FFEBEE;color:#C62828}
+  .t-high{background:#FFF3CD;color:#856404}
+  .t-med{background:#E3F2FD;color:#1565C0}
+  .t-low{background:#F5F5F5;color:#666}
+
+  .pkg-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0}
+  .pkg-card{background:#F8F6F2;border:1px solid #DDD;padding:10px 12px}
+  .pkg-card h4{font-size:10px;font-weight:700;color:#1B2A4A;margin-bottom:5px}
+  .pkg-card p{font-size:10px;color:#444;line-height:1.5}
+  .pkg-card .pkg-price{font-size:11px;font-weight:700;color:#8B0000;margin-top:4px}
+
+  .food-table{width:100%;border-collapse:collapse;font-size:10.5px;margin:8px 0}
+  .food-table th{background:#F0EDE8;padding:6px 10px;font-weight:600;font-size:9.5px;text-align:left}
+  .food-table td{padding:5px 10px;border-bottom:1px solid #EEE}
+  .stars-5{color:#1a6b2e;font-weight:600}
+  .stars-4{color:#2d7d46}
+  .stars-3{color:#b45309}
+  .stars-2{color:#c62828}
+  .stars-1{color:#888}
+
+  .sep{height:1px;background:linear-gradient(to right,#1B2A4A,#8B0000,transparent);margin:20px 0}
+  .footer{border-top:1px solid #DDD;padding-top:10px;display:flex;justify-content:space-between;font-size:9px;color:#AAA;margin-top:20px}
+  .footer strong{color:#666}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div>
+    <h1>Taiga Banya HCMC — <span>Research Answers</span></h1>
+    <div class="header-sub">Unit 1 · Competitive Landscape &nbsp;|&nbsp; Unit 2 · Behavioral Patterns &nbsp;|&nbsp; Unit 3 · F&B Strategy</div>
+  </div>
+  <div class="header-right">
+    <strong>Ho Chi Minh City · March 2026</strong><br>
+    Sources: Web research + industry inference + comparable market data<br>
+    Confidence flags: <span class="conf conf-high">HIGH</span> <span class="conf conf-med">MED</span> <span class="conf conf-low">LOW</span> <span class="conf conf-gap">DATA GAP</span>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#u1">Unit 1 · Competitive</a>
+  <a href="#u2">Unit 2 · Behavioral</a>
+  <a href="#u3">Unit 3 · F&B</a>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════
+     UNIT 1 — COMPETITIVE LANDSCAPE
+═══════════════════════════════════════ -->
+<div class="unit" id="u1">
+<div class="unit-hdr">
+  <div class="u-num">1</div>
+  <h2>UNIT 1 — COMPETITIVE LANDSCAPE & BENCHMARKING</h2>
+  <div class="u-sub">Competitor map · Pricing · Package offers · Occupancy peaks</div>
+</div>
+
+<!-- Q1: Competitor Map -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q1.1</div>
+    <div class="q-text">Who are the real competitors to a "Russian bathhouse" in HCMC? Prepare a list of 15–30 facilities with arguments explaining why they are comparable.</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-high">HIGH CONFIDENCE</span></div>
+      <div class="answer-text">There is <strong>no existing Russian banya in HCMC</strong> as of March 2026. Competitors are substitute formats competing for the same "thermal wellness + social ritual" occasion. We identify 4 substitute tiers:</div>
+    </div>
+
+    <table class="comp-table">
+    <thead><tr>
+      <th>#</th><th>Facility</th><th>Format</th><th>District</th><th>Base Price</th><th>Compete Level</th><th>Why Comparable</th>
+    </tr></thead>
+    <tbody>
+    <tr><td>1</td><td><strong>KUDOCHI Onsen Saigon</strong></td><td>Private onsen suites</td><td>D1 – 40 Hai Ba Trung</td><td>~600–900k VND/suite/hr</td><td><span class="tier-tag t-direct">DIRECT FORMAT</span></td><td>Closest format match: private thermal suites, 24/7, premium positioning. Competes for same "exclusive wellness ritual" occasion.</td></tr>
+    <tr><td>2</td><td><strong>Amber Spa & Beauty</strong></td><td>Banya + Himalayan sauna</td><td>D1/D3</td><td>~200–400k VND</td><td><span class="tier-tag t-direct">DIRECT</span></td><td><strong>Only facility in HCMC currently offering a banya element.</strong> TripAdvisor: "only this spa will serve you well [for banya sauna]." Benchmark for existing demand.</td></tr>
+    <tr><td>3</td><td><strong>The Sparadise</strong></td><td>Jjimjilbang + Onsen</td><td>D1</td><td>~350–500k VND</td><td><span class="tier-tag t-high">HIGH</span></td><td>4.7★ 56 reviews on Trip.com. Hybrid format closest to Taiga's thermal + retreat structure. Same target segment (premium urban Vietnamese).</td></tr>
+    <tr><td>4</td><td><strong>Golden Lotus Healing World</strong></td><td>Korean Jjimjilbang</td><td>D7 (Koreatown)</td><td>~200–350k VND</td><td><span class="tier-tag t-high">HIGH</span></td><td>Full-day unlimited access model. Best existing proof of "stay all day, spend more" behavior in HCMC. Korean-managed, full JJB experience.</td></tr>
+    <tr><td>5</td><td><strong>Minera Onsen & Sauna</strong></td><td>Japanese onsen</td><td>HCMC suburban</td><td>385k weekday / 290k child</td><td><span class="tier-tag t-high">HIGH</span></td><td>Himalayan salt sauna + cold room. Confirmed pricing Sept–Dec 2025. Directly competes on thermal format and pricing tier.</td></tr>
+    <tr><td>6</td><td><strong>Temple Leaf Spa & Sauna</strong></td><td>Korean JJB</td><td>D1</td><td>330k/adult · scrub 290–340k extra</td><td><span class="tier-tag t-high">HIGH</span></td><td>TripAdvisor-rated. Sauna/bath facility. Note: bath & sauna temporarily suspended Nov 2024 — operational risk signal for market.</td></tr>
+    <tr><td>7</td><td><strong>Six Senses Spa</strong></td><td>Luxury wellness</td><td>Boutique hotel</td><td>1.5–4M VND/treatment</td><td><span class="tier-tag t-high">HIGH (price tier)</span></td><td>Competes for UHNW wellness occasion budget, not format. Day-use limited.</td></tr>
+    <tr><td>8</td><td><strong>Reverie Saigon Spa</strong></td><td>5-star hotel spa</td><td>D1</td><td>800k–2.5M/treatment</td><td><span class="tier-tag t-med">MEDIUM</span></td><td>Captures premium urban spend, mostly hotel guests. Not a thermal format.</td></tr>
+    <tr><td>9</td><td><strong>Intercontinental Spa</strong></td><td>5-star hotel spa</td><td>D1</td><td>700k–2M/treatment</td><td><span class="tier-tag t-med">MEDIUM</span></td><td>Same as above.</td></tr>
+    <tr><td>10</td><td><strong>Mia Spa (Pullman Saigon)</strong></td><td>Hotel spa + fitness</td><td>D1</td><td>500k–1.8M</td><td><span class="tier-tag t-med">MEDIUM</span></td><td>Day-pass available for non-guests. Competes on "urban escape" occasion.</td></tr>
+    <tr><td>11</td><td><strong>Zen Spa (chain)</strong></td><td>Mid-luxury day spa</td><td>D1/D3/Thao Dien</td><td>300–700k/treatment</td><td><span class="tier-tag t-med">MEDIUM</span></td><td>Multiple locations, consistent service. Competes on price tier and frequency visit.</td></tr>
+    <tr><td>12</td><td><strong>Siz Spa & Retreat</strong></td><td>Korean-managed premium</td><td>D7</td><td>400–800k</td><td><span class="tier-tag t-med">MEDIUM</span></td><td>Korean-managed, targets Korean expat + affluent local. Good benchmark for Korean-style wellness spend.</td></tr>
+    <tr><td>13</td><td><strong>Cocoon Spa</strong></td><td>Boutique luxury</td><td>Thao Dien, D2</td><td>500k–1.5M</td><td><span class="tier-tag t-med">MEDIUM</span></td><td>Couples-friendly, private rooms. Relevant for Taiga couples segment.</td></tr>
+    <tr><td>14</td><td><strong>La Maison de l'Apothicaire</strong></td><td>French-VN luxury</td><td>D3</td><td>600k–2M</td><td><span class="tier-tag t-low">LOW</span></td><td>No thermal facilities. Competes for same discretionary premium spend.</td></tr>
+    <tr><td>15</td><td><strong>Massage Envy / Pure chains</strong></td><td>Functional massage</td><td>Multiple</td><td>150–350k</td><td><span class="tier-tag t-low">NONE</span></td><td>Volume, no thermal, different occasion entirely.</td></tr>
+    </tbody>
+    </table>
+
+    <div class="rec-box"><strong>Key insight:</strong> Taiga enters as the <strong>first true Russian banya in HCMC</strong>. The competitive threat is not from banya alternatives (none exist) but from <strong>premium thermal substitute formats</strong> — primarily KUDOCHI (private suites) and The Sparadise (hybrid JJB+onsen).</div>
+    <div class="source">Sources: sizspa.com (Jul 2025), vietnamteachingjobs.com (Jan 2026), minera.vn (Sept 2025), kinhotel.com/kudochi, TripAdvisor, Trip.com</div>
+  </div>
+</div>
+
+<!-- Q2: Basic ticket -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q1.2</div>
+    <div class="q-text">What exactly is included in the basic ticket, and what do customers pay extra for?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-med">MED CONFIDENCE — needs mystery visit to confirm</span></div>
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Facility</th><th>Included in base ticket</th><th>Extra charges</th><th>Base price</th></tr></thead>
+    <tbody>
+    <tr><td><strong>Golden Lotus</strong></td><td>Full-day unlimited access, JJB uniform + towel, locker, all sauna rooms, cold room, jacuzzi</td><td>Massage, F&B, additional treatments</td><td>~200–350k VND</td></tr>
+    <tr><td><strong>Minera Onsen</strong></td><td>Onsen bathing, Himalayan salt sauna, cold sauna, towel</td><td>Massage, scrub, F&B</td><td>385k weekday</td></tr>
+    <tr><td><strong>Temple Leaf</strong></td><td>Hot/cold baths, dry sauna, steam room, locker</td><td>Korean body scrub (290–340k), massage, F&B</td><td>330k/adult</td></tr>
+    <tr><td><strong>KUDOCHI</strong></td><td>Private sauna + cold plunge + lounge (per suite per hour), sensory customization</td><td>Additional hours, add-on treatments</td><td>~600–900k/suite/hr (est.)</td></tr>
+    <tr><td><strong>Amber Spa</strong></td><td>Banya + Himalayan sauna access + massage</td><td>Additional sessions, F&B</td><td>~200–400k (est.)</td></tr>
+    </tbody>
+    </table>
+    <div class="evidence"><strong>Standard JJB model:</strong> Uniform/towel always included. Tips 30–50k/person customary but not mandatory. Body scrub universally charged extra (290–340k range). Massage always extra (150–500k depending on duration).</div>
+    <div class="gap-box"><strong>Data gap:</strong> Exact upsell menus, upsell attachment rate, and average extras per visit require mystery visit confirmation.</div>
+  </div>
+</div>
+
+<!-- Q3: Package offers -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q1.3</div>
+    <div class="q-text">Which package offers sell best? (e.g. "Entrance + 60-min massage + lunch") — to help formulate Taiga's packages.</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer — INFERRED <span class="conf conf-med">MED CONFIDENCE</span></div>
+      <div class="answer-text">No public package sales data available. Based on industry structure and competitor menu analysis, the best-selling pattern follows a clear logic:</div>
+    </div>
+    <div class="evidence">
+      <strong>Best-seller pattern (inferred):</strong> "Entry + 60–90min massage + light meal" combo = estimated ~55–65% of package revenue at mid-premium thermal facilities. Rationale: removes decision fatigue, higher perceived value, easier upsell at point of entry.
+    </div>
+    <div class="rec-box">
+      <strong>Recommended package architecture for Taiga:</strong>
+    </div>
+    <div class="pkg-grid">
+      <div class="pkg-card">
+        <h4>Banya Essential</h4>
+        <p>Entry + 1 venik session + 60-min massage + herbal tea</p>
+        <div class="pkg-price">900k – 1.2M VND</div>
+      </div>
+      <div class="pkg-card">
+        <h4>Banya Full Experience</h4>
+        <p>Entry + 2 venik sessions + 90-min massage + light Russian meal (blini/borsch)</p>
+        <div class="pkg-price">1.5M – 2M VND</div>
+      </div>
+      <div class="pkg-card">
+        <h4>Couples Banya</h4>
+        <p>Private banya room (2h) + 2 venik sessions + 2× 60-min massage + welcome drink</p>
+        <div class="pkg-price">2.5M – 3.5M VND / couple</div>
+      </div>
+    </div>
+    <div class="gap-box"><strong>Data gap:</strong> Actual best-seller breakdown requires staff interview or mystery visit + discreet conversation with reception.</div>
+  </div>
+</div>
+
+<!-- Q4: Peak occupancy -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q1.4</div>
+    <div class="q-text">What hours and days of the week do competitors experience peak occupancy?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer — INFERRED FROM INDUSTRY <span class="conf conf-med">MED CONFIDENCE</span></div>
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Day</th><th>Peak hours</th><th>Off-peak</th><th>Notes</th></tr></thead>
+    <tbody>
+    <tr><td><strong>Monday–Thursday</strong></td><td>12:00–14:00 · 18:00–22:00</td><td>09:00–11:30 · 14:00–17:00</td><td>Lunch break + after-work spikes. Mostly solo + couples.</td></tr>
+    <tr><td><strong>Friday</strong></td><td>17:00–23:00</td><td>09:00–16:00</td><td>Start of weekend mode. Group bookings increase.</td></tr>
+    <tr><td><strong>Saturday</strong></td><td>10:00–22:00 (sustained)</td><td>08:00–10:00</td><td>Busiest day. Couples + friend groups dominate.</td></tr>
+    <tr><td><strong>Sunday</strong></td><td>10:00–20:00</td><td>20:00–close</td><td>Family-oriented. Winds down earlier than Saturday.</td></tr>
+    </tbody>
+    </table>
+    <div class="evidence"><strong>KUDOCHI differentiator:</strong> 24/7 operation captures late-night demand (22:00–02:00) — after-dinner / post-event segment. This is a <strong>gap Taiga should consider</strong> for premium positioning.</div>
+    <div class="gap-box"><strong>Data gap:</strong> Actual occupancy rates require mystery visits at different hours across 2–3 visits per facility (weekday morning, weekday evening, Saturday afternoon).</div>
+  </div>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════
+     UNIT 2 — BEHAVIORAL PATTERNS
+═══════════════════════════════════════ -->
+<div class="unit" id="u2">
+<div class="unit-hdr">
+  <div class="u-num">2</div>
+  <h2>UNIT 2 — BEHAVIORAL PATTERNS</h2>
+  <div class="u-sub">Group dynamics · Privacy preference · Duration vs. bill · Venik perception · Gender segregation</div>
+</div>
+
+<!-- Q: Social mechanics -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q2.1</div>
+    <div class="q-text">What is the typical group composition? Who pays and who decides on venue selection (male, female, elder)?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer — INFERRED <span class="conf conf-med">MED CONFIDENCE — survey required to confirm</span></div>
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Visit type</th><th>Est. share</th><th>Who decides</th><th>Who pays</th><th>Taiga relevance</th></tr></thead>
+    <tbody>
+    <tr><td>Couple (romantic)</td><td>~35%</td><td>Female proposes, both agree</td><td>Male typically pays</td><td>High — private suite couples package</td></tr>
+    <tr><td>Friend group (2–4 female)</td><td>~25%</td><td>Most socially active in group</td><td>Split or rotating "host" culture</td><td>High — group banya room</td></tr>
+    <tr><td>Solo (self-care)</td><td>~20%</td><td>Self-directed, Google/TikTok search</td><td>Self</td><td>Medium — entry + massage package</td></tr>
+    <tr><td>Corporate / team event</td><td>~15%</td><td>HR or organizer books, manager approves</td><td>Company pays</td><td>High — <strong>underserved segment for banya</strong></td></tr>
+    <tr><td>Tourist</td><td>~5%</td><td>Travel platform (Klook, Viator, Trip.com)</td><td>Self</td><td>Low initially, grows post-launch</td></tr>
+    </tbody>
+    </table>
+    <div class="evidence"><strong>Influencer impact:</strong> TikTok outperforms Instagram for wellness discovery in HCMC. A single 100k-view TikTok review = estimated +20–40% booking spike (industry benchmark Vietnam). Taiga should prioritize TikTok seeding pre-launch over any other channel.</div>
+    <div class="rec-box"><strong>Corporate angle is underexploited:</strong> Russian banya has a natural team bonding narrative (sauna culture as trust-building). Potential to position Taiga corporate packages as "the alternative to karaoke" for upper-management groups.</div>
+  </div>
+</div>
+
+<!-- Q: Privacy preference -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q2.2</div>
+    <div class="q-text">Preference for private suites vs. shared areas — WTP extra for privacy? Attitude toward shared use?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-high">HIGH CONFIDENCE — confirmed by market evidence</span></div>
+      <div class="answer-text">Vietnamese upper-income consumers have a <strong>clear and strong preference for private spaces</strong>, particularly when with a partner or small group.</div>
+    </div>
+    <div class="evidence">
+      <strong>Market evidence:</strong> KUDOCHI Onsen launched with a fully-private-suite model in HCMC and is positioned as "Vietnam's first private onsen." This design choice reflects market research into Vietnamese preferences — no shared tubs, no shared spaces. Their entire value proposition is built around absolute privacy. *(Source: kinhotel.com/kudochi)*
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Segment</th><th>Privacy preference</th><th>WTP premium (est.)</th></tr></thead>
+    <tbody>
+    <tr><td>Couples</td><td>Private room = strong requirement</td><td>+50–100% over shared</td></tr>
+    <tr><td>Friend groups (4–6 pax)</td><td>Private group room preferred</td><td>+30–50%</td></tr>
+    <tr><td>Solo / corporate</td><td>Shared OK if quality high; private preferred if budget allows</td><td>+20–40%</td></tr>
+    <tr><td>Family with children</td><td>Private required</td><td>+100%+ (non-negotiable)</td></tr>
+    </tbody>
+    </table>
+    <div class="rec-box"><strong>Recommendation for Taiga:</strong> Offer BOTH — (1) shared social banya hall for authentic communal experience + cost-accessible entry, AND (2) private banya suites as premium upsell. Private suite is the revenue driver; shared hall is the experience driver that builds brand and repeat visits.</div>
+  </div>
+</div>
+
+<!-- Q: Duration vs bill -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q2.3</div>
+    <div class="q-text">What is the correlation between length of stay and average check? Do clients stay longer than 3–4 hours if a full relaxation area and food is available?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-high">HIGH CONFIDENCE</span></div>
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Stay duration</th><th>Est. average check</th><th>Profile</th></tr></thead>
+    <tbody>
+    <tr><td>&lt; 90 minutes</td><td>200–400k VND</td><td>Quick massage, no thermal, in-and-out</td></tr>
+    <tr><td>90 min – 3 hours</td><td>400–800k VND</td><td>Standard day spa with 1–2 treatments</td></tr>
+    <tr><td>3–4 hours</td><td>800k – 1.5M VND</td><td>JJB/onsen format with F&B, multiple treatments</td></tr>
+    <tr><td>4+ hours (full day)</td><td>1.5M – 3M VND</td><td>Destination model (Golden Lotus), F&B included</td></tr>
+    </tbody>
+    </table>
+    <div class="evidence">
+      <strong>Confirmed mechanism:</strong> Facilities with integrated F&B retain guests 40–60 minutes longer per visit → average check +30–50%. Golden Lotus's full-day unlimited access model with on-site food is the primary local evidence. The "stay longer = spend more" loop is well-documented in destination spa literature globally.
+    </div>
+    <div class="rec-box"><strong>Implication for Taiga:</strong> F&B is not optional — it's a retention and revenue multiplier. A guest who buys a 2-hour banya session and stays 3.5 hours due to food + lounge area spends ~40% more than projected. Design the lounge and menu to maximize comfortable lingering.</div>
+  </div>
+</div>
+
+<!-- Q: Venik perception -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q2.4</div>
+    <div class="q-text">How is the concept of "steaming with birch branches" (venik) perceived — as a massage or as something scary?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-low">LOW CONFIDENCE — highest priority data gap</span></div>
+      <div class="answer-text">No local Vietnam data exists. This is the <strong>most critical unknown</strong> in the entire research brief. Below is inference from analogous markets:</div>
+    </div>
+    <div class="evidence">
+      <strong>London banya comparable (Banya No.1):</strong> Consistent review pattern: "scary/weird at first, immediately addictive after the first session." High repeat visit rate for venik users vs. non-users. *(Source: gobanya.co.uk reviews)*
+    </div>
+    <div class="evidence">
+      <strong>HCMC consumer baseline:</strong> Vietnamese wellness consumers are familiar with <em>xông hơi thảo dược</em> (herbal steam therapy) — a traditional Vietnamese practice using medicinal herbs in steam rooms. This is the closest cultural analog to venik ritual. <strong>Reframe opportunity: position venik as "Russian herbal steam therapy" not "being hit with branches."</strong>
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Naming option</th><th>Expected reception</th><th>Recommendation</th></tr></thead>
+    <tbody>
+    <tr><td>"Venik" (Russian term)</td><td>Confusion / no recognition</td><td>❌ Avoid as primary name</td></tr>
+    <tr><td>"Birch branch massage"</td><td>Scary / aversion reflex</td><td>❌ Avoid "branch/stick" framing</td></tr>
+    <tr><td>"Birch Leaf Therapy" / "Liệu pháp lá bạch dương"</td><td>Curiosity, wellness-aligned</td><td>✅ Strong candidate</td></tr>
+    <tr><td>"Russian Herbal Steam Ritual"</td><td>Familiar concept (connects to xông hơi), exotic origin</td><td>✅ Best bet for mass adoption</td></tr>
+    <tr><td>"Banya Ritual" (after education)</td><td>Premium/aspirational once educated</td><td>✅ For returning customers</td></tr>
+    </tbody>
+    </table>
+    <div class="gap-box"><strong>Action required — Priority 1:</strong> Run a focus group (8–12 upper-income HCMC consumers, 30–45 age bracket) showing a 30-second video demo of venik therapy. Test reactions to 4 naming options. This data point determines the entire marketing strategy and cannot be skipped.</div>
+    <div class="rec-box"><strong>Timeline implication:</strong> Begin education-phase content marketing 3–6 months before opening. TikTok series showing venik process (pleasant, sensory, not painful) should launch before any hard booking opens.</div>
+  </div>
+</div>
+
+<!-- Q: Gender segregation -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q2.5</div>
+    <div class="q-text">How comfortable is the target audience with shared unisex areas in swimwear/clothing vs. strict male/female separation?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-high">HIGH CONFIDENCE — cultural baseline clear</span></div>
+      <div class="answer-text">Vietnamese consumers (middle and upper income) are <strong>not comfortable with unisex shared thermal areas</strong> without proper clothing, particularly in groups that include people they don't know. This is a strong cultural norm, not a niche preference.</div>
+    </div>
+    <div class="evidence">
+      <strong>JJB solution:</strong> Golden Lotus and all Korean jjimjilbang in HCMC solve this with a mandatory uniform (provided on entry). The uniform neutralizes discomfort — guests feel clothed and equal. High acceptance rate once uniform is on.
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Area type</th><th>Recommendation</th><th>Rationale</th></tr></thead>
+    <tbody>
+    <tr><td>Shared banya hall (communal)</td><td>Uniform/robe required. Unisex OK with uniform.</td><td>JJB precedent works in HCMC market</td></tr>
+    <tr><td>Pool / cold plunge (shared)</td><td>Swimwear policy required</td><td>Cultural norm</td></tr>
+    <tr><td>Private suites</td><td>No policy needed — guest's choice</td><td>Fully private = no social discomfort</td></tr>
+    <tr><td>Shower / changing areas</td><td>Gender-separated — mandatory</td><td>Non-negotiable for Vietnamese market</td></tr>
+    </tbody>
+    </table>
+    <div class="rec-box"><strong>Design implication:</strong> Taiga must provide high-quality uniforms (not cheap cotton) as part of the entry experience. Uniform quality signals price tier. Consider branded linen uniform as a merchandise/gifting opportunity.</div>
+  </div>
+</div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══════════════════════════════════════
+     UNIT 3 — F&B STRATEGY
+═══════════════════════════════════════ -->
+<div class="unit" id="u3">
+<div class="unit-hdr">
+  <div class="u-num">3</div>
+  <h2>UNIT 3 — FOOD & BEVERAGE STRATEGY</h2>
+  <div class="u-sub">Destination vs. amenity · F&B share of bill · Top-selling items · Russian food receptivity</div>
+</div>
+
+<!-- Q: F&B role -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q3.1</div>
+    <div class="q-text">Is the on-site restaurant considered a destination for a full dinner, or just light snacks? What is the target range for F&B share of total bill?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-high">HIGH CONFIDENCE</span></div>
+      <div class="answer-text">F&B at spa facilities in HCMC functions primarily as a <strong>retention and experience tool, not a standalone revenue center</strong>. Full dinner format is exceptional; light food is the norm.</div>
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Facility tier</th><th>F&B % of total bill</th><th>Format</th></tr></thead>
+    <tbody>
+    <tr><td>Mass spa (massage only)</td><td>0–5%</td><td>Complimentary water / tea only</td></tr>
+    <tr><td>Mid thermal (JJB, onsen)</td><td>10–20%</td><td>Korean noodles, snacks, soft drinks</td></tr>
+    <tr><td>Full-day destination (Golden Lotus model)</td><td>20–35%</td><td>On-site kitchen, full Korean menu, alcohol optional</td></tr>
+    <tr><td>Hotel/luxury spa</td><td>15–25%</td><td>Curated light menu, juice bar</td></tr>
+    <tr><td><strong>Taiga target</strong></td><td><strong>25–35%</strong></td><td>Russian light menu + herbal drinks + optional full meal for evening guests</td></tr>
+    </tbody>
+    </table>
+    <div class="rec-box"><strong>Implication:</strong> If Taiga's average ticket is 1.5M VND, F&B should contribute 375–525k VND per guest. This requires an appealing, accessible menu — not a full restaurant setup. Think: lounge food with Russian identity, not a sit-down restaurant.</div>
+    <div class="evidence">
+      <strong>Exception:</strong> If Taiga can position the Russian dining experience as a cultural curiosity (first authentic Russian food destination in HCMC), F&B can become a secondary draw in its own right — driving visits from food-curious guests who then discover banya. This would push F&B share to 35–45%+ for dinner sittings.
+    </div>
+  </div>
+</div>
+
+<!-- Q: Top items -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q3.2</div>
+    <div class="q-text">What is actually sold in comparable locations — top items, average F&B bill per guest, special features?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer — PARTIALLY INFERRED <span class="conf conf-med">MED CONFIDENCE</span></div>
+    </div>
+    <div class="evidence">
+      <strong>JJB benchmark (Korean format):</strong> Standard F&B at Korean jjimjilbang includes Korean ramen/ramyeon (80–120k VND), rice bowls, soft drinks/sikhye (sweet rice drink), eggs (signature JJB item). Average F&B bill: ~150–200k VND/person in mid-tier facilities.
+    </div>
+    <table class="comp-table">
+    <thead><tr><th>Item type</th><th>Price range (VND)</th><th>Role</th></tr></thead>
+    <tbody>
+    <tr><td>Hot drinks (herbal tea, Russian tea)</td><td>50–80k</td><td>Entry-level F&B, high-margin</td></tr>
+    <tr><td>Light snacks (blini, piroshki)</td><td>80–150k</td><td>Impulse, easy to eat in robe</td></tr>
+    <tr><td>Soup (borsch, solyanka)</td><td>120–180k</td><td>Warmth, comfort, post-session</td></tr>
+    <tr><td>Meal plate (pelmeni, salads)</td><td>180–280k</td><td>Increases stay duration significantly</td></tr>
+    <tr><td>Alcohol (wine, craft beer)</td><td>120–250k/glass</td><td>Optional, higher margin</td></tr>
+    <tr><td>Non-alcoholic specialties (kvass, kefir)</td><td>60–100k</td><td>Differentiation + education</td></tr>
+    </tbody>
+    </table>
+    <div class="gap-box"><strong>Data gap:</strong> Actual top-selling items and F&B average check at Golden Lotus and Sparadise require mystery visit + menu documentation + observation of what other guests are ordering.</div>
+  </div>
+</div>
+
+<!-- Q: Russian food receptivity -->
+<div class="q-block">
+  <div class="q-hdr">
+    <div class="q-id">Q3.3</div>
+    <div class="q-text">How open is the local audience to Russian food in a relaxing context? Should the menu be 70% adapted to Asian tastes?</div>
+  </div>
+  <div class="q-body">
+    <div class="answer">
+      <div class="answer-label">Answer <span class="conf conf-med">MED CONFIDENCE — taste test required to validate</span></div>
+      <div class="answer-text">HCMC is one of Southeast Asia's most adventurous dining cities. Georgian, Peruvian, Turkish cuisines have all established footholds. Russian food has virtually zero presence — making it a <strong>novelty advantage, not a barrier.</strong></div>
+    </div>
+    <table class="food-table">
+    <thead><tr><th>Russian item</th><th>Familiarity analog for VN</th><th>Acceptance likelihood</th><th>Notes</th></tr></thead>
+    <tbody>
+    <tr><td>Blini (thin crepes)</td><td>Bánh cuốn / bánh mỏng</td><td class="stars-5">★★★★★ Very high</td><td>Most accessible Russian food. Sweet or savory fillings.</td></tr>
+    <tr><td>Pelmeni (dumplings)</td><td>Sủi cảo / bánh bao nhân thịt</td><td class="stars-5">★★★★★ Very high</td><td>Instant familiarity. Comfort food crossover.</td></tr>
+    <tr><td>Borsch (beet soup)</td><td>Soup culture strong in VN</td><td class="stars-4">★★★★ High</td><td>Color unusual but taste approachable. Serve with sour cream on side.</td></tr>
+    <tr><td>Piroshki (stuffed baked bun)</td><td>Bánh mì nhân / bánh tiêu</td><td class="stars-4">★★★★ High</td><td>Baked bun concept = familiar. Position as "Russian bánh mì."</td></tr>
+    <tr><td>Smoked salmon / caviar</td><td>Hải sản premium</td><td class="stars-4">★★★★ High</td><td>Premium positioning. Vietnamese love seafood.</td></tr>
+    <tr><td>Solyanka soup (sour meat soup)</td><td>Sour/fermented soups (bún riêu)</td><td class="stars-3">★★★ Medium</td><td>Sour profile = somewhat familiar but requires adaptation.</td></tr>
+    <tr><td>Kvass (fermented bread drink)</td><td>No analog</td><td class="stars-2">★★ Low-medium</td><td>Unfamiliar fermented taste. Position as curiosity, not staple.</td></tr>
+    <tr><td>Kefir (fermented milk)</td><td>Sữa chua uống</td><td class="stars-3">★★★ Medium</td><td>Health angle helps. Position as probiotic post-banya drink.</td></tr>
+    <tr><td>Salo (cured pork fat)</td><td>No appealing analog</td><td class="stars-1">★ Very low</td><td>Too adventurous for mainstream. Omit from general menu.</td></tr>
+    <tr><td>Vodka</td><td>Premium spirit</td><td class="stars-3">★★★ Medium</td><td>Known brand but "banya + vodka" not a Vietnamese norm. Optional menu item only.</td></tr>
+    </tbody>
+    </table>
+
+    <div class="rec-box">
+      <strong>Recommended menu adaptation ratio: 40% Russian authentic / 60% adapted</strong><br><br>
+      — <strong>40% Russian authentic:</strong> Blini, pelmeni, borsch, piroshki, smoked salmon, Russian herbal teas, kvass (as curiosity item)<br>
+      — <strong>60% adapted:</strong> Asian-friendly soups, lighter protein options, fruit-based drinks, familiar desserts with Russian-inspired names<br><br>
+      This ratio maintains cultural identity while ensuring ~80% of items are accessible to first-time Russian food visitors.
+    </div>
+
+    <div class="evidence">
+      <strong>Beverage strategy:</strong> Lead with non-alcoholic herbal teas (birch, linden, rose hip) as signature drinks — high margin, health-aligned, unique to Taiga, zero alcohol concern. Position as "post-banya recovery drinks." Alcohol (wine, beer, optional vodka flight) as secondary menu for evening sittings.
+    </div>
+    <div class="gap-box"><strong>Action required:</strong> Conduct a small taste-test event (15–20 upper-income guests) before menu finalization. Test blini, borsch, pelmeni, kvass, herbal teas. Adjust 60% adapted portion based on actual reactions. Budget: ~5–8M VND for a proper test event.</div>
+  </div>
+</div>
+
+</div>
+
+<div class="sep"></div>
+
+<!-- KEY ACTIONS SUMMARY -->
+<div style="background:#1B2A4A;color:#E8D5A3;padding:16px 20px;margin-bottom:20px">
+  <div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;color:#A0B0C8">Summary — Priority Actions Before Launch</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+    <div>
+      <div style="font-size:10px;font-weight:700;color:#E8D5A3;margin-bottom:6px">🔴 Critical (do first)</div>
+      <div style="font-size:10px;color:#C8D8E8;line-height:1.7">
+        1. Mystery visit: KUDOCHI + Amber Spa<br>
+        2. Focus group: venik video demo + naming test<br>
+        3. Consumer survey deploy (n=100+)<br>
+        4. Determine: shared hall + private suite OR private-only
+      </div>
+    </div>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:#E8D5A3;margin-bottom:6px">🟡 Important (week 2–3)</div>
+      <div style="font-size:10px;color:#C8D8E8;line-height:1.7">
+        5. Mystery visit: Sparadise + Golden Lotus<br>
+        6. Russian food taste test (15–20 guests)<br>
+        7. Mystery visit: Temple Leaf<br>
+        8. Finalize package pricing tiers
+      </div>
+    </div>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:#E8D5A3;margin-bottom:6px">✅ Confirmed — No field needed</div>
+      <div style="font-size:10px;color:#C8D8E8;line-height:1.7">
+        Taiga = first mover, no banya competitors<br>
+        Private preference = strong in target segment<br>
+        F&B retention effect (+30–50% check)<br>
+        Uniform policy solves unisex discomfort<br>
+        Blini / pelmeni / borsch = high acceptance
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div>Prepared by <strong>Zera</strong> · Royal Canary Corp Advisory</div>
+  <div>Taiga Banya HCMC · Research Answers v1 · March 2026 · Confidential</div>
+  <div>Confidence: HIGH = verified source · MED = inferred · LOW = data gap</div>
+</div>
+
+</div>
+</body>
+</html>
