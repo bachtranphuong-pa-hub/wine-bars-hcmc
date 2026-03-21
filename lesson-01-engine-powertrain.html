@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 1: Engine & Powertrain Fundamentals</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; line-height: 1.7; }
+  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 60px 40px; text-align: center; border-bottom: 3px solid #e94560; }
+  .hero h1 { font-size: 2.4em; color: #fff; margin-bottom: 10px; }
+  .hero .series { font-size: 0.9em; color: #e94560; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; }
+  .hero p { color: #aaa; font-size: 1.1em; max-width: 600px; margin: 0 auto; }
+  .nav-pills { display: flex; justify-content: center; gap: 10px; padding: 20px; background: #1a1a1a; flex-wrap: wrap; }
+  .nav-pills a { padding: 6px 16px; border-radius: 20px; font-size: 0.8em; text-decoration: none; background: #2a2a2a; color: #aaa; border: 1px solid #333; }
+  .nav-pills a.active { background: #e94560; color: #fff; border-color: #e94560; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .section { margin-bottom: 50px; }
+  .section h2 { font-size: 1.6em; color: #e94560; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #2a2a2a; }
+  .section h3 { font-size: 1.15em; color: #fff; margin: 25px 0 12px; }
+  .section p { color: #ccc; margin-bottom: 12px; }
+  .diagram-box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 30px; margin: 20px 0; text-align: center; }
+  .diagram-box svg { max-width: 100%; }
+  .callout { background: #1e2a1e; border-left: 4px solid #4caf50; padding: 15px 20px; border-radius: 0 8px 8px 0; margin: 15px 0; }
+  .callout.warning { background: #2a1e1e; border-left-color: #e94560; }
+  .callout.info { background: #1e1e2a; border-left-color: #2196f3; }
+  .callout strong { color: #fff; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th { background: #e94560; color: #fff; padding: 12px; text-align: left; }
+  td { padding: 11px 12px; border-bottom: 1px solid #222; color: #ccc; }
+  tr:nth-child(even) td { background: #1a1a1a; }
+  .quiz-section { background: #1a1a1a; border-radius: 12px; padding: 30px; margin-top: 50px; }
+  .quiz-section h2 { color: #ffd700; margin-bottom: 25px; }
+  .question { margin-bottom: 30px; }
+  .question p { color: #fff; font-weight: 600; margin-bottom: 12px; font-size: 1em; }
+  .options label { display: block; padding: 10px 15px; margin: 6px 0; background: #222; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; color: #ccc; }
+  .options label:hover { border-color: #e94560; color: #fff; }
+  .options input { display: none; }
+  .options input:checked + span { color: #fff; }
+  .options label.selected { border-color: #e94560; background: #2a1a1e; }
+  .btn-check { display: inline-block; margin-top: 20px; padding: 12px 30px; background: #e94560; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; }
+  .btn-check:hover { background: #c73652; }
+  .result-box { margin-top: 20px; padding: 20px; border-radius: 10px; display: none; }
+  .result-box.show { display: block; }
+  .result-box.pass { background: #1e3a1e; border: 1px solid #4caf50; color: #4caf50; }
+  .result-box.fail { background: #3a1e1e; border: 1px solid #e94560; color: #e94560; }
+  .answer-reveal { margin-top: 8px; font-size: 0.9em; color: #aaa; display: none; }
+  .progress-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+  .progress-bar .step { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; font-weight: 700; }
+  .progress-bar .step.done { background: #e94560; color: #fff; }
+  .progress-bar .step.current { background: #fff; color: #0f0f0f; }
+  .progress-bar .step.todo { background: #2a2a2a; color: #666; }
+  .progress-bar .line { flex: 1; height: 2px; background: #2a2a2a; }
+  .progress-bar .line.done { background: #e94560; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75em; font-weight: 700; margin-left: 8px; }
+  .tag.basic { background: #1e3a1e; color: #4caf50; }
+  .tag.important { background: #2a1a00; color: #ff9800; }
+  .tag.tuning { background: #1a1e3a; color: #2196f3; }
+  footer { text-align: center; padding: 30px; color: #444; font-size: 0.85em; border-top: 1px solid #1a1a1a; margin-top: 60px; }
+  footer a { color: #e94560; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="series">Automotive Engineering Series · Bài 1 / 7</div>
+  <h1>Engine & Powertrain Fundamentals</h1>
+  <p>Động cơ hoạt động như thế nào — từ đốt cháy đến bánh xe</p>
+</div>
+
+<div class="nav-pills">
+  <a href="#" class="active">Bài 1: Engine</a>
+  <a href="#">Bài 2: MT vs AT</a>
+  <a href="#">Bài 3: Chassis</a>
+  <a href="#">Bài 4: Aero</a>
+  <a href="#">Bài 5: Brakes</a>
+  <a href="#">Bài 6: Electronics</a>
+  <a href="#">Bài 7: Tuning Deep Dive</a>
+</div>
+
+<div class="container">
+
+  <!-- Progress -->
+  <div class="progress-bar">
+    <div class="step current">1</div>
+    <div class="line"></div>
+    <div class="step todo">2</div>
+    <div class="line"></div>
+    <div class="step todo">3</div>
+    <div class="line"></div>
+    <div class="step todo">4</div>
+    <div class="line"></div>
+    <div class="step todo">5</div>
+    <div class="line"></div>
+    <div class="step todo">6</div>
+    <div class="line"></div>
+    <div class="step todo">7</div>
+  </div>
+
+  <!-- SECTION 1: 4-STROKE CYCLE -->
+  <div class="section">
+    <h2>1. Chu kỳ 4 thì (4-Stroke Cycle) <span class="tag basic">Cơ bản</span></h2>
+    <p>Mọi động cơ đốt trong đều hoạt động theo 4 bước lặp đi lặp lại liên tục. Hiểu 4 thì = hiểu được 80% cách engine hoạt động.</p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stroke 1: Intake -->
+        <g transform="translate(20,10)">
+          <rect x="10" y="20" width="140" height="180" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+          <text x="80" y="14" fill="#e94560" font-size="11" text-anchor="middle" font-weight="700">① NẠP</text>
+          <!-- Cylinder -->
+          <rect x="45" y="35" width="70" height="110" rx="3" fill="#0d0d1a" stroke="#444" stroke-width="1"/>
+          <!-- Piston down -->
+          <rect x="48" y="115" width="64" height="18" rx="3" fill="#555"/>
+          <line x1="80" y1="133" x2="80" y2="160" stroke="#666" stroke-width="3"/>
+          <!-- Intake valve open -->
+          <rect x="55" y="32" width="12" height="8" rx="2" fill="#4caf50"/>
+          <text x="67" y="39" fill="#4caf50" font-size="8">↓</text>
+          <!-- Exhaust valve closed -->
+          <rect x="83" y="32" width="12" height="8" rx="2" fill="#333"/>
+          <!-- Fuel/air -->
+          <text x="80" y="85" fill="#2196f3" font-size="20" text-anchor="middle">⛽</text>
+          <!-- Arrow down -->
+          <text x="80" y="112" fill="#aaa" font-size="10" text-anchor="middle">Piston ↓</text>
+          <text x="80" y="175" fill="#aaa" font-size="9" text-anchor="middle">Hút hỗn hợp</text>
+          <text x="80" y="187" fill="#aaa" font-size="9" text-anchor="middle">xăng + không khí</text>
+        </g>
+
+        <!-- Stroke 2: Compression -->
+        <g transform="translate(200,10)">
+          <rect x="10" y="20" width="140" height="180" rx="8" fill="#1a1a2e" stroke="#ff9800" stroke-width="1.5"/>
+          <text x="80" y="14" fill="#ff9800" font-size="11" text-anchor="middle" font-weight="700">② NÉN</text>
+          <rect x="45" y="35" width="70" height="110" rx="3" fill="#0d0d1a" stroke="#444" stroke-width="1"/>
+          <!-- Piston up -->
+          <rect x="48" y="55" width="64" height="18" rx="3" fill="#555"/>
+          <line x1="80" y1="73" x2="80" y2="130" stroke="#666" stroke-width="3"/>
+          <!-- Both valves closed -->
+          <rect x="55" y="32" width="12" height="8" rx="2" fill="#333"/>
+          <rect x="83" y="32" width="12" height="8" rx="2" fill="#333"/>
+          <!-- Compressed gas -->
+          <text x="80" y="50" fill="#ff9800" font-size="14" text-anchor="middle">▲▲</text>
+          <text x="80" y="112" fill="#aaa" font-size="10" text-anchor="middle">Piston ↑</text>
+          <text x="80" y="175" fill="#aaa" font-size="9" text-anchor="middle">Nén hỗn hợp</text>
+          <text x="80" y="187" fill="#aaa" font-size="9" text-anchor="middle">tỉ lệ 8–14:1</text>
+        </g>
+
+        <!-- Stroke 3: Power -->
+        <g transform="translate(380,10)">
+          <rect x="10" y="20" width="140" height="180" rx="8" fill="#1a2e1a" stroke="#4caf50" stroke-width="2"/>
+          <text x="80" y="14" fill="#4caf50" font-size="11" text-anchor="middle" font-weight="700">③ NỔ ⚡ (Power)</text>
+          <rect x="45" y="35" width="70" height="110" rx="3" fill="#0d0d1a" stroke="#444" stroke-width="1"/>
+          <!-- Spark -->
+          <text x="80" y="48" fill="#ffd700" font-size="18" text-anchor="middle">⚡</text>
+          <!-- Piston forced down -->
+          <rect x="48" y="95" width="64" height="18" rx="3" fill="#666"/>
+          <line x1="80" y1="113" x2="80" y2="145" stroke="#666" stroke-width="3"/>
+          <!-- Both valves closed -->
+          <rect x="55" y="32" width="12" height="8" rx="2" fill="#333"/>
+          <rect x="83" y="32" width="12" height="8" rx="2" fill="#333"/>
+          <text x="80" y="88" fill="#e94560" font-size="10" text-anchor="middle">Piston ↓ MẠNH</text>
+          <text x="80" y="175" fill="#aaa" font-size="9" text-anchor="middle">Đây là thì tạo</text>
+          <text x="80" y="187" fill="#4caf50" font-size="9" text-anchor="middle" font-weight="700">CÔNG SUẤT</text>
+        </g>
+
+        <!-- Stroke 4: Exhaust -->
+        <g transform="translate(560,10)">
+          <rect x="10" y="20" width="140" height="180" rx="8" fill="#1a1a2e" stroke="#9c27b0" stroke-width="1.5"/>
+          <text x="80" y="14" fill="#9c27b0" font-size="11" text-anchor="middle" font-weight="700">④ XẢ</text>
+          <rect x="45" y="35" width="70" height="110" rx="3" fill="#0d0d1a" stroke="#444" stroke-width="1"/>
+          <!-- Piston up -->
+          <rect x="48" y="55" width="64" height="18" rx="3" fill="#555"/>
+          <line x1="80" y1="73" x2="80" y2="130" stroke="#666" stroke-width="3"/>
+          <!-- Intake closed, exhaust open -->
+          <rect x="55" y="32" width="12" height="8" rx="2" fill="#333"/>
+          <rect x="83" y="32" width="12" height="8" rx="2" fill="#9c27b0"/>
+          <text x="98" y="39" fill="#9c27b0" font-size="8">↑</text>
+          <!-- Exhaust gas -->
+          <text x="80" y="50" fill="#777" font-size="12" text-anchor="middle">💨</text>
+          <text x="80" y="112" fill="#aaa" font-size="10" text-anchor="middle">Piston ↑</text>
+          <text x="80" y="175" fill="#aaa" font-size="9" text-anchor="middle">Đẩy khí thải ra</text>
+          <text x="80" y="187" fill="#aaa" font-size="9" text-anchor="middle">ngoài qua valve xả</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="callout">
+      <strong>Key insight:</strong> Trong 4 thì chỉ có <strong>1 thì tạo công suất (thì 3)</strong>. Vì vậy động cơ nhiều xi-lanh (V8, V12) tạo ra công suất đều và mượt hơn vì các xi-lanh "nổ" xen kẽ nhau liên tục.
+    </div>
+
+    <h3>Compression Ratio — Tỉ số nén <span class="tag tuning">Tuning</span></h3>
+    <p>Tỉ số nén = thể tích xi-lanh khi piston ở dưới / thể tích khi piston ở trên.</p>
+
+    <table>
+      <tr><th>Loại động cơ</th><th>Tỉ số nén</th><th>Yêu cầu xăng</th><th>Ghi chú</th></tr>
+      <tr><td>Engine thường (NA)</td><td>9:1 – 11:1</td><td>RON 92–95</td><td>Standard</td></tr>
+      <tr><td>Engine tăng áp (turbo)</td><td>8:1 – 9.5:1</td><td>RON 95–98</td><td>Thấp hơn vì turbo đã nén thêm</td></tr>
+      <tr><td>Engine hiệu suất cao</td><td>12:1 – 14:1</td><td>RON 98+</td><td>Ferrari, Porsche GT</td></tr>
+      <tr><td>Diesel</td><td>14:1 – 22:1</td><td>Diesel (tự bốc cháy)</td><td>Không cần bugi</td></tr>
+    </table>
+
+    <div class="callout warning">
+      <strong>Tuning note:</strong> Tăng compression ratio = tăng công suất, NHƯNG phải dùng xăng RON cao hơn. Nếu không → engine knock (kích nổ) → phá piston, con đội.
+    </div>
+  </div>
+
+  <!-- SECTION 2: HP vs TORQUE -->
+  <div class="section">
+    <h2>2. Công suất (HP) vs Mô-men xoắn (Torque) <span class="tag important">Quan trọng</span></h2>
+
+    <p>Đây là 2 khái niệm mà người mới hay bị nhầm nhất.</p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Torque side -->
+        <g transform="translate(30,20)">
+          <text x="150" y="20" fill="#ff9800" font-size="14" text-anchor="middle" font-weight="700">TORQUE (Nm)</text>
+          <text x="150" y="38" fill="#aaa" font-size="11" text-anchor="middle">Mô-men xoắn = LỰC XOẮN</text>
+          <!-- Wrench analogy -->
+          <rect x="70" y="55" width="160" height="12" rx="4" fill="#555"/>
+          <circle cx="230" cy="61" r="20" fill="none" stroke="#ff9800" stroke-width="2"/>
+          <circle cx="230" cy="61" r="6" fill="#ff9800"/>
+          <!-- Force arrow -->
+          <line x1="100" y1="100" x2="100" y2="67" stroke="#ff9800" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="100" y="115" fill="#ff9800" font-size="10" text-anchor="middle">Lực (F)</text>
+          <line x1="100" y1="61" x2="230" y2="61" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="165" y="55" fill="#4caf50" font-size="9" text-anchor="middle">Cánh tay đòn (r)</text>
+          <text x="150" y="155" fill="#fff" font-size="11" text-anchor="middle">T = F × r</text>
+          <text x="150" y="172" fill="#aaa" font-size="10" text-anchor="middle">Xe kéo mạnh ở RPM thấp = torque cao</text>
+        </g>
+
+        <!-- Divider -->
+        <line x1="350" y1="20" x2="350" y2="185" stroke="#333" stroke-width="1" stroke-dasharray="5,4"/>
+
+        <!-- HP side -->
+        <g transform="translate(370,20)">
+          <text x="150" y="20" fill="#e94560" font-size="14" text-anchor="middle" font-weight="700">HORSEPOWER (HP/PS)</text>
+          <text x="150" y="38" fill="#aaa" font-size="11" text-anchor="middle">Công suất = TỐC ĐỘ làm việc</text>
+          <!-- RPM curve -->
+          <polyline points="20,140 60,120 100,90 140,65 180,55 220,58 260,70 285,90" fill="none" stroke="#e94560" stroke-width="2.5"/>
+          <text x="180" y="50" fill="#e94560" font-size="9">Peak HP</text>
+          <line x1="180" y1="53" x2="180" y2="57" stroke="#e94560" stroke-width="1"/>
+          <!-- Axes -->
+          <line x1="20" y1="140" x2="295" y2="140" stroke="#444" stroke-width="1"/>
+          <line x1="20" y1="30" x2="20" y2="145" stroke="#444" stroke-width="1"/>
+          <text x="155" y="158" fill="#aaa" font-size="9" text-anchor="middle">RPM →</text>
+          <text x="10" y="88" fill="#aaa" font-size="9" text-anchor="middle" transform="rotate(-90,10,88)">HP →</text>
+          <text x="150" y="175" fill="#aaa" font-size="10" text-anchor="middle">HP = Torque × RPM / 5252</text>
+        </g>
+
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#ff9800"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <table>
+      <tr><th>Metric</th><th>Torque cao</th><th>HP cao</th></tr>
+      <tr><td>Cảm giác lái</td><td>Kéo mạnh từ thấp, "bốc" ngay</td><td>Nhanh ở tốc độ cao, tăng tốc liên tục</td></tr>
+      <tr><td>RPM tốt nhất</td><td>1,500 – 3,500 RPM</td><td>5,000 – 8,000+ RPM</td></tr>
+      <tr><td>Ví dụ xe</td><td>Diesel SUV, muscle car V8</td><td>Ferrari, Honda S2000 (NA)</td></tr>
+      <tr><td>Kéo tải/off-road</td><td>✅ Ưu thế</td><td>❌ Không cần</td></tr>
+      <tr><td>Track racing</td><td>Cần, nhưng không đủ</td><td>✅ Quyết định lap time</td></tr>
+    </table>
+
+    <div class="callout info">
+      <strong>Formula:</strong> HP = Torque (lb-ft) × RPM ÷ 5,252 &nbsp;|&nbsp; hoặc HP = Torque (Nm) × RPM ÷ 9,549<br>
+      <strong>Ý nghĩa:</strong> Hai xe cùng 500Nm torque — xe nào lên được RPM cao hơn sẽ có HP cao hơn và nhanh hơn trên đường thẳng.
+    </div>
+  </div>
+
+  <!-- SECTION 3: NA vs TURBO vs SUPERCHARGER -->
+  <div class="section">
+    <h2>3. NA · Turbo · Supercharger <span class="tag tuning">Tuning</span></h2>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 740 230" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- NA -->
+        <g transform="translate(10,10)">
+          <rect x="5" y="15" width="215" height="200" rx="10" fill="#111" stroke="#444" stroke-width="1"/>
+          <text x="112" y="12" fill="#aaa" font-size="12" text-anchor="middle" font-weight="700">NA (Naturally Aspirated)</text>
+          <!-- Simple intake -->
+          <rect x="40" y="40" width="140" height="25" rx="5" fill="#1a2a1a" stroke="#4caf50" stroke-width="1.5"/>
+          <text x="110" y="57" fill="#4caf50" font-size="10" text-anchor="middle">Intake → Engine trực tiếp</text>
+          <!-- Engine block -->
+          <rect x="60" y="85" width="100" height="60" rx="6" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+          <text x="110" y="120" fill="#fff" font-size="11" text-anchor="middle" font-weight="700">ENGINE</text>
+          <!-- Air pressure indicator -->
+          <text x="110" y="165" fill="#aaa" font-size="9" text-anchor="middle">Áp suất nạp: 1.0 bar (ambient)</text>
+          <text x="110" y="185" fill="#4caf50" font-size="9" text-anchor="middle">✅ Đơn giản, bền, linear power</text>
+          <text x="110" y="200" fill="#e94560" font-size="9" text-anchor="middle">❌ Giới hạn bởi thể tích xi-lanh</text>
+        </g>
+
+        <!-- TURBO -->
+        <g transform="translate(255,10)">
+          <rect x="5" y="15" width="215" height="200" rx="10" fill="#111" stroke="#e94560" stroke-width="1.5"/>
+          <text x="112" y="12" fill="#e94560" font-size="12" text-anchor="middle" font-weight="700">TURBOCHARGER</text>
+          <!-- Flow diagram -->
+          <text x="30" y="50" fill="#aaa" font-size="9">Khí thải →</text>
+          <!-- Turbo circle -->
+          <circle cx="112" cy="62" r="22" fill="#1a1a1a" stroke="#e94560" stroke-width="2"/>
+          <text x="112" y="58" fill="#e94560" font-size="8" text-anchor="middle">TURBO</text>
+          <text x="112" y="70" fill="#e94560" font-size="8" text-anchor="middle">🌀</text>
+          <!-- Intercooler -->
+          <rect x="55" y="95" width="115" height="20" rx="4" fill="#1a1e2a" stroke="#2196f3" stroke-width="1"/>
+          <text x="112" y="109" fill="#2196f3" font-size="9" text-anchor="middle">INTERCOOLER</text>
+          <!-- Engine -->
+          <rect x="60" y="130" width="100" height="45" rx="6" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+          <text x="110" y="157" fill="#fff" font-size="10" text-anchor="middle" font-weight="700">ENGINE</text>
+          <!-- Pressure -->
+          <text x="112" y="190" fill="#e94560" font-size="9" text-anchor="middle">Boost: 0.5–2.5 bar</text>
+          <text x="112" y="205" fill="#4caf50" font-size="9" text-anchor="middle">✅ Power/weight ratio cao</text>
+        </g>
+
+        <!-- SUPERCHARGER -->
+        <g transform="translate(500,10)">
+          <rect x="5" y="15" width="215" height="200" rx="10" fill="#111" stroke="#ff9800" stroke-width="1.5"/>
+          <text x="112" y="12" fill="#ff9800" font-size="12" text-anchor="middle" font-weight="700">SUPERCHARGER</text>
+          <!-- Belt driven -->
+          <rect x="55" y="35" width="115" height="22" rx="4" fill="#2a1a00" stroke="#ff9800" stroke-width="1.5"/>
+          <text x="112" y="50" fill="#ff9800" font-size="9" text-anchor="middle">Belt-driven compressor</text>
+          <line x1="112" y1="57" x2="112" y2="75" stroke="#ff9800" stroke-width="1.5"/>
+          <!-- Engine -->
+          <rect x="60" y="75" width="100" height="55" rx="6" fill="#1a1a1a" stroke="#555" stroke-width="1.5"/>
+          <text x="110" y="107" fill="#fff" font-size="10" text-anchor="middle" font-weight="700">ENGINE</text>
+          <!-- Crankshaft connection -->
+          <text x="112" y="148" fill="#aaa" font-size="8" text-anchor="middle">← Kéo bằng crankshaft belt</text>
+          <text x="112" y="170" fill="#ff9800" font-size="9" text-anchor="middle">Boost: linear theo RPM</text>
+          <text x="112" y="185" fill="#4caf50" font-size="9" text-anchor="middle">✅ Không turbo lag</text>
+          <text x="112" y="200" fill="#e94560" font-size="9" text-anchor="middle">❌ Ăn công suất engine</text>
+        </g>
+      </svg>
+    </div>
+
+    <table>
+      <tr><th>Tiêu chí</th><th>NA</th><th>Turbo</th><th>Supercharger</th></tr>
+      <tr><td>Turbo lag</td><td>Không có</td><td>Có (nhỏ với twin-scroll)</td><td>Không có</td></tr>
+      <tr><td>Hiệu quả nhiên liệu</td><td>Trung bình</td><td>✅ Tốt nhất</td><td>❌ Kém nhất</td></tr>
+      <tr><td>Power peak</td><td>RPM cao</td><td>Dải RPM rộng</td><td>Linear cả dải</td></tr>
+      <tr><td>Độ bền khi tune</td><td>✅ Cao</td><td>Trung bình</td><td>Trung bình</td></tr>
+      <tr><td>Ví dụ</td><td>Honda S2000, Ferrari 458</td><td>Porsche 911 Turbo, BMW M3</td><td>Dodge Challenger, Mercedes AMG</td></tr>
+    </table>
+
+    <div class="callout warning">
+      <strong>Tuning insight:</strong> Turbo engine dễ tune tăng công suất hơn NA vì chỉ cần tăng boost pressure + remap ECU. NA muốn tăng mạnh phải thay cams, intake, exhaust — phức tạp hơn nhiều.
+    </div>
+  </div>
+
+  <!-- SECTION 4: ENGINE LAYOUTS -->
+  <div class="section">
+    <h2>4. Bố cục xi-lanh (Engine Layout) <span class="tag basic">Cơ bản</span></h2>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- Inline 4 -->
+        <g transform="translate(20,15)">
+          <text x="80" y="12" fill="#aaa" font-size="11" text-anchor="middle" font-weight="700">Inline-4 (I4)</text>
+          <rect x="20" y="20" width="120" height="30" rx="4" fill="#1a1a2e" stroke="#2196f3" stroke-width="1.5"/>
+          <!-- 4 cylinders -->
+          <rect x="25" y="24" width="22" height="22" rx="2" fill="#2196f3" opacity="0.6"/>
+          <rect x="51" y="24" width="22" height="22" rx="2" fill="#2196f3" opacity="0.6"/>
+          <rect x="77" y="24" width="22" height="22" rx="2" fill="#2196f3" opacity="0.6"/>
+          <rect x="103" y="24" width="22" height="22" rx="2" fill="#2196f3" opacity="0.6"/>
+          <text x="36" y="39" fill="#fff" font-size="9" text-anchor="middle">1</text>
+          <text x="62" y="39" fill="#fff" font-size="9" text-anchor="middle">2</text>
+          <text x="88" y="39" fill="#fff" font-size="9" text-anchor="middle">3</text>
+          <text x="114" y="39" fill="#fff" font-size="9" text-anchor="middle">4</text>
+          <text x="80" y="75" fill="#aaa" font-size="9" text-anchor="middle">Thẳng hàng</text>
+          <text x="80" y="90" fill="#aaa" font-size="9" text-anchor="middle">Compact, phổ biến nhất</text>
+          <text x="80" y="110" fill="#4caf50" font-size="9" text-anchor="middle">Civic, Golf, BMW 3-Series</text>
+        </g>
+
+        <!-- V6 -->
+        <g transform="translate(195,15)">
+          <text x="80" y="12" fill="#aaa" font-size="11" text-anchor="middle" font-weight="700">V6</text>
+          <!-- Left bank -->
+          <rect x="20" y="55" width="60" height="25" rx="4" fill="#1a2e1a" stroke="#4caf50" stroke-width="1.5" transform="rotate(-30,50,67)"/>
+          <!-- Right bank -->
+          <rect x="80" y="55" width="60" height="25" rx="4" fill="#1a2e1a" stroke="#4caf50" stroke-width="1.5" transform="rotate(30,110,67)"/>
+          <!-- Cylinders left -->
+          <rect x="24" y="38" width="16" height="16" rx="2" fill="#4caf50" opacity="0.6"/>
+          <rect x="44" y="28" width="16" height="16" rx="2" fill="#4caf50" opacity="0.6"/>
+          <rect x="64" y="20" width="16" height="16" rx="2" fill="#4caf50" opacity="0.6"/>
+          <!-- Cylinders right -->
+          <rect x="100" y="20" width="16" height="16" rx="2" fill="#4caf50" opacity="0.6"/>
+          <rect x="116" y="28" width="16" height="16" rx="2" fill="#4caf50" opacity="0.6"/>
+          <rect x="132" y="38" width="16" height="16" rx="2" fill="#4caf50" opacity="0.6"/>
+          <text x="80" y="110" fill="#aaa" font-size="9" text-anchor="middle">2 dãy xi-lanh, góc 60°</text>
+          <text x="80" y="125" fill="#4caf50" font-size="9" text-anchor="middle">Accord, Cayenne base</text>
+        </g>
+
+        <!-- V8 -->
+        <g transform="translate(375,15)">
+          <text x="80" y="12" fill="#aaa" font-size="11" text-anchor="middle" font-weight="700">V8</text>
+          <rect x="15" y="45" width="70" height="25" rx="4" fill="#2a1a00" stroke="#ff9800" stroke-width="1.5" transform="rotate(-25,50,57)"/>
+          <rect x="75" y="45" width="70" height="25" rx="4" fill="#2a1a00" stroke="#ff9800" stroke-width="1.5" transform="rotate(25,110,57)"/>
+          <rect x="18" y="28" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <rect x="35" y="20" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <rect x="52" y="13" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <rect x="69" y="8" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <rect x="86" y="8" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <rect x="103" y="13" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <rect x="120" y="20" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <rect x="137" y="28" width="14" height="14" rx="2" fill="#ff9800" opacity="0.7"/>
+          <text x="80" y="105" fill="#aaa" font-size="9" text-anchor="middle">8 xi-lanh, V 90°</text>
+          <text x="80" y="120" fill="#ff9800" font-size="9" text-anchor="middle">Muscle cars, AMG, Range Rover</text>
+        </g>
+
+        <!-- Flat 6 -->
+        <g transform="translate(555,15)">
+          <text x="80" y="12" fill="#aaa" font-size="11" text-anchor="middle" font-weight="700">Flat-6 (Boxer)</text>
+          <!-- Top row -->
+          <rect x="15" y="55" width="130" height="20" rx="4" fill="#1a1a2e" stroke="#9c27b0" stroke-width="1.5"/>
+          <rect x="20" y="59" width="18" height="12" rx="2" fill="#9c27b0" opacity="0.7"/>
+          <rect x="42" y="59" width="18" height="12" rx="2" fill="#9c27b0" opacity="0.7"/>
+          <rect x="64" y="59" width="18" height="12" rx="2" fill="#9c27b0" opacity="0.7"/>
+          <!-- Bottom row -->
+          <rect x="15" y="82" width="130" height="20" rx="4" fill="#1a1a2e" stroke="#9c27b0" stroke-width="1.5"/>
+          <rect x="20" y="86" width="18" height="12" rx="2" fill="#9c27b0" opacity="0.7"/>
+          <rect x="42" y="86" width="18" height="12" rx="2" fill="#9c27b0" opacity="0.7"/>
+          <rect x="64" y="86" width="18" height="12" rx="2" fill="#9c27b0" opacity="0.7"/>
+          <text x="80" y="120" fill="#aaa" font-size="9" text-anchor="middle">Nằm ngang, đối xứng</text>
+          <text x="80" y="135" fill="#9c27b0" font-size="9" text-anchor="middle">Porsche 911, Subaru WRX</text>
+          <text x="80" y="150" fill="#aaa" font-size="8" text-anchor="middle">Center of gravity thấp nhất</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="callout info">
+      <strong>Tại sao Porsche 911 dùng Flat-6:</strong> Trọng tâm (center of gravity) thấp → handling tốt hơn. Engine nằm ngang sau trục sau = âm thanh đặc trưng, balance khác biệt. Đây là lý do Porsche không đổi layout dù công nghệ thay đổi 60 năm.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <h2>🧠 Test Kiến Thức — Bài 1</h2>
+    <p style="color:#aaa; margin-bottom:25px; font-size:0.9em;">5 câu hỏi · Cần đúng 4/5 để pass</p>
+
+    <div class="question" id="q1">
+      <p>Câu 1: Trong chu kỳ 4 thì, thì nào tạo ra công suất?</p>
+      <div class="options">
+        <label onclick="select(this,'q1','a')"><input type="radio"><span>A. Thì 1 — Nạp</span></label>
+        <label onclick="select(this,'q1','b')"><input type="radio"><span>B. Thì 2 — Nén</span></label>
+        <label onclick="select(this,'q1','c')"><input type="radio"><span>C. Thì 3 — Nổ (Power)</span></label>
+        <label onclick="select(this,'q1','d')"><input type="radio"><span>D. Thì 4 — Xả</span></label>
+      </div>
+      <div class="answer-reveal" id="ans1">✅ Đáp án: C — Thì 3 (Power stroke) là thì duy nhất tạo ra công suất. Bugi đánh lửa → hỗn hợp nổ → đẩy piston xuống mạnh.</div>
+    </div>
+
+    <div class="question" id="q2">
+      <p>Câu 2: Xe A có 600Nm torque nhưng peak ở 2,000 RPM. Xe B có 600Nm torque peak ở 6,000 RPM. Xe nào có HP cao hơn?</p>
+      <div class="options">
+        <label onclick="select(this,'q2','a')"><input type="radio"><span>A. Xe A</span></label>
+        <label onclick="select(this,'q2','b')"><input type="radio"><span>B. Xe B</span></label>
+        <label onclick="select(this,'q2','c')"><input type="radio"><span>C. Bằng nhau vì cùng 600Nm</span></label>
+        <label onclick="select(this,'q2','d')"><input type="radio"><span>D. Không thể biết</span></label>
+      </div>
+      <div class="answer-reveal" id="ans2">✅ Đáp án: B — HP = Torque × RPM ÷ 9,549. Cùng torque nhưng RPM cao hơn → HP cao hơn. Đây là lý do Ferrari NA lên 9,000 RPM vẫn có HP cao dù torque không khủng.</div>
+    </div>
+
+    <div class="question" id="q3">
+      <p>Câu 3: Tại sao engine turbo thường có compression ratio thấp hơn engine NA?</p>
+      <div class="options">
+        <label onclick="select(this,'q3','a')"><input type="radio"><span>A. Để tiết kiệm nhiên liệu</span></label>
+        <label onclick="select(this,'q3','b')"><input type="radio"><span>B. Vì turbo đã nén không khí thêm trước khi vào xi-lanh — tổng áp suất vẫn cao</span></label>
+        <label onclick="select(this,'q3','c')"><input type="radio"><span>C. Vì piston turbo engine nhỏ hơn</span></label>
+        <label onclick="select(this,'q3','d')"><input type="radio"><span>D. Để tránh tiếng ồn</span></label>
+      </div>
+      <div class="answer-reveal" id="ans3">✅ Đáp án: B — Turbo nén không khí trước khi vào buồng đốt (boost pressure). Nếu giữ compression ratio cao như NA + thêm boost → tổng áp quá lớn → kích nổ phá engine.</div>
+    </div>
+
+    <div class="question" id="q4">
+      <p>Câu 4: Loại engine nào KHÔNG có turbo lag?</p>
+      <div class="options">
+        <label onclick="select(this,'q4','a')"><input type="radio"><span>A. Single turbo</span></label>
+        <label onclick="select(this,'q4','b')"><input type="radio"><span>B. Twin turbo</span></label>
+        <label onclick="select(this,'q4','c')"><input type="radio"><span>C. Supercharger</span></label>
+        <label onclick="select(this,'q4','d')"><input type="radio"><span>D. A và B</span></label>
+      </div>
+      <div class="answer-reveal" id="ans4">✅ Đáp án: C — Supercharger kéo trực tiếp bằng belt từ crankshaft → boost tăng tức thì theo RPM, không cần đợi khí thải như turbo.</div>
+    </div>
+
+    <div class="question" id="q5">
+      <p>Câu 5: Porsche 911 dùng Flat-6 (Boxer) engine vì lý do chính nào?</p>
+      <div class="options">
+        <label onclick="select(this,'q5','a')"><input type="radio"><span>A. Rẻ hơn V6</span></label>
+        <label onclick="select(this,'q5','b')"><input type="radio"><span>B. Center of gravity thấp → handling tốt hơn</span></label>
+        <label onclick="select(this,'q5','c')"><input type="radio"><span>C. Sản xuất dễ hơn</span></label>
+        <label onclick="select(this,'q5','d')"><input type="radio"><span>D. Nhẹ hơn V6</span></label>
+      </div>
+      <div class="answer-reveal" id="ans5">✅ Đáp án: B — Cylinder nằm ngang, đối xứng hai bên → khối engine thấp → trọng tâm xe thấp → tốt cho handling và balance. Đây là lý do Porsche giữ layout này 60+ năm.</div>
+    </div>
+
+    <button class="btn-check" onclick="checkQuiz()">Kiểm tra kết quả</button>
+
+    <div class="result-box" id="result-box">
+      <div id="result-text"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Automotive Engineering Series · <a href="#">Bài 2: MT vs AT/DCT/CVT →</a></p>
+  <p style="margin-top:8px;">Built by Zera 🌟 for Bach · RCC Learning Series</p>
+</footer>
+
+<script>
+  const answers = { q1: 'c', q2: 'b', q3: 'b', q4: 'c', q5: 'b' };
+  const selected = {};
+
+  function select(el, qid, opt) {
+    document.querySelectorAll('#' + qid + ' label').forEach(l => l.classList.remove('selected'));
+    el.classList.add('selected');
+    selected[qid] = opt;
+  }
+
+  function checkQuiz() {
+    let score = 0;
+    const total = Object.keys(answers).length;
+    Object.keys(answers).forEach(q => {
+      const ansEl = document.getElementById('ans' + q.replace('q',''));
+      if (ansEl) ansEl.style.display = 'block';
+      if (selected[q] === answers[q]) score++;
+    });
+
+    const box = document.getElementById('result-box');
+    const txt = document.getElementById('result-text');
+    box.style.display = 'block';
+
+    if (score >= 4) {
+      box.className = 'result-box show pass';
+      txt.innerHTML = `<strong>✅ PASS — ${score}/${total} đúng!</strong><br>Anh hiểu tốt rồi. Sẵn sàng qua Bài 2: MT vs AT/DCT.`;
+    } else {
+      box.className = 'result-box show fail';
+      txt.innerHTML = `<strong>❌ ${score}/${total} đúng — Cần ôn lại.</strong><br>Xem lại phần đáp án bên dưới mỗi câu rồi thử lại nhé anh.`;
+    }
+  }
+</script>
+</body>
+</html>
