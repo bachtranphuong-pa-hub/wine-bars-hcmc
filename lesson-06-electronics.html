@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 6: Electronics & ECU</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',sans-serif;background:#0f0f0f;color:#e0e0e0;line-height:1.7;}
+  .hero{background:linear-gradient(135deg,#001a2e 0%,#002a3e 50%,#003a4e 100%);padding:60px 40px;text-align:center;border-bottom:3px solid #2196f3;}
+  .hero h1{font-size:2.4em;color:#fff;margin-bottom:10px;}
+  .hero .series{font-size:0.9em;color:#2196f3;letter-spacing:3px;text-transform:uppercase;margin-bottom:15px;}
+  .hero p{color:#aaa;font-size:1.1em;max-width:600px;margin:0 auto;}
+  .nav-pills{display:flex;justify-content:center;gap:10px;padding:20px;background:#1a1a1a;flex-wrap:wrap;}
+  .nav-pills a{padding:6px 16px;border-radius:20px;font-size:0.8em;text-decoration:none;background:#2a2a2a;color:#aaa;border:1px solid #333;}
+  .nav-pills a.active{background:#2196f3;color:#fff;border-color:#2196f3;}
+  .container{max-width:900px;margin:0 auto;padding:40px 20px;}
+  .section{margin-bottom:50px;}
+  .section h2{font-size:1.6em;color:#2196f3;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid #2a2a2a;}
+  .section p{color:#ccc;margin-bottom:12px;}
+  .diagram-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:30px;margin:20px 0;text-align:center;}
+  .callout{background:#001e3a;border-left:4px solid #2196f3;padding:15px 20px;border-radius:0 8px 8px 0;margin:15px 0;}
+  .callout.warning{background:#2a1e1e;border-left-color:#e94560;}
+  .callout.green{background:#1e2a1e;border-left-color:#4caf50;}
+  .callout.orange{background:#2a1e00;border-left-color:#ff9800;}
+  .callout strong{color:#fff;}
+  table{width:100%;border-collapse:collapse;margin:20px 0;}
+  th{background:#2196f3;color:#fff;padding:12px;text-align:left;}
+  td{padding:11px 12px;border-bottom:1px solid #222;color:#ccc;}
+  tr:nth-child(even) td{background:#1a1a1a;}
+  .quiz-section{background:#1a1a1a;border-radius:12px;padding:30px;margin-top:50px;}
+  .quiz-section h2{color:#ffd700;margin-bottom:25px;}
+  .question{margin-bottom:30px;}
+  .question p{color:#fff;font-weight:600;margin-bottom:12px;}
+  .options label{display:block;padding:10px 15px;margin:6px 0;background:#222;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;color:#ccc;}
+  .options label:hover{border-color:#2196f3;color:#fff;}
+  .options label.selected{border-color:#2196f3;background:#001e3a;}
+  .btn-check{display:inline-block;margin-top:20px;padding:12px 30px;background:#2196f3;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1em;font-weight:600;}
+  .result-box{margin-top:20px;padding:20px;border-radius:10px;display:none;}
+  .result-box.show{display:block;}
+  .result-box.pass{background:#1e3a1e;border:1px solid #4caf50;color:#4caf50;}
+  .result-box.fail{background:#3a1e1e;border:1px solid #e94560;color:#e94560;}
+  .answer-reveal{margin-top:8px;font-size:0.9em;color:#aaa;display:none;}
+  .progress-bar{display:flex;align-items:center;gap:10px;margin-bottom:30px;}
+  .progress-bar .step{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:700;}
+  .progress-bar .step.done{background:#2196f3;color:#fff;}
+  .progress-bar .step.current{background:#fff;color:#0f0f0f;}
+  .progress-bar .step.todo{background:#2a2a2a;color:#666;}
+  .progress-bar .line{flex:1;height:2px;background:#2a2a2a;}
+  .progress-bar .line.done{background:#2196f3;}
+  footer{text-align:center;padding:30px;color:#444;font-size:0.85em;border-top:1px solid #1a1a1a;margin-top:60px;}
+  footer a{color:#2196f3;text-decoration:none;}
+  code{background:#1a1a2e;color:#4caf50;padding:2px 8px;border-radius:4px;font-size:0.9em;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="series">Automotive Engineering Series · Bài 6 / 7</div>
+  <h1>Electronics & ECU</h1>
+  <p>ECU, CAN bus, sensors, drive modes — bộ não của xe hiện đại</p>
+</div>
+<div class="nav-pills">
+  <a href="lesson-01-engine-powertrain.html">Bài 1 ✅</a>
+  <a href="lesson-02-transmission.html">Bài 2 ✅</a>
+  <a href="lesson-03-chassis.html">Bài 3 ✅</a>
+  <a href="lesson-04-aero.html">Bài 4 ✅</a>
+  <a href="lesson-05-brakes.html">Bài 5 ✅</a>
+  <a href="#" class="active">Bài 6: Electronics</a>
+  <a href="lesson-07-tuning.html">Bài 7: Tuning ★</a>
+</div>
+<div class="container">
+  <div class="progress-bar">
+    <div class="step done">1</div><div class="line done"></div>
+    <div class="step done">2</div><div class="line done"></div>
+    <div class="step done">3</div><div class="line done"></div>
+    <div class="step done">4</div><div class="line done"></div>
+    <div class="step done">5</div><div class="line done"></div>
+    <div class="step current">6</div><div class="line"></div>
+    <div class="step todo">7</div>
+  </div>
+
+  <!-- ECU -->
+  <div class="section">
+    <h2>1. ECU — Engine Control Unit</h2>
+    <p>ECU là "não" của engine — đọc sensor input, tính toán, và ra lệnh điều khiển injection, ignition, boost, v.v. Mỗi xe hiện đại có 50–150 ECU/module khác nhau.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Central ECU -->
+        <rect x="270" y="80" width="160" height="80" rx="10" fill="#001e3a" stroke="#2196f3" stroke-width="2.5"/>
+        <text x="350" y="115" fill="#2196f3" font-size="14" text-anchor="middle" font-weight="700">ECU</text>
+        <text x="350" y="132" fill="#aaa" font-size="9" text-anchor="middle">Engine Control Unit</text>
+        <text x="350" y="148" fill="#555" font-size="8" text-anchor="middle">~100MHz processor</text>
+
+        <!-- INPUTS left -->
+        <text x="30" y="20" fill="#4caf50" font-size="10" font-weight="700">SENSORS (Input)</text>
+        <!-- MAP sensor -->
+        <rect x="10" y="30" width="110" height="22" rx="4" fill="#1a2a1a" stroke="#4caf50" stroke-width="1"/>
+        <text x="65" y="45" fill="#4caf50" font-size="8" text-anchor="middle">MAP — Manifold Pressure</text>
+        <line x1="120" y1="41" x2="270" y2="100" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- MAF sensor -->
+        <rect x="10" y="58" width="110" height="22" rx="4" fill="#1a2a1a" stroke="#4caf50" stroke-width="1"/>
+        <text x="65" y="73" fill="#4caf50" font-size="8" text-anchor="middle">MAF — Air Mass Flow</text>
+        <line x1="120" y1="69" x2="270" y2="108" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- O2 sensor -->
+        <rect x="10" y="86" width="110" height="22" rx="4" fill="#1a2a1a" stroke="#4caf50" stroke-width="1"/>
+        <text x="65" y="101" fill="#4caf50" font-size="8" text-anchor="middle">O2 — Lambda/AFR</text>
+        <line x1="120" y1="97" x2="270" y2="118" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- TPS -->
+        <rect x="10" y="114" width="110" height="22" rx="4" fill="#1a2a1a" stroke="#4caf50" stroke-width="1"/>
+        <text x="65" y="129" fill="#4caf50" font-size="8" text-anchor="middle">TPS — Throttle Position</text>
+        <line x1="120" y1="125" x2="270" y2="128" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Knock sensor -->
+        <rect x="10" y="142" width="110" height="22" rx="4" fill="#1a2a1a" stroke="#4caf50" stroke-width="1"/>
+        <text x="65" y="157" fill="#4caf50" font-size="8" text-anchor="middle">Knock Sensor</text>
+        <line x1="120" y1="153" x2="270" y2="138" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Coolant temp -->
+        <rect x="10" y="170" width="110" height="22" rx="4" fill="#1a2a1a" stroke="#4caf50" stroke-width="1"/>
+        <text x="65" y="185" fill="#4caf50" font-size="8" text-anchor="middle">ECT — Coolant Temp</text>
+        <line x1="120" y1="181" x2="270" y2="148" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- OUTPUTS right -->
+        <text x="470" y="20" fill="#e94560" font-size="10" font-weight="700">ACTUATORS (Output)</text>
+        <!-- Injectors -->
+        <rect x="580" y="30" width="110" height="22" rx="4" fill="#2a001e" stroke="#e94560" stroke-width="1"/>
+        <text x="635" y="45" fill="#e94560" font-size="8" text-anchor="middle">Fuel Injectors</text>
+        <line x1="430" y1="100" x2="580" y2="41" stroke="#e94560" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Ignition -->
+        <rect x="580" y="58" width="110" height="22" rx="4" fill="#2a001e" stroke="#e94560" stroke-width="1"/>
+        <text x="635" y="73" fill="#e94560" font-size="8" text-anchor="middle">Ignition Coils</text>
+        <line x1="430" y1="108" x2="580" y2="69" stroke="#e94560" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- VTEC/VVT -->
+        <rect x="580" y="86" width="110" height="22" rx="4" fill="#2a001e" stroke="#e94560" stroke-width="1"/>
+        <text x="635" y="101" fill="#e94560" font-size="8" text-anchor="middle">VVT/VTEC solenoid</text>
+        <line x1="430" y1="118" x2="580" y2="97" stroke="#e94560" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Boost -->
+        <rect x="580" y="114" width="110" height="22" rx="4" fill="#2a001e" stroke="#e94560" stroke-width="1"/>
+        <text x="635" y="129" fill="#e94560" font-size="8" text-anchor="middle">Boost Solenoid (WG)</text>
+        <line x1="430" y1="128" x2="580" y2="125" stroke="#e94560" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- Throttle body -->
+        <rect x="580" y="142" width="110" height="22" rx="4" fill="#2a001e" stroke="#e94560" stroke-width="1"/>
+        <text x="635" y="157" fill="#e94560" font-size="8" text-anchor="middle">Electronic Throttle</text>
+        <line x1="430" y1="138" x2="580" y2="153" stroke="#e94560" stroke-width="1" stroke-dasharray="3,2"/>
+      </svg>
+    </div>
+    <div class="callout">
+      <strong>ECU "map"</strong> = bảng tra 3D: RPM × Load → Output (fuel, ignition timing, boost). Tuner thay đổi các giá trị trong map này. Một ECU map có thể có 10,000–50,000+ cells cần điều chỉnh.
+    </div>
+  </div>
+
+  <!-- CAN BUS -->
+  <div class="section">
+    <h2>2. CAN Bus — Mạng thần kinh của xe</h2>
+    <p><strong>CAN (Controller Area Network)</strong> = giao thức giao tiếp giữa tất cả ECU/module trong xe. Thay vì mỗi cặp module cần dây riêng (hàng km dây), CAN dùng chung 2 dây cho tất cả.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- CAN bus line -->
+        <line x1="30" y1="90" x2="650" y2="90" stroke="#2196f3" stroke-width="3"/>
+        <line x1="30" y1="100" x2="650" y2="100" stroke="#2196f3" stroke-width="1.5" opacity="0.5"/>
+        <text x="340" y="80" fill="#2196f3" font-size="10" text-anchor="middle" font-weight="700">CAN BUS (High + Low wire)</text>
+
+        <!-- Nodes -->
+        <!-- ECU -->
+        <line x1="80" y1="90" x2="80" y2="40" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="35" y="15" width="90" height="28" rx="5" fill="#001e3a" stroke="#2196f3" stroke-width="1.5"/>
+        <text x="80" y="33" fill="#2196f3" font-size="9" text-anchor="middle" font-weight="700">ENGINE ECU</text>
+        <!-- TCU -->
+        <line x1="185" y1="90" x2="185" y2="40" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="140" y="15" width="90" height="28" rx="5" fill="#1a2a1a" stroke="#4caf50" stroke-width="1.5"/>
+        <text x="185" y="33" fill="#4caf50" font-size="9" text-anchor="middle" font-weight="700">TCU (Gearbox)</text>
+        <!-- ABS/ESC -->
+        <line x1="290" y1="90" x2="290" y2="40" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="245" y="15" width="90" height="28" rx="5" fill="#2a001e" stroke="#e94560" stroke-width="1.5"/>
+        <text x="290" y="33" fill="#e94560" font-size="9" text-anchor="middle" font-weight="700">ABS / ESC</text>
+        <!-- Instrument cluster -->
+        <line x1="395" y1="90" x2="395" y2="40" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="345" y="15" width="100" height="28" rx="5" fill="#2a1a00" stroke="#ff9800" stroke-width="1.5"/>
+        <text x="395" y="33" fill="#ff9800" font-size="9" text-anchor="middle" font-weight="700">Instrument Cluster</text>
+        <!-- Body control -->
+        <line x1="510" y1="90" x2="510" y2="40" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="460" y="15" width="100" height="28" rx="5" fill="#1a001a" stroke="#9c27b0" stroke-width="1.5"/>
+        <text x="510" y="33" fill="#9c27b0" font-size="9" text-anchor="middle" font-weight="700">Body Control Module</text>
+        <!-- OBD2 -->
+        <line x1="610" y1="90" x2="610" y2="40" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="565" y="15" width="80" height="28" rx="5" fill="#1a1a1a" stroke="#ffd700" stroke-width="1.5"/>
+        <text x="605" y="33" fill="#ffd700" font-size="9" text-anchor="middle" font-weight="700">OBD-II Port</text>
+
+        <!-- Bottom nodes -->
+        <line x1="140" y1="100" x2="140" y2="145" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="95" y="142" width="90" height="28" rx="5" fill="#001a2e" stroke="#2196f3" stroke-width="1"/>
+        <text x="140" y="160" fill="#2196f3" font-size="8" text-anchor="middle">Suspension ECU</text>
+
+        <line x1="340" y1="100" x2="340" y2="145" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="295" y="142" width="90" height="28" rx="5" fill="#001a2e" stroke="#2196f3" stroke-width="1"/>
+        <text x="340" y="160" fill="#2196f3" font-size="8" text-anchor="middle">Infotainment</text>
+
+        <line x1="550" y1="100" x2="550" y2="145" stroke="#aaa" stroke-width="1.5"/>
+        <rect x="505" y="142" width="90" height="28" rx="5" fill="#001a2e" stroke="#2196f3" stroke-width="1"/>
+        <text x="550" y="160" fill="#2196f3" font-size="8" text-anchor="middle">ADAS / Cameras</text>
+      </svg>
+    </div>
+    <div class="callout warning">
+      <strong>Tại sao tune AT/DCT phức tạp:</strong> ECU và TCU giao tiếp qua CAN. Khi tune engine tăng torque, ECU báo TCU qua CAN. Nếu TCU không được remap, nó sẽ nhận "torque vượt limit" → kích hoạt torque cut hoặc limp mode để bảo vệ hộp số. Đây là lý do tune AT cần ECU + TCU remap đồng bộ.
+    </div>
+  </div>
+
+  <!-- KEY SENSORS -->
+  <div class="section">
+    <h2>3. Sensors quan trọng nhất cho tuning</h2>
+    <table>
+      <tr><th>Sensor</th><th>Đo gì</th><th>Tuning impact</th></tr>
+      <tr><td><strong>MAP</strong> (Manifold Absolute Pressure)</td><td>Áp suất trong intake manifold</td><td>ECU tính load → quyết định fuel + ignition. Tune boost dựa trên MAP.</td></tr>
+      <tr><td><strong>MAF</strong> (Mass Air Flow)</td><td>Khối lượng không khí vào engine (g/s)</td><td>AFR calculation. Đổi injector → cần rescale MAF hoặc dùng SD (Speed Density) tune.</td></tr>
+      <tr><td><strong>O2 / Lambda</strong></td><td>Tỉ lệ không khí/nhiên liệu (AFR) thực tế</td><td>Wideband O2 = feedback closed-loop. Target AFR: 14.7:1 idle, 11.5–12.5:1 WOT.</td></tr>
+      <tr><td><strong>Knock Sensor</strong></td><td>Rung động tần số cao trong block (kích nổ)</td><td>ECU retard timing khi detect knock. Tune phải không trigger knock. Dùng 98RON khi tune.</td></tr>
+      <tr><td><strong>TPS</strong> (Throttle Position)</td><td>Vị trí bướm ga (0–100%)</td><td>Xác định driver intent. Tune throttle map → thay đổi response feel.</td></tr>
+      <tr><td><strong>IAT</strong> (Intake Air Temp)</td><td>Nhiệt độ không khí vào</td><td>ECU bù nhiệt. IAT cao → retard timing. Intercooler giúp giảm IAT.</td></tr>
+    </table>
+    <div class="callout green">
+      <strong>Wideband O2 sensor</strong> là thiết bị quan trọng nhất khi tune. Narrowband O2 (stock) chỉ biết rich/lean. Wideband đọc AFR chính xác (ví dụ 12.3:1) → tuner điều chỉnh fuel map chính xác. Không có wideband = tune mù.
+    </div>
+  </div>
+
+  <!-- DRIVER AIDS -->
+  <div class="section">
+    <h2>4. Driver Aids — ABS · TCS · ESC · Launch Control</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- ABS -->
+        <g transform="translate(10,10)">
+          <rect x="5" y="15" width="155" height="130" rx="8" fill="#111" stroke="#2196f3" stroke-width="1.5"/>
+          <text x="82" y="12" fill="#2196f3" font-size="10" text-anchor="middle" font-weight="700">ABS</text>
+          <text x="82" y="35" fill="#fff" font-size="9" text-anchor="middle">Anti-lock Braking</text>
+          <!-- Wheel speed sensors -->
+          <circle cx="40" cy="75" r="18" fill="none" stroke="#4caf50" stroke-width="1.5"/>
+          <circle cx="120" cy="75" r="18" fill="none" stroke="#4caf50" stroke-width="1.5"/>
+          <text x="40" y="79" fill="#4caf50" font-size="7" text-anchor="middle">WSS</text>
+          <text x="120" y="79" fill="#4caf50" font-size="7" text-anchor="middle">WSS</text>
+          <text x="82" y="110" fill="#aaa" font-size="8" text-anchor="middle">Detect wheel lock</text>
+          <text x="82" y="123" fill="#aaa" font-size="8" text-anchor="middle">→ pulse brake pressure</text>
+          <text x="82" y="136" fill="#4caf50" font-size="8" text-anchor="middle">~15 cycles/second</text>
+        </g>
+        <!-- TCS -->
+        <g transform="translate(185,10)">
+          <rect x="5" y="15" width="155" height="130" rx="8" fill="#111" stroke="#ff9800" stroke-width="1.5"/>
+          <text x="82" y="12" fill="#ff9800" font-size="10" text-anchor="middle" font-weight="700">TCS</text>
+          <text x="82" y="35" fill="#fff" font-size="9" text-anchor="middle">Traction Control</text>
+          <text x="82" y="60" fill="#aaa" font-size="8" text-anchor="middle">Detect wheel spin (drive wheels</text>
+          <text x="82" y="73" fill="#aaa" font-size="8" text-anchor="middle">faster than non-drive)</text>
+          <!-- Intervention -->
+          <rect x="25" y="83" width="110" height="25" rx="4" fill="#2a1a00" stroke="#ff9800" stroke-width="1"/>
+          <text x="80" y="96" fill="#ff9800" font-size="8" text-anchor="middle">Cut throttle / Apply brake</text>
+          <text x="82" y="123" fill="#4caf50" font-size="8" text-anchor="middle">✅ Prevent wheelspin</text>
+          <text x="82" y="136" fill="#e94560" font-size="8" text-anchor="middle">❌ Kills acceleration</text>
+        </g>
+        <!-- ESC -->
+        <g transform="translate(360,10)">
+          <rect x="5" y="15" width="155" height="130" rx="8" fill="#111" stroke="#9c27b0" stroke-width="1.5"/>
+          <text x="82" y="12" fill="#9c27b0" font-size="10" text-anchor="middle" font-weight="700">ESC / DSC / VSC</text>
+          <text x="82" y="35" fill="#fff" font-size="9" text-anchor="middle">Electronic Stability Control</text>
+          <text x="82" y="55" fill="#aaa" font-size="8" text-anchor="middle">Compare: steering angle</text>
+          <text x="82" y="67" fill="#aaa" font-size="8" text-anchor="middle">vs. yaw rate sensor</text>
+          <text x="82" y="83" fill="#aaa" font-size="8" text-anchor="middle">→ Brake individual wheel</text>
+          <text x="82" y="95" fill="#aaa" font-size="8" text-anchor="middle">to correct oversteer/understeer</text>
+          <text x="82" y="115" fill="#4caf50" font-size="8" text-anchor="middle">✅ Safety net</text>
+          <text x="82" y="128" fill="#e94560" font-size="8" text-anchor="middle">❌ Kills drift potential</text>
+        </g>
+        <!-- Launch Control -->
+        <g transform="translate(535,10)">
+          <rect x="5" y="15" width="155" height="130" rx="8" fill="#111" stroke="#ffd700" stroke-width="1.5"/>
+          <text x="82" y="12" fill="#ffd700" font-size="10" text-anchor="middle" font-weight="700">LAUNCH CONTROL</text>
+          <text x="82" y="35" fill="#fff" font-size="9" text-anchor="middle">Optimal Standing Start</text>
+          <text x="82" y="55" fill="#aaa" font-size="8" text-anchor="middle">1. Hold brake + throttle</text>
+          <text x="82" y="68" fill="#aaa" font-size="8" text-anchor="middle">2. ECU holds RPM (e.g. 4,000)</text>
+          <text x="82" y="81" fill="#aaa" font-size="8" text-anchor="middle">3. Release brake → clutch</text>
+          <text x="82" y="94" fill="#aaa" font-size="8" text-anchor="middle">   slip managed by ECU</text>
+          <text x="82" y="107" fill="#aaa" font-size="8" text-anchor="middle">4. TCS controls wheelspin</text>
+          <text x="82" y="120" fill="#ffd700" font-size="8" text-anchor="middle">Result: Consistent 0–100</text>
+          <text x="82" y="133" fill="#4caf50" font-size="8" text-anchor="middle">every single time</text>
+        </g>
+      </svg>
+    </div>
+    <div class="callout orange">
+      <strong>Track mode / Sport mode:</strong> Thường tắt hoặc giảm TCS/ESC intervention → cho phép wheelspin nhỏ và oversteer nhẹ. "Track" mode trên Porsche/BMW vẫn giữ safety net tối thiểu — "Sport+" hoặc fully off mới tắt hoàn toàn.
+    </div>
+  </div>
+
+  <!-- DRIVE BY WIRE -->
+  <div class="section">
+    <h2>5. Drive-by-Wire — Throttle, Steering, Brake</h2>
+    <table>
+      <tr><th>System</th><th>Cũ (mechanical)</th><th>Hiện đại (by-wire)</th><th>Tuning benefit</th></tr>
+      <tr><td>Throttle</td><td>Dây cáp → bướm ga</td><td>TPS → ECU → motor mở bướm ga</td><td>Tune throttle map: linear/sport/eco response</td></tr>
+      <tr><td>Steering</td><td>Hydraulic power steering</td><td>EPS (electric) — motor hỗ trợ</td><td>Tune steering weight, return-to-center speed</td></tr>
+      <tr><td>Brakes</td><td>Hydraulic trực tiếp</td><td>Brake-by-wire (EV, Ferrari SF90)</td><td>Blend regen + friction brake seamlessly</td></tr>
+      <tr><td>Gearshift</td><td>Mechanical linkage</td><td>Shift-by-wire (Lamborghini, Ferrari)</td><td>Faster shift response, no mechanical lag</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Throttle map tuning:</strong> Stock mode thường có "lazy" throttle response ở đầu pedal travel (safety, fuel economy). Sport/tune map → linear hoặc aggressive response ngay từ đầu. Cảm giác xe "nhạy" hơn nhiều mà không cần tăng HP.
+    </div>
+  </div>
+
+  <!-- OBD2 & DIAGNOSTICS -->
+  <div class="section">
+    <h2>6. OBD-II & Diagnostics</h2>
+    <p><strong>OBD-II</strong> (On-Board Diagnostics) = cổng chuẩn 16-pin dưới dashboard. Kết nối laptop/tablet → đọc/ghi ECU data.</p>
+    <table>
+      <tr><th>Tool</th><th>Function</th><th>Use case</th></tr>
+      <tr><td>Basic OBD reader</td><td>Read/clear fault codes (DTC)</td><td>Tắt check engine light, diagnose lỗi</td></tr>
+      <tr><td>HP Tuners / EFI Live</td><td>Read + write ECU maps (GM, Ford)</td><td>Full tune: fuel, ignition, cam timing</td></tr>
+      <tr><td>ECUTEK</td><td>Subaru, Nissan, Toyota tuning platform</td><td>Stage 1–3 tune + track logging</td></tr>
+      <tr><td>MoTeC / Haltech</td><td>Standalone ECU — replace factory ECU</td><td>Race builds, no OEM restrictions</td></tr>
+      <tr><td>Cobb Accessport</td><td>Plug-in tune device (Subaru, Porsche, Ford)</td><td>Off-the-shelf Stage 1 map — plug and play</td></tr>
+    </table>
+    <div class="callout green">
+      <strong>Flash tune vs Standalone:</strong> Flash tune (ECUTEK, HP Tuners) = ghi map mới vào factory ECU → giữ nguyên tất cả OEM systems. Standalone (MoTeC) = thay hoàn toàn factory ECU → full control nhưng mất ABS/ESC integration. Street build = flash tune. Race build = standalone.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <h2>🧠 Test Kiến Thức — Bài 6</h2>
+    <p style="color:#aaa;margin-bottom:25px;font-size:0.9em;">5 câu · Cần đúng 4/5 để pass</p>
+    <div class="question" id="q1">
+      <p>Câu 1: Tại sao cần Wideband O2 sensor khi tune?</p>
+      <div class="options">
+        <label onclick="sel(this,'q1','a')"><input type="radio"><span>A. Để đo nhiệt độ engine</span></label>
+        <label onclick="sel(this,'q1','b')"><input type="radio"><span>B. Narrowband chỉ biết rich/lean — Wideband đọc AFR chính xác → tune fuel map đúng</span></label>
+        <label onclick="sel(this,'q1','c')"><input type="radio"><span>C. Để tăng công suất trực tiếp</span></label>
+        <label onclick="sel(this,'q1','d')"><input type="radio"><span>D. Thay thế MAP sensor</span></label>
+      </div>
+      <div class="answer-reveal" id="ans1">✅ B — Narrowband O2 chỉ báo "giàu" hay "nghèo" xung quanh stoichiometric (14.7:1). Wideband đọc chính xác 10:1–20:1 → tuner biết chính xác AFR tại mọi điểm → điều chỉnh fuel map đúng, tránh lean = phá engine.</div>
+    </div>
+    <div class="question" id="q2">
+      <p>Câu 2: Knock sensor phát hiện gì và ECU phản ứng thế nào?</p>
+      <div class="options">
+        <label onclick="sel(this,'q2','a')"><input type="radio"><span>A. Phát hiện engine overheating → tắt engine</span></label>
+        <label onclick="sel(this,'q2','b')"><input type="radio"><span>B. Phát hiện kích nổ (detonation) → ECU retard ignition timing để tránh damage</span></label>
+        <label onclick="sel(this,'q2','c')"><input type="radio"><span>C. Phát hiện turbo surge</span></label>
+        <label onclick="sel(this,'q2','d')"><input type="radio"><span>D. Phát hiện oil pressure thấp</span></label>
+      </div>
+      <div class="answer-reveal" id="ans2">✅ B — Kích nổ = nhiên liệu tự bốc cháy trước khi bugi đánh lửa → rung động tần số cao trong block. Knock sensor detect → ECU retard timing (bớt advance) → giảm pressure peak → engine an toàn.</div>
+    </div>
+    <div class="question" id="q3">
+      <p>Câu 3: TCS (Traction Control) hoạt động bằng cơ chế nào?</p>
+      <div class="options">
+        <label onclick="sel(this,'q3','a')"><input type="radio"><span>A. Khóa differential</span></label>
+        <label onclick="sel(this,'q3','b')"><input type="radio"><span>B. So sánh tốc độ bánh xe drive vs non-drive → phát hiện spin → cắt throttle/apply brake</span></label>
+        <label onclick="sel(this,'q3','c')"><input type="radio"><span>C. Tăng cứng suspension</span></label>
+        <label onclick="sel(this,'q3','d')"><input type="radio"><span>D. Giảm fuel injection</span></label>
+      </div>
+      <div class="answer-reveal" id="ans3">✅ B — TCS dùng wheel speed sensors. Bánh drive quay nhanh hơn non-drive → spin detected → cắt throttle (và/hoặc apply brake trên bánh spin) → khôi phục traction.</div>
+    </div>
+    <div class="question" id="q4">
+      <p>Câu 4: Flash tune (ECUTEK) khác Standalone ECU (MoTeC) thế nào?</p>
+      <div class="options">
+        <label onclick="sel(this,'q4','a')"><input type="radio"><span>A. Flash tune đắt hơn</span></label>
+        <label onclick="sel(this,'q4','b')"><input type="radio"><span>B. Flash tune = ghi map mới vào factory ECU, giữ OEM systems. Standalone = thay hoàn toàn ECU, mất ABS/ESC integration</span></label>
+        <label onclick="sel(this,'q4','c')"><input type="radio"><span>C. MoTeC chỉ cho race car</span></label>
+        <label onclick="sel(this,'q4','d')"><input type="radio"><span>D. Không có sự khác biệt</span></label>
+      </div>
+      <div class="answer-reveal" id="ans4">✅ B — Street build: Flash tune → giữ ABS, ESC, traction control, cruise control → daily driveable. Standalone (MoTeC): thay ECU → full control → nhưng mất tích hợp OEM systems → chỉ cho race/track builds.</div>
+    </div>
+    <div class="question" id="q5">
+      <p>Câu 5: CAN bus giải quyết vấn đề gì trong xe hiện đại?</p>
+      <div class="options">
+        <label onclick="sel(this,'q5','a')"><input type="radio"><span>A. Tăng tốc độ engine</span></label>
+        <label onclick="sel(this,'q5','b')"><input type="radio"><span>B. Cho phép 50–150 ECU/module giao tiếp qua 2 dây chung thay vì hàng km dây riêng</span></label>
+        <label onclick="sel(this,'q5','c')"><input type="radio"><span>C. Thay thế battery</span></label>
+        <label onclick="sel(this,'q5','d')"><input type="radio"><span>D. Kết nối internet</span></label>
+      </div>
+      <div class="answer-reveal" id="ans5">✅ B — CAN bus network: 2 dây (CAN High + CAN Low) cho toàn bộ xe. Không có CAN → mỗi cặp module cần dây riêng → xe hiện đại sẽ cần hàng km dây và nặng thêm hàng trăm kg.</div>
+    </div>
+    <button class="btn-check" onclick="checkQuiz()">Kiểm tra kết quả</button>
+    <div class="result-box" id="result-box"><div id="result-text"></div></div>
+  </div>
+</div>
+<footer>
+  <p><a href="lesson-05-brakes.html">← Bài 5: Brakes</a> &nbsp;|&nbsp; <a href="lesson-07-tuning.html">Bài 7: Tuning Deep Dive ★ →</a></p>
+  <p style="margin-top:8px;">Built by Zera 🌟 for Bach · RCC Learning Series</p>
+</footer>
+<script>
+  const answers={q1:'b',q2:'b',q3:'b',q4:'b',q5:'b'};
+  const selected={};
+  function sel(el,qid,opt){document.querySelectorAll('#'+qid+' label').forEach(l=>l.classList.remove('selected'));el.classList.add('selected');selected[qid]=opt;}
+  function checkQuiz(){
+    let score=0;
+    Object.keys(answers).forEach(q=>{const a=document.getElementById('ans'+q.replace('q',''));if(a)a.style.display='block';if(selected[q]===answers[q])score++;});
+    const box=document.getElementById('result-box');const txt=document.getElementById('result-text');box.style.display='block';
+    if(score>=4){box.className='result-box show pass';txt.innerHTML=`<strong>✅ PASS — ${score}/5!</strong><br>🎉 Hoàn thành Bài 1–6! Sẵn sàng cho Bài 7: Tuning Deep Dive.`;}
+    else{box.className='result-box show fail';txt.innerHTML=`<strong>❌ ${score}/5 — Ôn lại nhé anh.</strong>`;}
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 3: Chassis & Suspension</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; line-height: 1.7; }
+  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #2a1a00 50%, #1a0a00 100%); padding: 60px 40px; text-align: center; border-bottom: 3px solid #ff9800; }
+  .hero h1 { font-size: 2.4em; color: #fff; margin-bottom: 10px; }
+  .hero .series { font-size: 0.9em; color: #ff9800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; }
+  .hero p { color: #aaa; font-size: 1.1em; max-width: 600px; margin: 0 auto; }
+  .nav-pills { display: flex; justify-content: center; gap: 10px; padding: 20px; background: #1a1a1a; flex-wrap: wrap; }
+  .nav-pills a { padding: 6px 16px; border-radius: 20px; font-size: 0.8em; text-decoration: none; background: #2a2a2a; color: #aaa; border: 1px solid #333; }
+  .nav-pills a.active { background: #ff9800; color: #fff; border-color: #ff9800; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .section { margin-bottom: 50px; }
+  .section h2 { font-size: 1.6em; color: #ff9800; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #2a2a2a; }
+  .section h3 { font-size: 1.15em; color: #fff; margin: 25px 0 12px; }
+  .section p { color: #ccc; margin-bottom: 12px; }
+  .diagram-box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 30px; margin: 20px 0; text-align: center; }
+  .callout { background: #2a1e00; border-left: 4px solid #ff9800; padding: 15px 20px; border-radius: 0 8px 8px 0; margin: 15px 0; }
+  .callout.warning { background: #2a1e1e; border-left-color: #e94560; }
+  .callout.info { background: #1e1e2a; border-left-color: #2196f3; }
+  .callout.green { background: #1e2a1e; border-left-color: #4caf50; }
+  .callout strong { color: #fff; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th { background: #ff9800; color: #fff; padding: 12px; text-align: left; }
+  td { padding: 11px 12px; border-bottom: 1px solid #222; color: #ccc; }
+  tr:nth-child(even) td { background: #1a1a1a; }
+  .quiz-section { background: #1a1a1a; border-radius: 12px; padding: 30px; margin-top: 50px; }
+  .quiz-section h2 { color: #ffd700; margin-bottom: 25px; }
+  .question { margin-bottom: 30px; }
+  .question p { color: #fff; font-weight: 600; margin-bottom: 12px; }
+  .options label { display: block; padding: 10px 15px; margin: 6px 0; background: #222; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; color: #ccc; }
+  .options label:hover { border-color: #ff9800; color: #fff; }
+  .options label.selected { border-color: #ff9800; background: #2a1e00; }
+  .btn-check { display: inline-block; margin-top: 20px; padding: 12px 30px; background: #ff9800; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; }
+  .result-box { margin-top: 20px; padding: 20px; border-radius: 10px; display: none; }
+  .result-box.show { display: block; }
+  .result-box.pass { background: #1e3a1e; border: 1px solid #4caf50; color: #4caf50; }
+  .result-box.fail { background: #3a1e1e; border: 1px solid #e94560; color: #e94560; }
+  .answer-reveal { margin-top: 8px; font-size: 0.9em; color: #aaa; display: none; }
+  .progress-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+  .progress-bar .step { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; font-weight: 700; }
+  .progress-bar .step.done { background: #ff9800; color: #fff; }
+  .progress-bar .step.current { background: #fff; color: #0f0f0f; }
+  .progress-bar .step.todo { background: #2a2a2a; color: #666; }
+  .progress-bar .line { flex: 1; height: 2px; background: #2a2a2a; }
+  .progress-bar .line.done { background: #ff9800; }
+  footer { text-align: center; padding: 30px; color: #444; font-size: 0.85em; border-top: 1px solid #1a1a1a; margin-top: 60px; }
+  footer a { color: #ff9800; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="series">Automotive Engineering Series · Bài 3 / 7</div>
+  <h1>Chassis & Suspension</h1>
+  <p>Geometry, coilover, alignment — tại sao xe bám đường hay không</p>
+</div>
+<div class="nav-pills">
+  <a href="lesson-01-engine-powertrain.html">Bài 1 ✅</a>
+  <a href="lesson-02-transmission.html">Bài 2 ✅</a>
+  <a href="#" class="active">Bài 3: Chassis</a>
+  <a href="lesson-04-aero.html">Bài 4: Aero</a>
+  <a href="lesson-05-brakes.html">Bài 5: Brakes</a>
+  <a href="lesson-06-electronics.html">Bài 6: Electronics</a>
+  <a href="lesson-07-tuning.html">Bài 7: Tuning</a>
+</div>
+<div class="container">
+  <div class="progress-bar">
+    <div class="step done">1</div><div class="line done"></div>
+    <div class="step done">2</div><div class="line done"></div>
+    <div class="step current">3</div><div class="line"></div>
+    <div class="step todo">4</div><div class="line"></div>
+    <div class="step todo">5</div><div class="line"></div>
+    <div class="step todo">6</div><div class="line"></div>
+    <div class="step todo">7</div>
+  </div>
+
+  <!-- SUSPENSION TYPES -->
+  <div class="section">
+    <h2>1. Các loại hệ thống treo (Suspension Types)</h2>
+    <p>Suspension có nhiệm vụ: giữ lốp tiếp xúc mặt đường, hấp thụ chấn động, duy trì geometry khi xe nghiêng/phanh/tăng tốc.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- MacPherson Strut -->
+        <g transform="translate(15,10)">
+          <text x="110" y="14" fill="#ff9800" font-size="11" text-anchor="middle" font-weight="700">MacPherson Strut</text>
+          <!-- Chassis -->
+          <rect x="60" y="25" width="100" height="15" rx="3" fill="#333" stroke="#555"/>
+          <text x="110" y="36" fill="#aaa" font-size="8" text-anchor="middle">CHASSIS</text>
+          <!-- Strut -->
+          <rect x="98" y="40" width="16" height="60" rx="3" fill="#2196f3" opacity="0.8"/>
+          <text x="106" y="75" fill="#fff" font-size="7" text-anchor="middle">STRUT</text>
+          <!-- Spring around strut -->
+          <path d="M94,42 C88,50 122,58 94,66 C88,74 122,82 94,90" fill="none" stroke="#ff9800" stroke-width="2"/>
+          <!-- Lower arm -->
+          <line x1="40" y1="120" x2="106" y2="100" stroke="#4caf50" stroke-width="3"/>
+          <circle cx="40" cy="120" r="5" fill="#4caf50"/>
+          <!-- Wheel -->
+          <ellipse cx="106" cy="115" rx="20" ry="25" fill="none" stroke="#aaa" stroke-width="2"/>
+          <ellipse cx="106" cy="115" rx="10" ry="13" fill="#333"/>
+          <text x="110" y="165" fill="#aaa" font-size="8" text-anchor="middle">Front: Civic, Golf</text>
+          <text x="110" y="178" fill="#4caf50" font-size="8" text-anchor="middle">✅ Compact, cheap</text>
+          <text x="110" y="191" fill="#e94560" font-size="8" text-anchor="middle">❌ Geometry kém hơn</text>
+        </g>
+
+        <!-- Double Wishbone -->
+        <g transform="translate(245,10)">
+          <text x="110" y="14" fill="#ff9800" font-size="11" text-anchor="middle" font-weight="700">Double Wishbone</text>
+          <rect x="60" y="25" width="100" height="15" rx="3" fill="#333" stroke="#555"/>
+          <text x="110" y="36" fill="#aaa" font-size="8" text-anchor="middle">CHASSIS</text>
+          <!-- Upper arm -->
+          <line x1="65" y1="40" x2="110" y2="60" stroke="#e94560" stroke-width="3"/>
+          <line x1="155" y1="40" x2="110" y2="60" stroke="#e94560" stroke-width="3"/>
+          <!-- Spring/damper -->
+          <rect x="103" y="60" width="14" height="45" rx="3" fill="#2196f3" opacity="0.7"/>
+          <path d="M100,62 C94,70 120,78 100,86" fill="none" stroke="#ff9800" stroke-width="2"/>
+          <!-- Lower arm -->
+          <line x1="55" y1="120" x2="110" y2="105" stroke="#4caf50" stroke-width="3"/>
+          <line x1="165" y1="120" x2="110" y2="105" stroke="#4caf50" stroke-width="3"/>
+          <!-- Wheel -->
+          <ellipse cx="110" cy="118" rx="20" ry="25" fill="none" stroke="#aaa" stroke-width="2"/>
+          <ellipse cx="110" cy="118" rx="10" ry="13" fill="#333"/>
+          <text x="110" y="165" fill="#aaa" font-size="8" text-anchor="middle">Honda S2000, Ferrari</text>
+          <text x="110" y="178" fill="#4caf50" font-size="8" text-anchor="middle">✅ Geometry chính xác</text>
+          <text x="110" y="191" fill="#e94560" font-size="8" text-anchor="middle">❌ Phức tạp, đắt hơn</text>
+        </g>
+
+        <!-- Multi-link -->
+        <g transform="translate(480,10)">
+          <text x="110" y="14" fill="#ff9800" font-size="11" text-anchor="middle" font-weight="700">Multi-link (Rear)</text>
+          <rect x="60" y="25" width="100" height="15" rx="3" fill="#333" stroke="#555"/>
+          <text x="110" y="36" fill="#aaa" font-size="8" text-anchor="middle">CHASSIS</text>
+          <!-- 5 links -->
+          <line x1="70" y1="40" x2="100" y2="90" stroke="#9c27b0" stroke-width="2"/>
+          <line x1="90" y1="40" x2="105" y2="90" stroke="#9c27b0" stroke-width="2"/>
+          <line x1="110" y1="40" x2="110" y2="90" stroke="#2196f3" stroke-width="2.5"/>
+          <line x1="130" y1="40" x2="115" y2="90" stroke="#9c27b0" stroke-width="2"/>
+          <line x1="150" y1="40" x2="120" y2="90" stroke="#9c27b0" stroke-width="2"/>
+          <!-- Spring -->
+          <rect x="103" y="55" width="14" height="30" rx="2" fill="#ff9800" opacity="0.6"/>
+          <!-- Wheel -->
+          <ellipse cx="110" cy="110" rx="20" ry="25" fill="none" stroke="#aaa" stroke-width="2"/>
+          <ellipse cx="110" cy="110" rx="10" ry="13" fill="#333"/>
+          <text x="110" y="158" fill="#aaa" font-size="8" text-anchor="middle">BMW, Mercedes rear</text>
+          <text x="110" y="171" fill="#4caf50" font-size="8" text-anchor="middle">✅ Tốt nhất cho camber</text>
+          <text x="110" y="184" fill="#4caf50" font-size="8" text-anchor="middle">✅ Ride + handling</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- GEOMETRY -->
+  <div class="section">
+    <h2>2. Suspension Geometry — Camber, Toe, Caster</h2>
+    <p>3 thông số này quyết định xe bám đường, mòn lốp, và cảm giác lái. <strong>Alignment</strong> = điều chỉnh 3 thông số này.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- CAMBER -->
+        <g transform="translate(10,10)">
+          <text x="110" y="14" fill="#2196f3" font-size="12" text-anchor="middle" font-weight="700">CAMBER</text>
+          <text x="110" y="28" fill="#aaa" font-size="9" text-anchor="middle">Góc nghiêng bánh xe (nhìn từ trước)</text>
+          <!-- Negative camber -->
+          <line x1="80" y1="170" x2="95" y2="40" stroke="#e94560" stroke-width="3"/>
+          <text x="72" y="110" fill="#e94560" font-size="9">−</text>
+          <text x="70" y="185" fill="#e94560" font-size="8">Negative</text>
+          <!-- Zero camber -->
+          <line x1="110" y1="170" x2="110" y2="40" stroke="#4caf50" stroke-width="3"/>
+          <text x="107" y="185" fill="#4caf50" font-size="8">0°</text>
+          <!-- Positive camber -->
+          <line x1="140" y1="170" x2="125" y2="40" stroke="#ff9800" stroke-width="3"/>
+          <text x="140" y="110" fill="#ff9800" font-size="9">+</text>
+          <text x="128" y="185" fill="#ff9800" font-size="8">Positive</text>
+          <!-- Road -->
+          <rect x="20" y="170" width="180" height="8" rx="2" fill="#333"/>
+          <text x="110" y="198" fill="#aaa" font-size="8" text-anchor="middle">Track: −2° to −4° | Street: 0° to −1°</text>
+        </g>
+
+        <!-- TOE -->
+        <g transform="translate(255,10)">
+          <text x="110" y="14" fill="#ff9800" font-size="12" text-anchor="middle" font-weight="700">TOE</text>
+          <text x="110" y="28" fill="#aaa" font-size="9" text-anchor="middle">Hướng bánh xe (nhìn từ trên)</text>
+          <!-- Toe-in -->
+          <line x1="60" y1="60" x2="110" y2="160" stroke="#4caf50" stroke-width="3"/>
+          <line x1="160" y1="60" x2="110" y2="160" stroke="#4caf50" stroke-width="3"/>
+          <text x="110" y="50" fill="#4caf50" font-size="9" text-anchor="middle">Toe-IN (&gt;)</text>
+          <text x="110" y="180" fill="#4caf50" font-size="8" text-anchor="middle">Stability, understeer</text>
+          <!-- Toe-out -->
+          <line x1="60" y1="160" x2="110" y2="60" stroke="#e94560" stroke-width="2" stroke-dasharray="5,3"/>
+          <line x1="160" y1="160" x2="110" y2="60" stroke="#e94560" stroke-width="2" stroke-dasharray="5,3"/>
+          <text x="110" y="200" fill="#e94560" font-size="8" text-anchor="middle">Toe-OUT: Turn-in sharp</text>
+        </g>
+
+        <!-- CASTER -->
+        <g transform="translate(490,10)">
+          <text x="110" y="14" fill="#9c27b0" font-size="12" text-anchor="middle" font-weight="700">CASTER</text>
+          <text x="110" y="28" fill="#aaa" font-size="9" text-anchor="middle">Góc nghiêng trụ lái (nhìn từ bên)</text>
+          <!-- Steering axis -->
+          <line x1="90" y1="40" x2="120" y2="160" stroke="#9c27b0" stroke-width="3"/>
+          <!-- Vertical reference -->
+          <line x1="110" y1="30" x2="110" y2="170" stroke="#444" stroke-width="1" stroke-dasharray="4,3"/>
+          <!-- Wheel contact -->
+          <circle cx="125" cy="155" r="8" fill="none" stroke="#aaa" stroke-width="2"/>
+          <!-- Angle label -->
+          <path d="M110,60 A20,20 0 0,1 100,75" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+          <text x="85" y="72" fill="#ffd700" font-size="9">angle</text>
+          <rect x="20" y="163" width="180" height="8" rx="2" fill="#333"/>
+          <text x="110" y="185" fill="#aaa" font-size="8" text-anchor="middle">High caster = steering stability</text>
+          <text x="110" y="198" fill="#aaa" font-size="8" text-anchor="middle">Low caster = light steering</text>
+        </g>
+      </svg>
+    </div>
+    <table>
+      <tr><th>Parameter</th><th>Street</th><th>Track</th><th>Effect</th></tr>
+      <tr><td>Camber</td><td>0° to −1°</td><td>−2° to −4°</td><td>Negative = bám hơn khi vào cua</td></tr>
+      <tr><td>Toe (front)</td><td>Toe-in nhỏ</td><td>Toe-out nhỏ</td><td>Toe-out = turn-in nhạy hơn</td></tr>
+      <tr><td>Toe (rear)</td><td>Toe-in nhỏ</td><td>Toe-in lớn hơn</td><td>Toe-in rear = stability</td></tr>
+      <tr><td>Caster</td><td>5°–7°</td><td>7°–10°</td><td>High caster = straight-line stability</td></tr>
+    </table>
+    <div class="callout warning">
+      <strong>Camber trade-off:</strong> Negative camber tốt cho track nhưng mòn lốp nhanh ở giữa mặt lốp khi chạy đường thẳng. Street build nên giữ −1° to −1.5° để balance.
+    </div>
+  </div>
+
+  <!-- COILOVER -->
+  <div class="section">
+    <h2>3. Coilover — Nâng cấp suspension quan trọng nhất</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stock strut -->
+        <g transform="translate(40,10)">
+          <text x="90" y="14" fill="#aaa" font-size="11" text-anchor="middle">Stock Strut/Spring</text>
+          <!-- Upper mount -->
+          <rect x="65" y="20" width="50" height="12" rx="3" fill="#444"/>
+          <!-- Damper -->
+          <rect x="78" y="32" width="24" height="70" rx="4" fill="#555"/>
+          <!-- Spring (separate) -->
+          <path d="M60,32 C50,42 120,52 60,62 C50,72 120,82 60,92 C50,102 120,102 60,102" fill="none" stroke="#666" stroke-width="2.5"/>
+          <!-- Lower -->
+          <rect x="78" y="102" width="24" height="20" rx="3" fill="#444"/>
+          <text x="90" y="150" fill="#e94560" font-size="9" text-anchor="middle">❌ Fixed height</text>
+          <text x="90" y="163" fill="#e94560" font-size="9" text-anchor="middle">❌ Fixed stiffness</text>
+          <text x="90" y="176" fill="#e94560" font-size="9" text-anchor="middle">❌ Fixed damping</text>
+        </g>
+
+        <!-- Arrow -->
+        <text x="195" y="90" fill="#ff9800" font-size="24" text-anchor="middle">→</text>
+        <text x="195" y="110" fill="#ff9800" font-size="10" text-anchor="middle">UPGRADE</text>
+
+        <!-- Coilover -->
+        <g transform="translate(225,10)">
+          <text x="100" y="14" fill="#ff9800" font-size="11" text-anchor="middle" font-weight="700">Coilover</text>
+          <!-- Upper mount adjustable -->
+          <rect x="70" y="20" width="60" height="12" rx="3" fill="#ff9800" opacity="0.8"/>
+          <text x="100" y="30" fill="#fff" font-size="7" text-anchor="middle">PILLOW BALL</text>
+          <!-- Damper body -->
+          <rect x="83" y="32" width="34" height="65" rx="4" fill="#2196f3" opacity="0.8"/>
+          <!-- Damping adjust knob -->
+          <circle cx="117" cy="60" r="8" fill="#e94560"/>
+          <text x="130" y="63" fill="#e94560" font-size="8">← Damping</text>
+          <text x="130" y="73" fill="#e94560" font-size="8">adjust</text>
+          <!-- Spring on damper body -->
+          <path d="M77,35 C68,44 128,53 77,62 C68,71 128,80 77,89 C68,98 128,97 77,97" fill="none" stroke="#ff9800" stroke-width="2.5"/>
+          <!-- Spring perch (height adjust) -->
+          <rect x="77" y="97" width="46" height="10" rx="2" fill="#ffd700"/>
+          <text x="100" y="106" fill="#000" font-size="7" text-anchor="middle">HEIGHT ADJUST</text>
+          <!-- Lower -->
+          <rect x="83" y="107" width="34" height="20" rx="3" fill="#333" stroke="#555"/>
+          <text x="100" y="150" fill="#4caf50" font-size="9" text-anchor="middle">✅ Adjustable height</text>
+          <text x="100" y="163" fill="#4caf50" font-size="9" text-anchor="middle">✅ Adjustable spring rate</text>
+          <text x="100" y="176" fill="#4caf50" font-size="9" text-anchor="middle">✅ Adjustable damping</text>
+        </g>
+
+        <!-- Specs comparison -->
+        <g transform="translate(400,20)">
+          <text x="90" y="10" fill="#aaa" font-size="10" text-anchor="middle" font-weight="700">Coilover Tiers</text>
+          <rect x="10" y="20" width="165" height="30" rx="4" fill="#1a2a1a" stroke="#4caf50" stroke-width="1"/>
+          <text x="92" y="36" fill="#4caf50" font-size="9" text-anchor="middle">Budget: BC Racing, Tein</text>
+          <text x="92" y="47" fill="#aaa" font-size="8" text-anchor="middle">$800–2,000 · Street use</text>
+          <rect x="10" y="58" width="165" height="30" rx="4" fill="#1a1a2e" stroke="#2196f3" stroke-width="1"/>
+          <text x="92" y="74" fill="#2196f3" font-size="9" text-anchor="middle">Mid: KW, Bilstein, Ohlins</text>
+          <text x="92" y="85" fill="#aaa" font-size="8" text-anchor="middle">$2,500–6,000 · Street/Track</text>
+          <rect x="10" y="96" width="165" height="30" rx="4" fill="#2a1a00" stroke="#ff9800" stroke-width="1"/>
+          <text x="92" y="112" fill="#ff9800" font-size="9" text-anchor="middle">High: Öhlins TTX, Moton</text>
+          <text x="92" y="123" fill="#aaa" font-size="8" text-anchor="middle">$6,000–15,000+ · Race</text>
+          <rect x="10" y="134" width="165" height="30" rx="4" fill="#1a1a1a" stroke="#9c27b0" stroke-width="1"/>
+          <text x="92" y="150" fill="#9c27b0" font-size="9" text-anchor="middle">Active: Porsche PDCC, AMG</text>
+          <text x="92" y="161" fill="#aaa" font-size="8" text-anchor="middle">Electronic — self-adjusting</text>
+        </g>
+      </svg>
+    </div>
+    <div class="callout green">
+      <strong>Spring rate là gì?</strong> Đo bằng N/mm hoặc kg/mm — lực cần thiết để nén spring 1mm. Street: 4–8 kg/mm (mềm, comfort). Track: 12–20+ kg/mm (cứng, precision). Tăng spring rate = cứng hơn, body roll ít hơn, nhưng ride cứng.
+    </div>
+  </div>
+
+  <!-- DRIVETRAIN LAYOUT -->
+  <div class="section">
+    <h2>4. RWD · FWD · AWD — Ảnh hưởng đến handling</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- FWD -->
+        <g transform="translate(10,20)">
+          <text x="100" y="12" fill="#aaa" font-size="11" text-anchor="middle" font-weight="700">FWD</text>
+          <rect x="20" y="20" width="160" height="80" rx="8" fill="#111" stroke="#333"/>
+          <!-- Engine front -->
+          <rect x="25" y="30" width="50" height="40" rx="4" fill="#4caf50" opacity="0.7"/>
+          <text x="50" y="55" fill="#fff" font-size="8" text-anchor="middle">ENG</text>
+          <!-- Front wheels driven -->
+          <rect x="25" y="78" width="12" height="20" rx="3" fill="#4caf50"/>
+          <rect x="63" y="78" width="12" height="20" rx="3" fill="#4caf50"/>
+          <!-- Rear wheels not driven -->
+          <rect x="115" y="78" width="12" height="20" rx="3" fill="#555"/>
+          <rect x="153" y="78" width="12" height="20" rx="3" fill="#555"/>
+          <text x="100" y="118" fill="#4caf50" font-size="8" text-anchor="middle">Drive wheels →</text>
+          <text x="100" y="135" fill="#e94560" font-size="8" text-anchor="middle">Understeer khi push hard</text>
+          <text x="100" y="148" fill="#aaa" font-size="8" text-anchor="middle">Civic, Golf, Vios</text>
+        </g>
+
+        <!-- RWD -->
+        <g transform="translate(245,20)">
+          <text x="100" y="12" fill="#e94560" font-size="11" text-anchor="middle" font-weight="700">RWD</text>
+          <rect x="20" y="20" width="160" height="80" rx="8" fill="#111" stroke="#e94560" stroke-width="1.5"/>
+          <rect x="25" y="30" width="50" height="40" rx="4" fill="#e94560" opacity="0.7"/>
+          <text x="50" y="55" fill="#fff" font-size="8" text-anchor="middle">ENG</text>
+          <!-- Front not driven -->
+          <rect x="25" y="78" width="12" height="20" rx="3" fill="#555"/>
+          <rect x="63" y="78" width="12" height="20" rx="3" fill="#555"/>
+          <!-- Rear driven -->
+          <rect x="115" y="78" width="12" height="20" rx="3" fill="#e94560"/>
+          <rect x="153" y="78" width="12" height="20" rx="3" fill="#e94560"/>
+          <!-- Propshaft -->
+          <line x1="90" y1="50" x2="135" y2="50" stroke="#e94560" stroke-width="2"/>
+          <text x="100" y="118" fill="#aaa" font-size="8" text-anchor="middle">← Drive shaft →</text>
+          <text x="100" y="135" fill="#4caf50" font-size="8" text-anchor="middle">Oversteer possible — fun!</text>
+          <text x="100" y="148" fill="#aaa" font-size="8" text-anchor="middle">BMW, Porsche, Ferrari</text>
+        </g>
+
+        <!-- AWD -->
+        <g transform="translate(480,20)">
+          <text x="100" y="12" fill="#2196f3" font-size="11" text-anchor="middle" font-weight="700">AWD</text>
+          <rect x="20" y="20" width="160" height="80" rx="8" fill="#111" stroke="#2196f3" stroke-width="1.5"/>
+          <rect x="60" y="25" width="50" height="35" rx="4" fill="#2196f3" opacity="0.7"/>
+          <text x="85" y="47" fill="#fff" font-size="8" text-anchor="middle">ENG</text>
+          <!-- All wheels driven -->
+          <rect x="25" y="78" width="12" height="20" rx="3" fill="#2196f3"/>
+          <rect x="63" y="78" width="12" height="20" rx="3" fill="#2196f3"/>
+          <rect x="115" y="78" width="12" height="20" rx="3" fill="#2196f3"/>
+          <rect x="153" y="78" width="12" height="20" rx="3" fill="#2196f3"/>
+          <!-- Center diff -->
+          <circle cx="85" cy="62" r="8" fill="#1a1a2e" stroke="#2196f3" stroke-width="1.5"/>
+          <text x="85" y="66" fill="#2196f3" font-size="6" text-anchor="middle">DIFF</text>
+          <text x="100" y="118" fill="#4caf50" font-size="8" text-anchor="middle">Best traction (launch)</text>
+          <text x="100" y="135" fill="#e94560" font-size="8" text-anchor="middle">Heavier, complex</text>
+          <text x="100" y="148" fill="#aaa" font-size="8" text-anchor="middle">GT-R, RS3, Lamborghini</text>
+        </g>
+      </svg>
+    </div>
+    <table>
+      <tr><th>Layout</th><th>Handling character</th><th>Launch traction</th><th>Tune complexity</th></tr>
+      <tr><td>FWD</td><td>Understeer — safe nhưng nhàm</td><td>Trung bình</td><td>Thấp</td></tr>
+      <tr><td>RWD</td><td>Oversteer possible — driver skill cần</td><td>Thấp (wheelspin)</td><td>Trung bình</td></tr>
+      <tr><td>AWD</td><td>Neutral → understeer khi push</td><td>✅ Tốt nhất</td><td>Cao nhất</td></tr>
+    </table>
+    <div class="callout info">
+      <strong>LSD (Limited Slip Differential):</strong> Bộ vi sai giới hạn trượt — thay vì bánh trong (ít lực cản) quay tự do, LSD "khóa" một phần để chia torque đều hơn. Quan trọng cho RWD high-power build và track use.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <h2>🧠 Test Kiến Thức — Bài 3</h2>
+    <p style="color:#aaa; margin-bottom:25px; font-size:0.9em;">5 câu · Cần đúng 4/5 để pass</p>
+    <div class="question" id="q1">
+      <p>Câu 1: Negative camber giúp gì khi vào cua?</p>
+      <div class="options">
+        <label onclick="sel(this,'q1','a')"><input type="radio"><span>A. Giảm mòn lốp</span></label>
+        <label onclick="sel(this,'q1','b')"><input type="radio"><span>B. Tăng diện tích tiếp xúc lốp với mặt đường khi xe nghiêng → bám hơn</span></label>
+        <label onclick="sel(this,'q1','c')"><input type="radio"><span>C. Giảm drag</span></label>
+        <label onclick="sel(this,'q1','d')"><input type="radio"><span>D. Tăng tốc thẳng</span></label>
+      </div>
+      <div class="answer-reveal" id="ans1">✅ B — Khi xe nghiêng vào cua, bánh ngoài chịu tải nhiều nhất. Negative camber bù cho độ nghiêng này → mặt lốp tiếp xúc đều hơn → grip tốt hơn.</div>
+    </div>
+    <div class="question" id="q2">
+      <p>Câu 2: Spring rate 16 kg/mm so với 5 kg/mm — chiếc nào phù hợp track hơn?</p>
+      <div class="options">
+        <label onclick="sel(this,'q2','a')"><input type="radio"><span>A. 5 kg/mm — mềm hơn, bám đường hơn</span></label>
+        <label onclick="sel(this,'q2','b')"><input type="radio"><span>B. 16 kg/mm — cứng hơn, ít body roll, precision cao hơn</span></label>
+        <label onclick="sel(this,'q2','c')"><input type="radio"><span>C. Bằng nhau</span></label>
+        <label onclick="sel(this,'q2','d')"><input type="radio"><span>D. Tùy xe</span></label>
+      </div>
+      <div class="answer-reveal" id="ans2">✅ B — Track cần spring cứng để giữ geometry ổn định khi load transfer (brake/accel/cornering). Spring mềm = body roll nhiều = camber thay đổi = grip giảm.</div>
+    </div>
+    <div class="question" id="q3">
+      <p>Câu 3: RWD xe dễ bị gì khi throttle quá mạnh vào cua?</p>
+      <div class="options">
+        <label onclick="sel(this,'q3','a')"><input type="radio"><span>A. Understeer — đầu xe đẩy ra ngoài</span></label>
+        <label onclick="sel(this,'q3','b')"><input type="radio"><span>B. Oversteer — đuôi xe văng ra ngoài</span></label>
+        <label onclick="sel(this,'q3','c')"><input type="radio"><span>C. Xe đứng thẳng lại</span></label>
+        <label onclick="sel(this,'q3','d')"><input type="radio"><span>D. Không có hiệu ứng gì</span></label>
+      </div>
+      <div class="answer-reveal" id="ans3">✅ B — RWD: throttle quá → bánh sau spin → đuôi văng ra ngoài cua (oversteer). Cần driver skill để counter-steer kịp. Đây là cơ chế drift.</div>
+    </div>
+    <div class="question" id="q4">
+      <p>Câu 4: LSD (Limited Slip Differential) giải quyết vấn đề gì?</p>
+      <div class="options">
+        <label onclick="sel(this,'q4','a')"><input type="radio"><span>A. Giảm fuel consumption</span></label>
+        <label onclick="sel(this,'q4','b')"><input type="radio"><span>B. Bánh ít lực cản quay tự do → lãng phí torque. LSD chia đều torque hơn</span></label>
+        <label onclick="sel(this,'q4','c')"><input type="radio"><span>C. Tăng tốc độ tối đa</span></label>
+        <label onclick="sel(this,'q4','d')"><input type="radio"><span>D. Giảm brake distance</span></label>
+      </div>
+      <div class="answer-reveal" id="ans4">✅ B — Open diff: bánh ít lực cản (trong cua, hoặc trên bề mặt trơn) quay tự do và mất toàn bộ torque. LSD "khóa" một phần để cả 2 bánh nhận torque → traction tốt hơn.</div>
+    </div>
+    <div class="question" id="q5">
+      <p>Câu 5: Double wishbone tốt hơn MacPherson Strut về điểm gì?</p>
+      <div class="options">
+        <label onclick="sel(this,'q5','a')"><input type="radio"><span>A. Rẻ hơn và nhẹ hơn</span></label>
+        <label onclick="sel(this,'q5','b')"><input type="radio"><span>B. Kiểm soát geometry chính xác hơn — upper và lower arm độc lập</span></label>
+        <label onclick="sel(this,'q5','c')"><input type="radio"><span>C. Bền hơn ở đường xấu</span></label>
+        <label onclick="sel(this,'q5','d')"><input type="radio"><span>D. Dễ sửa chữa hơn</span></label>
+      </div>
+      <div class="answer-reveal" id="ans5">✅ B — Double wishbone có upper + lower arm điều chỉnh độc lập → kiểm soát camber, caster, toe chính xác hơn khi suspension travel. Porsche, Honda S2000, Ferrari dùng vì lý do này.</div>
+    </div>
+    <button class="btn-check" onclick="checkQuiz()">Kiểm tra kết quả</button>
+    <div class="result-box" id="result-box"><div id="result-text"></div></div>
+  </div>
+</div>
+<footer>
+  <p><a href="lesson-02-transmission.html">← Bài 2: Transmission</a> &nbsp;|&nbsp; <a href="lesson-04-aero.html">Bài 4: Aerodynamics →</a></p>
+  <p style="margin-top:8px;">Built by Zera 🌟 for Bach · RCC Learning Series</p>
+</footer>
+<script>
+  const answers={q1:'b',q2:'b',q3:'b',q4:'b',q5:'b'};
+  const selected={};
+  function sel(el,qid,opt){document.querySelectorAll('#'+qid+' label').forEach(l=>l.classList.remove('selected'));el.classList.add('selected');selected[qid]=opt;}
+  function checkQuiz(){
+    let score=0;
+    Object.keys(answers).forEach(q=>{const a=document.getElementById('ans'+q.replace('q',''));if(a)a.style.display='block';if(selected[q]===answers[q])score++;});
+    const box=document.getElementById('result-box');const txt=document.getElementById('result-text');box.style.display='block';
+    if(score>=4){box.className='result-box show pass';txt.innerHTML=`<strong>✅ PASS — ${score}/5!</strong><br>Tiếp tục Bài 4: Aerodynamics.`;}
+    else{box.className='result-box show fail';txt.innerHTML=`<strong>❌ ${score}/5 — Ôn lại nhé anh.</strong>`;}
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 2: MT vs AT/DCT/CVT</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; line-height: 1.7; }
+  .hero { background: linear-gradient(135deg, #1a2e1a 0%, #0f2010 50%, #1a3a0a 100%); padding: 60px 40px; text-align: center; border-bottom: 3px solid #4caf50; }
+  .hero h1 { font-size: 2.4em; color: #fff; margin-bottom: 10px; }
+  .hero .series { font-size: 0.9em; color: #4caf50; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; }
+  .hero p { color: #aaa; font-size: 1.1em; max-width: 600px; margin: 0 auto; }
+  .nav-pills { display: flex; justify-content: center; gap: 10px; padding: 20px; background: #1a1a1a; flex-wrap: wrap; }
+  .nav-pills a { padding: 6px 16px; border-radius: 20px; font-size: 0.8em; text-decoration: none; background: #2a2a2a; color: #aaa; border: 1px solid #333; }
+  .nav-pills a.active { background: #4caf50; color: #fff; border-color: #4caf50; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  .section { margin-bottom: 50px; }
+  .section h2 { font-size: 1.6em; color: #4caf50; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #2a2a2a; }
+  .section h3 { font-size: 1.15em; color: #fff; margin: 25px 0 12px; }
+  .section p { color: #ccc; margin-bottom: 12px; }
+  .diagram-box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 12px; padding: 30px; margin: 20px 0; text-align: center; }
+  .callout { background: #1e2a1e; border-left: 4px solid #4caf50; padding: 15px 20px; border-radius: 0 8px 8px 0; margin: 15px 0; }
+  .callout.warning { background: #2a1e1e; border-left-color: #e94560; }
+  .callout.info { background: #1e1e2a; border-left-color: #2196f3; }
+  .callout strong { color: #fff; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  th { background: #4caf50; color: #fff; padding: 12px; text-align: left; }
+  td { padding: 11px 12px; border-bottom: 1px solid #222; color: #ccc; }
+  tr:nth-child(even) td { background: #1a1a1a; }
+  .quiz-section { background: #1a1a1a; border-radius: 12px; padding: 30px; margin-top: 50px; }
+  .quiz-section h2 { color: #ffd700; margin-bottom: 25px; }
+  .question { margin-bottom: 30px; }
+  .question p { color: #fff; font-weight: 600; margin-bottom: 12px; }
+  .options label { display: block; padding: 10px 15px; margin: 6px 0; background: #222; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; color: #ccc; }
+  .options label:hover { border-color: #4caf50; color: #fff; }
+  .options label.selected { border-color: #4caf50; background: #1a2a1a; }
+  .btn-check { display: inline-block; margin-top: 20px; padding: 12px 30px; background: #4caf50; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; }
+  .result-box { margin-top: 20px; padding: 20px; border-radius: 10px; display: none; }
+  .result-box.show { display: block; }
+  .result-box.pass { background: #1e3a1e; border: 1px solid #4caf50; color: #4caf50; }
+  .result-box.fail { background: #3a1e1e; border: 1px solid #e94560; color: #e94560; }
+  .answer-reveal { margin-top: 8px; font-size: 0.9em; color: #aaa; display: none; }
+  .progress-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+  .progress-bar .step { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; font-weight: 700; }
+  .progress-bar .step.done { background: #4caf50; color: #fff; }
+  .progress-bar .step.current { background: #fff; color: #0f0f0f; }
+  .progress-bar .step.todo { background: #2a2a2a; color: #666; }
+  .progress-bar .line { flex: 1; height: 2px; background: #2a2a2a; }
+  .progress-bar .line.done { background: #4caf50; }
+  footer { text-align: center; padding: 30px; color: #444; font-size: 0.85em; border-top: 1px solid #1a1a1a; margin-top: 60px; }
+  footer a { color: #4caf50; text-decoration: none; }
+  .gear-visual { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 20px 0; }
+  .gear-card { background: #1a1a2e; border: 1px solid #333; border-radius: 10px; padding: 20px; width: 180px; text-align: center; }
+  .gear-card h4 { color: #fff; margin-bottom: 8px; font-size: 1em; }
+  .gear-card .ratio { font-size: 2em; color: #4caf50; font-weight: 700; }
+  .gear-card p { font-size: 0.8em; color: #aaa; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="series">Automotive Engineering Series · Bài 2 / 7</div>
+  <h1>MT · AT · DCT · CVT</h1>
+  <p>Hộp số — tại sao chọn loại nào, và tune khác nhau thế nào</p>
+</div>
+<div class="nav-pills">
+  <a href="lesson-01-engine-powertrain.html">Bài 1: Engine ✅</a>
+  <a href="#" class="active">Bài 2: Transmission</a>
+  <a href="lesson-03-chassis.html">Bài 3: Chassis</a>
+  <a href="lesson-04-aero.html">Bài 4: Aero</a>
+  <a href="lesson-05-brakes.html">Bài 5: Brakes</a>
+  <a href="lesson-06-electronics.html">Bài 6: Electronics</a>
+  <a href="lesson-07-tuning.html">Bài 7: Tuning</a>
+</div>
+<div class="container">
+  <div class="progress-bar">
+    <div class="step done">1</div><div class="line done"></div>
+    <div class="step current">2</div><div class="line"></div>
+    <div class="step todo">3</div><div class="line"></div>
+    <div class="step todo">4</div><div class="line"></div>
+    <div class="step todo">5</div><div class="line"></div>
+    <div class="step todo">6</div><div class="line"></div>
+    <div class="step todo">7</div>
+  </div>
+
+  <!-- GEAR RATIO -->
+  <div class="section">
+    <h2>1. Gear Ratio là gì?</h2>
+    <p>Hộp số là thiết bị <strong>nhân lực</strong> — đổi torque và tốc độ ra bánh xe. Gear ratio = số vòng engine / số vòng bánh xe.</p>
+    <div class="gear-visual">
+      <div class="gear-card"><h4>Số 1</h4><div class="ratio">4.2:1</div><p>Torque ×4.2 → kéo mạnh, chậm</p></div>
+      <div class="gear-card"><h4>Số 3</h4><div class="ratio">2.1:1</div><p>Cân bằng tốc/lực</p></div>
+      <div class="gear-card"><h4>Số 6</h4><div class="ratio">0.8:1</div><p>Overdrive — tiết kiệm nhiên liệu cao tốc</p></div>
+    </div>
+    <div class="callout info">
+      <strong>Tại sao số 1 chạy chậm?</strong> Gear ratio 4:1 → engine quay 4 vòng, bánh xe quay 1 vòng → bánh xe có lực xoắn ×4 nhưng tốc độ ÷4. Càng lên số cao, ratio giảm → tốc độ tăng, lực kéo giảm.
+    </div>
+  </div>
+
+  <!-- MT -->
+  <div class="section">
+    <h2>2. MT — Manual Transmission</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- Engine -->
+        <rect x="20" y="55" width="100" height="50" rx="6" fill="#1a2e1a" stroke="#4caf50" stroke-width="2"/>
+        <text x="70" y="85" fill="#4caf50" font-size="12" text-anchor="middle" font-weight="700">ENGINE</text>
+        <!-- Arrow -->
+        <line x1="120" y1="80" x2="155" y2="80" stroke="#aaa" stroke-width="2" marker-end="url(#arr2)"/>
+        <!-- Clutch -->
+        <circle cx="180" cy="80" r="25" fill="#1a1a2e" stroke="#2196f3" stroke-width="2"/>
+        <text x="180" y="77" fill="#2196f3" font-size="9" text-anchor="middle">CLUTCH</text>
+        <text x="180" y="90" fill="#2196f3" font-size="9" text-anchor="middle">🦶</text>
+        <text x="180" y="125" fill="#aaa" font-size="8" text-anchor="middle">Bàn đạp ly hợp</text>
+        <!-- Arrow -->
+        <line x1="205" y1="80" x2="240" y2="80" stroke="#aaa" stroke-width="2" marker-end="url(#arr2)"/>
+        <!-- Gearbox -->
+        <rect x="245" y="50" width="130" height="60" rx="6" fill="#2a1a00" stroke="#ff9800" stroke-width="2"/>
+        <text x="310" y="78" fill="#ff9800" font-size="11" text-anchor="middle" font-weight="700">GEARBOX</text>
+        <text x="310" y="95" fill="#aaa" font-size="9" text-anchor="middle">Driver chọn số tay</text>
+        <!-- Shift pattern -->
+        <text x="310" y="130" fill="#555" font-size="20" text-anchor="middle">⚙️ H-Pattern</text>
+        <!-- Arrow -->
+        <line x1="375" y1="80" x2="410" y2="80" stroke="#aaa" stroke-width="2" marker-end="url(#arr2)"/>
+        <!-- Prop shaft -->
+        <rect x="415" y="72" width="80" height="16" rx="4" fill="#333" stroke="#555" stroke-width="1"/>
+        <text x="455" y="84" fill="#aaa" font-size="8" text-anchor="middle">Propshaft</text>
+        <!-- Arrow -->
+        <line x1="495" y1="80" x2="530" y2="80" stroke="#aaa" stroke-width="2" marker-end="url(#arr2)"/>
+        <!-- Diff -->
+        <circle cx="560" cy="80" r="28" fill="#1a1a1a" stroke="#9c27b0" stroke-width="2"/>
+        <text x="560" y="77" fill="#9c27b0" font-size="9" text-anchor="middle">DIFF</text>
+        <!-- Wheels -->
+        <rect x="600" y="50" width="20" height="60" rx="4" fill="#555"/>
+        <text x="620" y="85" fill="#aaa" font-size="8">🚗</text>
+        <defs>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#aaa"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+    <table>
+      <tr><th>Ưu điểm MT</th><th>Nhược điểm MT</th></tr>
+      <tr><td>✅ Full driver control — chọn số khi nào muốn</td><td>❌ Cần kỹ năng — mới học dễ chết máy</td></tr>
+      <tr><td>✅ Tune đơn giản nhất — chỉ cần ECU remap</td><td>❌ Mỏi chân trong kẹt xe</td></tr>
+      <tr><td>✅ Nhẹ hơn AT (~30–50kg)</td><td>❌ Shift tay chậm hơn DCT hiện đại</td></tr>
+      <tr><td>✅ Không TCU → tune torque tự do</td><td>❌ Launch control khó thực hiện</td></tr>
+      <tr><td>✅ Bền hơn AT ở công suất cao</td><td>❌ Clutch upgrade cần thiết khi tune mạnh</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Tuning MT:</strong> Chỉ cần ECU remap + upgraded clutch là đủ cho hầu hết builds. Không có TCU để conflict → đơn giản và rẻ nhất.
+    </div>
+  </div>
+
+  <!-- AT -->
+  <div class="section">
+    <h2>3. AT — Automatic Transmission (Torque Converter)</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="60" width="100" height="50" rx="6" fill="#1a2e1a" stroke="#4caf50" stroke-width="2"/>
+        <text x="70" y="90" fill="#4caf50" font-size="12" text-anchor="middle" font-weight="700">ENGINE</text>
+        <line x1="120" y1="85" x2="150" y2="85" stroke="#aaa" stroke-width="2" marker-end="url(#arr3)"/>
+        <!-- Torque Converter -->
+        <ellipse cx="195" cy="85" rx="38" ry="30" fill="#1a1a2e" stroke="#2196f3" stroke-width="2"/>
+        <text x="195" y="80" fill="#2196f3" font-size="8" text-anchor="middle">TORQUE</text>
+        <text x="195" y="92" fill="#2196f3" font-size="8" text-anchor="middle">CONVERTER</text>
+        <text x="195" y="130" fill="#aaa" font-size="8" text-anchor="middle">Fluid coupling — không cần bàn đạp ly hợp</text>
+        <line x1="233" y1="85" x2="260" y2="85" stroke="#aaa" stroke-width="2" marker-end="url(#arr3)"/>
+        <!-- Planetary gears -->
+        <rect x="265" y="55" width="130" height="60" rx="6" fill="#2a1a2a" stroke="#9c27b0" stroke-width="2"/>
+        <text x="330" y="82" fill="#9c27b0" font-size="10" text-anchor="middle" font-weight="700">PLANETARY GEARS</text>
+        <text x="330" y="98" fill="#aaa" font-size="8" text-anchor="middle">Tự động chọn số qua hydraulics</text>
+        <!-- TCU box -->
+        <rect x="265" y="125" width="130" height="30" rx="4" fill="#1a1a1a" stroke="#e94560" stroke-width="1.5"/>
+        <text x="330" y="144" fill="#e94560" font-size="9" text-anchor="middle">TCU (Transmission Control Unit)</text>
+        <line x1="330" y1="115" x2="330" y2="125" stroke="#e94560" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <line x1="395" y1="85" x2="425" y2="85" stroke="#aaa" stroke-width="2" marker-end="url(#arr3)"/>
+        <rect x="430" y="68" width="80" height="34" rx="4" fill="#333" stroke="#555"/>
+        <text x="470" y="89" fill="#aaa" font-size="9" text-anchor="middle">To Wheels</text>
+        <defs><marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#aaa"/></marker></defs>
+      </svg>
+    </div>
+    <div class="callout warning">
+      <strong>Tuning AT phức tạp hơn:</strong> ECU remap chưa đủ — cần TCU remap để hộp số không cắt torque khi engine tạo ra nhiều hơn factory limit. ZF 8HP (BMW/Porsche) giới hạn ~750Nm — vượt qua mà không remap TCU = hộp số slip hoặc fail.
+    </div>
+    <table>
+      <tr><th>Tiêu chí</th><th>AT truyền thống</th></tr>
+      <tr><td>Số lượng số</td><td>6–10 tốc độ (ZF 8HP phổ biến nhất)</td></tr>
+      <tr><td>Torque converter slip</td><td>Có — mất ~5–8% hiệu suất ở tốc độ thấp</td></tr>
+      <tr><td>Lockup clutch</td><td>Có ở tốc độ cao → giảm slip</td></tr>
+      <tr><td>Tune difficulty</td><td>Trung bình — cần ECU + TCU remap</td></tr>
+      <tr><td>Xe tiêu biểu</td><td>BMW 3/5-Series, Mercedes E-Class, Range Rover</td></tr>
+    </table>
+  </div>
+
+  <!-- DCT -->
+  <div class="section">
+    <h2>4. DCT — Dual Clutch Transmission</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="65" width="90" height="50" rx="6" fill="#1a2e1a" stroke="#4caf50" stroke-width="2"/>
+        <text x="65" y="95" fill="#4caf50" font-size="11" text-anchor="middle" font-weight="700">ENGINE</text>
+        <line x1="110" y1="90" x2="140" y2="90" stroke="#aaa" stroke-width="2" marker-end="url(#arr4)"/>
+        <!-- Odd clutch -->
+        <rect x="145" y="45" width="100" height="40" rx="5" fill="#1a2a1a" stroke="#4caf50" stroke-width="1.5"/>
+        <text x="195" y="62" fill="#4caf50" font-size="9" text-anchor="middle">Clutch 1 (Odd)</text>
+        <text x="195" y="76" fill="#aaa" font-size="8" text-anchor="middle">Số 1, 3, 5, 7</text>
+        <!-- Even clutch -->
+        <rect x="145" y="95" width="100" height="40" rx="5" fill="#1a1a2a" stroke="#2196f3" stroke-width="1.5"/>
+        <text x="195" y="112" fill="#2196f3" font-size="9" text-anchor="middle">Clutch 2 (Even)</text>
+        <text x="195" y="126" fill="#aaa" font-size="8" text-anchor="middle">Số 2, 4, 6, 8</text>
+        <!-- Pre-select arrow -->
+        <text x="195" y="155" fill="#ffd700" font-size="8" text-anchor="middle">⚡ Next gear pre-selected</text>
+        <line x1="245" y1="65" x2="290" y2="85" stroke="#aaa" stroke-width="1.5"/>
+        <line x1="245" y1="115" x2="290" y2="95" stroke="#aaa" stroke-width="1.5"/>
+        <!-- Gearbox -->
+        <rect x="295" y="55" width="120" height="70" rx="6" fill="#2a1a00" stroke="#ff9800" stroke-width="2"/>
+        <text x="355" y="88" fill="#ff9800" font-size="10" text-anchor="middle" font-weight="700">DUAL CLUTCH</text>
+        <text x="355" y="103" fill="#aaa" font-size="8" text-anchor="middle">GEARBOX</text>
+        <line x1="415" y1="90" x2="450" y2="90" stroke="#aaa" stroke-width="2" marker-end="url(#arr4)"/>
+        <rect x="455" y="73" width="80" height="34" rx="4" fill="#333" stroke="#555"/>
+        <text x="495" y="94" fill="#aaa" font-size="9" text-anchor="middle">To Wheels</text>
+        <!-- Speed label -->
+        <text x="355" y="140" fill="#e94560" font-size="9" text-anchor="middle">Shift time: 8–100ms</text>
+        <defs><marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#aaa"/></marker></defs>
+      </svg>
+    </div>
+    <p>DCT có <strong>2 clutch riêng biệt</strong>: một giữ số đang chạy, một <strong>pre-select số tiếp theo</strong>. Khi shift, chỉ cần "chuyển" clutch — nhanh hơn bất kỳ driver MT nào.</p>
+    <table>
+      <tr><th>Tiêu chí</th><th>DCT</th></tr>
+      <tr><td>Shift speed</td><td>8–100ms (F1 DCT: ~8ms, road car: 50–100ms)</td></tr>
+      <tr><td>Hiệu suất</td><td>Tốt hơn AT (không có torque converter loss)</td></tr>
+      <tr><td>Tune difficulty</td><td>Cao — ECU + TCU + clutch engagement maps</td></tr>
+      <tr><td>Nhược điểm</td><td>Creep/judder ở tốc độ thấp (wet clutch đỡ hơn dry)</td></tr>
+      <tr><td>Xe tiêu biểu</td><td>Porsche PDK, VW DSG, Ford PowerShift, Ferrari</td></tr>
+    </table>
+    <div class="callout info">
+      <strong>Wet vs Dry DCT:</strong> Dry clutch (VW DSG 7-speed) — nhẹ, hiệu quả, nhưng giật ở tốc độ thấp. Wet clutch (Porsche PDK) — chạy trong dầu → mượt hơn, bền hơn ở high-performance builds.
+    </div>
+  </div>
+
+  <!-- CVT -->
+  <div class="section">
+    <h2>5. CVT — Continuously Variable Transmission</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 600 140" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="45" width="90" height="50" rx="6" fill="#1a2e1a" stroke="#4caf50" stroke-width="2"/>
+        <text x="65" y="75" fill="#4caf50" font-size="11" text-anchor="middle" font-weight="700">ENGINE</text>
+        <line x1="110" y1="70" x2="145" y2="70" stroke="#aaa" stroke-width="2" marker-end="url(#arr5)"/>
+        <!-- Primary pulley -->
+        <ellipse cx="185" cy="70" rx="30" ry="35" fill="#1a1a2e" stroke="#9c27b0" stroke-width="2"/>
+        <text x="185" y="65" fill="#9c27b0" font-size="8" text-anchor="middle">PRIMARY</text>
+        <text x="185" y="78" fill="#9c27b0" font-size="8" text-anchor="middle">PULLEY</text>
+        <text x="185" y="118" fill="#aaa" font-size="8" text-anchor="middle">Thay đổi đường kính</text>
+        <!-- Belt -->
+        <rect x="215" y="50" width="120" height="8" rx="3" fill="#ff9800" opacity="0.8"/>
+        <rect x="215" y="82" width="120" height="8" rx="3" fill="#ff9800" opacity="0.8"/>
+        <text x="275" y="75" fill="#ff9800" font-size="9" text-anchor="middle">Steel belt / Chain</text>
+        <!-- Secondary pulley -->
+        <ellipse cx="365" cy="70" rx="25" ry="28" fill="#1a1a2e" stroke="#9c27b0" stroke-width="2"/>
+        <text x="365" y="66" fill="#9c27b0" font-size="8" text-anchor="middle">SEC.</text>
+        <text x="365" y="78" fill="#9c27b0" font-size="8" text-anchor="middle">PULLEY</text>
+        <line x1="390" y1="70" x2="430" y2="70" stroke="#aaa" stroke-width="2" marker-end="url(#arr5)"/>
+        <rect x="435" y="55" width="80" height="30" rx="4" fill="#333" stroke="#555"/>
+        <text x="475" y="74" fill="#aaa" font-size="9" text-anchor="middle">To Wheels</text>
+        <!-- Ratio label -->
+        <text x="275" y="120" fill="#aaa" font-size="9" text-anchor="middle">Ratio thay đổi vô cấp — không có điểm shift</text>
+        <defs><marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#aaa"/></marker></defs>
+      </svg>
+    </div>
+    <p>CVT không có "số" cố định — 2 pulley thay đổi đường kính liên tục → tỉ số truyền thay đổi trơn tru, engine luôn giữ ở RPM tối ưu.</p>
+    <table>
+      <tr><th>Tiêu chí</th><th>CVT</th></tr>
+      <tr><td>Hiệu quả nhiên liệu</td><td>✅ Tốt nhất trong thực tế đường phố</td></tr>
+      <tr><td>Cảm giác lái</td><td>❌ "Rubber band effect" — engine gầm nhưng xe chậm tăng tốc</td></tr>
+      <tr><td>Tuning potential</td><td>❌ Rất hạn chế — belt/chain có torque limit thấp</td></tr>
+      <tr><td>Max torque support</td><td>Thường < 350Nm → không dùng cho performance</td></tr>
+      <tr><td>Xe tiêu biểu</td><td>Honda Jazz, Toyota Vios, Nissan X-Trail, Subaru (trừ STI)</td></tr>
+    </table>
+    <div class="callout warning">
+      <strong>CVT + Tuning = Không nên:</strong> Belt/chain CVT có giới hạn torque thấp. Tune engine tăng torque → belt slip, rách belt → hỏng hộp số. CVT chỉ phù hợp eco driving, không phải performance.
+    </div>
+  </div>
+
+  <!-- COMPARISON -->
+  <div class="section">
+    <h2>6. So sánh tổng hợp — Chọn loại nào?</h2>
+    <table>
+      <tr><th>Tiêu chí</th><th>MT</th><th>AT</th><th>DCT</th><th>CVT</th></tr>
+      <tr><td>Tune difficulty</td><td>⭐ Dễ nhất</td><td>⭐⭐⭐ Trung bình</td><td>⭐⭐⭐⭐ Khó</td><td>❌ Không nên</td></tr>
+      <tr><td>Shift speed</td><td>150–300ms (tay)</td><td>200–400ms</td><td>8–100ms ✅</td><td>Liên tục (N/A)</td></tr>
+      <tr><td>Max torque support</td><td>Không giới hạn (clutch upgrade)</td><td>~750Nm (ZF 8HP)</td><td>~700Nm (PDK)</td><td>~350Nm ❌</td></tr>
+      <tr><td>Driver engagement</td><td>✅ Cao nhất</td><td>Thấp</td><td>Trung bình</td><td>❌ Thấp nhất</td></tr>
+      <tr><td>Track performance</td><td>✅ Nếu có kỹ năng</td><td>Tốt</td><td>✅✅ Tốt nhất</td><td>❌</td></tr>
+      <tr><td>Giá tune</td><td>Rẻ nhất</td><td>Trung bình</td><td>Đắt nhất</td><td>Không khuyến nghị</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Kết luận cho build xe:</strong> Street/track build → MT (đơn giản) hoặc DCT (fastest). Daily driver có công suất cao → AT (ZF 8HP có thể lên 800+ HP với proper TCU tune). CVT → chỉ giữ stock.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <h2>🧠 Test Kiến Thức — Bài 2</h2>
+    <p style="color:#aaa; margin-bottom:25px; font-size:0.9em;">5 câu · Cần đúng 4/5 để pass</p>
+    <div class="question" id="q1">
+      <p>Câu 1: Tại sao tune MT dễ hơn AT?</p>
+      <div class="options">
+        <label onclick="sel(this,'q1','a')"><input type="radio"><span>A. Vì MT nhẹ hơn</span></label>
+        <label onclick="sel(this,'q1','b')"><input type="radio"><span>B. MT không có TCU — không cần sync nhiều module</span></label>
+        <label onclick="sel(this,'q1','c')"><input type="radio"><span>C. MT có nhiều số hơn</span></label>
+        <label onclick="sel(this,'q1','d')"><input type="radio"><span>D. Vì MT rẻ hơn</span></label>
+      </div>
+      <div class="answer-reveal" id="ans1">✅ B — MT không có TCU. Tune chỉ cần ECU remap. AT cần ECU + TCU + traction system sync.</div>
+    </div>
+    <div class="question" id="q2">
+      <p>Câu 2: DCT nhanh hơn MT khi shift vì lý do gì?</p>
+      <div class="options">
+        <label onclick="sel(this,'q2','a')"><input type="radio"><span>A. DCT có nhiều clutch hơn</span></label>
+        <label onclick="sel(this,'q2','b')"><input type="radio"><span>B. Số tiếp theo đã được pre-select sẵn — chỉ cần chuyển clutch</span></label>
+        <label onclick="sel(this,'q2','c')"><input type="radio"><span>C. DCT dùng điện</span></label>
+        <label onclick="sel(this,'q2','d')"><input type="radio"><span>D. DCT không cần thời gian để sync</span></label>
+      </div>
+      <div class="answer-reveal" id="ans2">✅ B — Clutch 1 giữ số hiện tại, Clutch 2 đã pre-select số tiếp theo. Shift = chuyển clutch trong 8–100ms.</div>
+    </div>
+    <div class="question" id="q3">
+      <p>Câu 3: CVT có "rubber band effect" vì lý do gì?</p>
+      <div class="options">
+        <label onclick="sel(this,'q3','a')"><input type="radio"><span>A. Vì CVT dùng cao su</span></label>
+        <label onclick="sel(this,'q3','b')"><input type="radio"><span>B. Engine giữ RPM cao để tạo power trong khi ratio thay đổi dần → cảm giác engine gầm nhưng xe chậm accelerate</span></label>
+        <label onclick="sel(this,'q3','c')"><input type="radio"><span>C. CVT không có gear cố định</span></label>
+        <label onclick="sel(this,'q3','d')"><input type="radio"><span>D. CVT belt bị trượt</span></label>
+      </div>
+      <div class="answer-reveal" id="ans3">✅ B — CVT giữ engine ở RPM tối ưu (hiệu quả nhất) trong khi ratio thay đổi liên tục. Driver cảm nhận engine gầm nhưng acceleration không tức thì như AT/MT.</div>
+    </div>
+    <div class="question" id="q4">
+      <p>Câu 4: Xe dùng ZF 8HP (AT) tune lên 800HP — vấn đề chính là gì?</p>
+      <div class="options">
+        <label onclick="sel(this,'q4','a')"><input type="radio"><span>A. Hộp số quá nặng</span></label>
+        <label onclick="sel(this,'q4','b')"><input type="radio"><span>B. Phải remap TCU để hộp số không cắt torque / slip khi vượt factory limit</span></label>
+        <label onclick="sel(this,'q4','c')"><input type="radio"><span>C. Cần thêm dầu hộp số</span></label>
+        <label onclick="sel(this,'q4','d')"><input type="radio"><span>D. Không thể tune ZF 8HP</span></label>
+      </div>
+      <div class="answer-reveal" id="ans4">✅ B — ZF 8HP factory limit ~750Nm. Vượt qua mà không remap TCU → hộp số slip để tự bảo vệ. Cần ECU + TCU remap đồng bộ.</div>
+    </div>
+    <div class="question" id="q5">
+      <p>Câu 5: Porsche PDK là loại hộp số nào?</p>
+      <div class="options">
+        <label onclick="sel(this,'q5','a')"><input type="radio"><span>A. CVT</span></label>
+        <label onclick="sel(this,'q5','b')"><input type="radio"><span>B. AT torque converter</span></label>
+        <label onclick="sel(this,'q5','c')"><input type="radio"><span>C. Wet DCT (Dual Clutch)</span></label>
+        <label onclick="sel(this,'q5','d')"><input type="radio"><span>D. Sequential MT</span></label>
+      </div>
+      <div class="answer-reveal" id="ans5">✅ C — PDK (Porsche Doppelkupplungsgetriebe) là wet DCT — clutch chạy trong dầu → mượt, bền, shift nhanh hơn MT. Đây là lý do 911 PDK nhanh hơn MT ở track trong hầu hết trường hợp.</div>
+    </div>
+    <button class="btn-check" onclick="checkQuiz()">Kiểm tra kết quả</button>
+    <div class="result-box" id="result-box">
+      <div id="result-text"></div>
+    </div>
+  </div>
+</div>
+<footer>
+  <p><a href="lesson-01-engine-powertrain.html">← Bài 1: Engine</a> &nbsp;|&nbsp; <a href="lesson-03-chassis.html">Bài 3: Chassis & Suspension →</a></p>
+  <p style="margin-top:8px;">Built by Zera 🌟 for Bach · RCC Learning Series</p>
+</footer>
+<script>
+  const answers = {q1:'b',q2:'b',q3:'b',q4:'b',q5:'c'};
+  const selected = {};
+  function sel(el,qid,opt){ document.querySelectorAll('#'+qid+' label').forEach(l=>l.classList.remove('selected')); el.classList.add('selected'); selected[qid]=opt; }
+  function checkQuiz(){
+    let score=0;
+    Object.keys(answers).forEach(q=>{ const a=document.getElementById('ans'+q.replace('q','')); if(a) a.style.display='block'; if(selected[q]===answers[q]) score++; });
+    const box=document.getElementById('result-box'); const txt=document.getElementById('result-text'); box.style.display='block';
+    if(score>=4){ box.className='result-box show pass'; txt.innerHTML=`<strong>✅ PASS — ${score}/5 đúng!</strong><br>Sẵn sàng qua Bài 3: Chassis & Suspension.`; }
+    else{ box.className='result-box show fail'; txt.innerHTML=`<strong>❌ ${score}/5 — Ôn lại nhé anh.</strong>`; }
+  }
+</script>
+</body>
+</html>

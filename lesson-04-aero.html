@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 4: Aerodynamics</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',sans-serif;background:#0f0f0f;color:#e0e0e0;line-height:1.7;}
+  .hero{background:linear-gradient(135deg,#0a0a1e 0%,#1a0a2e 50%,#2a0a3e 100%);padding:60px 40px;text-align:center;border-bottom:3px solid #9c27b0;}
+  .hero h1{font-size:2.4em;color:#fff;margin-bottom:10px;}
+  .hero .series{font-size:0.9em;color:#9c27b0;letter-spacing:3px;text-transform:uppercase;margin-bottom:15px;}
+  .hero p{color:#aaa;font-size:1.1em;max-width:600px;margin:0 auto;}
+  .nav-pills{display:flex;justify-content:center;gap:10px;padding:20px;background:#1a1a1a;flex-wrap:wrap;}
+  .nav-pills a{padding:6px 16px;border-radius:20px;font-size:0.8em;text-decoration:none;background:#2a2a2a;color:#aaa;border:1px solid #333;}
+  .nav-pills a.active{background:#9c27b0;color:#fff;border-color:#9c27b0;}
+  .container{max-width:900px;margin:0 auto;padding:40px 20px;}
+  .section{margin-bottom:50px;}
+  .section h2{font-size:1.6em;color:#9c27b0;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid #2a2a2a;}
+  .section p{color:#ccc;margin-bottom:12px;}
+  .diagram-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:30px;margin:20px 0;text-align:center;}
+  .callout{background:#1e0a2e;border-left:4px solid #9c27b0;padding:15px 20px;border-radius:0 8px 8px 0;margin:15px 0;}
+  .callout.warning{background:#2a1e1e;border-left-color:#e94560;}
+  .callout.info{background:#1e1e2a;border-left-color:#2196f3;}
+  .callout.green{background:#1e2a1e;border-left-color:#4caf50;}
+  .callout strong{color:#fff;}
+  table{width:100%;border-collapse:collapse;margin:20px 0;}
+  th{background:#9c27b0;color:#fff;padding:12px;text-align:left;}
+  td{padding:11px 12px;border-bottom:1px solid #222;color:#ccc;}
+  tr:nth-child(even) td{background:#1a1a1a;}
+  .quiz-section{background:#1a1a1a;border-radius:12px;padding:30px;margin-top:50px;}
+  .quiz-section h2{color:#ffd700;margin-bottom:25px;}
+  .question{margin-bottom:30px;}
+  .question p{color:#fff;font-weight:600;margin-bottom:12px;}
+  .options label{display:block;padding:10px 15px;margin:6px 0;background:#222;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;color:#ccc;}
+  .options label:hover{border-color:#9c27b0;color:#fff;}
+  .options label.selected{border-color:#9c27b0;background:#1e0a2e;}
+  .btn-check{display:inline-block;margin-top:20px;padding:12px 30px;background:#9c27b0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1em;font-weight:600;}
+  .result-box{margin-top:20px;padding:20px;border-radius:10px;display:none;}
+  .result-box.show{display:block;}
+  .result-box.pass{background:#1e3a1e;border:1px solid #4caf50;color:#4caf50;}
+  .result-box.fail{background:#3a1e1e;border:1px solid #e94560;color:#e94560;}
+  .answer-reveal{margin-top:8px;font-size:0.9em;color:#aaa;display:none;}
+  .progress-bar{display:flex;align-items:center;gap:10px;margin-bottom:30px;}
+  .progress-bar .step{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:700;}
+  .progress-bar .step.done{background:#9c27b0;color:#fff;}
+  .progress-bar .step.current{background:#fff;color:#0f0f0f;}
+  .progress-bar .step.todo{background:#2a2a2a;color:#666;}
+  .progress-bar .line{flex:1;height:2px;background:#2a2a2a;}
+  .progress-bar .line.done{background:#9c27b0;}
+  footer{text-align:center;padding:30px;color:#444;font-size:0.85em;border-top:1px solid #1a1a1a;margin-top:60px;}
+  footer a{color:#9c27b0;text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="series">Automotive Engineering Series · Bài 4 / 7</div>
+  <h1>Aerodynamics</h1>
+  <p>Downforce, drag, bodykit function — tại sao hình dáng xe quan trọng</p>
+</div>
+<div class="nav-pills">
+  <a href="lesson-01-engine-powertrain.html">Bài 1 ✅</a>
+  <a href="lesson-02-transmission.html">Bài 2 ✅</a>
+  <a href="lesson-03-chassis.html">Bài 3 ✅</a>
+  <a href="#" class="active">Bài 4: Aero</a>
+  <a href="lesson-05-brakes.html">Bài 5: Brakes</a>
+  <a href="lesson-06-electronics.html">Bài 6: Electronics</a>
+  <a href="lesson-07-tuning.html">Bài 7: Tuning</a>
+</div>
+<div class="container">
+  <div class="progress-bar">
+    <div class="step done">1</div><div class="line done"></div>
+    <div class="step done">2</div><div class="line done"></div>
+    <div class="step done">3</div><div class="line done"></div>
+    <div class="step current">4</div><div class="line"></div>
+    <div class="step todo">5</div><div class="line"></div>
+    <div class="step todo">6</div><div class="line"></div>
+    <div class="step todo">7</div>
+  </div>
+
+  <div class="section">
+    <h2>1. Downforce vs Drag</h2>
+    <p>Aero tạo ra 2 lực đối lập: <strong>Downforce</strong> (ép xe xuống → grip) và <strong>Drag</strong> (cản lại chuyển động → chậm hơn). Tuning aero = tìm điểm cân bằng tối ưu.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Car body side view -->
+        <g transform="translate(100,30)">
+          <!-- Car silhouette -->
+          <path d="M20,110 L20,75 L60,40 L160,35 L220,55 L260,60 L280,75 L280,110 Z" fill="#1a1a2e" stroke="#9c27b0" stroke-width="2"/>
+          <!-- Roof shape -->
+          <path d="M60,40 L80,25 L200,25 L220,55" fill="none" stroke="#555" stroke-width="1"/>
+          <!-- Wheels -->
+          <circle cx="65" cy="115" r="22" fill="#111" stroke="#444" stroke-width="2"/>
+          <circle cx="230" cy="115" r="22" fill="#111" stroke="#444" stroke-width="2"/>
+          <circle cx="65" cy="115" r="10" fill="#222"/>
+          <circle cx="230" cy="115" r="10" fill="#222"/>
+          <!-- Ground -->
+          <rect x="0" y="135" width="310" height="6" rx="2" fill="#333"/>
+          <!-- Airflow top -->
+          <path d="M0,50 C50,30 150,20 310,45" fill="none" stroke="#2196f3" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <path d="M0,40 C50,18 150,8 310,33" fill="none" stroke="#2196f3" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+          <text x="155" y="10" fill="#2196f3" font-size="9" text-anchor="middle">Airflow nhanh hơn → áp suất thấp (top)</text>
+          <!-- Airflow bottom -->
+          <path d="M0,125 C80,140 200,145 310,128" fill="none" stroke="#e94560" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="155" y="158" fill="#e94560" font-size="9" text-anchor="middle">Airflow chậm hơn → áp suất cao (bottom)</text>
+          <!-- Downforce arrow -->
+          <line x1="150" y1="10" x2="150" y2="35" stroke="#4caf50" stroke-width="3" marker-end="url(#darr)"/>
+          <text x="165" y="25" fill="#4caf50" font-size="9">DOWNFORCE ↓</text>
+          <!-- Drag arrow -->
+          <line x1="290" y1="80" x2="330" y2="80" stroke="#ff9800" stroke-width="2" marker-end="url(#darr2)"/>
+          <text x="335" y="77" fill="#ff9800" font-size="8">DRAG →</text>
+          <defs>
+            <marker id="darr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4caf50"/></marker>
+            <marker id="darr2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#ff9800"/></marker>
+          </defs>
+        </g>
+      </svg>
+    </div>
+    <div class="callout info">
+      <strong>Bernoulli's Principle:</strong> Không khí đi trên nóc xe (đường dài hơn, tốc độ cao hơn) → áp suất thấp. Không khí dưới gầm (đường ngắn hơn, tốc độ chậm hơn) → áp suất cao. Chênh lệch áp suất = áp lực đẩy xe xuống = Downforce.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2. Các thành phần aero chính</h2>
+    <div class="diagram-box">
+      <svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg">
+        <!-- Front splitter -->
+        <g transform="translate(10,10)">
+          <rect x="10" y="15" width="155" height="180" rx="8" fill="#111" stroke="#9c27b0" stroke-width="1"/>
+          <text x="87" y="12" fill="#9c27b0" font-size="10" text-anchor="middle" font-weight="700">FRONT SPLITTER</text>
+          <path d="M20,80 L135,80 L155,100 L155,120 L20,120 Z" fill="#1a1a2e" stroke="#444" stroke-width="1.5"/>
+          <rect x="10" y="110" width="155" height="10" rx="2" fill="#9c27b0" opacity="0.7"/>
+          <text x="87" y="118" fill="#fff" font-size="7" text-anchor="middle">SPLITTER</text>
+          <!-- Airflow arrows -->
+          <line x1="20" y1="90" x2="8" y2="90" stroke="#2196f3" stroke-width="1.5" marker-start="url(#ains)"/>
+          <line x1="20" y1="100" x2="8" y2="112" stroke="#e94560" stroke-width="1.5" marker-start="url(#ains2)"/>
+          <text x="87" y="145" fill="#4caf50" font-size="8" text-anchor="middle">✅ Ép air dưới xe lên</text>
+          <text x="87" y="158" fill="#4caf50" font-size="8" text-anchor="middle">→ giảm lift phía trước</text>
+          <text x="87" y="175" fill="#aaa" font-size="8" text-anchor="middle">Quan trọng cho front grip</text>
+          <defs>
+            <marker id="ains" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 Z" fill="#2196f3"/></marker>
+            <marker id="ains2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto-start-reverse"><path d="M0,0 L6,3 L0,6 Z" fill="#e94560"/></marker>
+          </defs>
+        </g>
+
+        <!-- Rear wing -->
+        <g transform="translate(190,10)">
+          <rect x="10" y="15" width="155" height="180" rx="8" fill="#111" stroke="#e94560" stroke-width="1"/>
+          <text x="87" y="12" fill="#e94560" font-size="10" text-anchor="middle" font-weight="700">REAR WING</text>
+          <!-- Wing profile -->
+          <path d="M20,55 C50,40 120,40 150,55 C120,60 50,60 20,55 Z" fill="#e94560" opacity="0.7"/>
+          <line x1="60" y1="57" x2="60" y2="120" stroke="#555" stroke-width="2"/>
+          <line x1="110" y1="57" x2="110" y2="120" stroke="#555" stroke-width="2"/>
+          <!-- Downforce arrows -->
+          <line x1="85" y1="38" x2="85" y2="28" stroke="#4caf50" stroke-width="2" marker-end="url(#darr3)"/>
+          <text x="100" y="25" fill="#4caf50" font-size="8">↑ Low pressure</text>
+          <line x1="85" y1="65" x2="85" y2="80" stroke="#2196f3" stroke-width="2" marker-end="url(#darr4)"/>
+          <text x="100" y="78" fill="#2196f3" font-size="8">↓ High pressure</text>
+          <text x="87" y="145" fill="#4caf50" font-size="8" text-anchor="middle">✅ Tạo downforce mạnh</text>
+          <text x="87" y="158" fill="#e94560" font-size="8" text-anchor="middle">❌ Tăng drag đáng kể</text>
+          <text x="87" y="175" fill="#aaa" font-size="8" text-anchor="middle">Angle of attack quan trọng</text>
+          <defs>
+            <marker id="darr3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4caf50"/></marker>
+            <marker id="darr4" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2196f3"/></marker>
+          </defs>
+        </g>
+
+        <!-- Diffuser -->
+        <g transform="translate(370,10)">
+          <rect x="10" y="15" width="155" height="180" rx="8" fill="#111" stroke="#4caf50" stroke-width="1"/>
+          <text x="87" y="12" fill="#4caf50" font-size="10" text-anchor="middle" font-weight="700">REAR DIFFUSER</text>
+          <!-- Car underbody + diffuser -->
+          <rect x="20" y="50" width="130" height="30" rx="3" fill="#1a1a2e" stroke="#333"/>
+          <path d="M20,80 L80,80 L150,100 L150,110 L20,110 Z" fill="#2a1e00" stroke="#4caf50" stroke-width="1.5"/>
+          <!-- Ground -->
+          <rect x="10" y="110" width="155" height="5" rx="1" fill="#333"/>
+          <!-- Airflow through diffuser -->
+          <line x1="25" y1="95" x2="60" y2="105" stroke="#2196f3" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="35" y1="92" x2="80" y2="107" stroke="#2196f3" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="87" y="135" fill="#4caf50" font-size="8" text-anchor="middle">Air tăng tốc dưới xe</text>
+          <text x="87" y="148" fill="#4caf50" font-size="8" text-anchor="middle">→ áp suất giảm</text>
+          <text x="87" y="161" fill="#4caf50" font-size="8" text-anchor="middle">→ hút xe xuống</text>
+          <text x="87" y="178" fill="#aaa" font-size="8" text-anchor="middle">Ít drag hơn rear wing</text>
+        </g>
+
+        <!-- Side skirts -->
+        <g transform="translate(550,10)">
+          <rect x="10" y="15" width="155" height="180" rx="8" fill="#111" stroke="#ff9800" stroke-width="1"/>
+          <text x="87" y="12" fill="#ff9800" font-size="10" text-anchor="middle" font-weight="700">SIDE SKIRTS</text>
+          <!-- Car top view -->
+          <rect x="40" y="30" width="90" height="110" rx="10" fill="#1a1a2e" stroke="#444" stroke-width="1.5"/>
+          <!-- Side skirts -->
+          <rect x="25" y="45" width="15" height="80" rx="3" fill="#ff9800" opacity="0.7"/>
+          <rect x="130" y="45" width="15" height="80" rx="3" fill="#ff9800" opacity="0.7"/>
+          <!-- Airflow blocked -->
+          <line x1="15" y1="70" x2="25" y2="70" stroke="#e94560" stroke-width="2"/>
+          <text x="8" y="68" fill="#e94560" font-size="10">✕</text>
+          <text x="87" y="165" fill="#4caf50" font-size="8" text-anchor="middle">Ngăn high-pressure air</text>
+          <text x="87" y="178" fill="#4caf50" font-size="8" text-anchor="middle">vào gầm xe từ bên hông</text>
+        </g>
+      </svg>
+    </div>
+
+    <table>
+      <tr><th>Component</th><th>Function</th><th>Downforce</th><th>Drag</th></tr>
+      <tr><td>Front Splitter</td><td>Ngăn air vào gầm, tạo downforce trước</td><td>Medium</td><td>Low</td></tr>
+      <tr><td>Rear Wing</td><td>Inverted airfoil → downforce mạnh</td><td>High ✅</td><td>High ❌</td></tr>
+      <tr><td>Rear Diffuser</td><td>Tăng tốc air dưới gầm → hút xe xuống</td><td>Medium-High</td><td>Low ✅</td></tr>
+      <tr><td>Side Skirts</td><td>Seal gầm xe khỏi high-pressure air bên hông</td><td>Indirect</td><td>Neutral</td></tr>
+      <tr><td>Canards</td><td>Tăng downforce cục bộ ở góc front bumper</td><td>Low-Medium</td><td>Medium</td></tr>
+      <tr><td>Vortex Generators</td><td>Tạo vortex để air bám theo bề mặt xe hơn</td><td>Indirect</td><td>Marginal</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>3. Cd — Drag Coefficient</h2>
+    <p><strong>Cd</strong> đo mức độ "cản gió" của xe — càng thấp càng ít drag. Kết hợp với <strong>frontal area</strong> để tính lực drag thực tế.</p>
+    <div class="callout">
+      <strong>Formula:</strong> Drag Force = 0.5 × ρ × v² × Cd × A<br>
+      ρ = mật độ không khí (1.225 kg/m³) · v = tốc độ (m/s) · A = diện tích mặt trước (m²)
+    </div>
+    <table>
+      <tr><th>Xe</th><th>Cd</th><th>Ghi chú</th></tr>
+      <tr><td>Tesla Model 3</td><td>0.23</td><td>Tốt nhất road car</td></tr>
+      <tr><td>Porsche 911 (992)</td><td>0.29</td><td>Active aero</td></tr>
+      <tr><td>Ferrari SF90</td><td>0.30</td><td>Hybrid + active aero</td></tr>
+      <tr><td>Lamborghini Urus</td><td>0.35</td><td>SUV profile</td></tr>
+      <tr><td>GT3/Race car</td><td>0.45–0.60</td><td>Downforce priority, không cần low drag</td></tr>
+      <tr><td>F1 car</td><td>~1.0+</td><td>Downforce = 3–5x car weight tại 300 km/h</td></tr>
+    </table>
+    <div class="callout warning">
+      <strong>Bodykit ≠ Aero:</strong> 90% bodykit aftermarket (Liberty Walk, Rocket Bunny, wide-body kits) là <strong>purely aesthetic</strong> — không cải thiện aero, thậm chí tăng drag. Aero thực sự cần wind tunnel testing + CFD simulation. Đây là lý do bodykit xe đường phố "trông nhanh" nhưng không nhất thiết nhanh hơn.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>4. Active vs Passive Aero</h2>
+    <table>
+      <tr><th>Type</th><th>Mô tả</th><th>Ví dụ</th></tr>
+      <tr><td>Passive Fixed</td><td>Wing/splitter cố định, không thay đổi</td><td>GT3 Cup, most track cars</td></tr>
+      <tr><td>Passive Adjustable</td><td>Điều chỉnh thủ công trước khi chạy</td><td>GT3 RS wing angle</td></tr>
+      <tr><td>Active — Speed-based</td><td>Tự động thay đổi theo tốc độ</td><td>Porsche 911 rear spoiler pop-up</td></tr>
+      <tr><td>Active — Dynamic</td><td>Thay đổi theo cornering/braking real-time</td><td>Bugatti Chiron aero brake, Ferrari SF90</td></tr>
+      <tr><td>DRS (F1)</td><td>Mở wing để giảm drag khi thẳng</td><td>F1 cars, Koenigsegg Jesko</td></tr>
+    </table>
+    <div class="callout green">
+      <strong>Porsche 911 GT3 RS:</strong> Có active "swan neck" rear wing — ở tốc độ thấp: giảm góc để giảm drag. Phanh mạnh: wing bật thẳng đứng làm air brake. Đây là engineering đỉnh cao của passive + active hybrid aero.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <h2>🧠 Test Kiến Thức — Bài 4</h2>
+    <p style="color:#aaa;margin-bottom:25px;font-size:0.9em;">5 câu · Cần đúng 4/5 để pass</p>
+    <div class="question" id="q1">
+      <p>Câu 1: Rear diffuser tạo downforce bằng cơ chế nào?</p>
+      <div class="options">
+        <label onclick="sel(this,'q1','a')"><input type="radio"><span>A. Đẩy air xuống phía sau</span></label>
+        <label onclick="sel(this,'q1','b')"><input type="radio"><span>B. Tăng tốc air dưới gầm → giảm áp suất → hút xe xuống</span></label>
+        <label onclick="sel(this,'q1','c')"><input type="radio"><span>C. Chặn gió vào gầm</span></label>
+        <label onclick="sel(this,'q1','d')"><input type="radio"><span>D. Tạo vortex</span></label>
+      </div>
+      <div class="answer-reveal" id="ans1">✅ B — Diffuser mở rộng dần → air tăng tốc khi đi qua (Venturi effect) → áp suất giảm → chênh lệch áp suất so với trên xe → hút xe xuống. Ít drag hơn rear wing.</div>
+    </div>
+    <div class="question" id="q2">
+      <p>Câu 2: Tại sao bodykit Liberty Walk không nhất thiết cải thiện aero?</p>
+      <div class="options">
+        <label onclick="sel(this,'q2','a')"><input type="radio"><span>A. Vì LW chỉ làm nhựa</span></label>
+        <label onclick="sel(this,'q2','b')"><input type="radio"><span>B. Bodykit aesthetic không được thiết kế qua wind tunnel — hình dáng không tối ưu airflow</span></label>
+        <label onclick="sel(this,'q2','c')"><input type="radio"><span>C. LW quá nặng</span></label>
+        <label onclick="sel(this,'q2','d')"><input type="radio"><span>D. Bodykit không ảnh hưởng aero</span></label>
+      </div>
+      <div class="answer-reveal" id="ans2">✅ B — Aesthetic kits được design để "trông ngầu" không phải tối ưu airflow. Thực tế nhiều wide-body kits tăng frontal area → tăng drag. Aero thực cần CFD + wind tunnel.</div>
+    </div>
+    <div class="question" id="q3">
+      <p>Câu 3: F1 car có Cd ~1.0+ nhưng vẫn nhanh nhất thế giới — nghịch lý này giải thích thế nào?</p>
+      <div class="options">
+        <label onclick="sel(this,'q3','a')"><input type="radio"><span>A. F1 dùng engine mạnh hơn</span></label>
+        <label onclick="sel(this,'q3','b')"><input type="radio"><span>B. Cd cao = nhiều downforce → tăng tốc trong cua bù lại drag khi thẳng</span></label>
+        <label onclick="sel(this,'q3','c')"><input type="radio"><span>C. F1 nhẹ hơn</span></label>
+        <label onclick="sel(this,'q3','d')"><input type="radio"><span>D. F1 dùng special tires</span></label>
+      </div>
+      <div class="answer-reveal" id="ans3">✅ B — F1 hy sinh low drag để lấy downforce cực lớn (3–5x car weight ở 300km/h). Downforce → grip → cornering speed cao hơn nhiều → lap time tốt hơn dù drag lớn. Racing = optimize lap time, không phải top speed.</div>
+    </div>
+    <div class="question" id="q4">
+      <p>Câu 4: Side skirts giúp gì cho aero?</p>
+      <div class="options">
+        <label onclick="sel(this,'q4','a')"><input type="radio"><span>A. Tạo downforce trực tiếp</span></label>
+        <label onclick="sel(this,'q4','b')"><input type="radio"><span>B. Ngăn high-pressure air từ bên hông vào gầm xe → giữ low-pressure dưới gầm</span></label>
+        <label onclick="sel(this,'q4','c')"><input type="radio"><span>C. Giảm drag</span></label>
+        <label onclick="sel(this,'q4','d')"><input type="radio"><span>D. Ổn định xe khi gió ngang</span></label>
+      </div>
+      <div class="answer-reveal" id="ans4">✅ B — Ground effect (diffuser, underbody) hoạt động dựa trên low pressure dưới gầm. Side skirts seal gầm xe, ngăn high-pressure air bên ngoài phá vỡ hiệu ứng này.</div>
+    </div>
+    <div class="question" id="q5">
+      <p>Câu 5: DRS trong F1 hoạt động thế nào?</p>
+      <div class="options">
+        <label onclick="sel(this,'q5','a')"><input type="radio"><span>A. Tăng downforce khi cần tăng tốc</span></label>
+        <label onclick="sel(this,'q5','b')"><input type="radio"><span>B. Mở flap trên rear wing → giảm drag ~10–12km/h tốp speed gain trên đường thẳng</span></label>
+        <label onclick="sel(this,'q5','c')"><input type="radio"><span>C. Thay đổi suspension</span></label>
+        <label onclick="sel(this,'q5','d')"><input type="radio"><span>D. Tăng brake force</span></label>
+      </div>
+      <div class="answer-reveal" id="ans5">✅ B — DRS (Drag Reduction System): mở flap rear wing làm wing phẳng hơn → giảm drag ~30% → tăng top speed ~10–12km/h trên đường thẳng. Không được dùng khi vào cua vì mất downforce.</div>
+    </div>
+    <button class="btn-check" onclick="checkQuiz()">Kiểm tra kết quả</button>
+    <div class="result-box" id="result-box"><div id="result-text"></div></div>
+  </div>
+</div>
+<footer>
+  <p><a href="lesson-03-chassis.html">← Bài 3: Chassis</a> &nbsp;|&nbsp; <a href="lesson-05-brakes.html">Bài 5: Brakes →</a></p>
+  <p style="margin-top:8px;">Built by Zera 🌟 for Bach · RCC Learning Series</p>
+</footer>
+<script>
+  const answers={q1:'b',q2:'b',q3:'b',q4:'b',q5:'b'};
+  const selected={};
+  function sel(el,qid,opt){document.querySelectorAll('#'+qid+' label').forEach(l=>l.classList.remove('selected'));el.classList.add('selected');selected[qid]=opt;}
+  function checkQuiz(){
+    let score=0;
+    Object.keys(answers).forEach(q=>{const a=document.getElementById('ans'+q.replace('q',''));if(a)a.style.display='block';if(selected[q]===answers[q])score++;});
+    const box=document.getElementById('result-box');const txt=document.getElementById('result-text');box.style.display='block';
+    if(score>=4){box.className='result-box show pass';txt.innerHTML=`<strong>✅ PASS — ${score}/5!</strong><br>Tiếp Bài 5: Brakes.`;}
+    else{box.className='result-box show fail';txt.innerHTML=`<strong>❌ ${score}/5 — Ôn lại nhé anh.</strong>`;}
+  }
+</script>
+</body>
+</html>
