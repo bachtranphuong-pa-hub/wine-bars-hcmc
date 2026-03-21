@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 7: Tuning Deep Dive</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',sans-serif;background:#0a0a0a;color:#e0e0e0;line-height:1.7;}
+  .hero{background:linear-gradient(135deg,#1a0000 0%,#0a001a 30%,#001a0a 60%,#1a1a00 100%);padding:70px 40px;text-align:center;border-bottom:4px solid #ffd700;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at center,rgba(255,215,0,0.05) 0%,transparent 70%);}
+  .hero h1{font-size:2.8em;color:#ffd700;margin-bottom:10px;position:relative;}
+  .hero .series{font-size:0.9em;color:#ffd700;letter-spacing:3px;text-transform:uppercase;margin-bottom:15px;opacity:0.7;}
+  .hero p{color:#aaa;font-size:1.1em;max-width:700px;margin:0 auto;position:relative;}
+  .hero .badge{display:inline-block;background:#ffd700;color:#000;padding:4px 14px;border-radius:20px;font-size:0.8em;font-weight:700;margin-top:15px;}
+  .nav-pills{display:flex;justify-content:center;gap:8px;padding:18px;background:#111;flex-wrap:wrap;}
+  .nav-pills a{padding:5px 13px;border-radius:20px;font-size:0.78em;text-decoration:none;background:#1a1a1a;color:#aaa;border:1px solid #333;}
+  .nav-pills a.active{background:#ffd700;color:#000;border-color:#ffd700;font-weight:700;}
+  .container{max-width:960px;margin:0 auto;padding:40px 20px;}
+  .chapter{margin-bottom:60px;}
+  .chapter-header{display:flex;align-items:center;gap:15px;margin-bottom:25px;padding-bottom:15px;border-bottom:2px solid #1a1a1a;}
+  .chapter-num{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1em;font-weight:700;flex-shrink:0;}
+  .chapter h2{font-size:1.55em;color:#fff;}
+  .chapter h2 span{font-size:0.7em;margin-left:10px;opacity:0.6;}
+  .chapter p{color:#ccc;margin-bottom:14px;}
+  .chapter h3{font-size:1.1em;color:#ffd700;margin:22px 0 10px;}
+  .diagram-box{background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:28px;margin:20px 0;text-align:center;}
+  .callout{padding:15px 20px;border-radius:0 8px 8px 0;margin:15px 0;}
+  .callout.gold{background:#1a1500;border-left:4px solid #ffd700;}
+  .callout.red{background:#1a0000;border-left:4px solid #e94560;}
+  .callout.green{background:#001a00;border-left:4px solid #4caf50;}
+  .callout.blue{background:#00101a;border-left:4px solid #2196f3;}
+  .callout.orange{background:#1a0d00;border-left:4px solid #ff9800;}
+  .callout strong{color:#fff;}
+  table{width:100%;border-collapse:collapse;margin:18px 0;}
+  th{background:#1a1a1a;color:#ffd700;padding:12px;text-align:left;border-bottom:2px solid #ffd700;}
+  td{padding:11px 12px;border-bottom:1px solid #1a1a1a;color:#ccc;}
+  tr:hover td{background:#111;}
+  .stage-card{background:#111;border:1px solid #222;border-radius:10px;padding:22px;margin:12px 0;}
+  .stage-card h4{font-size:1.05em;margin-bottom:10px;}
+  .stage-card ul{list-style:none;padding:0;}
+  .stage-card ul li{padding:4px 0;color:#ccc;font-size:0.92em;}
+  .stage-card ul li::before{content:"→ ";color:#ffd700;}
+  .power-bar{margin:8px 0;}
+  .power-bar label{font-size:0.85em;color:#aaa;display:block;margin-bottom:3px;}
+  .power-bar .bar{height:18px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:0.78em;font-weight:700;color:#fff;}
+  .quiz-section{background:#111;border:2px solid #ffd700;border-radius:16px;padding:35px;margin-top:60px;}
+  .quiz-section h2{color:#ffd700;margin-bottom:8px;font-size:1.8em;}
+  .quiz-section .subtitle{color:#aaa;margin-bottom:30px;font-size:0.95em;}
+  .question{margin-bottom:35px;background:#0a0a0a;border-radius:10px;padding:20px;}
+  .question .qnum{font-size:0.75em;color:#ffd700;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+  .question p{color:#fff;font-weight:600;margin-bottom:14px;font-size:1.02em;}
+  .options label{display:block;padding:11px 16px;margin:6px 0;background:#111;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;color:#ccc;font-size:0.95em;}
+  .options label:hover{border-color:#ffd700;color:#fff;}
+  .options label.selected{border-color:#ffd700;background:#1a1500;color:#fff;}
+  .options label.correct{border-color:#4caf50!important;background:#001a00!important;color:#4caf50!important;}
+  .options label.wrong{border-color:#e94560!important;background:#1a0000!important;color:#e94560!important;}
+  .btn-check{display:inline-block;margin-top:25px;padding:14px 40px;background:#ffd700;color:#000;border:none;border-radius:10px;cursor:pointer;font-size:1.05em;font-weight:700;letter-spacing:1px;}
+  .btn-check:hover{background:#ffed4a;}
+  .result-box{margin-top:25px;padding:25px;border-radius:12px;display:none;}
+  .result-box.show{display:block;}
+  .result-box.pass{background:#001a00;border:2px solid #4caf50;color:#4caf50;}
+  .result-box.fail{background:#1a0000;border:2px solid #e94560;color:#e94560;}
+  .answer-reveal{margin-top:10px;font-size:0.88em;color:#888;display:none;padding:8px 12px;background:#0a0a0a;border-radius:6px;}
+  .progress-bar{display:flex;align-items:center;gap:8px;margin-bottom:35px;}
+  .progress-bar .step{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:700;}
+  .progress-bar .step.done{background:#ffd700;color:#000;}
+  .progress-bar .step.current{background:#fff;color:#000;box-shadow:0 0 0 3px #ffd700;}
+  .progress-bar .line{flex:1;height:2px;background:#1a1a1a;}
+  .progress-bar .line.done{background:#ffd700;}
+  footer{text-align:center;padding:40px;color:#333;font-size:0.85em;border-top:1px solid #111;margin-top:80px;}
+  footer a{color:#ffd700;text-decoration:none;}
+  .toc{background:#111;border-radius:12px;padding:25px;margin-bottom:40px;}
+  .toc h3{color:#ffd700;margin-bottom:15px;}
+  .toc a{display:block;color:#aaa;text-decoration:none;padding:5px 0;border-bottom:1px solid #1a1a1a;font-size:0.93em;}
+  .toc a:hover{color:#ffd700;}
+  .toc a span{color:#ffd700;margin-right:10px;}
+  .tag{display:inline-block;padding:2px 9px;border-radius:12px;font-size:0.72em;font-weight:700;margin-left:8px;vertical-align:middle;}
+  .tag.engine{background:#1a0000;color:#e94560;}
+  .tag.trans{background:#001a00;color:#4caf50;}
+  .tag.chassis{background:#1a0d00;color:#ff9800;}
+  .tag.aero{background:#1a001a;color:#9c27b0;}
+  .tag.brake{background:#0a0000;color:#e94560;}
+  .tag.elec{background:#00101a;color:#2196f3;}
+  .highlight-box{background:linear-gradient(135deg,#1a1500,#0a0a00);border:1px solid #ffd700;border-radius:12px;padding:25px;margin:20px 0;}
+  .highlight-box h4{color:#ffd700;margin-bottom:12px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="series">Automotive Engineering Series · Bài 7 / 7 · FINAL</div>
+  <h1>⚡ Tuning Deep Dive</h1>
+  <p>Tổng hợp Engine + Transmission + Chassis + Aero + Brakes + Electronics — từ lý thuyết đến build thực tế</p>
+  <div class="badge">★ CAPSTONE LESSON</div>
+</div>
+
+<div class="nav-pills">
+  <a href="lesson-01-engine-powertrain.html">Bài 1 ✅</a>
+  <a href="lesson-02-transmission.html">Bài 2 ✅</a>
+  <a href="lesson-03-chassis.html">Bài 3 ✅</a>
+  <a href="lesson-04-aero.html">Bài 4 ✅</a>
+  <a href="lesson-05-brakes.html">Bài 5 ✅</a>
+  <a href="lesson-06-electronics.html">Bài 6 ✅</a>
+  <a href="#" class="active">Bài 7: Tuning ★</a>
+</div>
+
+<div class="container">
+  <div class="progress-bar">
+    <div class="step done">1</div><div class="line done"></div>
+    <div class="step done">2</div><div class="line done"></div>
+    <div class="step done">3</div><div class="line done"></div>
+    <div class="step done">4</div><div class="line done"></div>
+    <div class="step done">5</div><div class="line done"></div>
+    <div class="step done">6</div><div class="line done"></div>
+    <div class="step current">7</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h3>📋 Nội dung Bài 7</h3>
+    <a href="#ch1"><span>A</span> Tuning Philosophy — Street vs Track vs Show</a>
+    <a href="#ch2"><span>B</span> Power Stages — Stage 1 → Stage 3+ (Engine)</a>
+    <a href="#ch3"><span>C</span> ECU Remap Deep Dive — Fuel, Ignition, Boost Maps</a>
+    <a href="#ch4"><span>D</span> Drivetrain Matching — Transmission + Diff cho công suất cao</a>
+    <a href="#ch5"><span>E</span> Suspension Setup — Street, Track Day, Time Attack</a>
+    <a href="#ch6"><span>F</span> Brake System Matching — Pad, Fluid, Rotor cho từng use case</a>
+    <a href="#ch7"><span>G</span> Aero Integration — Khi nào cần, khi nào không</a>
+    <a href="#ch8"><span>H</span> Full Build Examples — 3 xe thực tế</a>
+    <a href="#quiz">🧠 Final Test — 10 câu tổng hợp</a>
+  </div>
+
+  <!-- CHAPTER A -->
+  <div class="chapter" id="ch1">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#1a1500;color:#ffd700;border:2px solid #ffd700;">A</div>
+      <h2>Tuning Philosophy <span>— Định hướng trước khi bỏ tiền</span></h2>
+    </div>
+    <p>Câu hỏi đầu tiên không phải "tune gì" mà là <strong>"xe này dùng để làm gì?"</strong> — mọi quyết định tuning xuất phát từ đây.</p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Triangle -->
+        <polygon points="350,15 80,165 620,165" fill="none" stroke="#333" stroke-width="1.5"/>
+        <!-- Street -->
+        <circle cx="350" cy="15" r="40" fill="#001a00" stroke="#4caf50" stroke-width="2"/>
+        <text x="350" y="10" fill="#4caf50" font-size="10" text-anchor="middle" font-weight="700">STREET</text>
+        <text x="350" y="24" fill="#4caf50" font-size="8" text-anchor="middle">Daily driver</text>
+        <!-- Track -->
+        <circle cx="80" cy="165" r="40" fill="#00101a" stroke="#2196f3" stroke-width="2"/>
+        <text x="80" y="160" fill="#2196f3" font-size="10" text-anchor="middle" font-weight="700">TRACK</text>
+        <text x="80" y="174" fill="#2196f3" font-size="8" text-anchor="middle">Lap time</text>
+        <!-- Show -->
+        <circle cx="620" cy="165" r="40" fill="#1a001a" stroke="#9c27b0" stroke-width="2"/>
+        <text x="620" y="160" fill="#9c27b0" font-size="10" text-anchor="middle" font-weight="700">SHOW</text>
+        <text x="620" y="174" fill="#9c27b0" font-size="8" text-anchor="middle">Aesthetic</text>
+        <!-- Labels on sides -->
+        <text x="200" y="90" fill="#aaa" font-size="9" text-anchor="middle" transform="rotate(-30,200,90)">Performance + comfort</text>
+        <text x="500" y="90" fill="#aaa" font-size="9" text-anchor="middle" transform="rotate(30,500,90)">Look + livability</text>
+        <text x="350" y="172" fill="#aaa" font-size="9" text-anchor="middle">Raw performance</text>
+        <!-- Sweet spot -->
+        <circle cx="350" cy="120" r="15" fill="#ffd700" opacity="0.2"/>
+        <circle cx="350" cy="120" r="5" fill="#ffd700"/>
+        <text x="370" y="123" fill="#ffd700" font-size="8">Sweet spot</text>
+      </svg>
+    </div>
+
+    <table>
+      <tr><th>Build Type</th><th>Priority</th><th>Không nên hy sinh</th><th>Budget range</th></tr>
+      <tr><td>🟢 Street Daily</td><td>Reliability, drivability, power feel</td><td>AC, ABS, ride quality, warranty</td><td>$3,000–15,000</td></tr>
+      <tr><td>🔵 Street/Track</td><td>Power + handling balance</td><td>Street legality, basic comfort</td><td>$15,000–40,000</td></tr>
+      <tr><td>🔴 Full Track</td><td>Lap time, consistency, safety</td><td>Safety equipment (cage, harness)</td><td>$40,000–200,000+</td></tr>
+      <tr><td>🟣 Show Car</td><td>Visual impact, fitment, finish</td><td>Drivability (can sacrifice power)</td><td>$10,000–100,000+</td></tr>
+    </table>
+
+    <div class="callout gold">
+      <strong>Rule #1:</strong> Define your use case trước. 80% người mua coilover và big brake kit cho xe daily không bao giờ track — họ trả tiền cho comfort mất đi mà không được gì. Spend smart.
+    </div>
+  </div>
+
+  <!-- CHAPTER B -->
+  <div class="chapter" id="ch2">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#1a0000;color:#e94560;border:2px solid #e94560;">B</div>
+      <h2>Power Stages <span class="tag engine">Engine</span> <span>— Stage 1 → Stage 3+</span></h2>
+    </div>
+    <p>Stage system = cách phân loại mức độ tune engine. Không có tiêu chuẩn tuyệt đối, nhưng đây là framework phổ biến nhất.</p>
+
+    <div class="stage-card" style="border-color:#4caf50;">
+      <h4 style="color:#4caf50;">🟢 Stage 1 — Software Only</h4>
+      <div class="power-bar"><label>Power gain: +15–30%</label><div class="bar" style="width:25%;background:#4caf50;">+20% avg</div></div>
+      <ul>
+        <li>ECU remap / flash tune (fuel, ignition, boost maps)</li>
+        <li>Không thay hardware — stock intake, stock exhaust</li>
+        <li>Turbo engine: tăng boost pressure</li>
+        <li>NA engine: optimize ignition timing + VVT</li>
+        <li>Risk: Thấp. Reversible. Warranty impact: Có thể void.</li>
+      </ul>
+      <p style="color:#aaa;font-size:0.85em;margin-top:10px;">Ví dụ: BMW 335i (306HP) → Stage 1 → ~370HP. Golf GTI (220HP) → ~265HP.</p>
+    </div>
+
+    <div class="stage-card" style="border-color:#ff9800;">
+      <h4 style="color:#ff9800;">🟡 Stage 2 — Intake + Exhaust + Tune</h4>
+      <div class="power-bar"><label>Power gain: +25–50%</label><div class="bar" style="width:40%;background:#ff9800;">+35% avg</div></div>
+      <ul>
+        <li>Performance intake (cold air intake / panel filter)</li>
+        <li>Performance exhaust (downpipe, cat-back)</li>
+        <li>ECU remap calibrated cho intake + exhaust mới</li>
+        <li>Intercooler upgrade (turbo engine)</li>
+        <li>Risk: Trung bình. Exhaust có thể fail emissions test.</li>
+      </ul>
+      <p style="color:#aaa;font-size:0.85em;margin-top:10px;">Ví dụ: BMW 335i Stage 2 → ~420HP. Golf GTI → ~310HP.</p>
+    </div>
+
+    <div class="stage-card" style="border-color:#e94560;">
+      <h4 style="color:#e94560;">🔴 Stage 3 — Internal Engine + Fueling</h4>
+      <div class="power-bar"><label>Power gain: +60–150%+</label><div class="bar" style="width:70%;background:#e94560;">+80% avg</div></div>
+      <ul>
+        <li>Upgraded turbo (larger, twin scroll, twin turbo)</li>
+        <li>Forged pistons + rods (handle higher cylinder pressure)</li>
+        <li>Upgraded fuel injectors + high-pressure fuel pump</li>
+        <li>Intake manifold, throttle body upgrade</li>
+        <li>Full standalone ECU (MoTeC, Haltech) hoặc deep remap</li>
+        <li>Risk: Cao. Cần rebuild engine. Reliability giảm nếu làm sai.</li>
+      </ul>
+      <p style="color:#aaa;font-size:0.85em;margin-top:10px;">Ví dụ: BMW 335i Stage 3 → 600–700HP. Nissan GT-R → 800–1,000HP.</p>
+    </div>
+
+    <div class="stage-card" style="border-color:#9c27b0;">
+      <h4 style="color:#9c27b0;">🟣 Stage 3+ / Full Build</h4>
+      <div class="power-bar"><label>Power gain: +150–500%+</label><div class="bar" style="width:95%;background:#9c27b0;">+200%+ possible</div></div>
+      <ul>
+        <li>Stroker kit (tăng displacement)</li>
+        <li>Custom billet engine internals</li>
+        <li>Big turbo / twin turbo / pro-charger</li>
+        <li>E85 / methanol / nitrous</li>
+        <li>Full cage, race harness, cooling system overhaul</li>
+        <li>Risk: Rất cao. Cần full engineering review. Chỉ cho track/drag.</li>
+      </ul>
+    </div>
+
+    <div class="callout red">
+      <strong>Pitfall phổ biến:</strong> Stage 3 engine + stock transmission = hộp số fail trong vài tháng. Power upgrade PHẢI đi kèm drivetrain upgrade tương ứng. Xem Chapter D.
+    </div>
+  </div>
+
+  <!-- CHAPTER C -->
+  <div class="chapter" id="ch3">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#00101a;color:#2196f3;border:2px solid #2196f3;">C</div>
+      <h2>ECU Remap Deep Dive <span class="tag elec">Electronics</span></h2>
+    </div>
+    <p>ECU remap = thay đổi các "map" (bảng tra 3D) trong ECU. Hiểu map nào làm gì giúp anh evaluate chất lượng tune.</p>
+
+    <h3>Các maps quan trọng nhất</h3>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Fuel Map -->
+        <g transform="translate(15,10)">
+          <rect x="5" y="20" width="200" height="185" rx="8" fill="#0a0a0a" stroke="#2196f3" stroke-width="1.5"/>
+          <text x="105" y="16" fill="#2196f3" font-size="10" text-anchor="middle" font-weight="700">FUEL MAP (AFR Target)</text>
+          <!-- Grid -->
+          <text x="12" y="38" fill="#555" font-size="7">Load</text>
+          <text x="105" y="198" fill="#555" font-size="7" text-anchor="middle">RPM →</text>
+          <!-- RPM labels -->
+          <text x="35" y="195" fill="#444" font-size="6">1000</text>
+          <text x="65" y="195" fill="#444" font-size="6">2500</text>
+          <text x="100" y="195" fill="#444" font-size="6">4000</text>
+          <text x="135" y="195" fill="#444" font-size="6">6000</text>
+          <text x="165" y="195" fill="#444" font-size="6">7500</text>
+          <!-- Heatmap cells - idle zone -->
+          <rect x="28" y="155" width="28" height="28" rx="2" fill="#1a3a1a"/>
+          <text x="42" y="172" fill="#4caf50" font-size="7" text-anchor="middle">14.7</text>
+          <rect x="58" y="155" width="28" height="28" rx="2" fill="#1a3a1a"/>
+          <text x="72" y="172" fill="#4caf50" font-size="7" text-anchor="middle">14.5</text>
+          <!-- Part throttle -->
+          <rect x="28" y="123" width="28" height="28" rx="2" fill="#1a2a1a"/>
+          <text x="42" y="140" fill="#aaa" font-size="7" text-anchor="middle">14.0</text>
+          <rect x="58" y="123" width="28" height="28" rx="2" fill="#1a2a1a"/>
+          <text x="72" y="140" fill="#aaa" font-size="7" text-anchor="middle">13.5</text>
+          <rect x="88" y="123" width="28" height="28" rx="2" fill="#1a2a1a"/>
+          <text x="102" y="140" fill="#aaa" font-size="7" text-anchor="middle">13.2</text>
+          <!-- WOT zone -->
+          <rect x="88" y="85" width="28" height="28" rx="2" fill="#2a0a0a"/>
+          <text x="102" y="102" fill="#e94560" font-size="7" text-anchor="middle">12.5</text>
+          <rect x="118" y="85" width="28" height="28" rx="2" fill="#2a0a0a"/>
+          <text x="132" y="102" fill="#e94560" font-size="7" text-anchor="middle">12.0</text>
+          <rect x="148" y="85" width="28" height="28" rx="2" fill="#3a0a0a"/>
+          <text x="162" y="102" fill="#e94560" font-size="7" text-anchor="middle">11.8</text>
+          <rect x="148" y="55" width="28" height="28" rx="2" fill="#3a0a0a"/>
+          <text x="162" y="72" fill="#ff9800" font-size="7" text-anchor="middle">11.5</text>
+          <!-- Legend -->
+          <text x="30" y="50" fill="#4caf50" font-size="7">Stoich (14.7)</text>
+          <text x="30" y="60" fill="#e94560" font-size="7">WOT rich (11.5–12.5)</text>
+        </g>
+
+        <!-- Ignition Map -->
+        <g transform="translate(250,10)">
+          <rect x="5" y="20" width="200" height="185" rx="8" fill="#0a0a0a" stroke="#ffd700" stroke-width="1.5"/>
+          <text x="105" y="16" fill="#ffd700" font-size="10" text-anchor="middle" font-weight="700">IGNITION TIMING MAP</text>
+          <text x="12" y="38" fill="#555" font-size="7">Load</text>
+          <text x="105" y="198" fill="#555" font-size="7" text-anchor="middle">RPM →</text>
+          <!-- Low load - high advance -->
+          <rect x="28" y="155" width="28" height="28" rx="2" fill="#1a1500"/>
+          <text x="42" y="172" fill="#ffd700" font-size="7" text-anchor="middle">12°</text>
+          <rect x="58" y="155" width="28" height="28" rx="2" fill="#1a1500"/>
+          <text x="72" y="172" fill="#ffd700" font-size="7" text-anchor="middle">18°</text>
+          <rect x="88" y="155" width="28" height="28" rx="2" fill="#1a1500"/>
+          <text x="102" y="172" fill="#ffd700" font-size="7" text-anchor="middle">22°</text>
+          <!-- Part throttle -->
+          <rect x="28" y="123" width="28" height="28" rx="2" fill="#151000"/>
+          <text x="42" y="140" fill="#ff9800" font-size="7" text-anchor="middle">10°</text>
+          <rect x="88" y="123" width="28" height="28" rx="2" fill="#151000"/>
+          <text x="102" y="140" fill="#ff9800" font-size="7" text-anchor="middle">16°</text>
+          <rect x="118" y="123" width="28" height="28" rx="2" fill="#151000"/>
+          <text x="132" y="140" fill="#ff9800" font-size="7" text-anchor="middle">20°</text>
+          <!-- WOT - must avoid knock -->
+          <rect x="118" y="85" width="28" height="28" rx="2" fill="#2a1500"/>
+          <text x="132" y="102" fill="#e94560" font-size="7" text-anchor="middle">8°</text>
+          <rect x="148" y="85" width="28" height="28" rx="2" fill="#2a0000"/>
+          <text x="162" y="102" fill="#e94560" font-size="7" text-anchor="middle">6°</text>
+          <rect x="148" y="55" width="28" height="28" rx="2" fill="#2a0000"/>
+          <text x="162" y="72" fill="#e94560" font-size="7" text-anchor="middle">4°</text>
+          <text x="30" y="50" fill="#ffd700" font-size="7">High advance = more power</text>
+          <text x="30" y="60" fill="#e94560" font-size="7">WOT: limited by knock</text>
+        </g>
+
+        <!-- Boost Map -->
+        <g transform="translate(485,10)">
+          <rect x="5" y="20" width="200" height="185" rx="8" fill="#0a0a0a" stroke="#9c27b0" stroke-width="1.5"/>
+          <text x="105" y="16" fill="#9c27b0" font-size="10" text-anchor="middle" font-weight="700">BOOST MAP (Turbo)</text>
+          <text x="12" y="38" fill="#555" font-size="7">Throttle %</text>
+          <text x="105" y="198" fill="#555" font-size="7" text-anchor="middle">RPM →</text>
+          <!-- Boost curve -->
+          <rect x="28" y="155" width="28" height="28" rx="2" fill="#0a001a"/>
+          <text x="42" y="172" fill="#9c27b0" font-size="7" text-anchor="middle">0.3b</text>
+          <rect x="58" y="123" width="28" height="28" rx="2" fill="#150028"/>
+          <text x="72" y="140" fill="#9c27b0" font-size="7" text-anchor="middle">0.8b</text>
+          <rect x="88" y="95" width="28" height="28" rx="2" fill="#1a0033"/>
+          <text x="102" y="112" fill="#9c27b0" font-size="7" text-anchor="middle">1.2b</text>
+          <rect x="118" y="75" width="28" height="28" rx="2" fill="#200040"/>
+          <text x="132" y="92" fill="#ffd700" font-size="7" text-anchor="middle">1.5b</text>
+          <rect x="148" y="75" width="28" height="28" rx="2" fill="#250048"/>
+          <text x="162" y="92" fill="#ffd700" font-size="7" text-anchor="middle">1.5b</text>
+          <rect x="148" y="55" width="28" height="28" rx="2" fill="#1a0038"/>
+          <text x="162" y="72" fill="#aaa" font-size="7" text-anchor="middle">1.3b</text>
+          <!-- Boost target line -->
+          <text x="30" y="50" fill="#ffd700" font-size="7">Peak boost target</text>
+          <text x="30" y="60" fill="#aaa" font-size="7">Taper at high RPM = safety</text>
+        </g>
+      </svg>
+    </div>
+
+    <h3>AFR Target — Quan trọng nhất</h3>
+    <table>
+      <tr><th>Operating condition</th><th>Target AFR</th><th>Lý do</th></tr>
+      <tr><td>Idle / light cruise</td><td>14.7:1 (stoichiometric)</td><td>Fuel efficiency, emissions</td></tr>
+      <tr><td>Part throttle</td><td>13.5–14.5:1</td><td>Balance efficiency + response</td></tr>
+      <tr><td>WOT NA engine</td><td>12.8–13.2:1</td><td>Power without lean knock risk</td></tr>
+      <tr><td>WOT Turbo (mild boost)</td><td>11.5–12.5:1</td><td>Rich = cooling cylinder, prevent knock</td></tr>
+      <tr><td>WOT Turbo (high boost)</td><td>10.5–11.5:1</td><td>Very rich = thermal protection</td></tr>
+      <tr><td>E85 fuel</td><td>9.0–9.8:1</td><td>Ethanol stoich = 9.8:1, richer target</td></tr>
+    </table>
+
+    <div class="callout blue">
+      <strong>Ignition timing advance:</strong> Đánh lửa sớm hơn (high advance) = áp suất peak cao hơn = more power. Nhưng quá sớm + áp suất cao = kích nổ (knock). Tuner tìm Maximum Brake Torque (MBT) timing — điểm tối đa trước khi knock. Knock sensor là safety net, không phải targeting tool.
+    </div>
+  </div>
+
+  <!-- CHAPTER D -->
+  <div class="chapter" id="ch4">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#001a00;color:#4caf50;border:2px solid #4caf50;">D</div>
+      <h2>Drivetrain Matching <span class="tag trans">Transmission</span></h2>
+    </div>
+    <p>Power upgrade mà không upgrade drivetrain = tiền vứt, hộp số vỡ. Đây là cách match đúng:</p>
+
+    <div class="highlight-box">
+      <h4>⚠️ Torque Capacity — Phải biết trước khi tune</h4>
+      <table>
+        <tr><th>Component</th><th>Stock Limit</th><th>Upgraded Limit</th></tr>
+        <tr><td>ZF 8HP (AT — BMW/Porsche/Audi)</td><td>~550Nm</td><td>~750–900Nm (TCU remap + hardware)</td></tr>
+        <tr><td>DSG DQ250 (VW/Audi 6-speed wet)</td><td>~350Nm</td><td>~500Nm</td></tr>
+        <tr><td>DSG DQ500 (VW/Audi 7-speed wet)</td><td>~600Nm</td><td>~800Nm</td></tr>
+        <tr><td>Porsche PDK (991/992)</td><td>~700Nm</td><td>~900Nm</td></tr>
+        <tr><td>Getrag 420 (BMW MT)</td><td>~400Nm</td><td>Clutch upgrade → unlimited (Sachs, OS Giken)</td></tr>
+        <tr><td>Rear diff (open)</td><td>Stock torque</td><td>LSD upgrade for high-power builds</td></tr>
+      </table>
+    </div>
+
+    <h3>Clutch Upgrade Path (MT)</h3>
+    <table>
+      <tr><th>Stage</th><th>Clutch type</th><th>Torque capacity</th><th>Street feel</th></tr>
+      <tr><td>Stock</td><td>Organic single disc</td><td>Factory torque</td><td>✅ Smooth, light pedal</td></tr>
+      <tr><td>Stage 1–2</td><td>Uprated organic / Kevlar</td><td>+30–50%</td><td>✅ Still daily-able</td></tr>
+      <tr><td>Stage 3</td><td>Ceramic disc (paddle / full)</td><td>+100%+</td><td>⚠️ Chattery when cold, heavy pedal</td></tr>
+      <tr><td>Race</td><td>Twin/triple plate ceramic</td><td>Unlimited</td><td>❌ ON/OFF, not street friendly</td></tr>
+    </table>
+
+    <div class="callout green">
+      <strong>LSD — Must-have cho high power RWD:</strong> Open diff + 600HP RWD = một bánh spin, xe không đi đâu. Torsen LSD (Torque-sensing): tự động, smooth, daily friendly. Clutch-type LSD (OS Giken, Quaife): more aggressive, wear faster but better track performance.
+    </div>
+  </div>
+
+  <!-- CHAPTER E -->
+  <div class="chapter" id="ch5">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#1a0d00;color:#ff9800;border:2px solid #ff9800;">E</div>
+      <h2>Suspension Setup <span class="tag chassis">Chassis</span></h2>
+    </div>
+
+    <h3>Setup theo use case</h3>
+    <div class="diagram-box">
+      <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg">
+        <!-- Street -->
+        <g transform="translate(10,10)">
+          <rect x="5" y="15" width="200" height="130" rx="8" fill="#0a0a0a" stroke="#4caf50" stroke-width="1.5"/>
+          <text x="105" y="12" fill="#4caf50" font-size="10" text-anchor="middle" font-weight="700">STREET BUILD</text>
+          <text x="105" y="35" fill="#aaa" font-size="8" text-anchor="middle">Spring rate: 6–10 kg/mm F, 5–8 kg/mm R</text>
+          <text x="105" y="50" fill="#aaa" font-size="8" text-anchor="middle">Damping: 8–12 clicks from full soft</text>
+          <text x="105" y="65" fill="#aaa" font-size="8" text-anchor="middle">Camber: −0.5° to −1.5°</text>
+          <text x="105" y="80" fill="#aaa" font-size="8" text-anchor="middle">Toe front: −0.05° (slight out)</text>
+          <text x="105" y="95" fill="#aaa" font-size="8" text-anchor="middle">Toe rear: +0.1° (slight in)</text>
+          <text x="105" y="115" fill="#4caf50" font-size="8" text-anchor="middle">✅ Comfort + performance</text>
+          <text x="105" y="128" fill="#4caf50" font-size="8" text-anchor="middle">✅ Lốp không mòn bất thường</text>
+        </g>
+        <!-- Track Day -->
+        <g transform="translate(245,10)">
+          <rect x="5" y="15" width="200" height="130" rx="8" fill="#0a0a0a" stroke="#ff9800" stroke-width="1.5"/>
+          <text x="105" y="12" fill="#ff9800" font-size="10" text-anchor="middle" font-weight="700">TRACK DAY</text>
+          <text x="105" y="35" fill="#aaa" font-size="8" text-anchor="middle">Spring rate: 12–16 kg/mm F, 10–14 kg/mm R</text>
+          <text x="105" y="50" fill="#aaa" font-size="8" text-anchor="middle">Damping: 15–20 clicks from full soft</text>
+          <text x="105" y="65" fill="#aaa" font-size="8" text-anchor="middle">Camber: −2° to −3°</text>
+          <text x="105" y="80" fill="#aaa" font-size="8" text-anchor="middle">Toe front: 0° to −0.1°</text>
+          <text x="105" y="95" fill="#aaa" font-size="8" text-anchor="middle">Toe rear: +0.15° to +0.2°</text>
+          <text x="105" y="115" fill="#ff9800" font-size="8" text-anchor="middle">✅ Sharp turn-in, minimal roll</text>
+          <text x="105" y="128" fill="#e94560" font-size="8" text-anchor="middle">❌ Harsh on bumpy roads</text>
+        </g>
+        <!-- Time Attack -->
+        <g transform="translate(480,10)">
+          <rect x="5" y="15" width="205" height="130" rx="8" fill="#0a0a0a" stroke="#e94560" stroke-width="1.5"/>
+          <text x="107" y="12" fill="#e94560" font-size="10" text-anchor="middle" font-weight="700">TIME ATTACK</text>
+          <text x="107" y="35" fill="#aaa" font-size="8" text-anchor="middle">Spring rate: 18–25+ kg/mm F/R</text>
+          <text x="107" y="50" fill="#aaa" font-size="8" text-anchor="middle">Damping: Near full stiff</text>
+          <text x="107" y="65" fill="#aaa" font-size="8" text-anchor="middle">Camber: −3° to −4.5°</text>
+          <text x="107" y="80" fill="#aaa" font-size="8" text-anchor="middle">Toe: Optimized per tire/track</text>
+          <text x="107" y="95" fill="#aaa" font-size="8" text-anchor="middle">Sway bars: Maximum</text>
+          <text x="107" y="115" fill="#e94560" font-size="8" text-anchor="middle">✅ Maximum grip, consistency</text>
+          <text x="107" y="128" fill="#e94560" font-size="8" text-anchor="middle">❌ Undriveable on street</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="callout orange">
+      <strong>Tire là component quan trọng nhất:</strong> Coilover $5,000 + stock tire vs. stock suspension + Michelin Pilot Sport 4S → tire wins. Upgrade tire trước khi upgrade suspension nếu budget hạn chế. Sticky tire bù cho rất nhiều suspension thiếu sót.
+    </div>
+  </div>
+
+  <!-- CHAPTER F -->
+  <div class="chapter" id="ch6">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#1a0000;color:#e94560;border:2px solid #e94560;">F</div>
+      <h2>Brake Matching <span class="tag brake">Brakes</span></h2>
+    </div>
+    <table>
+      <tr><th>Use Case</th><th>Pad</th><th>Fluid</th><th>Rotor</th><th>Notes</th></tr>
+      <tr><td>Daily street</td><td>Stock / Hawk HPS</td><td>DOT 4</td><td>Stock vented</td><td>Comfortable, quiet</td></tr>
+      <tr><td>Street/occasional track</td><td>Ferodo DS2500 / Hawk HP+</td><td>DOT 5.1</td><td>Slotted rotor</td><td>Best all-rounder</td></tr>
+      <tr><td>Track day</td><td>Ferodo DS3000 / Brembo RC</td><td>Castrol SRF / Motul RBF700</td><td>Slotted + drilled</td><td>Bed-in required</td></tr>
+      <tr><td>Time attack/Race</td><td>Pagid RS29 / Carbone Lorraine</td><td>Racing fluid 300°C+</td><td>Carbon/steel race rotor</td><td>Cold performance poor</td></tr>
+    </table>
+    <div class="callout gold">
+      <strong>Brake bedding procedure:</strong> Pad mới PHẢI được bed-in đúng cách — 5–6 lần phanh từ 80→20km/h với lực vừa (không phanh tới dừng hoàn toàn), để nguội giữa mỗi lần. Không bed-in → pad glazed → giảm friction vĩnh viễn.
+    </div>
+  </div>
+
+  <!-- CHAPTER G -->
+  <div class="chapter" id="ch7">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#1a001a;color:#9c27b0;border:2px solid #9c27b0;">G</div>
+      <h2>Aero Integration <span class="tag aero">Aero</span></h2>
+    </div>
+    <p>Khi nào aero thực sự có tác dụng? Downforce tỷ lệ với <strong>v²</strong> — tốc độ thấp = aero gần như vô nghĩa.</p>
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Speed axis -->
+        <line x1="50" y1="120" x2="620" y2="120" stroke="#333" stroke-width="1.5"/>
+        <line x1="50" y1="20" x2="50" y2="125" stroke="#333" stroke-width="1.5"/>
+        <text x="335" y="140" fill="#aaa" font-size="9" text-anchor="middle">Speed (km/h)</text>
+        <text x="20" y="70" fill="#aaa" font-size="9" text-anchor="middle" transform="rotate(-90,20,70)">Downforce</text>
+        <!-- Speed labels -->
+        <text x="110" y="130" fill="#555" font-size="8" text-anchor="middle">80</text>
+        <text x="200" y="130" fill="#555" font-size="8" text-anchor="middle">120</text>
+        <text x="320" y="130" fill="#555" font-size="8" text-anchor="middle">180</text>
+        <text x="460" y="130" fill="#555" font-size="8" text-anchor="middle">250</text>
+        <text x="580" y="130" fill="#555" font-size="8" text-anchor="middle">300+</text>
+        <!-- Downforce curve (exponential) -->
+        <path d="M50,118 C100,117 150,115 200,110 C280,100 350,80 420,55 C480,35 540,22 620,12" fill="none" stroke="#9c27b0" stroke-width="2.5"/>
+        <!-- Useful zone marker -->
+        <line x1="320" y1="20" x2="320" y2="120" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="320" y="15" fill="#ffd700" font-size="8" text-anchor="middle">~180km/h</text>
+        <text x="320" y="8" fill="#ffd700" font-size="7" text-anchor="middle">Aero bắt đầu meaningful</text>
+        <!-- Zones -->
+        <rect x="50" y="20" width="270" height="100" rx="0" fill="#111" opacity="0.5"/>
+        <text x="185" y="75" fill="#e94560" font-size="9" text-anchor="middle">Street speed zone</text>
+        <text x="185" y="88" fill="#e94560" font-size="8" text-anchor="middle">Aero = minimal benefit</text>
+        <rect x="320" y="20" width="300" height="100" rx="0" fill="#0a1a00" opacity="0.5"/>
+        <text x="470" y="60" fill="#4caf50" font-size="9" text-anchor="middle">Track speed zone</text>
+        <text x="470" y="73" fill="#4caf50" font-size="8" text-anchor="middle">Aero = significant benefit</text>
+      </svg>
+    </div>
+    <table>
+      <tr><th>Speed</th><th>Downforce benefit</th><th>Verdict</th></tr>
+      <tr><td>&lt; 100 km/h (city)</td><td>Negligible — &lt;5kg</td><td>❌ Aesthetic only</td></tr>
+      <tr><td>100–180 km/h (highway)</td><td>Slight — 10–40kg</td><td>⚠️ Marginal</td></tr>
+      <tr><td>180–250 km/h (track)</td><td>Significant — 50–200kg</td><td>✅ Noticeable</td></tr>
+      <tr><td>250+ km/h (time attack)</td><td>Massive — 200–1000kg+</td><td>✅✅ Critical</td></tr>
+    </table>
+    <div class="callout orange">
+      <strong>Street car + full aero kit:</strong> 90% là aesthetic. Không bao giờ đủ tốc độ để tận dụng. Tuy nhiên: splitter + diffuser giúp một chút ổn định cao tốc trên đường. Rear wing trên street car = drag nhiều, downforce ít = thực ra chậm hơn.
+    </div>
+  </div>
+
+  <!-- CHAPTER H — FULL BUILD EXAMPLES -->
+  <div class="chapter" id="ch8">
+    <div class="chapter-header">
+      <div class="chapter-num" style="background:#111;color:#ffd700;border:2px solid #ffd700;">H</div>
+      <h2>Full Build Examples — 3 xe thực tế</h2>
+    </div>
+
+    <!-- Build 1 -->
+    <div class="stage-card" style="border-color:#2196f3;margin-bottom:20px;">
+      <h4 style="color:#2196f3;">🔵 Build 1: BMW M340i — Street Performance ($18,000 budget)</h4>
+      <table>
+        <tr><th>Category</th><th>Modification</th><th>Result</th></tr>
+        <tr><td>Engine (Stage 2)</td><td>ECUTEK flash tune + downpipe + intercooler</td><td>387HP → 480HP, 500Nm → 650Nm</td></tr>
+        <tr><td>Transmission</td><td>TCU remap (ZF 8HP)</td><td>Faster shift, remove torque cut</td></tr>
+        <tr><td>Suspension</td><td>KW V3 coilover, −10mm ride height</td><td>Better body control, still daily</td></tr>
+        <tr><td>Brakes</td><td>Ferodo DS2500 pad + DOT 5.1 fluid</td><td>Track-ready braking, street quiet</td></tr>
+        <tr><td>Tires</td><td>Michelin Pilot Sport 4S 275/35/19</td><td>Biggest grip gain of entire build</td></tr>
+        <tr><td>Aero</td><td>None (street use only)</td><td>—</td></tr>
+      </table>
+      <p style="color:#4caf50;margin-top:10px;">✅ 0–100: ~4.1s → ~3.5s · Daily driveable · Still under warranty with careful tune</p>
+    </div>
+
+    <!-- Build 2 -->
+    <div class="stage-card" style="border-color:#ff9800;margin-bottom:20px;">
+      <h4 style="color:#ff9800;">🟡 Build 2: Porsche 911 GT3 — Track Day Weapon ($45,000 budget)</h4>
+      <table>
+        <tr><th>Category</th><th>Modification</th><th>Result</th></tr>
+        <tr><td>Engine</td><td>Manthey Racing camshaft + intake + ECU</td><td>510HP → 570HP</td></tr>
+        <tr><td>Transmission</td><td>PDK remap + short-shift kit</td><td>6ms faster shift</td></tr>
+        <tr><td>Suspension</td><td>Öhlins TTX36 coilover + front splitter mount</td><td>Full geometry control</td></tr>
+        <tr><td>Alignment</td><td>−2.8° camber F, −1.8° R, toe optimized</td><td>Flat cornering, maximum grip</td></tr>
+        <tr><td>Brakes</td><td>Brembo GT 6-pot BBK + Pagid RS29 + Castrol SRF</td><td>Zero fade, 20+ laps consistent</td></tr>
+        <tr><td>Aero</td><td>Manthey Touring Kit (splitter, diffuser, wing)</td><td>+180kg downforce at 220km/h</td></tr>
+        <tr><td>Safety</td><td>Harness bar + HANS device + helmet</td><td>Track legal safety</td></tr>
+      </table>
+      <p style="color:#ff9800;margin-top:10px;">✅ Nürburgring lap time: ~7:20 → ~7:00 · Street registrable · Weekend track, weekday drive</p>
+    </div>
+
+    <!-- Build 3 -->
+    <div class="stage-card" style="border-color:#e94560;margin-bottom:20px;">
+      <h4 style="color:#e94560;">🔴 Build 3: Nissan GT-R — Full Stage 3 ($80,000 budget)</h4>
+      <table>
+        <tr><th>Category</th><th>Modification</th><th>Result</th></tr>
+        <tr><td>Engine</td><td>Alpha 12 turbo kit + forged internals + E85</td><td>545HP → 1,200HP</td></tr>
+        <tr><td>Transmission</td><td>AAM Competition DCT rebuild + HD clutch packs</td><td>Handles 1,200HP torque</td></tr>
+        <tr><td>Drivetrain</td><td>OS Giken Super Lock LSD F+R + driveshafts</td><td>All 4 wheels pull equally</td></tr>
+        <tr><td>Fuel system</td><td>ID1050X injectors + Bosch 044 fuel pump ×2</td><td>Sufficient fuel at full power</td></tr>
+        <tr><td>ECU</td><td>MoTeC M150 standalone</td><td>Full engine management, no OEM limits</td></tr>
+        <tr><td>Cooling</td><td>Full aluminum radiator + oil cooler + IAT cooler</td><td>Stable temps under sustained load</td></tr>
+        <tr><td>Safety</td><td>Full roll cage + fire suppression + 6-point harness</td><td>Drag strip / time attack safe</td></tr>
+      </table>
+      <p style="color:#e94560;margin-top:10px;">✅ 0–400m: ~9.2s · Quarter mile monster · NOT daily driveable · Track/drag only</p>
+    </div>
+
+    <div class="callout gold">
+      <strong>Lesson từ 3 builds:</strong> Build 1 = best value (40% power gain, full daily). Build 2 = best track experience. Build 3 = extreme performance nhưng narrow use case. <strong>Match the build to the mission.</strong>
+    </div>
+  </div>
+
+  <!-- FINAL QUIZ -->
+  <div class="quiz-section" id="quiz">
+    <h2>🏁 Final Test — Tổng hợp Bài 1–7</h2>
+    <div class="subtitle">10 câu · Cần đúng 8/10 để PASS · Đây là bài test khó nhất</div>
+
+    <div class="question" id="q1">
+      <div class="qnum">Câu 01 · Engine + ECU</div>
+      <p>Tune Stage 1 BMW 335i tăng boost từ 0.8 → 1.2 bar. Knock sensor liên tục trigger ở 5,500 RPM WOT. Nguyên nhân có thể nhất là gì?</p>
+      <div class="options">
+        <label onclick="sel(this,'q1','a')"><input type="radio"><span>A. Turbo quá nhỏ</span></label>
+        <label onclick="sel(this,'q1','b')"><input type="radio"><span>B. Ignition timing quá advance ở vùng đó + fuel map lean → kích nổ. Cần retard timing và/hoặc enrich AFR</span></label>
+        <label onclick="sel(this,'q1','c')"><input type="radio"><span>C. Intake air filter bẩn</span></label>
+        <label onclick="sel(this,'q1','d')"><input type="radio"><span>D. Coolant nhiệt độ cao</span></label>
+      </div>
+      <div class="answer-reveal" id="ans1">✅ B — Tăng boost → cylinder pressure tăng → dễ knock hơn. Cần: (1) Enrich fuel map WOT (rich = cooling, knock resist), (2) Retard ignition timing tại RPM đó, (3) Check IAT — intercooler cần thiết.</div>
+    </div>
+
+    <div class="question" id="q2">
+      <div class="qnum">Câu 02 · Transmission</div>
+      <p>Tune engine BMW ZF 8HP lên 800Nm mà chỉ remap ECU, không remap TCU. Triệu chứng gì sẽ xảy ra?</p>
+      <div class="options">
+        <label onclick="sel(this,'q2','a')"><input type="radio"><span>A. Xe nhanh hơn bình thường</span></label>
+        <label onclick="sel(this,'q2','b')"><input type="radio"><span>B. TCU detect torque vượt limit → torque cut hoặc limp mode → xe không đủ power, cảm giác giật</span></label>
+        <label onclick="sel(this,'q2','c')"><input type="radio"><span>C. Không có vấn đề gì</span></label>
+        <label onclick="sel(this,'q2','d')"><input type="radio"><span>D. Hộp số shift nhanh hơn</span></label>
+      </div>
+      <div class="answer-reveal" id="ans2">✅ B — ZF 8HP TCU có torque limit ~550Nm stock. ECU báo "800Nm" qua CAN → TCU kích hoạt torque cut để bảo vệ. Cần ECU + TCU remap đồng thời để hộp số chấp nhận torque mới.</div>
+    </div>
+
+    <div class="question" id="q3">
+      <div class="qnum">Câu 03 · Chassis + Electronics</div>
+      <p>RWD 600HP xe bị oversteer khi exit cua ở track. Driver muốn giữ control. 3 giải pháp nào hợp lý nhất?</p>
+      <div class="options">
+        <label onclick="sel(this,'q3','a')"><input type="radio"><span>A. Tăng front toe-out + reduce rear spring rate + bật TCS partial</span></label>
+        <label onclick="sel(this,'q3','b')"><input type="radio"><span>B. Tăng rear spring rate + increase rear toe-in + TCS ở mức track (không tắt hoàn toàn)</span></label>
+        <label onclick="sel(this,'q3','c')"><input type="radio"><span>C. Tắt TCS hoàn toàn + giảm camber</span></label>
+        <label onclick="sel(this,'q3','d')"><input type="radio"><span>D. Tăng rear wing angle + tắt ESC</span></label>
+      </div>
+      <div class="answer-reveal" id="ans3">✅ B — Oversteer exit cua = rear losing traction. Fix: (1) Stiffer rear spring → less rear squat → more rear grip, (2) Rear toe-in tăng → rear stability, (3) TCS partial → prevent wheelspin mà vẫn cho throttle control. Tắt TCS hoàn toàn với 600HP RWD = nguy hiểm trừ khi driver rất skilled.</div>
+    </div>
+
+    <div class="question" id="q4">
+      <div class="qnum">Câu 04 · Brakes</div>
+      <p>Track day lap 5, brake pedal bắt đầu "xốp" dù vừa thay pad mới. Chẩn đoán đúng nhất?</p>
+      <div class="options">
+        <label onclick="sel(this,'q4','a')"><input type="radio"><span>A. Pad chưa bed-in → pad fade</span></label>
+        <label onclick="sel(this,'q4','b')"><input type="radio"><span>B. Brake fluid sôi → fluid fade → hơi nước trong line → pedal compressible</span></label>
+        <label onclick="sel(this,'q4','c')"><input type="radio"><span>C. Rotor quá mỏng</span></label>
+        <label onclick="sel(this,'q4','d')"><input type="radio"><span>D. Caliper piston bị kẹt</span></label>
+      </div>
+      <div class="answer-reveal" id="ans4">✅ B — "Xốp" = pedal travel tăng = compressible fluid = fluid fade. Pad mới không gây pedal xốp (pad fade = ít friction, không xốp pedal). Fix: flush với DOT 5.1 minimum, racing fluid tốt hơn.</div>
+    </div>
+
+    <div class="question" id="q5">
+      <div class="qnum">Câu 05 · Aero</div>
+      <p>Street car chạy HCMC daily + highway 120km/h. Owner muốn add full aero kit (splitter + wing + diffuser). Advice đúng?</p>
+      <div class="options">
+        <label onclick="sel(this,'q5','a')"><input type="radio"><span>A. OK — aero luôn giúp performance</span></label>
+        <label onclick="sel(this,'q5','b')"><input type="radio"><span>B. Không recommend — ở 120km/h downforce chỉ ~15–30kg, không đủ meaningful. Wing thêm drag → thực tế chậm hơn và tốn xăng hơn. Splitter + diffuser có thể giữ nếu thích aesthetic.</span></label>
+        <label onclick="sel(this,'q5','c')"><input type="radio"><span>C. Chỉ cần wing, không cần splitter</span></label>
+        <label onclick="sel(this,'q5','d')"><input type="radio"><span>D. Add tất cả + lower ride height thêm</span></label>
+      </div>
+      <div class="answer-reveal" id="ans5">✅ B — Aero meaningful bắt đầu ~180–200km/h. Street car = aesthetic choice, không phải performance. Rear wing = drag tăng + downforce không đủ bù → slower top speed. Honest advice: invest budget vào tire hoặc suspension thay vì aero ở speed này.</div>
+    </div>
+
+    <div class="question" id="q6">
+      <div class="qnum">Câu 06 · Engine</div>
+      <p>NA engine tune ignition timing advance thêm 4° toàn bộ RPM range. Kết quả nào đúng?</p>
+      <div class="options">
+        <label onclick="sel(this,'q6','a')"><input type="radio"><span>A. Power tăng đồng đều, không có risk</span></label>
+        <label onclick="sel(this,'q6','b')"><input type="radio"><span>B. Power tăng ở vùng chưa đạt MBT, nhưng vùng đã ở MBT hoặc gần knock limit → kích nổ, damage</span></label>
+        <label onclick="sel(this,'q6','c')"><input type="radio"><span>C. Fuel consumption giảm</span></label>
+        <label onclick="sel(this,'q6','d')"><input type="radio"><span>D. Không có tác dụng</span></label>
+      </div>
+      <div class="answer-reveal" id="ans6">✅ B — MBT (Maximum Brake Torque) là điểm tối ưu cho từng cell. Blanket +4° không đúng vì mỗi RPM/load có MBT khác nhau. Vùng còn margin → power tăng. Vùng đã ở limit → knock → piston damage. Cần cell-by-cell tuning với dyno + knock sensor.</div>
+    </div>
+
+    <div class="question" id="q7">
+      <div class="qnum">Câu 07 · Suspension</div>
+      <p>Sau khi setup track alignment (−3° camber, toe-out front), xe ăn lốp phía trong rất nhanh khi street driving. Giải thích?</p>
+      <div class="options">
+        <label onclick="sel(this,'q7','a')"><input type="radio"><span>A. Lốp kém chất lượng</span></label>
+        <label onclick="sel(this,'q7','b')"><input type="radio"><span>B. −3° camber → khi đi thẳng, chỉ phần trong lốp tiếp xúc đất → mòn nhanh phía trong. Track: xe nghiêng khi cua bù lại. Street đi thẳng nhiều = bất lợi</span></label>
+        <label onclick="sel(this,'q7','c')"><input type="radio"><span>C. Áp suất lốp quá cao</span></label>
+        <label onclick="sel(this,'q7','d')"><input type="radio"><span>D. Toe-in quá nhiều</span></label>
+      </div>
+      <div class="answer-reveal" id="ans7">✅ B — Negative camber tối ưu cho cornering (xe nghiêng → mặt lốp phẳng với đường). Nhưng đường thẳng: camber → edge contact → mòn nhanh phía trong. Street optimal: −0.5° to −1.5°. Track: −2° to −3° chấp nhận mòn lốp nhanh để đổi lấy grip.</div>
+    </div>
+
+    <div class="question" id="q8">
+      <div class="qnum">Câu 08 · Drivetrain</div>
+      <p>Stage 3 build: 700HP RWD, open rear diff. Vấn đề khi launch từ đứng yên?</p>
+      <div class="options">
+        <label onclick="sel(this,'q8','a')"><input type="radio"><span>A. Xe launch hoàn hảo vì 700HP</span></label>
+        <label onclick="sel(this,'q8','b')"><input type="radio"><span>B. Open diff → torque đi về bánh ít lực cản (thường 1 bánh) → 1 bánh spin, 1 bánh đứng yên → xe không đi, smoke 1 bên</span></label>
+        <label onclick="sel(this,'q8','c')"><input type="radio"><span>C. Xe understeer</span></label>
+        <label onclick="sel(this,'q8','d')"><input type="radio"><span>D. Hộp số quá tải</span></label>
+      </div>
+      <div class="answer-reveal" id="ans8">✅ B — Open diff chia torque đến bánh ít lực cản nhất. Với 700HP, 1 bánh spin instantly, torque gần như 100% đi vào bánh đó. Solution: Clutch-type LSD (OS Giken) hoặc spool (drag racing) → cả 2 bánh cùng spin đều → proper launch.</div>
+    </div>
+
+    <div class="question" id="q9">
+      <div class="qnum">Câu 09 · Electronics</div>
+      <p>Sau khi tune Stage 2 (ECU + intake + exhaust), check engine light bật với code P0171 (System Too Lean). Nguyên nhân có thể nhất?</p>
+      <div class="options">
+        <label onclick="sel(this,'q9','a')"><input type="radio"><span>A. Exhaust leak</span></label>
+        <label onclick="sel(this,'q9','b')"><input type="radio"><span>B. MAF sensor không được rescale sau khi đổi intake → ECU tính sai khối lượng air → fuel map lean</span></label>
+        <label onclick="sel(this,'q9','c')"><input type="radio"><span>C. Injector bẩn</span></label>
+        <label onclick="sel(this,'q9','d')"><input type="radio"><span>D. Spark plug worn</span></label>
+      </div>
+      <div class="answer-reveal" id="ans9">✅ B — Đổi intake (khác MAF housing diameter hoặc dòng khí turbulent khác) → MAF đọc sai → ECU tính ít air hơn thực tế → inject ít fuel → lean. Fix: rescale MAF trong tune hoặc chuyển sang Speed Density tune (không dùng MAF).</div>
+    </div>
+
+    <div class="question" id="q10">
+      <div class="qnum">Câu 10 · Full Build</div>
+      <p>Client có $20,000 budget, Porsche Cayman 718 GTS (718HP), mục tiêu: tốt nhất cho track day cuối tuần + daily thứ 2–6. Recommendation tối ưu?</p>
+      <div class="options">
+        <label onclick="sel(this,'q10','a')"><input type="radio"><span>A. Full Stage 3 engine build + wing + roll cage</span></label>
+        <label onclick="sel(this,'q10','b')"><input type="radio"><span>B. ECU flash tune (Stage 1) + KW V3 coilover + Michelin PS4S + Ferodo DS2500 + DOT 5.1 + alignment</span></label>
+        <label onclick="sel(this,'q10','c')"><input type="radio"><span>C. Chỉ buy performance exhaust</span></label>
+        <label onclick="sel(this,'q10','d')"><input type="radio"><span>D. BBK front + rear wing + full aero kit</span></label>
+      </div>
+      <div class="answer-reveal" id="ans10">✅ B — Perfect balance cho dual-use: ECU tune (+30HP, driveable) + coilover (adjustable cho street/track) + PS4S (biggest grip gain) + brake upgrade (track fade resistance) + alignment (optimize geometry). Tổng ~$12,000 → còn $8,000 dự phòng tire change + maintenance. Stage 3 = overkill, kill daily comfort. BBK không cần cho Cayman stock brake đã excellent.</div>
+    </div>
+
+    <button class="btn-check" onclick="checkQuiz()">🏁 Kiểm tra kết quả</button>
+    <div class="result-box" id="result-box"><div id="result-text"></div></div>
+  </div>
+
+</div>
+
+<footer>
+  <p><a href="lesson-06-electronics.html">← Bài 6: Electronics</a> &nbsp;|&nbsp; <strong style="color:#ffd700;">🏁 Series Complete!</strong></p>
+  <p style="margin-top:12px;">Automotive Engineering Series · Bài 1–7 Complete</p>
+  <p style="margin-top:8px;">Built by Zera 🌟 for Bach · RCC Learning Series · 2026</p>
+</footer>
+
+<script>
+  const answers={q1:'b',q2:'b',q3:'b',q4:'b',q5:'b',q6:'b',q7:'b',q8:'b',q9:'b',q10:'b'};
+  const selected={};
+  function sel(el,qid,opt){
+    document.querySelectorAll('#'+qid+' label').forEach(l=>l.classList.remove('selected'));
+    el.classList.add('selected');
+    selected[qid]=opt;
+  }
+  function checkQuiz(){
+    let score=0;
+    const total=Object.keys(answers).length;
+    Object.keys(answers).forEach(q=>{
+      const n=q.replace('q','');
+      const a=document.getElementById('ans'+n);
+      if(a) a.style.display='block';
+      const labels=document.querySelectorAll('#'+q+' label');
+      const opts=['a','b','c','d'];
+      labels.forEach((l,i)=>{
+        if(opts[i]===answers[q]) l.classList.add('correct');
+        if(opts[i]===selected[q] && selected[q]!==answers[q]) l.classList.add('wrong');
+      });
+      if(selected[q]===answers[q]) score++;
+    });
+    const box=document.getElementById('result-box');
+    const txt=document.getElementById('result-text');
+    box.style.display='block';
+    if(score>=8){
+      box.className='result-box show pass';
+      txt.innerHTML=`<strong>🏁 PASS — ${score}/${total} đúng!</strong><br><br>
+      🎉 Anh đã hoàn thành toàn bộ Automotive Engineering Series (Bài 1–7).<br>
+      Kiến thức từ series này cover: Engine fundamentals → Transmission → Chassis → Aero → Brakes → Electronics → Tuning practice.<br><br>
+      <strong>Next step:</strong> Apply vào real builds — evaluate JV partners, assess tune shops, và make informed decisions khi deal với bodykit/restomod business.`;
+    } else {
+      box.className='result-box show fail';
+      txt.innerHTML=`<strong>❌ ${score}/${total} — Cần ôn lại một số phần.</strong><br><br>
+      ${score<5 ? 'Recommend review Bài 1–4 trước.' : 'Gần rồi — review lại các câu sai, đặc biệt phần ECU + Drivetrain matching.'}`;
+    }
+  }
+</script>
+</body>
+</html>
