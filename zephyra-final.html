@@ -704,13 +704,33 @@
 
     <!-- LAW 5 -->
     <div class="card orange" style="margin-bottom:20px;">
-      <h4 class="orange">⑤ Luật Thuế TNCN 2007 (sửa đổi 2025) — Điều 13: Chuyển nhượng vốn</h4>
+      <h4 class="orange">⑤ Thuế TNCN khi chuyển nhượng — CTCP vs TNHH (khác nhau quan trọng)</h4>
+
+      <p style="font-size:0.88em;margin-bottom:12px;"><strong>⚠️ Hai loại hình công ty có cách tính thuế HOÀN TOÀN KHÁC NHAU:</strong></p>
+
       <blockquote style="background:#fff8f0;border-left:3px solid #f97316;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#7c2d12;font-style:italic;">
-        "Thu nhập từ chuyển nhượng phần vốn góp trong các tổ chức kinh tế... Thu nhập tính thuế từ chuyển nhượng vốn góp là thu nhập nhận được trừ giá mua phần vốn chuyển nhượng và các chi phí hợp lý liên quan. Thuế suất: <strong>20%</strong>."
-        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— Luật TNCN, Điều 13 + Điều 23</span>
+        <strong>[Trường hợp A — TNHH: Chuyển nhượng vốn góp]</strong><br>
+        "Thu nhập tính thuế từ chuyển nhượng vốn góp = Giá chuyển nhượng − Giá mua phần vốn chuyển nhượng − Chi phí hợp lý liên quan. Thuế suất: <strong>20%</strong> trên thu nhập tính thuế."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— TT 111/2013/TT-BTC, Điều 11, Khoản 1(b) + Điều 17</span>
       </blockquote>
-      <p style="font-size:0.88em;"><strong>Áp dụng:</strong> Khi TV exit và SPV buyback cổ phần, hoặc khi TV bán % sở hữu cho người khác → phát sinh TNCN 20% trên phần lãi (giá bán − giá mua ban đầu). <strong>Không tránh được</strong> — cần tính vào exit model từ đầu.</p>
-      <div class="fix"><strong>📝 Planning note:</strong> Giả sử TV góp 5.2 tỷ (20% xe 26 tỷ), exit sau 3 năm khi xe được định giá 20 tỷ → nhận 4 tỷ → lỗ 1.2 tỷ → không phát sinh TNCN (không có lãi). Nếu lãi → TNCN 20% trên phần lãi thực. Khuyến nghị: TV nên giữ tối thiểu 3–5 năm để tránh tình huống vừa lỗ vốn vừa phức tạp thuế.</div>
+
+      <blockquote style="background:#fff8f0;border-left:3px solid #ef4444;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#7c2d12;font-style:italic;">
+        <strong>[Trường hợp B — CTCP: Chuyển nhượng cổ phần không niêm yết]</strong><br>
+        "Thuế TNCN từ chuyển nhượng chứng khoán = Giá chuyển nhượng từng lần × Thuế suất <strong>0.1%</strong>. Không phân biệt có lãi hay lỗ — tính trên giá bán."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— TT 111/2013/TT-BTC, Điều 11 Khoản 1(c) + TT 92/2015/TT-BTC, Điều 16</span>
+      </blockquote>
+
+      <table style="margin-top:12px;font-size:0.85em;">
+        <tr><th>Tiêu chí</th><th>TNHH — Vốn góp</th><th>CTCP — Cổ phần không niêm yết</th></tr>
+        <tr><td>Thuế suất</td><td class="bad">20% trên LÃI</td><td class="good">0.1% trên GIÁ BÁN</td></tr>
+        <tr><td>Cách tính</td><td>Giá bán − Giá mua − Chi phí</td><td>Giá bán × 0.1% (flat, bất kể lãi/lỗ)</td></tr>
+        <tr><td>Ví dụ: bán 4 tỷ, mua 5.2 tỷ (lỗ)</td><td class="good">Lỗ → không nộp thuế</td><td class="warn">4,000,000,000 × 0.1% = 4,000,000 VND</td></tr>
+        <tr><td>Ví dụ: bán 7 tỷ, mua 5.2 tỷ (lãi 1.8 tỷ)</td><td class="bad">1,800,000,000 × 20% = 360,000,000 VND</td><td class="good">7,000,000,000 × 0.1% = 7,000,000 VND</td></tr>
+        <tr><td><strong>Áp dụng cho Zephyra SPV CTCP</strong></td><td>❌ Không phải trường hợp này</td><td class="good">✅ <strong>Đây là trường hợp đúng</strong></td></tr>
+      </table>
+
+      <div class="fix" style="margin-top:12px;"><strong>✅ Kết luận cho Zephyra CTCP:</strong> TV bán/chuyển nhượng cổ phần Class A/B → chỉ nộp <strong>0.1% × giá bán</strong> — rất thấp, không phụ thuộc vào lãi/lỗ. Ví dụ: TV bán 4 tỷ đồng → nộp 4 triệu đồng thuế TNCN. Đây là ưu thế lớn của CTCP so với TNHH khi thị trường xe xuống giá (TV lỗ vẫn phải nộp 0.1% nhưng số tiền nhỏ, không bị cộng thêm 20% lãi).</div>
+      <p style="font-size:0.82em;color:#888;margin-top:8px;">📌 Lưu ý: Nếu SPV chọn loại hình TNHH thay vì CTCP → thuế exit chuyển sang 20% trên lãi → bất lợi hơn nhiều khi xe tăng giá. CTCP có lợi thế hơn TNHH về thuế chuyển nhượng.</p>
     </div>
 
     <!-- LAW 6 -->
@@ -754,7 +774,7 @@
         <tr><td>2</td><td>PIT benefit in-kind</td><td>Luôn invoice usage fee thị trường, TV là "khách thuê xe"</td><td>Thấp</td><td>Rất thấp nếu execute đúng</td></tr>
         <tr><td>3</td><td>Class share chưa có tiền lệ</td><td>Class = quyền booking/cost, không gắn với xe cụ thể</td><td>Trung bình</td><td>Thấp với Điều lệ soạn kỹ</td></tr>
         <tr><td>4</td><td>Double trước bạ (KB-A)</td><td>Dùng Kịch bản B: TV góp tiền → SPV mua xe</td><td>Thấp</td><td>Không có</td></tr>
-        <tr><td>5</td><td>TNCN khi exit</td><td>Không tránh được — tính vào model từ đầu (20% trên lãi)</td><td>N/A</td><td>Không tránh được</td></tr>
+        <tr><td>5</td><td>TNCN khi exit/chuyển nhượng</td><td><strong>CTCP: 0.1% × giá bán</strong> (rất thấp). TNHH: 20% lãi (cao hơn). → Chọn CTCP.</td><td>Thấp</td><td>0.1% không tránh được nhưng rất nhỏ</td></tr>
         <tr><td>6</td><td>Liability tai nạn (C2)</td><td>Chọn Cấu trúc 1 (SPV) hoặc mua liability insurance per TV</td><td>Trung bình</td><td>Thấp với C1</td></tr>
       </table>
     </div>
