@@ -114,6 +114,7 @@
   <a href="#s6">VI. Pitfalls</a>
   <a href="#s7">VII. Đề xuất cuối</a>
   <a href="#s8">VIII. Action Plan</a>
+  <a href="#s9">IX. Luật tham chiếu</a>
 </nav>
 
 <div class="container">
@@ -650,10 +651,119 @@
 
 </div>
 
+  <!-- SECTION IX — LEGAL REFERENCE -->
+  <div class="divider"></div>
+  <div class="section" id="s9">
+    <div class="section-label">Section IX · Educational Reference</div>
+    <h2>Trích Dẫn Luật Liên Quan</h2>
+    <div class="desc">Nguyên văn các điều luật trọng tâm áp dụng cho mô hình Zephyra. Mục đích tham khảo — không thay thế tư vấn pháp lý chuyên nghiệp.</div>
+
+    <!-- LAW 1 -->
+    <div class="card blue" style="margin-bottom:20px;">
+      <h4 class="blue">① Luật Doanh nghiệp 2020 — Điều 114: Cổ phần ưu đãi (Class Shares)</h4>
+      <blockquote style="background:#f0f7ff;border-left:3px solid #3b82f6;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#1e3a5f;font-style:italic;">
+        "Cổ phần ưu đãi gồm các loại sau đây: cổ phần ưu đãi biểu quyết, cổ phần ưu đãi cổ tức, cổ phần ưu đãi hoàn lại và cổ phần ưu đãi khác theo quy định tại Điều lệ công ty và pháp luật về chứng khoán."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— Luật DN 2020, Điều 114, Khoản 1</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Áp dụng:</strong> SPV CTCP Zephyra phát hành <strong>"cổ phần ưu đãi khác"</strong> (Class A, B, N...) theo Điều lệ công ty. Quyền gắn với từng Class (booking days, cost sharing) được định nghĩa trong Điều lệ + SHA — không phải trong Luật DN.</p>
+      <div class="fix" style="margin-top:10px;"><strong>⚠️ Workaround:</strong> Luật VN chưa có tiền lệ "class shares gắn với tài sản vật lý cụ thể". Cách xử lý: <strong>Class A/B/N = mức quyền booking + cost allocation</strong>, không ghi "sở hữu xe X". Xe thuộc SPV toàn bộ. SHA định nghĩa quyền sử dụng per-class. Giảm thiểu rủi ro pháp lý đáng kể.</div>
+    </div>
+
+    <!-- LAW 2 -->
+    <div class="card blue" style="margin-bottom:20px;">
+      <h4 class="blue">② Luật Doanh nghiệp 2020 — Điều 36: Góp vốn bằng tài sản</h4>
+      <blockquote style="background:#f0f7ff;border-left:3px solid #3b82f6;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#1e3a5f;font-style:italic;">
+        "Tài sản góp vốn không phải là Đồng Việt Nam, ngoại tệ tự do chuyển đổi, vàng phải được các thành viên, cổ đông sáng lập hoặc tổ chức thẩm định giá chuyên nghiệp định giá và được thể hiện thành Đồng Việt Nam."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— Luật DN 2020, Điều 36, Khoản 2</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Áp dụng:</strong> Kịch bản A (RCC góp xe vào SPV) — xe phải được <strong>định giá chính thức</strong> trước khi góp vốn. Chi phí định giá + rủi ro VAT trung gian là lý do nên ưu tiên <strong>Kịch bản B</strong>.</p>
+      <div class="fix"><strong>✅ Workaround (Kịch bản B):</strong> TV góp tiền mặt → SPV dùng tiền mua xe trực tiếp → Không cần định giá hiện vật, không có VAT trung gian, 1 lần trước bạ duy nhất.</div>
+    </div>
+
+    <!-- LAW 3 -->
+    <div class="card red" style="margin-bottom:20px;">
+      <h4 class="red">③ Thông tư 45/2013/TT-BTC + Thông tư 78/2014/TT-BTC — Giới hạn khấu hao xe ô tô</h4>
+      <blockquote style="background:#fff5f5;border-left:3px solid #ef4444;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#7f1d1d;font-style:italic;">
+        "Đối với ô tô chở người từ 9 chỗ ngồi trở xuống (trừ ô tô dùng cho kinh doanh vận tải hành khách, kinh doanh du lịch, khách sạn): mức khấu hao tối đa để tính vào chi phí được trừ khi xác định thu nhập chịu thuế không vượt quá <strong>1.600.000.000 đồng</strong>/xe."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— TT 78/2014/TT-BTC, Điều 6, Khoản 2, Điểm 2.2(đ), được hướng dẫn bởi TT 45/2013/TT-BTC</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Impact:</strong> McLaren 750S nguyên giá ~26 tỷ VND → chỉ 1.6 tỷ được khấu hao vào chi phí hợp lệ → <strong>24.4 tỷ không được trừ</strong> → SPV phải nộp CIT trên phần này mỗi năm.</p>
+      <div class="fix"><strong>⚠️ Workaround — Mã ngành 7710:</strong> Điều khoản trên loại trừ "<em>ô tô dùng cho kinh doanh vận tải hành khách, kinh doanh du lịch, khách sạn</em>". SPV đăng ký <strong>mã ngành 7710 — Cho thuê xe có động cơ</strong> (Quyết định 27/2018/QĐ-TTg) → xe là tài sản kinh doanh cho thuê → <strong>không bị giới hạn 1.6 tỷ</strong> → khấu hao theo nguyên giá thực tế (6–10 năm, đường thẳng theo TT 45/2013). <em>Cần xác nhận bằng written opinion từ tax counsel trước khi áp dụng.</em></div>
+    </div>
+
+    <!-- LAW 4 -->
+    <div class="card red" style="margin-bottom:20px;">
+      <h4 class="red">④ Thông tư 111/2013/TT-BTC — Thuế TNCN: Benefit in-kind</h4>
+      <blockquote style="background:#fff5f5;border-left:3px solid #ef4444;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#7f1d1d;font-style:italic;">
+        "Thu nhập chịu thuế từ tiền lương, tiền công còn bao gồm: các khoản lợi ích bằng tiền hoặc không bằng tiền ngoài tiền lương, tiền công do người sử dụng lao động trả mà người nộp thuế được hưởng dưới mọi hình thức."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— TT 111/2013/TT-BTC, Điều 2, Khoản 2, Điểm đ</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Risk:</strong> Nếu TV dùng xe SPV <strong>không trả usage fee</strong> (hoặc trả thấp hơn giá thị trường) → cơ quan thuế có thể xác định là benefit in-kind → tính TNCN trên giá trị sử dụng xe. Đặc biệt rủi ro nếu TV đồng thời là nhân viên/giám đốc của SPV.</p>
+      <div class="fix"><strong>✅ Workaround:</strong> (1) Luôn lập invoice cho từng lần sử dụng xe với usage fee ở mức thị trường. (2) TV là "khách hàng thuê xe" của SPV — không phải nhân viên nhận benefit. (3) Mọi booking đều qua hệ thống có ghi nhận giá. Khi đó đây là giao dịch thương mại, không phải benefit in-kind.</div>
+    </div>
+
+    <!-- LAW 5 -->
+    <div class="card orange" style="margin-bottom:20px;">
+      <h4 class="orange">⑤ Luật Thuế TNCN 2007 (sửa đổi 2025) — Điều 13: Chuyển nhượng vốn</h4>
+      <blockquote style="background:#fff8f0;border-left:3px solid #f97316;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#7c2d12;font-style:italic;">
+        "Thu nhập từ chuyển nhượng phần vốn góp trong các tổ chức kinh tế... Thu nhập tính thuế từ chuyển nhượng vốn góp là thu nhập nhận được trừ giá mua phần vốn chuyển nhượng và các chi phí hợp lý liên quan. Thuế suất: <strong>20%</strong>."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— Luật TNCN, Điều 13 + Điều 23</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Áp dụng:</strong> Khi TV exit và SPV buyback cổ phần, hoặc khi TV bán % sở hữu cho người khác → phát sinh TNCN 20% trên phần lãi (giá bán − giá mua ban đầu). <strong>Không tránh được</strong> — cần tính vào exit model từ đầu.</p>
+      <div class="fix"><strong>📝 Planning note:</strong> Giả sử TV góp 5.2 tỷ (20% xe 26 tỷ), exit sau 3 năm khi xe được định giá 20 tỷ → nhận 4 tỷ → lỗ 1.2 tỷ → không phát sinh TNCN (không có lãi). Nếu lãi → TNCN 20% trên phần lãi thực. Khuyến nghị: TV nên giữ tối thiểu 3–5 năm để tránh tình huống vừa lỗ vốn vừa phức tạp thuế.</div>
+    </div>
+
+    <!-- LAW 6 -->
+    <div class="card orange" style="margin-bottom:20px;">
+      <h4 class="orange">⑥ Bộ Luật Dân sự 2015 — Điều 207–220: Sở hữu chung</h4>
+      <blockquote style="background:#fff8f0;border-left:3px solid #f97316;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#7c2d12;font-style:italic;">
+        "Sở hữu chung theo phần là sở hữu chung mà trong đó phần quyền sở hữu của mỗi chủ sở hữu được xác định đối với tài sản chung. Mỗi chủ sở hữu chung theo phần có quyền, nghĩa vụ đối với tài sản thuộc sở hữu chung tương ứng với phần quyền sở hữu của mình."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— BLDS 2015, Điều 209</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Áp dụng cho Cấu trúc 2:</strong> HĐ bán phần sở hữu xe dựa trên quy định này. <strong>Vấn đề:</strong> Giấy đăng ký xe chỉ ghi 1 tên (RCC) → co-owners không có chứng minh pháp lý trực tiếp trên giấy tờ xe → rủi ro khi RCC có tranh chấp với bên thứ 3.</p>
+      <div class="fix"><strong>⚠️ Workaround (nếu dùng C2):</strong> HĐ sở hữu chung phải được <strong>công chứng</strong> (Luật Công chứng 2024) + đăng ký giao dịch bảo đảm tại Cục Đăng ký quốc gia để tăng hiệu lực đối kháng với bên thứ 3. Tuy nhiên đây chỉ là giải pháp tạm — vẫn kém an toàn hơn Cấu trúc 1 (SPV).</div>
+    </div>
+
+    <!-- LAW 7 -->
+    <div class="card" style="border-left:4px solid #22c55e;margin-bottom:20px;">
+      <h4 class="green">⑦ Thông tư 24/2023/TT-BCA — Đăng ký xe, sang tên</h4>
+      <blockquote style="background:#f0fdf4;border-left:3px solid #22c55e;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#14532d;font-style:italic;">
+        "Trong thời hạn 30 ngày kể từ ngày làm giấy tờ chuyển quyền sở hữu xe, chủ xe mới phải đến cơ quan đăng ký xe nơi chủ xe cư trú hoặc có trụ sở để làm thủ tục đăng ký, cấp biển số xe."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— TT 24/2023/TT-BCA, Điều 10</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Áp dụng:</strong> Kịch bản B — SPV mua xe mới → đăng ký tên SPV trong 30 ngày. Kịch bản A — RCC góp xe vào SPV → phải sang tên trong 30 ngày. <strong>Lưu ý:</strong> Đăng ký xe tên tổ chức (SPV) cần: Giấy CN ĐKDN, con dấu, CMND người đại diện pháp luật.</p>
+      <div class="fix"><strong>✅ Best practice:</strong> Kịch bản B → mua xe nhân danh SPV ngay từ đầu → không cần sang tên trung gian → tiết kiệm thời gian + trước bạ.</div>
+    </div>
+
+    <!-- LAW 8 -->
+    <div class="card" style="border-left:4px solid #22c55e;margin-bottom:20px;">
+      <h4 class="green">⑧ Quyết định 27/2018/QĐ-TTg — Mã ngành 7710: Cho thuê xe có động cơ</h4>
+      <blockquote style="background:#f0fdf4;border-left:3px solid #22c55e;padding:14px 18px;margin:12px 0;border-radius:0 6px 6px 0;font-size:0.88em;color:#14532d;font-style:italic;">
+        "Mã ngành 7710 — Cho thuê xe có động cơ: Hoạt động này gồm cho thuê ô tô, xe tải, xe kéo moóc và các phương tiện tương tự không có người lái... Không gồm: cho thuê xe có lái (thuộc mã 4932, 4939)."
+        <br><span style="font-style:normal;color:#666;font-size:0.9em;">— QĐ 27/2018/QĐ-TTg, Phụ lục I (Hệ thống ngành kinh tế VN)</span>
+      </blockquote>
+      <p style="font-size:0.88em;"><strong>Áp dụng:</strong> SPV đăng ký mã ngành 7710 → xe là tài sản phục vụ hoạt động cho thuê → <strong>thoát giới hạn khấu hao 1.6 tỷ</strong> (theo ngoại lệ trong TT 78/2014). Theo Luật Đầu tư 2020, mã 7710 <strong>không phải ngành nghề kinh doanh có điều kiện</strong> → không cần giấy phép vận tải.</p>
+      <div class="fix"><strong>📋 Setup requirement:</strong> (1) Bổ sung mã ngành 7710 vào Giấy ĐKDN tại Sở KH&ĐT, (2) Lập hợp đồng cho thuê xe chuẩn với từng TV/booking, (3) Xuất hóa đơn VAT 10% cho mỗi giao dịch, (4) Khai báo doanh thu định kỳ. Tổng chi phí setup: ~2–5tr (thủ tục thay đổi ngành nghề).</div>
+    </div>
+
+    <div class="card gold">
+      <h4 class="gold">📌 Tóm tắt Workarounds theo thứ tự ưu tiên</h4>
+      <table style="margin-top:12px;">
+        <tr><th>#</th><th>Vấn đề</th><th>Workaround</th><th>Độ phức tạp</th><th>Rủi ro còn lại</th></tr>
+        <tr><td>1</td><td>Giới hạn khấu hao 1.6 tỷ</td><td>Đăng ký mã ngành 7710 + hợp đồng cho thuê thực tế</td><td>Thấp</td><td>Cần confirm tax counsel</td></tr>
+        <tr><td>2</td><td>PIT benefit in-kind</td><td>Luôn invoice usage fee thị trường, TV là "khách thuê xe"</td><td>Thấp</td><td>Rất thấp nếu execute đúng</td></tr>
+        <tr><td>3</td><td>Class share chưa có tiền lệ</td><td>Class = quyền booking/cost, không gắn với xe cụ thể</td><td>Trung bình</td><td>Thấp với Điều lệ soạn kỹ</td></tr>
+        <tr><td>4</td><td>Double trước bạ (KB-A)</td><td>Dùng Kịch bản B: TV góp tiền → SPV mua xe</td><td>Thấp</td><td>Không có</td></tr>
+        <tr><td>5</td><td>TNCN khi exit</td><td>Không tránh được — tính vào model từ đầu (20% trên lãi)</td><td>N/A</td><td>Không tránh được</td></tr>
+        <tr><td>6</td><td>Liability tai nạn (C2)</td><td>Chọn Cấu trúc 1 (SPV) hoặc mua liability insurance per TV</td><td>Trung bình</td><td>Thấp với C1</td></tr>
+      </table>
+    </div>
+  </div>
+
 <footer>
   <p>Zephyra Toys4Share — Phân tích Cấu trúc Pháp lý · Tổng hợp: RCC + Zera Analysis · March 2026</p>
   <p style="margin-top:6px;">Prepared by Zera 🌟 · Royal Canary Corp · Tài liệu nội bộ — Không lưu hành bên ngoài</p>
-  <p style="margin-top:6px;font-size:0.8em;">Disclaimer: Tài liệu mang tính tham khảo nội bộ. Không thay thế tư vấn pháp lý/thuế chuyên nghiệp.</p>
+  <p style="margin-top:6px;font-size:0.8em;">Disclaimer: Tài liệu mang tính tham khảo nội bộ — educational purpose only. Không thay thế tư vấn pháp lý/thuế chuyên nghiệp. Các trích dẫn luật dựa trên văn bản hiện hành đến tháng 3/2026.</p>
 </footer>
 
 <script>
