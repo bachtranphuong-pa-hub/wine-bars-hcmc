@@ -217,233 +217,225 @@
   <!-- SECTION IV — OWNERSHIP MATRIX -->
   <div class="section" id="s4">
     <div class="section-label">Section IV</div>
-    <h2>Ownership & Usage Tier Matrix</h2>
-    <div class="desc">Mỗi xe có nhóm thành viên riêng với % sở hữu khác nhau → usage days, quỹ vận hành, và exit value khác nhau theo từng Class. Dưới đây là framework dựa trên ví dụ trong document.</div>
+    <h2>Ownership & Usage Model</h2>
+    <div class="desc">Model fluid theo Zephyra Club Rules — không có tier cứng nhắc. Quyền sử dụng tỷ lệ trực tiếp với % sở hữu. Mỗi xe có nhóm co-owner riêng, % riêng, không ảnh hưởng nhau.</div>
 
-    <h3>Nguyên tắc mapping % Ownership → Usage Days</h3>
+    <h3>Nguyên tắc cốt lõi (Zephyra Club Rules)</h3>
     <div class="card blue">
-      <h4 class="blue">Công thức chuẩn</h4>
-      <p><strong>Usage Days/năm = % ownership × 300 ngày</strong> (300 = 365 trừ 65 ngày maintenance/insurance/event)<br>
-      <strong>Quỹ vận hành đóng hàng quý</strong> = (Chi phí ước tính cả năm × % ownership) ÷ 4<br>
-      <strong>Exit value</strong> = % ownership × Giá thị trường xe tại thời điểm exit (2 dealer quotes average)</p>
+      <h4 class="blue">Công thức fluid — % Ownership = Everything</h4>
+      <p>
+        <strong>Tổng ngày có thể đặt/xe/năm: 350 ngày</strong> (365 − 15 ngày bảo dưỡng)<br>
+        <strong>Usage Days = % sở hữu × 350</strong> — pro-rata từ ngày tham gia<br>
+        <strong>Mileage:</strong> 200 km/ngày included · Vượt → phụ phí per km<br>
+        <strong>Chi phí chung</strong> (bảo hiểm, bảo dưỡng) = chia theo % sở hữu<br>
+        <strong>Chi phí trong chuyến</strong> (xăng, phụ phí mileage) = người đặt chịu<br>
+        <strong>Exit value = % sở hữu × giá xe thị trường</strong> tại thời điểm exit<br>
+        <strong>Bán % sở hữu:</strong> tự do bất kỳ lúc nào · Tự định giá · Không cần xin phép
+      </p>
     </div>
 
-    <h3>Class A — Xe thứ nhất (Ví dụ: McLaren 750S ~26 tỷ VND)</h3>
+    <div class="card green">
+      <h4 class="green">Guest Pass (Pilot)</h4>
+      <p>
+        Phí: <strong>2× extra day rate</strong> · Club lấy 20% commission · Còn lại về quỹ xe<br>
+        Giới hạn: tối đa <strong>5 ngày guest/năm/thành viên</strong><br>
+        Điều kiện: chỉ referral từ thành viên (không public)<br>
+        Booking flow: <strong>REQUESTED → CONFIRMED → PRE_TRIP_CHECK → INSPECTED → ON_DELIVERY → IN_PROGRESS → POST_TRIP → COMPLETED</strong>
+      </p>
+    </div>
+
+    <h3>Fluid Ownership Calculator — Ví dụ minh hoạ</h3>
+    <div class="card gold" style="margin-bottom:6px;">
+      <h4 class="gold">Không có "Tier A/B/C" cố định — chỉ có % và quyền tương ứng</h4>
+      <p>Mỗi member tự chọn % khi tham gia (bội số 10%). % càng cao → ngày dùng càng nhiều → chi phí chung chia càng nhiều → exit value càng lớn. Không có ưu tiên booking theo tier — <strong>first-come-first-served</strong>, đặt trước tối thiểu 3 ngày.</p>
+    </div>
+
+    <h3>Class A — Xe thứ nhất (Ví dụ: McLaren 750S · Giá mua: 26 tỷ VND)</h3>
+    <p style="font-size:0.85em;color:#666;margin-bottom:10px;">Chi phí chung ước tính: ~1.14 tỷ/năm · Extra day rate (guest pass base): ~3.25tr/ngày</p>
     <div class="matrix-wrap">
       <table class="matrix">
         <tr>
           <th class="left">Thành viên</th>
           <th>% Sở hữu</th>
-          <th>Tier</th>
-          <th>Usage Days/năm</th>
-          <th>Quỹ/quý (ước tính)</th>
-          <th>Exit Value (ví dụ 22 tỷ)</th>
-          <th>Quyền biểu quyết</th>
+          <th>Vốn góp (26 tỷ)</th>
+          <th>Usage Days/năm<br><small style="font-weight:400">× 350</small></th>
+          <th>Mileage/năm<br><small style="font-weight:400">days × 200km</small></th>
+          <th>Chi phí chung/năm<br><small style="font-weight:400">% × 1.14 tỷ</small></th>
+          <th>Exit Value<br><small style="font-weight:400">% × giá thị trường</small></th>
         </tr>
         <tr>
           <td class="name">RCC (Founder)</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:60px;background:#1a1a1a;"></div>
-              <span class="pct-num">30%</span>
-            </div>
-          </td>
-          <td><span class="tier-founder">FOUNDER</span></td>
-          <td>90 ngày</td>
-          <td>~112tr</td>
-          <td>6.6 tỷ</td>
-          <td>Veto quyền</td>
+          <td><div class="pct-bar"><div class="bar" style="width:60px;background:#1a1a1a;"></div><span class="pct-num">30%</span></div></td>
+          <td>7.8 tỷ</td>
+          <td><strong>105 ngày</strong></td>
+          <td>21,000 km</td>
+          <td>342tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV1</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:40px;background:#d4a017;"></div>
-              <span class="pct-num">20%</span>
-            </div>
-          </td>
-          <td><span class="tier-a">TIER A</span></td>
-          <td>60 ngày</td>
-          <td>~75tr</td>
-          <td>4.4 tỷ</td>
-          <td>Thường</td>
+          <td><div class="pct-bar"><div class="bar" style="width:40px;background:#555;"></div><span class="pct-num">20%</span></div></td>
+          <td>5.2 tỷ</td>
+          <td><strong>70 ngày</strong></td>
+          <td>14,000 km</td>
+          <td>228tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV2</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:40px;background:#d4a017;"></div>
-              <span class="pct-num">20%</span>
-            </div>
-          </td>
-          <td><span class="tier-a">TIER A</span></td>
-          <td>60 ngày</td>
-          <td>~75tr</td>
-          <td>4.4 tỷ</td>
-          <td>Thường</td>
+          <td><div class="pct-bar"><div class="bar" style="width:40px;background:#555;"></div><span class="pct-num">20%</span></div></td>
+          <td>5.2 tỷ</td>
+          <td><strong>70 ngày</strong></td>
+          <td>14,000 km</td>
+          <td>228tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV5</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:30px;background:#3b82f6;"></div>
-              <span class="pct-num">15%</span>
-            </div>
-          </td>
-          <td><span class="tier-b">TIER B</span></td>
-          <td>45 ngày</td>
-          <td>~56tr</td>
-          <td>3.3 tỷ</td>
-          <td>Thường</td>
+          <td><div class="pct-bar"><div class="bar" style="width:30px;background:#888;"></div><span class="pct-num">15%</span></div></td>
+          <td>3.9 tỷ</td>
+          <td><strong>52.5 ngày</strong></td>
+          <td>10,500 km</td>
+          <td>171tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV9</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:30px;background:#3b82f6;"></div>
-              <span class="pct-num">15%</span>
-            </div>
-          </td>
-          <td><span class="tier-b">TIER B</span></td>
-          <td>45 ngày</td>
-          <td>~56tr</td>
-          <td>3.3 tỷ</td>
-          <td>Thường</td>
+          <td><div class="pct-bar"><div class="bar" style="width:30px;background:#888;"></div><span class="pct-num">15%</span></div></td>
+          <td>3.9 tỷ</td>
+          <td><strong>52.5 ngày</strong></td>
+          <td>10,500 km</td>
+          <td>171tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr style="background:#f8f7f4;font-weight:700;">
           <td class="name">TOTAL Class A</td>
           <td><span class="pct-num">100%</span></td>
-          <td>—</td>
-          <td>300 ngày</td>
-          <td>~374tr/quý</td>
-          <td>22 tỷ</td>
+          <td>26 tỷ</td>
+          <td>350 ngày</td>
+          <td>70,000 km</td>
+          <td>~1.14 tỷ/năm</td>
           <td>—</td>
         </tr>
       </table>
     </div>
 
-    <h3>Class B — Xe thứ hai (Ví dụ: Lamborghini Urus ~22 tỷ VND)</h3>
+    <h3>Class B — Xe thứ hai (Ví dụ: Lamborghini Urus · Giá mua: 22 tỷ VND)</h3>
+    <p style="font-size:0.85em;color:#666;margin-bottom:10px;">Chi phí chung ước tính: ~812tr/năm · Extra day rate (guest pass base): ~2.5tr/ngày</p>
     <div class="matrix-wrap">
       <table class="matrix">
         <tr>
           <th class="left">Thành viên</th>
           <th>% Sở hữu</th>
-          <th>Tier</th>
-          <th>Usage Days/năm</th>
-          <th>Quỹ/quý (ước tính)</th>
-          <th>Exit Value (ví dụ 18 tỷ)</th>
-          <th>Ghi chú</th>
+          <th>Vốn góp (22 tỷ)</th>
+          <th>Usage Days/năm<br><small style="font-weight:400">× 350</small></th>
+          <th>Mileage/năm<br><small style="font-weight:400">days × 200km</small></th>
+          <th>Chi phí chung/năm<br><small style="font-weight:400">% × 812tr</small></th>
+          <th>Exit Value<br><small style="font-weight:400">% × giá thị trường</small></th>
         </tr>
         <tr>
           <td class="name">RCC (Founder)</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:40px;background:#1a1a1a;"></div>
-              <span class="pct-num">20%</span>
-            </div>
-          </td>
-          <td><span class="tier-founder">FOUNDER</span></td>
-          <td>60 ngày</td>
-          <td>~60tr</td>
-          <td>3.6 tỷ</td>
-          <td>% thấp hơn Class A</td>
+          <td><div class="pct-bar"><div class="bar" style="width:40px;background:#1a1a1a;"></div><span class="pct-num">20%</span></div></td>
+          <td>4.4 tỷ</td>
+          <td><strong>70 ngày</strong></td>
+          <td>14,000 km</td>
+          <td>162tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV3</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:50px;background:#d4a017;"></div>
-              <span class="pct-num">25%</span>
-            </div>
-          </td>
-          <td><span class="tier-a">TIER A</span></td>
-          <td>75 ngày</td>
-          <td>~75tr</td>
-          <td>4.5 tỷ</td>
-          <td>Lead member</td>
+          <td><div class="pct-bar"><div class="bar" style="width:50px;background:#555;"></div><span class="pct-num">25%</span></div></td>
+          <td>5.5 tỷ</td>
+          <td><strong>87.5 ngày</strong></td>
+          <td>17,500 km</td>
+          <td>203tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV4</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:50px;background:#d4a017;"></div>
-              <span class="pct-num">25%</span>
-            </div>
-          </td>
-          <td><span class="tier-a">TIER A</span></td>
-          <td>75 ngày</td>
-          <td>~75tr</td>
-          <td>4.5 tỷ</td>
-          <td>Lead member</td>
+          <td><div class="pct-bar"><div class="bar" style="width:50px;background:#555;"></div><span class="pct-num">25%</span></div></td>
+          <td>5.5 tỷ</td>
+          <td><strong>87.5 ngày</strong></td>
+          <td>17,500 km</td>
+          <td>203tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV6</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:30px;background:#3b82f6;"></div>
-              <span class="pct-num">15%</span>
-            </div>
-          </td>
-          <td><span class="tier-b">TIER B</span></td>
-          <td>45 ngày</td>
-          <td>~45tr</td>
-          <td>2.7 tỷ</td>
-          <td></td>
+          <td><div class="pct-bar"><div class="bar" style="width:30px;background:#888;"></div><span class="pct-num">15%</span></div></td>
+          <td>3.3 tỷ</td>
+          <td><strong>52.5 ngày</strong></td>
+          <td>10,500 km</td>
+          <td>122tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr>
           <td class="name">TV7</td>
-          <td>
-            <div class="pct-bar">
-              <div class="bar" style="width:30px;background:#3b82f6;"></div>
-              <span class="pct-num">15%</span>
-            </div>
-          </td>
-          <td><span class="tier-b">TIER B</span></td>
-          <td>45 ngày</td>
-          <td>~45tr</td>
-          <td>2.7 tỷ</td>
-          <td></td>
+          <td><div class="pct-bar"><div class="bar" style="width:30px;background:#888;"></div><span class="pct-num">15%</span></div></td>
+          <td>3.3 tỷ</td>
+          <td><strong>52.5 ngày</strong></td>
+          <td>10,500 km</td>
+          <td>122tr</td>
+          <td>% × giá xe lúc exit</td>
         </tr>
         <tr style="background:#f8f7f4;font-weight:700;">
           <td class="name">TOTAL Class B</td>
           <td><span class="pct-num">100%</span></td>
-          <td>—</td>
-          <td>300 ngày</td>
-          <td>~300tr/quý</td>
-          <td>18 tỷ</td>
+          <td>22 tỷ</td>
+          <td>350 ngày</td>
+          <td>70,000 km</td>
+          <td>~812tr/năm</td>
           <td>—</td>
         </tr>
       </table>
     </div>
 
-    <h3>Usage Tier — Quyền & Giới hạn</h3>
-    <table>
-      <tr><th>Tier</th><th>% Ownership</th><th>Usage Days/năm</th><th>Booking Priority</th><th>Peak period</th><th>Guest pass</th></tr>
-      <tr><td><span class="tier-founder">FOUNDER (RCC)</span></td><td>20–30%</td><td>60–90 ngày</td><td>Ưu tiên cao nhất</td><td>Guaranteed 1 slot Tết/năm</td><td>Không giới hạn</td></tr>
-      <tr><td><span class="tier-a">TIER A</span></td><td>20–25%</td><td>60–75 ngày</td><td>Ưu tiên 2</td><td>Rotation theo thứ tự gia nhập</td><td>4 lần/năm</td></tr>
-      <tr><td><span class="tier-b">TIER B</span></td><td>15%</td><td>45 ngày</td><td>Ưu tiên 3</td><td>Sau Tier A</td><td>2 lần/năm</td></tr>
-      <tr><td><span class="tier-c">TIER C (tương lai)</span></td><td>10%</td><td>30 ngày</td><td>Standard</td><td>Không guaranteed</td><td>1 lần/năm</td></tr>
-    </table>
-
-    <div class="card green">
-      <h4 class="green">Booking Rules quan trọng</h4>
-      <p>• Advance booking: tối thiểu 48h · Max consecutive: 5 ngày/lần<br>
-      • Unused days trong tháng: KHÔNG carry over sang tháng sau (use-it-or-lose-it)<br>
-      • Hủy &lt;24h: mất 1 ngày booking slot của tháng đó<br>
-      • Conflict giữa TV cùng tier: first-come-first-served theo app booking<br>
-      • Peak period (Tết, 30/4, 2/9): đặt trước theo lịch rotation hàng năm</p>
+    <h3>% Ownership Reference Table — Mọi mức từ 10–50%</h3>
+    <p style="font-size:0.85em;color:#666;margin-bottom:10px;">Bảng tra nhanh: thành viên muốn tham gia bao nhiêu % thì được dùng bao nhiêu ngày/km.</p>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <tr>
+          <th>% Sở hữu</th>
+          <th>Usage Days/năm</th>
+          <th>Usage Days/tháng (avg)</th>
+          <th>Mileage included/năm</th>
+          <th>Chi phí chung Class A/năm</th>
+          <th>Chi phí chung Class B/năm</th>
+          <th>Guest pass/năm (max 5 ngày)</th>
+        </tr>
+        <tr><td><strong>10%</strong></td><td>35 ngày</td><td>~2.9 ngày</td><td>7,000 km</td><td>114tr</td><td>81tr</td><td>5 ngày · phí 2× day rate</td></tr>
+        <tr><td><strong>20%</strong></td><td>70 ngày</td><td>~5.8 ngày</td><td>14,000 km</td><td>228tr</td><td>162tr</td><td>5 ngày</td></tr>
+        <tr><td><strong>25%</strong></td><td>87.5 ngày</td><td>~7.3 ngày</td><td>17,500 km</td><td>285tr</td><td>203tr</td><td>5 ngày</td></tr>
+        <tr><td><strong>30%</strong></td><td>105 ngày</td><td>~8.75 ngày</td><td>21,000 km</td><td>342tr</td><td>244tr</td><td>5 ngày</td></tr>
+        <tr><td><strong>40%</strong></td><td>140 ngày</td><td>~11.7 ngày</td><td>28,000 km</td><td>456tr</td><td>325tr</td><td>5 ngày</td></tr>
+        <tr><td><strong>50%</strong></td><td>175 ngày</td><td>~14.6 ngày</td><td>35,000 km</td><td>570tr</td><td>406tr</td><td>5 ngày</td></tr>
+      </table>
     </div>
 
-    <h3>Quỹ vận hành per-Class — Cơ chế đóng & quyết toán</h3>
+    <div class="card green">
+      <h4 class="green">Booking Rules (Zephyra Club)</h4>
+      <p>
+        • <strong>Đặt trước tối thiểu 3 ngày</strong> — không có ưu tiên theo % sở hữu<br>
+        • <strong>First-come-first-served</strong> — ai đặt trước được trước<br>
+        • Booking flow: REQUESTED → CONFIRMED → PRE_TRIP_CHECK → INSPECTED → ON_DELIVERY → IN_PROGRESS → POST_TRIP → COMPLETED<br>
+        • <strong>Mileage vượt 200km/ngày:</strong> phụ phí per km (định nghĩa trong Participation Agreement)<br>
+        • <strong>Unused days:</strong> không roll over — use-it hoặc bán % cho người khác<br>
+        • <strong>Bán % bất kỳ lúc nào</strong>: tự định giá · Direct offer hoặc Public offer trong club · Không cần xin phép · Không hạn chế
+      </p>
+    </div>
+
+    <h3>Quỹ vận hành per-Class — Chia theo % sở hữu</h3>
     <table>
-      <tr><th>Mục</th><th>Class A (ước tính/năm)</th><th>Class B (ước tính/năm)</th><th>Ghi chú</th></tr>
-      <tr><td>Bảo hiểm toàn diện</td><td>480tr</td><td>350tr</td><td>Exotic car insurance — PVI/Lloyd's</td></tr>
-      <tr><td>Bảo dưỡng định kỳ</td><td>300tr</td><td>200tr</td><td>Theo km + schedule hãng</td></tr>
-      <tr><td>Lốp xe</td><td>120tr</td><td>80tr</td><td>Thay mỗi 15,000–20,000 km</td></tr>
-      <tr><td>GPS/camera/thiết bị</td><td>30tr</td><td>25tr</td><td>Annual subscription</td></tr>
-      <tr><td>Lưu giữ, detailing</td><td>60tr</td><td>50tr</td><td>Climate-controlled garage</td></tr>
-      <tr><td>Buffer dự phòng (15%)</td><td>149tr</td><td>107tr</td><td>Damage excess, phát sinh</td></tr>
-      <tr style="font-weight:700;"><td>TOTAL/năm</td><td>~1.14 tỷ</td><td>~812tr</td><td>Chia theo % Class, đóng theo quý</td></tr>
+      <tr><th>Mục</th><th>Class A ước tính/năm</th><th>Class B ước tính/năm</th><th>Ai chịu</th></tr>
+      <tr><td>Bảo hiểm toàn diện</td><td>480tr</td><td>350tr</td><td>Chia theo % · Co-owners đóng theo quý</td></tr>
+      <tr><td>Bảo dưỡng định kỳ</td><td>300tr</td><td>200tr</td><td>Chia theo % · Autos Only thực hiện</td></tr>
+      <tr><td>Lốp xe</td><td>120tr</td><td>80tr</td><td>Chia theo % (wear theo tổng km dùng)</td></tr>
+      <tr><td>GPS/camera/tracking</td><td>30tr</td><td>25tr</td><td>Chia theo %</td></tr>
+      <tr><td>Lưu giữ, detailing</td><td>60tr</td><td>50tr</td><td>Chia theo %</td></tr>
+      <tr><td>Xăng, phụ phí chuyến đi</td><td>—</td><td>—</td><td><strong>Người đặt chịu 100%</strong></td></tr>
+      <tr><td>Phụ phí mileage vượt</td><td>—</td><td>—</td><td><strong>Người đặt chịu 100%</strong></td></tr>
+      <tr><td>Buffer dự phòng (15%)</td><td>149tr</td><td>107tr</td><td>Chia theo % · Quyết toán cuối năm</td></tr>
+      <tr style="font-weight:700;"><td>TOTAL chi phí chung/năm</td><td>~1.14 tỷ</td><td>~812tr</td><td>Đóng theo quý · Hoàn dư / thu bổ sung cuối năm</td></tr>
     </table>
   </div>
 
