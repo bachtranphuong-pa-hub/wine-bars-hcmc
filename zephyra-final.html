@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zephyra Toys4Share — Final Analysis & Recommendation</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8f7f4;color:#1a1a1a;line-height:1.75;font-size:15px;}
+  .hero{background:#1a1a1a;padding:60px 40px;text-align:center;}
+  .hero h1{font-size:2.2em;color:#fff;margin-bottom:8px;letter-spacing:-0.5px;}
+  .hero .tagline{color:#999;font-size:1em;margin-bottom:20px;}
+  .hero .badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+  .hero .badge{padding:4px 14px;border-radius:20px;font-size:0.78em;font-weight:600;background:#2a2a2a;color:#ccc;border:1px solid #333;}
+  .hero .badge.gold{background:#2a2200;color:#d4a017;border-color:#d4a017;}
+  nav{background:#fff;border-bottom:1px solid #e5e5e5;padding:0 30px;display:flex;gap:0;overflow-x:auto;position:sticky;top:0;z-index:100;}
+  nav a{padding:14px 18px;font-size:0.83em;color:#666;text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;}
+  nav a:hover{color:#1a1a1a;}
+  nav a.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:600;}
+  .container{max-width:980px;margin:0 auto;padding:40px 22px;}
+  .section{margin-bottom:60px;}
+  .section-label{font-size:0.72em;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#999;margin-bottom:8px;}
+  .section h2{font-size:1.5em;color:#1a1a1a;margin-bottom:6px;font-weight:700;}
+  .section .desc{color:#666;margin-bottom:24px;font-size:0.95em;}
+  .section h3{font-size:1.05em;font-weight:700;color:#1a1a1a;margin:28px 0 10px;}
+  .section p{color:#444;margin-bottom:12px;}
+  .divider{height:1px;background:#e8e8e8;margin:50px 0;}
+  /* Cards */
+  .card{background:#fff;border:1px solid #e8e8e8;border-radius:10px;padding:22px 24px;margin:12px 0;}
+  .card.gold{border-left:4px solid #d4a017;}
+  .card.green{border-left:4px solid #22c55e;}
+  .card.red{border-left:4px solid #ef4444;}
+  .card.blue{border-left:4px solid #3b82f6;}
+  .card.orange{border-left:4px solid #f97316;}
+  .card.gray{border-left:4px solid #9ca3af;}
+  .card h4{font-size:0.95em;font-weight:700;margin-bottom:8px;}
+  .card h4.gold{color:#b8860b;}
+  .card h4.green{color:#16a34a;}
+  .card h4.red{color:#dc2626;}
+  .card h4.blue{color:#2563eb;}
+  .card h4.orange{color:#ea580c;}
+  .card p{font-size:0.9em;color:#555;margin-bottom:0;}
+  .card .fix{margin-top:10px;padding:10px 14px;background:#f0fdf4;border-radius:6px;font-size:0.85em;color:#166534;}
+  /* Tables */
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.88em;}
+  th{background:#1a1a1a;color:#fff;padding:11px 14px;text-align:left;font-weight:600;}
+  td{padding:10px 14px;border-bottom:1px solid #f0f0f0;color:#444;vertical-align:top;}
+  tr:nth-child(even) td{background:#fafafa;}
+  tr:hover td{background:#f5f5f0;}
+  td.good{color:#16a34a;font-weight:600;}
+  td.bad{color:#dc2626;font-weight:600;}
+  td.warn{color:#d97706;font-weight:600;}
+  /* Ownership matrix */
+  .matrix-wrap{overflow-x:auto;margin:16px 0;}
+  .matrix{width:100%;border-collapse:collapse;font-size:0.82em;}
+  .matrix th{background:#1a1a1a;color:#fff;padding:9px 12px;text-align:center;font-weight:600;white-space:nowrap;}
+  .matrix th.left{text-align:left;}
+  .matrix td{padding:9px 12px;border-bottom:1px solid #f0f0f0;text-align:center;vertical-align:middle;}
+  .matrix td.name{text-align:left;font-weight:600;color:#1a1a1a;}
+  .matrix tr:nth-child(even) td{background:#fafafa;}
+  .pct-bar{display:inline-flex;align-items:center;gap:8px;}
+  .pct-bar .bar{height:8px;border-radius:4px;display:inline-block;min-width:4px;}
+  .pct-num{font-weight:700;font-size:0.9em;}
+  .tier-badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:0.78em;font-weight:700;}
+  .tier-a{background:#fef3c7;color:#92400e;}
+  .tier-b{background:#dbeafe;color:#1e40af;}
+  .tier-c{background:#f3f4f6;color:#374151;}
+  .tier-founder{background:#1a1a1a;color:#fff;}
+  /* Structure diagram */
+  .struct{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:28px;margin:20px 0;}
+  .struct-row{display:flex;align-items:center;gap:12px;margin:10px 0;flex-wrap:wrap;}
+  .struct-node{background:#f8f7f4;border:1px solid #e0e0e0;border-radius:8px;padding:12px 18px;font-size:0.85em;text-align:center;min-width:140px;}
+  .struct-node.main{background:#1a1a1a;color:#fff;border-color:#1a1a1a;}
+  .struct-node.gold{background:#fffbeb;border-color:#d4a017;color:#92400e;}
+  .struct-node.green{background:#f0fdf4;border-color:#22c55e;color:#166534;}
+  .struct-node.blue{background:#eff6ff;border-color:#3b82f6;color:#1e40af;}
+  .struct-node strong{display:block;font-weight:700;font-size:1em;}
+  .struct-node span{font-size:0.82em;opacity:0.8;}
+  .arrow{color:#999;font-size:1.2em;flex-shrink:0;}
+  /* Verdict */
+  .verdict{background:#1a1a1a;color:#fff;border-radius:12px;padding:28px 32px;margin:24px 0;}
+  .verdict h3{color:#d4a017;margin-bottom:14px;font-size:1.15em;}
+  .verdict p{color:#ccc;font-size:0.95em;margin-bottom:10px;}
+  .verdict ul{list-style:none;padding:0;}
+  .verdict ul li{color:#ccc;padding:5px 0;font-size:0.92em;}
+  .verdict ul li::before{content:"→ ";color:#d4a017;}
+  /* Action table */
+  .action-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.75em;font-weight:700;}
+  .p1{background:#fee2e2;color:#dc2626;}
+  .p2{background:#fef3c7;color:#92400e;}
+  .p3{background:#f0fdf4;color:#166534;}
+  footer{text-align:center;padding:40px;color:#999;font-size:0.82em;border-top:1px solid #e8e8e8;margin-top:60px;}
+  @media(max-width:640px){.struct-row{flex-direction:column;}.hero h1{font-size:1.6em;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Zephyra Toys4Share Club</h1>
+  <div class="tagline">Phân tích Cấu trúc Pháp lý & Đề xuất Cuối cùng</div>
+  <div class="badges">
+    <span class="badge gold">Tài liệu nội bộ RCC</span>
+    <span class="badge">Tổng hợp: Dr Quang + Zera Analysis</span>
+    <span class="badge">March 2026</span>
+  </div>
+</div>
+
+<nav>
+  <a href="#s1" class="active">I. Bối cảnh</a>
+  <a href="#s2">II. Hai cấu trúc</a>
+  <a href="#s3">III. So sánh</a>
+  <a href="#s4">IV. Ownership Matrix</a>
+  <a href="#s5">V. Thuế & Pháp lý</a>
+  <a href="#s6">VI. Pitfalls</a>
+  <a href="#s7">VII. Đề xuất cuối</a>
+  <a href="#s8">VIII. Action Plan</a>
+</nav>
+
+<div class="container">
+
+  <!-- SECTION I -->
+  <div class="section" id="s1">
+    <div class="section-label">Section I</div>
+    <h2>Bối cảnh & Mô hình</h2>
+    <div class="desc">Zephyra Toys4Share — private luxury car club, 9 thành viên sáng lập, vận hành theo cơ chế per-car ownership với nhóm TV khác nhau cho từng xe.</div>
+
+    <div class="struct">
+      <div style="font-weight:700;margin-bottom:16px;font-size:0.95em;">Cơ chế cốt lõi</div>
+      <div class="struct-row">
+        <div class="struct-node gold"><strong>9 Thành viên</strong><span>Sáng lập · UHNWI</span></div>
+        <div class="arrow">→</div>
+        <div class="struct-node"><strong>Mỗi xe: nhóm riêng</strong><span>5–7 người/xe · % khác nhau</span></div>
+        <div class="arrow">→</div>
+        <div class="struct-node green"><strong>Per-car Class</strong><span>Sở hữu + Usage theo Class</span></div>
+      </div>
+      <div class="struct-row" style="margin-top:16px;">
+        <div class="struct-node main"><strong>RCC</strong><span>Founder · Common Shares · Kiểm soát SPV</span></div>
+        <div class="arrow">+</div>
+        <div class="struct-node blue"><strong>Autos Only</strong><span>Service Provider · Booking · Bảo dưỡng · GPS</span></div>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Đặc điểm</th><th>Chi tiết</th></tr>
+      <tr><td>Số thành viên sáng lập</td><td>9 người</td></tr>
+      <tr><td>Quy mô nhóm mỗi xe</td><td>5–7 thành viên/xe</td></tr>
+      <tr><td>Vai trò RCC</td><td>Founder + Common Shares + quản trị SPV</td></tr>
+      <tr><td>Vận hành</td><td>Autos Only (booking, giao xe, bảo dưỡng, GPS/camera)</td></tr>
+      <tr><td>Mục tiêu</td><td>Private club phi lợi nhuận — co-ownership có tổ chức, minh bạch</td></tr>
+      <tr><td>Phân khúc xe</td><td>Luxury & Supercar — 15–30 tỷ VND/xe</td></tr>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION II -->
+  <div class="section" id="s2">
+    <div class="section-label">Section II</div>
+    <h2>Hai Cấu Trúc Pháp Lý</h2>
+    <div class="desc">Dr Quang đề xuất 2 phương án. Mỗi phương án có cơ chế vận hành khác nhau về sở hữu, thuế và bảo vệ thành viên.</div>
+
+    <h3>Cấu trúc 1 — SPV CTCP (Công ty con RCC)</h3>
+    <div class="struct">
+      <div class="struct-row">
+        <div class="struct-node main"><strong>RCC</strong><span>Founder · 100% vốn ban đầu · Common Shares</span></div>
+        <div class="arrow">→ thành lập</div>
+        <div class="struct-node gold"><strong>SPV CTCP ZEPHYRA</strong><span>Pháp nhân độc lập · Sở hữu toàn bộ fleet</span></div>
+      </div>
+      <div style="margin:14px 0 10px;font-size:0.85em;color:#666;font-weight:600;">2 kịch bản đưa xe vào SPV:</div>
+      <div class="struct-row">
+        <div class="struct-node" style="background:#fef9f0;border-color:#f97316;"><strong style="color:#ea580c;">Kịch bản A</strong><span>RCC mua xe → góp hiện vật vào SPV → nhận CP · TV mua lại CP</span></div>
+        <div style="padding:0 8px;color:#999;font-size:0.85em;">⚠️ 2× trước bạ + VAT trung gian</div>
+      </div>
+      <div class="struct-row">
+        <div class="struct-node" style="background:#f0fdf4;border-color:#22c55e;"><strong style="color:#166534;">Kịch bản B ✅</strong><span>TV góp tiền → SPV nhận vốn → SPV mua xe trực tiếp · TV nhận CP ưu đãi</span></div>
+        <div style="padding:0 8px;color:#16a34a;font-size:0.85em;">✅ 1× trước bạ · Sạch nhất</div>
+      </div>
+      <div style="margin-top:16px;font-size:0.85em;color:#444;"><strong>Exit ROFR:</strong> TV cùng Class (30 ngày) → RCC & TV Class khác (30 ngày) → Bên ngoài do TV giới thiệu (30 ngày) → Nếu 90 ngày không có buyer: biểu quyết bán xe, chia tiền theo % Class.</div>
+    </div>
+
+    <h3>Cấu trúc 2 — Xe đứng tên RCC, bán phần sở hữu</h3>
+    <div class="struct">
+      <div class="struct-row">
+        <div class="struct-node main"><strong>RCC</strong><span>Đứng tên TẤT CẢ xe · Điều phối CLB</span></div>
+        <div class="arrow">→ ký HĐ dân sự</div>
+        <div class="struct-node"><strong>TV từng nhóm xe</strong><span>Quyền theo BLDS 2015 · Không tư cách cổ đông</span></div>
+      </div>
+      <div style="margin-top:12px;font-size:0.85em;color:#666;">Xe vẫn đứng tên RCC. TV xác lập quyền qua HĐ mua bán phần sở hữu xe. Không có pháp nhân mới.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION III -->
+  <div class="section" id="s3">
+    <div class="section-label">Section III</div>
+    <h2>So Sánh Toàn Diện</h2>
+    <div class="desc">8 tiêu chí đánh giá — kết hợp phân tích Dr Quang + góc độ CFO/thuế từ Zera.</div>
+
+    <table>
+      <tr><th>Tiêu chí</th><th>Cấu trúc 1 — SPV CTCP</th><th>Cấu trúc 2 — RCC đứng tên</th></tr>
+      <tr><td><strong>Brand Identity</strong></td><td class="good">Zephyra = thương hiệu độc lập · TV là cổ đông · Scalable · Có thể M&A/tách riêng</td><td class="warn">Brand gắn RCC · Không tách được · Không độc lập</td></tr>
+      <tr><td><strong>Trước bạ</strong></td><td class="good">1 lần (kịch bản B) · ~300–600tr tiết kiệm/xe so với C2 nếu bán lại</td><td class="good">1 lần (RCC giữ tên) · Đơn giản</td></tr>
+      <tr><td><strong>VAT & CIT</strong></td><td class="good">SPV khai báo TNDN · Không phát sinh VAT trung gian nếu dùng KB-B</td><td class="bad">Bán phần sở hữu = doanh thu RCC + VAT 10% đầu ra · CIT nếu hết lỗ luỹ kế</td></tr>
+      <tr><td><strong>Khấu hao xe</strong></td><td class="warn">Bị giới hạn 1.6 tỷ/xe nếu không đăng ký ngành 7710 ⚠️</td><td class="bad">Bị giới hạn 1.6 tỷ/xe — cùng vấn đề ⚠️</td></tr>
+      <tr><td><strong>Bảo vệ tài sản CLB</strong></td><td class="good">Tách bạch hoàn toàn · Ring-fenced khỏi RCC</td><td class="bad">Xe thuộc balance sheet RCC · Chủ nợ RCC có thể siết</td></tr>
+      <tr><td><strong>Bảo vệ quyền TV</strong></td><td class="good">Bảo vệ theo Luật DN 2020 · Cổ đông có quyền rõ ràng</td><td class="warn">Chỉ theo HĐ dân sự BLDS · Tranh chấp = kiện dân sự</td></tr>
+      <tr><td><strong>Trách nhiệm pháp lý</strong></td><td class="good">SPV chịu trách nhiệm · RCC không bị kéo vào</td><td class="bad">RCC chịu trách nhiệm dân sự bên thứ 3 khi TV dùng xe gây tai nạn</td></tr>
+      <tr><td><strong>Scale & Dài hạn</strong></td><td class="good">Phát hành Class mới mỗi xe · Mở rộng sang Yacht/Aircraft/BĐS · M&A được</td><td class="warn">Phù hợp thử nghiệm 1–2 xe · Khó scale · Không chuyển nhượng CLB</td></tr>
+      <tr><td><strong>Chi phí setup</strong></td><td class="warn">Cao hơn (~50–100tr luật sư) · Nhưng bù bởi tiết kiệm trước bạ</td><td class="good">Thấp · Nhanh hơn</td></tr>
+      <tr><td><strong>Balance sheet RCC</strong></td><td class="good">Xe không xuất hiện trên BS RCC · Không ảnh hưởng hệ số nợ</td><td class="bad">Xe làm tăng tài sản + nợ RCC → hạn chế khả năng vay vốn</td></tr>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION IV — OWNERSHIP MATRIX -->
+  <div class="section" id="s4">
+    <div class="section-label">Section IV</div>
+    <h2>Ownership & Usage Tier Matrix</h2>
+    <div class="desc">Mỗi xe có nhóm thành viên riêng với % sở hữu khác nhau → usage days, quỹ vận hành, và exit value khác nhau theo từng Class. Dưới đây là framework dựa trên ví dụ trong document.</div>
+
+    <h3>Nguyên tắc mapping % Ownership → Usage Days</h3>
+    <div class="card blue">
+      <h4 class="blue">Công thức chuẩn</h4>
+      <p><strong>Usage Days/năm = % ownership × 300 ngày</strong> (300 = 365 trừ 65 ngày maintenance/insurance/event)<br>
+      <strong>Quỹ vận hành đóng hàng quý</strong> = (Chi phí ước tính cả năm × % ownership) ÷ 4<br>
+      <strong>Exit value</strong> = % ownership × Giá thị trường xe tại thời điểm exit (2 dealer quotes average)</p>
+    </div>
+
+    <h3>Class A — Xe thứ nhất (Ví dụ: McLaren 750S ~26 tỷ VND)</h3>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <tr>
+          <th class="left">Thành viên</th>
+          <th>% Sở hữu</th>
+          <th>Tier</th>
+          <th>Usage Days/năm</th>
+          <th>Quỹ/quý (ước tính)</th>
+          <th>Exit Value (ví dụ 22 tỷ)</th>
+          <th>Quyền biểu quyết</th>
+        </tr>
+        <tr>
+          <td class="name">RCC (Founder)</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:60px;background:#1a1a1a;"></div>
+              <span class="pct-num">30%</span>
+            </div>
+          </td>
+          <td><span class="tier-founder">FOUNDER</span></td>
+          <td>90 ngày</td>
+          <td>~112tr</td>
+          <td>6.6 tỷ</td>
+          <td>Veto quyền</td>
+        </tr>
+        <tr>
+          <td class="name">TV1</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:40px;background:#d4a017;"></div>
+              <span class="pct-num">20%</span>
+            </div>
+          </td>
+          <td><span class="tier-a">TIER A</span></td>
+          <td>60 ngày</td>
+          <td>~75tr</td>
+          <td>4.4 tỷ</td>
+          <td>Thường</td>
+        </tr>
+        <tr>
+          <td class="name">TV2</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:40px;background:#d4a017;"></div>
+              <span class="pct-num">20%</span>
+            </div>
+          </td>
+          <td><span class="tier-a">TIER A</span></td>
+          <td>60 ngày</td>
+          <td>~75tr</td>
+          <td>4.4 tỷ</td>
+          <td>Thường</td>
+        </tr>
+        <tr>
+          <td class="name">TV5</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:30px;background:#3b82f6;"></div>
+              <span class="pct-num">15%</span>
+            </div>
+          </td>
+          <td><span class="tier-b">TIER B</span></td>
+          <td>45 ngày</td>
+          <td>~56tr</td>
+          <td>3.3 tỷ</td>
+          <td>Thường</td>
+        </tr>
+        <tr>
+          <td class="name">TV9</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:30px;background:#3b82f6;"></div>
+              <span class="pct-num">15%</span>
+            </div>
+          </td>
+          <td><span class="tier-b">TIER B</span></td>
+          <td>45 ngày</td>
+          <td>~56tr</td>
+          <td>3.3 tỷ</td>
+          <td>Thường</td>
+        </tr>
+        <tr style="background:#f8f7f4;font-weight:700;">
+          <td class="name">TOTAL Class A</td>
+          <td><span class="pct-num">100%</span></td>
+          <td>—</td>
+          <td>300 ngày</td>
+          <td>~374tr/quý</td>
+          <td>22 tỷ</td>
+          <td>—</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Class B — Xe thứ hai (Ví dụ: Lamborghini Urus ~22 tỷ VND)</h3>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <tr>
+          <th class="left">Thành viên</th>
+          <th>% Sở hữu</th>
+          <th>Tier</th>
+          <th>Usage Days/năm</th>
+          <th>Quỹ/quý (ước tính)</th>
+          <th>Exit Value (ví dụ 18 tỷ)</th>
+          <th>Ghi chú</th>
+        </tr>
+        <tr>
+          <td class="name">RCC (Founder)</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:40px;background:#1a1a1a;"></div>
+              <span class="pct-num">20%</span>
+            </div>
+          </td>
+          <td><span class="tier-founder">FOUNDER</span></td>
+          <td>60 ngày</td>
+          <td>~60tr</td>
+          <td>3.6 tỷ</td>
+          <td>% thấp hơn Class A</td>
+        </tr>
+        <tr>
+          <td class="name">TV3</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:50px;background:#d4a017;"></div>
+              <span class="pct-num">25%</span>
+            </div>
+          </td>
+          <td><span class="tier-a">TIER A</span></td>
+          <td>75 ngày</td>
+          <td>~75tr</td>
+          <td>4.5 tỷ</td>
+          <td>Lead member</td>
+        </tr>
+        <tr>
+          <td class="name">TV4</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:50px;background:#d4a017;"></div>
+              <span class="pct-num">25%</span>
+            </div>
+          </td>
+          <td><span class="tier-a">TIER A</span></td>
+          <td>75 ngày</td>
+          <td>~75tr</td>
+          <td>4.5 tỷ</td>
+          <td>Lead member</td>
+        </tr>
+        <tr>
+          <td class="name">TV6</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:30px;background:#3b82f6;"></div>
+              <span class="pct-num">15%</span>
+            </div>
+          </td>
+          <td><span class="tier-b">TIER B</span></td>
+          <td>45 ngày</td>
+          <td>~45tr</td>
+          <td>2.7 tỷ</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="name">TV7</td>
+          <td>
+            <div class="pct-bar">
+              <div class="bar" style="width:30px;background:#3b82f6;"></div>
+              <span class="pct-num">15%</span>
+            </div>
+          </td>
+          <td><span class="tier-b">TIER B</span></td>
+          <td>45 ngày</td>
+          <td>~45tr</td>
+          <td>2.7 tỷ</td>
+          <td></td>
+        </tr>
+        <tr style="background:#f8f7f4;font-weight:700;">
+          <td class="name">TOTAL Class B</td>
+          <td><span class="pct-num">100%</span></td>
+          <td>—</td>
+          <td>300 ngày</td>
+          <td>~300tr/quý</td>
+          <td>18 tỷ</td>
+          <td>—</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Usage Tier — Quyền & Giới hạn</h3>
+    <table>
+      <tr><th>Tier</th><th>% Ownership</th><th>Usage Days/năm</th><th>Booking Priority</th><th>Peak period</th><th>Guest pass</th></tr>
+      <tr><td><span class="tier-founder">FOUNDER (RCC)</span></td><td>20–30%</td><td>60–90 ngày</td><td>Ưu tiên cao nhất</td><td>Guaranteed 1 slot Tết/năm</td><td>Không giới hạn</td></tr>
+      <tr><td><span class="tier-a">TIER A</span></td><td>20–25%</td><td>60–75 ngày</td><td>Ưu tiên 2</td><td>Rotation theo thứ tự gia nhập</td><td>4 lần/năm</td></tr>
+      <tr><td><span class="tier-b">TIER B</span></td><td>15%</td><td>45 ngày</td><td>Ưu tiên 3</td><td>Sau Tier A</td><td>2 lần/năm</td></tr>
+      <tr><td><span class="tier-c">TIER C (tương lai)</span></td><td>10%</td><td>30 ngày</td><td>Standard</td><td>Không guaranteed</td><td>1 lần/năm</td></tr>
+    </table>
+
+    <div class="card green">
+      <h4 class="green">Booking Rules quan trọng</h4>
+      <p>• Advance booking: tối thiểu 48h · Max consecutive: 5 ngày/lần<br>
+      • Unused days trong tháng: KHÔNG carry over sang tháng sau (use-it-or-lose-it)<br>
+      • Hủy &lt;24h: mất 1 ngày booking slot của tháng đó<br>
+      • Conflict giữa TV cùng tier: first-come-first-served theo app booking<br>
+      • Peak period (Tết, 30/4, 2/9): đặt trước theo lịch rotation hàng năm</p>
+    </div>
+
+    <h3>Quỹ vận hành per-Class — Cơ chế đóng & quyết toán</h3>
+    <table>
+      <tr><th>Mục</th><th>Class A (ước tính/năm)</th><th>Class B (ước tính/năm)</th><th>Ghi chú</th></tr>
+      <tr><td>Bảo hiểm toàn diện</td><td>480tr</td><td>350tr</td><td>Exotic car insurance — PVI/Lloyd's</td></tr>
+      <tr><td>Bảo dưỡng định kỳ</td><td>300tr</td><td>200tr</td><td>Theo km + schedule hãng</td></tr>
+      <tr><td>Lốp xe</td><td>120tr</td><td>80tr</td><td>Thay mỗi 15,000–20,000 km</td></tr>
+      <tr><td>GPS/camera/thiết bị</td><td>30tr</td><td>25tr</td><td>Annual subscription</td></tr>
+      <tr><td>Lưu giữ, detailing</td><td>60tr</td><td>50tr</td><td>Climate-controlled garage</td></tr>
+      <tr><td>Buffer dự phòng (15%)</td><td>149tr</td><td>107tr</td><td>Damage excess, phát sinh</td></tr>
+      <tr style="font-weight:700;"><td>TOTAL/năm</td><td>~1.14 tỷ</td><td>~812tr</td><td>Chia theo % Class, đóng theo quý</td></tr>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION V -->
+  <div class="section" id="s5">
+    <div class="section-label">Section V</div>
+    <h2>Phân Tích Thuế & Pháp Lý</h2>
+    <div class="desc">Đây là phần quan trọng nhất — những điểm document gốc chưa cover đầy đủ, bổ sung từ phân tích Zera.</div>
+
+    <h3>A. Khấu hao xe luxury — Pitfall nghiêm trọng nhất</h3>
+    <div class="card red">
+      <h4 class="red">⚠️ Giới hạn 1.6 tỷ VND (Thông tư 78/2014/TT-BTC)</h4>
+      <p>Xe ô tô không phục vụ kinh doanh vận tải/cho thuê: nguyên giá tính chi phí hợp lệ tối đa <strong>1.6 tỷ VND</strong>. McLaren 750S giá 26 tỷ → chỉ 1.6 tỷ được khấu hao vào chi phí → 24.4 tỷ không được trừ → SPV phải nộp CIT trên phần này.</p>
+      <div class="fix"><strong>Fix:</strong> Đăng ký mã ngành <strong>7710 — Cho thuê xe có động cơ</strong>. Xe của DN kinh doanh cho thuê không bị giới hạn 1.6 tỷ — khấu hao theo nguyên giá thực tế (6 năm, đường thẳng). Điều kiện: có hợp đồng cho thuê thực tế + doanh thu cho thuê. Cần xác nhận với tax counsel trước khi setup.</div>
+    </div>
+
+    <h3>B. VAT — Quỹ vận hành là "doanh thu" hay "phí nội bộ"?</h3>
+    <table>
+      <tr><th>Cách xử lý</th><th>VAT</th><th>CIT</th><th>Rủi ro</th><th>Khuyến nghị</th></tr>
+      <tr><td>"Doanh thu" (invoice cho TV)</td><td>10% đầu ra</td><td>Tính vào doanh thu, trừ chi phí</td><td>Thấp — minh bạch</td><td class="good">✅ Nên chọn</td></tr>
+      <tr><td>"Phí nội bộ" (không invoice)</td><td>Không</td><td>Không được trừ chi phí</td><td>Cao — cơ quan thuế reclassify</td><td class="bad">❌ Tránh</td></tr>
+    </table>
+
+    <h3>C. PIT (TNCN) — Risk mapping</h3>
+    <table>
+      <tr><th>Kịch bản</th><th>PIT?</th><th>Cơ sở</th><th>Xử lý</th></tr>
+      <tr><td>TV dùng xe, trả usage fee đầy đủ</td><td class="good">Không</td><td>Giao dịch thương mại</td><td>✅ Luôn invoice usage fee</td></tr>
+      <tr><td>TV dùng xe miễn phí</td><td class="bad">Có — benefit in-kind</td><td>TT 111/2013 Điều 2.2(đ)</td><td>Không cho dùng miễn phí</td></tr>
+      <tr><td>TV exit, SPV mua lại CP</td><td class="warn">Có — 20% trên lãi</td><td>Luật TNCN Điều 13</td><td>Tính vào exit model từ đầu</td></tr>
+      <tr><td>Dividend từ SPV</td><td class="warn">Có — 5% cổ tức</td><td>Luật TNCN Điều 10</td><td>Giữ lại lợi nhuận, tái đầu tư fleet</td></tr>
+    </table>
+
+    <h3>D. Impact lên Balance Sheet RCC (góc độ CFO)</h3>
+    <table>
+      <tr><th>Chỉ tiêu</th><th>Cấu trúc 1 (SPV)</th><th>Cấu trúc 2 (RCC đứng tên)</th></tr>
+      <tr><td>Tài sản cố định RCC</td><td class="good">Không tăng (xe thuộc SPV)</td><td class="bad">Tăng ~26 tỷ/xe</td></tr>
+      <tr><td>Nợ vay (nếu vay mua xe)</td><td class="good">Không tăng trên BS RCC</td><td class="bad">Tăng tương ứng</td></tr>
+      <tr><td>Hệ số D/E của RCC</td><td class="good">Không ảnh hưởng</td><td class="bad">Xấu hơn → hạn chế vay vốn</td></tr>
+      <tr><td>Lỗ luỹ kế RCC dùng được</td><td class="good">SPV có lỗ riêng (nếu cần)</td><td class="warn">Dùng lỗ RCC — hết sau 5 năm</td></tr>
+      <tr><td>Audit risk</td><td class="good">Thấp — pháp nhân tách biệt</td><td class="bad">Cao — cơ quan thuế có thể review</td></tr>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION VI -->
+  <div class="section" id="s6">
+    <div class="section-label">Section VI</div>
+    <h2>Pitfalls & Solutions</h2>
+
+    <div class="card red">
+      <h4 class="red">🔴 Pitfall #1 — Khấu hao 1.6 tỷ (Critical)</h4>
+      <p>Cả 2 cấu trúc đều bị ảnh hưởng nếu không đăng ký ngành 7710. McLaren 750S 26 tỷ → 24.4 tỷ không được tính chi phí → CIT rất nặng.</p>
+      <div class="fix">Fix: SPV đăng ký mã ngành 7710. Lập hợp đồng cho thuê xe thực tế với members. Xác nhận với tax counsel trước khi proceed.</div>
+    </div>
+
+    <div class="card red">
+      <h4 class="red">🔴 Pitfall #2 — Liability khi TV gây tai nạn (Cấu trúc 2)</h4>
+      <p>Xe đứng tên RCC. TV gây tai nạn → bên thứ 3 kiện RCC. Cả tập đoàn bị kéo vào tranh chấp pháp lý.</p>
+      <div class="fix">Fix: Chọn Cấu trúc 1 (SPV chịu trách nhiệm). Hoặc nếu giữ C2: mua insurance liability riêng cho từng TV theo HĐ sử dụng.</div>
+    </div>
+
+    <div class="card orange">
+      <h4 class="orange">🟡 Pitfall #3 — Class shares gắn tài sản vật lý (chưa có tiền lệ VN)</h4>
+      <p>Luật DN 2020 cho phép nhiều loại cổ phần nhưng không quy định "CP gắn với tài sản vật lý cụ thể". Toà án VN chưa có precedent.</p>
+      <div class="fix">Fix: Điều lệ không gắn Class với xe cụ thể. Class A/B = mức booking priority + số ngày, quy định trong SHA. Ownership toàn bộ xe thuộc SPV. Exit theo NAV.</div>
+    </div>
+
+    <div class="card orange">
+      <h4 class="orange">🟡 Pitfall #4 — Booking conflict & social dynamics</h4>
+      <p>4–7 members cùng muốn xe vào cao điểm. Không có policy rõ → conflict giữa bạn bè/đối tác.</p>
+      <div class="fix">Fix: SHA định nghĩa rõ booking rules (advance booking, max consecutive days, peak period rotation, penalty hủy muộn). Dùng shared booking platform từ ngày 1.</div>
+    </div>
+
+    <div class="card orange">
+      <h4 class="orange">🟡 Pitfall #5 — Exit valuation dispute</h4>
+      <p>Document ghi "định giá lại xe khi exit" nhưng không define methodology. Người exit muốn giá cao, người ở lại muốn giá thấp → tranh chấp.</p>
+      <div class="fix">Fix: SHA quy định cụ thể: 2 dealer quotes (authorized dealer) lấy average. Nếu chênh lệch >10%: thêm independent appraiser làm tiebreaker. Chi phí định giá do người exit chịu.</div>
+    </div>
+
+    <div class="card gray">
+      <h4>🟢 Pitfall #6 — Damage & insurance excess</h4>
+      <p>Xe damage khi TV A đang sử dụng. Excess $5,000–15,000. Ai chịu? SPV hay TV A cá nhân?</p>
+      <div class="fix">Fix: Participation Agreement quy định rõ: TV đang dùng xe chịu hoàn toàn excess insurance + damage vượt excess, trừ force majeure. Security deposit 50tr VND/lần usage, hoàn trả sau 48h kiểm tra xe.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION VII -->
+  <div class="section" id="s7">
+    <div class="section-label">Section VII</div>
+    <h2>Đề Xuất Cuối Cùng</h2>
+
+    <div class="verdict">
+      <h3>✅ Khuyến nghị: Cấu trúc 1 — SPV CTCP Zephyra + 3 bổ sung</h3>
+      <p>Đồng thuận với Dr Quang: Cấu trúc 1 là lựa chọn dài hạn tốt nhất. Bổ sung 3 điểm để hoàn thiện:</p>
+      <ul>
+        <li>Đăng ký mã ngành <strong>7710 (Cho thuê xe)</strong> → giải quyết khấu hao 1.6 tỷ</li>
+        <li>Áp dụng <strong>Kịch bản B</strong> cho tất cả xe mới (TV góp tiền → SPV mua) → tránh double trước bạ</li>
+        <li>Quỹ vận hành xử lý như <strong>"doanh thu" có invoice</strong> → minh bạch thuế, tránh reclassify</li>
+      </ul>
+      <p style="margin-top:16px;">Cấu trúc 2 chỉ phù hợp nếu muốn thử nghiệm nhanh 1 xe đầu tiên trước khi setup SPV. Nếu commit dài hạn từ đầu → đi thẳng Cấu trúc 1.</p>
+    </div>
+
+    <h3>Cấu trúc tổng thể đề xuất</h3>
+    <div class="struct">
+      <div class="struct-row">
+        <div class="struct-node main"><strong>RCC Group</strong><span>Founder · Góp 100% vốn ban đầu</span></div>
+        <div class="arrow">→ thành lập</div>
+        <div class="struct-node gold"><strong>SPV CTCP ZEPHYRA</strong><span>Mã ngành: 7710 + 9329 · Pháp nhân độc lập</span></div>
+      </div>
+      <div class="struct-row" style="margin-top:12px;">
+        <div class="struct-node green"><strong>Class A Shares</strong><span>Xe 1 · 5 TV · % khác nhau</span></div>
+        <div class="arrow">+</div>
+        <div class="struct-node green"><strong>Class B Shares</strong><span>Xe 2 · 7 TV · % khác nhau</span></div>
+        <div class="arrow">+</div>
+        <div class="struct-node" style="border-style:dashed;"><strong>Class N...</strong><span>Xe mới · Phát hành khi thêm xe</span></div>
+      </div>
+      <div class="struct-row" style="margin-top:12px;">
+        <div class="struct-node blue"><strong>Autos Only</strong><span>Service Provider · Hợp đồng dịch vụ với SPV</span></div>
+        <div class="arrow">manages</div>
+        <div class="struct-node"><strong>Fleet xe</strong><span>Đứng tên SPV · Bảo hiểm · GPS</span></div>
+      </div>
+    </div>
+
+    <h3>Bộ tài liệu pháp lý cần có (theo thứ tự ưu tiên)</h3>
+    <table>
+      <tr><th>#</th><th>Tài liệu</th><th>Nội dung cốt lõi</th><th>Priority</th></tr>
+      <tr><td>①</td><td>Điều lệ CTCP</td><td>Class share structure · Quyền RCC · Thay đổi điều lệ cần bao nhiêu % vote</td><td class="good">Critical</td></tr>
+      <tr><td>②</td><td>Master SHA</td><td>ROFR 3 tầng · Exit mechanism · Valuation methodology · Deadlock (75% threshold)</td><td class="good">Critical</td></tr>
+      <tr><td>③</td><td>Share Purchase Agreement</td><td>Per TV · Per Class · Giá mua CP · Điều kiện tiên quyết</td><td class="good">Critical</td></tr>
+      <tr><td>④</td><td>Participation Agreement</td><td>Per-car booking rules · Usage days · Peak period rotation · Damage liability · Security deposit</td><td class="warn">High</td></tr>
+      <tr><td>⑤</td><td>Service Agreement</td><td>SPV ↔ Autos Only · SLA · Liability khi giao nhận sai · Termination</td><td class="warn">High</td></tr>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SECTION VIII -->
+  <div class="section" id="s8">
+    <div class="section-label">Section VIII</div>
+    <h2>Action Plan</h2>
+
+    <table>
+      <tr><th>#</th><th>Action</th><th>Owner</th><th>Timeline</th><th>Priority</th></tr>
+      <tr>
+        <td>1</td>
+        <td>Confirm với tax counsel: mã ngành 7710 có giải quyết được giới hạn khấu hao 1.6 tỷ không? Lấy written opinion.</td>
+        <td>Dr Quang / CFO Dung</td>
+        <td>2 tuần</td>
+        <td><span class="action-badge p1">🔴 Critical</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Xác nhận: 9 thành viên + xe cụ thể + % ownership từng người cho từng xe → finalize ownership matrix thực tế</td>
+        <td>Anh Bach + Dr Quang</td>
+        <td>2 tuần</td>
+        <td><span class="action-badge p1">🔴 Critical</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Thuê luật sư chuyên corporate (VILAF, Tilleke, LNT) soạn Điều lệ + SHA. Budget: 80–150tr.</td>
+        <td>RCC / Dr Quang</td>
+        <td>1 tháng</td>
+        <td><span class="action-badge p1">🔴 Critical</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Thành lập SPV CTCP Zephyra tại Sở KH&ĐT HCMC + đăng ký mã ngành 7710 + 9329</td>
+        <td>Luật sư + RCC</td>
+        <td>3–4 tuần sau bước 3</td>
+        <td><span class="action-badge p2">🟡 High</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Mua exotic car insurance: liên hệ PVI, Bảo Việt, hoặc Lloyd's broker qua Marsh/AON Vietnam. Coverage: comprehensive + 3rd party liability.</td>
+        <td>SPV Manager</td>
+        <td>Trước khi nhận xe</td>
+        <td><span class="action-badge p1">🔴 Critical</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Setup booking platform: shared calendar (Calendly Pro) hoặc custom Notion + Google Calendar giai đoạn đầu</td>
+        <td>Autos Only / Tech</td>
+        <td>1 tháng</td>
+        <td><span class="action-badge p2">🟡 High</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Ký Participation Agreement với từng TV trước khi nhận bàn giao xe — định nghĩa rõ damage policy + security deposit</td>
+        <td>SPV Director</td>
+        <td>Trước khi vận hành</td>
+        <td><span class="action-badge p2">🟡 High</span></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Ký Service Agreement với Autos Only: SLA tối thiểu, liability khi giao xe sai tình trạng, inspection checklist</td>
+        <td>SPV Director + Autos Only</td>
+        <td>Trước khi vận hành</td>
+        <td><span class="action-badge p3">🟢 Medium</span></td>
+      </tr>
+    </table>
+
+    <div class="card gold" style="margin-top:24px;">
+      <h4 class="gold">💡 Bottom Line</h4>
+      <p>Cấu trúc Dr Quang đề xuất <strong>đúng về triết lý và hướng đi</strong>. Cần bổ sung 3 điểm kỹ thuật (ngành 7710, quỹ là doanh thu, valuation methodology). Ownership/usage tier matrix có thể customize linh hoạt cho từng xe — framework trên là template, % thực tế do các thành viên thỏa thuận. <strong>Ưu tiên số 1: xác nhận tax treatment với chuyên gia thuế trước khi commit bất kỳ khoản tiền nào.</strong></p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Zephyra Toys4Share — Phân tích Cấu trúc Pháp lý · Tổng hợp: Dr Quang + Zera Analysis · March 2026</p>
+  <p style="margin-top:6px;">Prepared by Zera 🌟 · Royal Canary Corp · Tài liệu nội bộ — Không lưu hành bên ngoài</p>
+  <p style="margin-top:6px;font-size:0.8em;">Disclaimer: Tài liệu mang tính tham khảo nội bộ. Không thay thế tư vấn pháp lý/thuế chuyên nghiệp.</p>
+</footer>
+
+<script>
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
