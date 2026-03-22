@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zephyra Car Club — Revenue & Legal Framework Analysis</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',sans-serif;background:#0a0a0a;color:#e0e0e0;line-height:1.75;}
+  .hero{background:linear-gradient(135deg,#0a0000 0%,#1a0800 40%,#0a1000 100%);padding:65px 40px;text-align:center;border-bottom:3px solid #d4a017;}
+  .hero h1{font-size:2.5em;color:#d4a017;margin-bottom:8px;}
+  .hero .sub{color:#aaa;font-size:1.05em;max-width:700px;margin:12px auto 0;}
+  .hero .meta{margin-top:18px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap;}
+  .hero .badge{padding:5px 16px;border-radius:20px;font-size:0.8em;font-weight:700;background:#1a1000;border:1px solid #d4a017;color:#d4a017;}
+  .container{max-width:980px;margin:0 auto;padding:45px 22px;}
+  .toc{background:#111;border-left:4px solid #d4a017;border-radius:0 10px 10px 0;padding:24px 28px;margin-bottom:45px;}
+  .toc h3{color:#d4a017;margin-bottom:14px;font-size:1.05em;letter-spacing:1px;text-transform:uppercase;}
+  .toc a{display:block;color:#aaa;text-decoration:none;padding:5px 0;border-bottom:1px solid #1a1a1a;font-size:0.92em;}
+  .toc a:hover{color:#d4a017;}
+  .toc a .num{color:#d4a017;margin-right:10px;font-weight:700;}
+  .section{margin-bottom:55px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid #1a1a1a;}
+  .section-num{min-width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1em;}
+  .section h2{font-size:1.5em;color:#fff;}
+  .section h3{font-size:1.1em;color:#d4a017;margin:22px 0 10px;}
+  .section p{color:#ccc;margin-bottom:13px;}
+  .callout{padding:16px 20px;border-radius:0 8px 8px 0;margin:16px 0;}
+  .callout.gold{background:#1a1200;border-left:4px solid #d4a017;}
+  .callout.red{background:#1a0000;border-left:4px solid #e94560;}
+  .callout.green{background:#001500;border-left:4px solid #4caf50;}
+  .callout.blue{background:#00101a;border-left:4px solid #2196f3;}
+  .callout.orange{background:#1a0d00;border-left:4px solid #ff9800;}
+  .callout strong{color:#fff;}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:0.93em;}
+  th{background:#1a1200;color:#d4a017;padding:12px 14px;text-align:left;border-bottom:2px solid #d4a017;}
+  td{padding:11px 14px;border-bottom:1px solid #1a1a1a;color:#ccc;vertical-align:top;}
+  tr:hover td{background:#111;}
+  .pitfall-card{background:#111;border:1px solid #1a1a1a;border-radius:10px;padding:22px;margin:14px 0;border-left:4px solid #e94560;}
+  .pitfall-card h4{color:#e94560;margin-bottom:8px;font-size:1em;}
+  .pitfall-card .fix{margin-top:12px;padding:10px 14px;background:#001500;border-radius:6px;border-left:3px solid #4caf50;font-size:0.88em;color:#4caf50;}
+  .pitfall-card .fix strong{color:#fff;}
+  .revenue-card{background:#111;border:1px solid #222;border-radius:10px;padding:20px;margin:10px 0;}
+  .revenue-card h4{color:#d4a017;margin-bottom:8px;}
+  .revenue-card .amount{font-size:1.4em;font-weight:700;color:#fff;margin:6px 0;}
+  .revenue-card p{font-size:0.88em;color:#aaa;}
+  .revenue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:20px 0;}
+  .world-ex{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:10px;padding:18px;margin:10px 0;}
+  .world-ex h4{color:#4caf50;font-size:0.95em;margin-bottom:8px;}
+  .world-ex .price{color:#d4a017;font-weight:700;font-size:1.1em;}
+  .world-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0;}
+  .structure-box{background:linear-gradient(135deg,#0d0d00,#001000);border:1px solid #d4a017;border-radius:12px;padding:26px;margin:22px 0;}
+  .structure-box h4{color:#d4a017;margin-bottom:16px;font-size:1.1em;}
+  .structure-box .node{background:#111;border:1px solid #333;border-radius:8px;padding:12px 16px;margin:8px 0;font-size:0.88em;}
+  .structure-box .node .label{color:#d4a017;font-weight:700;font-size:0.8em;text-transform:uppercase;letter-spacing:1px;}
+  .structure-box .node .val{color:#fff;margin-top:4px;}
+  .structure-box .node .sub{color:#888;font-size:0.85em;}
+  .risk-meter{display:flex;align-items:center;gap:10px;margin:6px 0;}
+  .risk-meter .label{width:180px;font-size:0.85em;color:#aaa;}
+  .risk-meter .bar{flex:1;height:10px;background:#1a1a1a;border-radius:5px;overflow:hidden;}
+  .risk-meter .bar .fill{height:100%;border-radius:5px;}
+  .risk-meter .score{width:40px;font-size:0.85em;font-weight:700;text-align:right;}
+  .highlight{background:#1a1200;border:1px solid #d4a017;border-radius:10px;padding:22px;margin:20px 0;}
+  .highlight h4{color:#d4a017;margin-bottom:12px;}
+  footer{text-align:center;padding:40px;color:#333;font-size:0.85em;border-top:1px solid #111;margin-top:70px;}
+  footer a{color:#d4a017;text-decoration:none;}
+  @media(max-width:600px){.revenue-grid,.world-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>⚡ Zephyra Car Club</h1>
+  <div class="sub">Revenue Framework · Legal Analysis · Pitfalls & Solutions<br>Đối chiếu Luật Việt Nam + Benchmarks Quốc tế</div>
+  <div class="meta">
+    <span class="badge">Confidential — RCC Internal</span>
+    <span class="badge">March 2026</span>
+    <span class="badge">Prepared by Zera 🌟</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="toc">
+    <h3>📋 Nội dung</h3>
+    <a href="#s1"><span class="num">I</span> Benchmarks quốc tế — 5 mô hình car club hàng đầu</a>
+    <a href="#s2"><span class="num">II</span> Revenue streams khả thi — 7 nguồn doanh thu</a>
+    <a href="#s3"><span class="num">III</span> Mô hình P&L dự phóng — 4 members, 1 xe</a>
+    <a href="#s4"><span class="num">IV</span> Phân tích pháp lý chuyên sâu — Luật VN</a>
+    <a href="#s5"><span class="num">V</span> Pitfalls & Solutions — 7 rủi ro</a>
+    <a href="#s6"><span class="num">VI</span> Cấu trúc tối ưu đề xuất</a>
+    <a href="#s7"><span class="num">VII</span> Action plan</a>
+  </div>
+
+  <!-- SECTION I -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num" style="background:#1a1200;color:#d4a017;border:2px solid #d4a017;">I</div>
+      <h2>Benchmarks Quốc Tế — 5 Mô Hình Car Club Hàng Đầu</h2>
+    </div>
+    <p>Trước khi thiết kế Zephyra, cần hiểu các model đã được chứng minh trên thế giới — cả revenue model, pricing, và cách xử lý depreciation.</p>
+
+    <div class="world-grid">
+      <div class="world-ex">
+        <h4>🇬🇧 Auto Vivendi (London)</h4>
+        <div class="price">£12,500 – £33,500/năm</div>
+        <p style="margin-top:8px;font-size:0.85em;color:#aaa;">Model: Annual fee → unlimited access theo tier. Fleet 50+ supercars. No per-use charge. Revenue = pure subscription. Xe tên công ty, members dùng như "club guests". Không cần góp vốn. <strong style="color:#4caf50;">Avoid PIT hoàn toàn.</strong></p>
+      </div>
+      <div class="world-ex">
+        <h4>🇺🇸 Club Sportiva (Silicon Valley)</h4>
+        <div class="price">$10,000 – $25,000/năm</div>
+        <p style="margin-top:8px;font-size:0.85em;color:#aaa;">2 tiers: Enthusiast (access-only) + Equity (góp vốn vào fleet). Equity members nhận back % khi xe bán. <strong style="color:#d4a017;">Đây là model gần nhất với đề xuất của Dr Quang.</strong></p>
+      </div>
+      <div class="world-ex">
+        <h4>🇺🇸 Classic Car Club Manhattan</h4>
+        <div class="price">$180/tháng + usage fee</div>
+        <p style="margin-top:8px;font-size:0.85em;color:#aaa;">Hybrid model: low base fee + per-day usage charge. Revenue đa dạng. Fleet ~55 cars. Không có equity component — pure service play.</p>
+      </div>
+      <div class="world-ex">
+        <h4>🇦🇪 Supercar Room (Dubai)</h4>
+        <div class="price">AED 5,000 – 50,000/tháng</div>
+        <p style="margin-top:8px;font-size:0.85em;color:#aaa;">Daily/monthly rental disguised as "membership". Aggressively targets UHNWI. Revenue = usage-based chủ yếu. Model phù hợp với VN nhất vì tránh được complexity của equity.</p>
+      </div>
+      <div class="world-ex">
+        <h4>🇬🇧 P1 Supercar Club (UK/Switzerland)</h4>
+        <div class="price">£25,000 – £75,000+/năm</div>
+        <p style="margin-top:8px;font-size:0.85em;color:#aaa;">Ultra-exclusive. Application-only. Experience-led: track days, tours, events bundle vào membership. Revenue 40% dari events/experiences, 60% annual fee. <strong style="color:#4caf50;">Best model để justify high ARPU.</strong></p>
+      </div>
+    </div>
+
+    <h3>Key Lessons từ Global Benchmarks</h3>
+    <table>
+      <tr><th>Model</th><th>Revenue chính</th><th>Equity component</th><th>Legal structure</th><th>Áp dụng cho VN</th></tr>
+      <tr><td>Auto Vivendi</td><td>Annual subscription</td><td>Không</td><td>Company owns all cars</td><td>✅ Đơn giản nhất</td></tr>
+      <tr><td>Club Sportiva</td><td>Subscription + resale share</td><td>Có (Equity tier)</td><td>LLC + membership agreement</td><td>⚠️ Cần adapt</td></tr>
+      <tr><td>Supercar Room</td><td>Usage per day/month</td><td>Không</td><td>Simple rental co.</td><td>✅ Phù hợp thuế VN</td></tr>
+      <tr><td>P1 Club</td><td>Annual fee + events</td><td>Không</td><td>Members' club (UK law)</td><td>✅ Premium positioning</td></tr>
+      <tr><td>Classic Car Club Manhattan</td><td>Base + usage hybrid</td><td>Không</td><td>LLC</td><td>✅ Flexible</td></tr>
+    </table>
+
+    <div class="callout gold">
+      <strong>Insight quan trọng:</strong> 4/5 mô hình hàng đầu thế giới <strong>KHÔNG có equity component</strong>. Họ tách biệt hoàn toàn: SPV/company owns the cars, members pay for access. Đây là cách đơn giản nhất để tránh toàn bộ rủi ro pháp lý về "cổ phần gắn tài sản vật lý" tại VN.
+    </div>
+  </div>
+
+  <!-- SECTION II -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num" style="background:#001500;color:#4caf50;border:2px solid #4caf50;">II</div>
+      <h2>Revenue Streams — 7 Nguồn Doanh Thu Khả Thi</h2>
+    </div>
+
+    <div class="revenue-grid">
+      <div class="revenue-card">
+        <h4>① Initiation Fee (một lần)</h4>
+        <div class="amount">$15,000 – $50,000</div>
+        <p>Phí gia nhập — không hoàn trả. Bù đắp chi phí acquisition xe + admin. Global: Auto Vivendi không có; Club Sportiva Equity tier yêu cầu. Gợi ý cho Zephyra: $20,000/member.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>② Annual Membership Fee</h4>
+        <div class="amount">$8,000 – $20,000/năm</div>
+        <p>Recurring revenue chính. Covers: bảo hiểm, bảo dưỡng, lưu kho, quản lý. Auto Vivendi: £12,500–33,500. Gợi ý: 3 tiers ($8k/$12k/$18k theo số ngày access/tháng).</p>
+      </div>
+      <div class="revenue-card">
+        <h4>③ Per-Session Usage Fee</h4>
+        <div class="amount">$500 – $2,000/ngày</div>
+        <p>Charge khi thực sự dùng xe, tách khỏi membership. Tạo revenue biến đổi, cover fuel/tyres. Supercar Room Dubai: AED 2,000–8,000/ngày. Gợi ý: $800/ngày McLaren 750S.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>④ Experiences & Events</h4>
+        <div class="amount">$500 – $5,000/event</div>
+        <p>Track days, dinner drives, factory tours, overseas rallies. P1 Club: 40% revenue từ đây. High margin. Tạo community = retention. Gợi ý: 4 events/năm bundled + premium add-ons.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>⑤ Guest Passes</h4>
+        <div class="amount">$300 – $800/lần</div>
+        <p>Member mời khách trải nghiệm (dưới sự giám sát). Lead gen cho membership mới. Classic Car Club Manhattan làm rất tốt mảng này. Giới hạn 2 lần/tháng/member.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>⑥ Fleet Turnover Gain</h4>
+        <div class="amount">Variable — 10–25% upside</div>
+        <p>Bán xe sau 2–3 năm, thay fleet mới. Supercar luxury ít mất giá hơn xe thường nếu mileage thấp. McLaren 750S: mất giá ~15–20%/năm. Thay fleet 2 năm = tối ưu depreciation + bán được giá tốt hơn.</p>
+      </div>
+      <div class="revenue-card">
+        <h4>⑦ Partner & Sponsor Revenue</h4>
+        <div class="amount">$5,000 – $20,000/deal</div>
+        <p>Luxury brands tài trợ events (watch, cognac, hotel). Content creation / social media exposure. Member network = high net-worth audience = premium ad value. P1 Club làm rất mạnh kênh này.</p>
+      </div>
+    </div>
+
+    <h3>Revenue Mix Gợi Ý (Năm 1 — 4 members, 1 xe)</h3>
+    <table>
+      <tr><th>Revenue Stream</th><th>Estimate (USD/năm)</th><th>% Total</th><th>Ghi chú</th></tr>
+      <tr><td>Initiation Fee (1-time, year 1)</td><td>$80,000</td><td>40%</td><td>4 members × $20,000</td></tr>
+      <tr><td>Annual Membership</td><td>$48,000</td><td>24%</td><td>4 × $12,000 avg</td></tr>
+      <tr><td>Per-session usage</td><td>$38,400</td><td>19%</td><td>48 days/năm × $800</td></tr>
+      <tr><td>Events & Experiences</td><td>$20,000</td><td>10%</td><td>4 events × $5,000</td></tr>
+      <tr><td>Guest passes</td><td>$9,600</td><td>5%</td><td>32 passes × $300</td></tr>
+      <tr><td>Partners/Sponsors</td><td>$5,000</td><td>2%</td><td>Year 1 estimate</td></tr>
+      <tr style="font-weight:700;"><td>TOTAL Year 1</td><td style="color:#d4a017;">~$201,000</td><td>100%</td><td>Excl. fleet turnover gain</td></tr>
+      <tr style="font-weight:700;"><td>From Year 2 (no initiation)</td><td style="color:#4caf50;">~$121,000/năm</td><td>—</td><td>Recurring base</td></tr>
+    </table>
+
+    <div class="callout green">
+      <strong>Unit economics:</strong> McLaren 750S giá ~$380,000 (VN ~$950,000 sau thuế). Annual membership + usage = ~$121,000 recurring. Break-even (chưa tính lãi vay) = ~8 năm nếu chỉ dùng recurring. Với Initiation Fee + Fleet Turnover + Events → break-even thực tế ~4–5 năm. Cần scale lên 2–3 xe để economics hấp dẫn hơn.
+    </div>
+  </div>
+
+  <!-- SECTION III -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num" style="background:#00101a;color:#2196f3;border:2px solid #2196f3;">III</div>
+      <h2>P&L Dự Phóng — 4 Members, 1 Xe (McLaren 750S)</h2>
+    </div>
+
+    <table>
+      <tr><th>Item</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr>
+      <tr><td colspan="4" style="color:#d4a017;font-weight:700;padding-top:12px;">REVENUE (USD)</td></tr>
+      <tr><td>Initiation Fee</td><td>$80,000</td><td>—</td><td>—</td></tr>
+      <tr><td>Annual Membership</td><td>$48,000</td><td>$48,000</td><td>$52,000</td></tr>
+      <tr><td>Usage Fee</td><td>$38,400</td><td>$40,000</td><td>$42,000</td></tr>
+      <tr><td>Events + Partners</td><td>$25,000</td><td>$30,000</td><td>$35,000</td></tr>
+      <tr><td style="font-weight:700;color:#fff;">Total Revenue</td><td style="font-weight:700;color:#d4a017;">$191,400</td><td style="font-weight:700;color:#d4a017;">$118,000</td><td style="font-weight:700;color:#d4a017;">$129,000</td></tr>
+      <tr><td colspan="4" style="color:#e94560;font-weight:700;padding-top:12px;">COSTS (USD)</td></tr>
+      <tr><td>Insurance (comprehensive exotic)</td><td>$12,000</td><td>$12,000</td><td>$12,000</td></tr>
+      <tr><td>Maintenance + tyres</td><td>$15,000</td><td>$18,000</td><td>$20,000</td></tr>
+      <tr><td>Storage + detailing</td><td>$6,000</td><td>$6,000</td><td>$6,000</td></tr>
+      <tr><td>Events + F&B</td><td>$10,000</td><td>$12,000</td><td>$14,000</td></tr>
+      <tr><td>Admin + legal + accounting</td><td>$8,000</td><td>$6,000</td><td>$6,000</td></tr>
+      <tr><td>Depreciation (accounting, 6 năm)</td><td>$63,000</td><td>$63,000</td><td>$63,000</td></tr>
+      <tr><td style="font-weight:700;color:#fff;">Total Costs</td><td style="font-weight:700;color:#e94560;">$114,000</td><td style="font-weight:700;color:#e94560;">$117,000</td><td style="font-weight:700;color:#e94560;">$121,000</td></tr>
+      <tr><td colspan="4" style="color:#4caf50;font-weight:700;padding-top:12px;">PROFIT</td></tr>
+      <tr><td style="font-weight:700;">EBITDA</td><td style="color:#4caf50;font-weight:700;">$77,400</td><td style="color:#4caf50;font-weight:700;">$1,000</td><td style="color:#4caf50;font-weight:700;">$8,000</td></tr>
+      <tr><td>CIT 20%</td><td>$15,480</td><td>~$0</td><td>$1,600</td></tr>
+      <tr><td style="font-weight:700;">Net Profit</td><td style="color:#4caf50;font-weight:700;">$61,920</td><td style="color:#aaa;font-weight:700;">~Breakeven</td><td style="color:#4caf50;font-weight:700;">$6,400</td></tr>
+    </table>
+
+    <div class="callout orange">
+      <strong>Note quan trọng:</strong> Năm 1 profitable nhờ Initiation Fee. Năm 2–3 gần breakeven. Nếu scale lên 2 xe + 8 members → Year 2+ EBITDA tốt hơn đáng kể vì fixed costs (admin, storage) không tăng tỷ lệ thuận. Scale là chìa khoá economics của model này.
+    </div>
+  </div>
+
+  <!-- SECTION IV -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num" style="background:#1a0800;color:#ff9800;border:2px solid #ff9800;">IV</div>
+      <h2>Phân Tích Pháp Lý Chuyên Sâu — Luật Việt Nam</h2>
+    </div>
+
+    <h3>A. Đăng ký xe — Thông tư 24/2023/TT-BCA</h3>
+    <table>
+      <tr><th>Vấn đề</th><th>Quy định</th><th>Impact cho Zephyra</th></tr>
+      <tr><td>Ai đứng tên xe</td><td>Đăng ký xe chỉ ghi 1 chủ sở hữu (cá nhân hoặc tổ chức)</td><td>✅ SPV đứng tên → sạch, tránh tranh chấp</td></tr>
+      <tr><td>Sang tên khi góp vốn</td><td>Phải sang tên tại CA trong 30 ngày (Thông tư 24/2023)</td><td>✅ SPV mua xe mới → không cần sang tên từ cá nhân</td></tr>
+      <tr><td>Đăng kiểm xe UHNWI</td><td>Xe nhập khẩu phải qua kiểm định VR/DĐB</td><td>⚠️ Chi phí + thời gian thêm 2–4 tuần</td></tr>
+    </table>
+
+    <h3>B. Thuế Nhập Khẩu & TTĐB — Xe Luxury VN</h3>
+    <table>
+      <tr><th>Loại thuế</th><th>Mức</th><th>Áp dụng McLaren 750S</th></tr>
+      <tr><td>Thuế nhập khẩu (ASEAN: 0%, non-ASEAN: 60–70%)</td><td>60% (UK/non-ASEAN)</td><td>~$228,000 trên $380,000 CIF</td></tr>
+      <tr><td>Thuế TTĐB (xe >3,000cc)</td><td>150%</td><td>~$918,000 trên (giá + nhập khẩu)</td></tr>
+      <tr><td>VAT nhập khẩu</td><td>10%</td><td>~$152,600</td></tr>
+      <tr><td style="font-weight:700;">Giá sau thuế ước tính</td><td colspan="2" style="color:#e94560;font-weight:700;">~$950,000 – $1,100,000 (26–29 tỷ VND)</td></tr>
+    </table>
+
+    <div class="callout red">
+      <strong>🔴 Giới hạn khấu hao 1.6 tỷ VND:</strong> Theo Thông tư 78/2014/TT-BTC và Thông tư 45/2013/TT-BTC, xe ô tô không kinh doanh vận tải/cho thuê bị giới hạn nguyên giá tính chi phí tối đa <strong>1.6 tỷ VND</strong>. Xe McLaren 750S giá 26–29 tỷ → chỉ 1.6 tỷ được vào chi phí hợp lệ → ~27 tỷ còn lại không được khấu hao → SPV phải nộp CIT trên toàn bộ phần này. Đây là pitfall nghiêm trọng nhất cần giải quyết.
+    </div>
+
+    <h3>C. Mã ngành 7710 — Cho thuê xe có động cơ</h3>
+    <div class="callout green">
+      <strong>Giải pháp khấu hao:</strong> Đăng ký mã ngành <strong>7710 — Cho thuê xe có động cơ</strong> (theo Luật Đầu tư 2020 + Thông tư 45/2013). Xe của doanh nghiệp kinh doanh cho thuê xe <strong>KHÔNG bị giới hạn 1.6 tỷ</strong> — khấu hao theo nguyên giá thực tế. Điều kiện: (1) SPV có doanh thu từ cho thuê xe thực tế, (2) Hợp đồng thuê xe với members được lập đầy đủ, (3) Xe phục vụ mục đích kinh doanh chứ không phải phúc lợi nội bộ.
+    </div>
+
+    <h3>D. Thuế TNCN (PIT) — Phân tích theo Luật TNCN 2025</h3>
+    <table>
+      <tr><th>Kịch bản</th><th>Có chịu PIT không?</th><th>Cơ sở pháp lý</th><th>Giải pháp</th></tr>
+      <tr><td>Member dùng xe miễn phí (benefit)</td><td>🔴 Có — benefit in-kind</td><td>TT 111/2013 Điều 2 Khoản 2(đ)</td><td>Luôn charge usage fee thị trường</td></tr>
+      <tr><td>Member dùng xe, trả usage fee</td><td>🟢 Không</td><td>Giao dịch thương mại bình thường</td><td>✅ Document đầy đủ</td></tr>
+      <tr><td>SPV mua lại cổ phần khi exit</td><td>🟡 Có — PIT từ chuyển nhượng vốn 20%</td><td>Luật TNCN Điều 13</td><td>Tính vào exit model, không tránh được</td></tr>
+      <tr><td>Dividend từ SPV profits</td><td>🟡 Có — PIT 5% trên cổ tức</td><td>Luật TNCN Điều 10</td><td>Retain earnings, tái đầu tư fleet mới</td></tr>
+      <tr><td>Annual membership fee trả cho SPV</td><td>🟢 Không (VAT 10% thôi)</td><td>Doanh thu dịch vụ bình thường</td><td>✅ Không có rủi ro PIT ở đây</td></tr>
+    </table>
+
+    <h3>E. VAT — Luật VAT 2024 (hiệu lực 10/2025)</h3>
+    <table>
+      <tr><th>Revenue Stream</th><th>VAT rate</th><th>Ghi chú</th></tr>
+      <tr><td>Annual membership fee</td><td>10%</td><td>Dịch vụ thông thường</td></tr>
+      <tr><td>Per-session usage fee</td><td>10%</td><td>Cho thuê xe</td></tr>
+      <tr><td>Events/experiences</td><td>10%</td><td>Dịch vụ tổ chức sự kiện</td></tr>
+      <tr><td>Initiation fee</td><td>10%</td><td>Phí dịch vụ một lần</td></tr>
+      <tr><td>VAT input (mua xe)</td><td>Được khấu trừ ✅</td><td>Nếu xe dùng cho hoạt động VAT-taxable</td></tr>
+    </table>
+
+    <div class="callout blue">
+      <strong>VAT input xe luxury:</strong> SPV mua xe → chịu VAT nhập khẩu 10% (~$95,000 với McLaren 750S giá $950,000). Nếu SPV registered VAT và xe dùng cho dịch vụ chịu VAT (cho thuê) → được khấu trừ toàn bộ VAT đầu vào. Đây là lợi thế thuế đáng kể.
+    </div>
+  </div>
+
+  <!-- SECTION V — PITFALLS -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num" style="background:#1a0000;color:#e94560;border:2px solid #e94560;">V</div>
+      <h2>Pitfalls & Solutions — 7 Rủi Ro Chính</h2>
+    </div>
+
+    <div class="pitfall-card">
+      <h4>🔴 Pitfall #1 — Giới hạn khấu hao 1.6 tỷ VND (CRITICAL)</h4>
+      <p>Xe luxury 26–29 tỷ VND nhưng chỉ 1.6 tỷ được vào chi phí hợp lệ nếu không phải xe kinh doanh vận tải/cho thuê. SPV phải nộp CIT trên ~27 tỷ còn lại — không khấu trừ được. Đây là lỗ hổng nghiêm trọng nhất của cả 2 cấu trúc Dr Quang đề xuất.</p>
+      <div class="fix"><strong>Fix:</strong> Đăng ký mã ngành 7710 (cho thuê xe) + có hợp đồng cho thuê thực tế với members + doanh thu cho thuê thực tế. Xe lúc này = tài sản kinh doanh cho thuê → không bị giới hạn 1.6 tỷ → khấu hao theo nguyên giá thực tế (~$63,000/năm với giá $380,000, 6 năm). Lưu ý: cần tư vấn thuế confirm với cơ quan thuế địa phương.</div>
+    </div>
+
+    <div class="pitfall-card">
+      <h4>🔴 Pitfall #2 — PIT Benefit in-kind nếu usage miễn phí</h4>
+      <p>Nếu members dùng xe mà không trả usage fee (vì đã trả membership) → cơ quan thuế có thể tính đây là benefit in-kind → PIT trên giá trị thị trường của việc dùng xe. Đặc biệt nguy hiểm nếu members cũng là directors/employees của SPV.</p>
+      <div class="fix"><strong>Fix:</strong> Luôn charge usage fee riêng biệt, ngay cả khi amount nhỏ (symbolic). Membership fee = phí gia nhập club/quyền booking priority, KHÔNG bao gồm quyền dùng xe miễn phí. Lập invoice đầy đủ cho mỗi lần sử dụng. Members = "khách hàng" của SPV, không phải employees nhận benefit.</div>
+    </div>
+
+    <div class="pitfall-card">
+      <h4>🟡 Pitfall #3 — Class Share gắn tài sản vật lý chưa có tiền lệ VN</h4>
+      <p>Luật Doanh nghiệp 2020 cho phép nhiều loại cổ phần, nhưng không có quy định cụ thể về "cổ phần gắn với tài sản vật lý cụ thể" (VD: Class A = McLaren 750S). Nếu có tranh chấp, toà án VN chưa có precedent để phán xét.</p>
+      <div class="fix"><strong>Fix:</strong> Đừng gắn class share với tài sản cụ thể. Thay vào đó: Class A/B/C = mức booking priority và số ngày access/tháng, quy định trong SHA. Ownership của tất cả xe thuộc về SPV đồng đều. Exit = buyback theo NAV/thỏa thuận, không phải bán "phần xe cụ thể".</div>
+    </div>
+
+    <div class="pitfall-card">
+      <h4>🟡 Pitfall #4 — Depreciation timing mismatch</h4>
+      <p>Xe luxury mất giá nhanh hơn thời gian khấu hao kế toán (6 năm). McLaren 750S có thể mất 20–25%/năm năm đầu. Nếu SPV muốn bán xe sau 2 năm để thay fleet mới, book value còn cao hơn thị trường → phát sinh lỗ kế toán nhưng thực tế là lỗ thật.</p>
+      <div class="fix"><strong>Fix:</strong> (1) Mua xe đã qua 1 năm sử dụng — avoid năm đầu mất giá nặng nhất. (2) Fleet cycle 3–4 năm thay vì 2 năm. (3) Tính toán residual value vào membership fee pricing từ đầu. (4) Xem xét lease thay vì mua — avoid depreciation risk hoàn toàn.</div>
+    </div>
+
+    <div class="pitfall-card">
+      <h4>🟡 Pitfall #5 — Xung đột booking & "fair use"</h4>
+      <p>4 members, 1 xe. Ai cũng muốn dùng vào cuối tuần, dịp lễ, sự kiện lớn. Không có policy rõ ràng → conflict → relationship damage. Đây là lý do nhiều car club thất bại không phải vì pháp lý mà vì social dynamics.</p>
+      <div class="fix"><strong>Fix:</strong> SHA phải có: (1) Booking system rõ ràng (app/calendar), advance booking tối thiểu 48h, (2) Max consecutive days/member (VD: 5 ngày/lần), (3) Peak period rotation (Tết, holidays chia theo thứ tự), (4) "Blackout dates" cho maintenance/events, (5) Penalty nếu hủy < 24h.</div>
+    </div>
+
+    <div class="pitfall-card">
+      <h4>🟡 Pitfall #6 — Damage & insurance claim complexity</h4>
+      <p>Ai chịu trách nhiệm nếu xe bị damage khi member A đang dùng? Insurance claim trên xe $950,000 không đơn giản. Excess thường $5,000–15,000. Nếu damage vượt quá excess, member trả hay SPV trả?</p>
+      <div class="fix"><strong>Fix:</strong> (1) Comprehensive exotic car insurance bắt buộc (hiện tại ở VN: PVI, Bao Viet, hoặc Lloyd's syndicates qua broker), (2) Usage agreement mỗi lần thuê phải ký — xác định responsibility, (3) Security deposit $5,000/lần usage trả qua app, (4) Damage cap per incident trong SHA.</div>
+    </div>
+
+    <div class="pitfall-card">
+      <h4>🟢 Pitfall #7 — Exit rights & valuation dispute</h4>
+      <p>Member muốn exit sau 2 năm. SPV value xe bị mất giá nhiều, member không đồng ý với buyback price. Không có valuation mechanism rõ ràng → tranh chấp giữa người quen.</p>
+      <div class="fix"><strong>Fix:</strong> SHA phải define rõ: (1) Exit window: chỉ được exit sau 2 năm tối thiểu, (2) Valuation: independent appraiser (VD: Sytner, dealer) + 2 independent quotes lấy average, (3) Buyback price: NAV of SPV ÷ số cổ phần, (4) ROFR: các members còn lại có quyền mua phần exit trước khi offer bên ngoài.</div>
+    </div>
+  </div>
+
+  <!-- SECTION VI -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num" style="background:#0d1000;color:#4caf50;border:2px solid #4caf50;">VI</div>
+      <h2>Cấu Trúc Tối Ưu Đề Xuất</h2>
+    </div>
+
+    <p>Kết hợp lessons từ global benchmarks + constraints của luật VN, đây là cấu trúc em đề xuất:</p>
+
+    <div class="structure-box">
+      <h4>🏗️ Zephyra Toys4Share Co., Ltd — Proposed Structure</h4>
+
+      <div class="node">
+        <div class="label">Legal Entity</div>
+        <div class="val">LLC (Công ty TNHH 2 thành viên trở lên) — Luật DN 2020</div>
+        <div class="sub">Dễ quản lý hơn JSC, ít compliance burden, phù hợp small members</div>
+      </div>
+      <div class="node">
+        <div class="label">Ngành nghề đăng ký</div>
+        <div class="val">Mã 7710 — Cho thuê xe có động cơ (không điều kiện) + Mã 9329 — Hoạt động giải trí, vui chơi khác</div>
+        <div class="sub">Mã 7710 → giải quyết khấu hao xe. Mã 9329 → events, experiences revenue</div>
+      </div>
+      <div class="node">
+        <div class="label">Vốn điều lệ</div>
+        <div class="val">= Tổng giá trị xe fleet (VD: 1 xe = 26 tỷ VND → vốn điều lệ 26 tỷ)</div>
+        <div class="sub">Members góp vốn bằng tiền mặt theo tỷ lệ sở hữu</div>
+      </div>
+      <div class="node">
+        <div class="label">Membership Tiers (trong SHA)</div>
+        <div class="val">Founding Member (25% stake): 10 ngày/tháng priority booking, 0 usage fee premium<br>
+        Associate Member (12.5% stake): 5 ngày/tháng, standard usage fee<br>
+        Guest Member (0% stake): Theo lời mời, full usage fee</div>
+        <div class="sub">Tier = quyền booking, không gắn với xe cụ thể</div>
+      </div>
+      <div class="node">
+        <div class="label">Revenue Model</div>
+        <div class="val">Annual Membership Fee + Per-session Usage Fee + Initiation Fee + Events</div>
+        <div class="sub">Mọi transaction đều có invoice, VAT 10%, tạo doanh thu thực cho SPV</div>
+      </div>
+      <div class="node">
+        <div class="label">Governance</div>
+        <div class="val">Members' Council: họp quarterly. Booking Platform: app/shared calendar. Designated Manager: 1 member chịu trách nhiệm vận hành daily.</div>
+        <div class="sub">SHA: ROFR + deadlock (75% threshold) + exit mechanism + damage policy</div>
+      </div>
+      <div class="node">
+        <div class="label">Fleet Strategy</div>
+        <div class="val">Bắt đầu 1 xe flagship → Scale lên 2–3 xe sau 18–24 tháng. Cycle 3–4 năm/xe. Xem xét operating lease thay vì mua để avoid depreciation risk.</div>
+        <div class="sub">Operating lease ở VN: hiện tại hạn chế với exotic cars, nhưng một số dealer làm được</div>
+      </div>
+    </div>
+
+    <h3>So sánh 3 cấu trúc</h3>
+    <table>
+      <tr><th>Tiêu chí</th><th>Cấu trúc 1 (RCC đứng tên)</th><th>Cấu trúc 2 (SPV Dr Quang)</th><th>Cấu trúc 3 (Đề xuất của em)</th></tr>
+      <tr><td>Khấu hao xe</td><td>❌ Bị giới hạn 1.6 tỷ</td><td>❌ Cùng vấn đề</td><td>✅ Không giới hạn (mã 7710)</td></tr>
+      <tr><td>PIT risk</td><td>⚠️ Có</td><td>⚠️ Có</td><td>✅ Minimized (usage fee rõ ràng)</td></tr>
+      <tr><td>Member protection</td><td>❌ Yếu</td><td>✅ Ring-fenced</td><td>✅ Ring-fenced</td></tr>
+      <tr><td>Legal complexity</td><td>Thấp</td><td>Cao</td><td>Trung bình</td></tr>
+      <tr><td>Tiền lệ VN</td><td>⚠️ Partial</td><td>❌ Chưa có</td><td>✅ Rõ ràng (LLC + 7710)</td></tr>
+      <tr><td>Scalability</td><td>❌ Kém</td><td>✅ Tốt</td><td>✅✅ Tốt nhất</td></tr>
+      <tr><td>VAT input recovery</td><td>⚠️ Partial</td><td>⚠️ Partial</td><td>✅ Full (dịch vụ cho thuê)</td></tr>
+      <tr><td>Exit mechanism</td><td>❌ Phức tạp</td><td>⚠️ Cần cấu trúc</td><td>✅ NAV buyback trong SHA</td></tr>
+    </table>
+  </div>
+
+  <!-- SECTION VII -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num" style="background:#1a1200;color:#d4a017;border:2px solid #d4a017;">VII</div>
+      <h2>Action Plan</h2>
+    </div>
+
+    <table>
+      <tr><th>#</th><th>Action</th><th>Owner</th><th>Timeline</th><th>Priority</th></tr>
+      <tr><td>1</td><td>Confirm mã ngành 7710 + tax treatment với tax counsel (Big4 hoặc VILAF) — đặc biệt khấu hao xe luxury</td><td>Dr Quang / Anh Bach</td><td>2 tuần</td><td>🔴 Critical</td></tr>
+      <tr><td>2</td><td>Quyết định: Mua xe hay Operating Lease? Confirm với dealer McLaren/Lamborghini VN về lease option</td><td>Anh Bach</td><td>1 tháng</td><td>🔴 Critical</td></tr>
+      <tr><td>3</td><td>Draft SHA framework: booking rules, exit mechanism, ROFR, damage policy</td><td>Zera + Legal counsel</td><td>2 tuần</td><td>🟡 High</td></tr>
+      <tr><td>4</td><td>Thành lập LLC + đăng ký mã ngành tại Sở KH&ĐT HCMC</td><td>Dr Quang / Lawyer</td><td>3–4 tuần</td><td>🟡 High</td></tr>
+      <tr><td>5</td><td>Mở tài khoản ngân hàng SPV, góp vốn từ members</td><td>SPV Director</td><td>Sau bước 4</td><td>🟡 High</td></tr>
+      <tr><td>6</td><td>Setup booking platform (có thể dùng Calendly / custom app giai đoạn đầu)</td><td>Tech support</td><td>1 tháng</td><td>🟢 Medium</td></tr>
+      <tr><td>7</td><td>Mua exotic car insurance (liên hệ PVI, Bảo Việt, hoặc Lloyd's broker)</td><td>SPV Manager</td><td>Trước khi nhận xe</td><td>🔴 Critical</td></tr>
+    </table>
+
+    <div class="highlight">
+      <h4>💡 Khuyến nghị cuối</h4>
+      <p style="color:#ccc;margin-top:10px;">Cấu trúc Dr Quang đề xuất <strong>đúng về triết lý</strong> (SPV riêng, class-based access). Vấn đề là implementation details — đặc biệt là khấu hao và PIT. Với <strong>Cấu trúc 3 (LLC + mã 7710 + usage fee rõ ràng)</strong>, anh có thể giải quyết được tất cả pitfalls nghiêm trọng.</p>
+      <p style="color:#ccc;margin-top:10px;">Ưu tiên số 1 trước khi làm bất cứ điều gì: <strong>xác nhận với tax counsel rằng mã ngành 7710 giải quyết được giới hạn khấu hao 1.6 tỷ</strong>. Nếu không, toàn bộ economics của model này bị ảnh hưởng nghiêm trọng.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Zephyra Car Club — Revenue & Legal Framework Analysis · March 2026</p>
+  <p style="margin-top:8px;">Prepared by <a href="#">Zera 🌟</a> for Bach Tran · Royal Canary Corp · Confidential</p>
+  <p style="margin-top:8px;font-size:0.8em;color:#222;">Disclaimer: Đây là phân tích sơ bộ, không thay thế tư vấn pháp lý/thuế chuyên nghiệp. Cần xác nhận với luật sư và chuyên gia thuế trước khi triển khai.</p>
+</footer>
+</body>
+</html>
