@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Meridien Saigon — Iran War Impact Analysis & Fallout Management</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f5;color:#1a1a1a;font-size:14px;line-height:1.6;}
+  .header{background:linear-gradient(135deg,#1B2A4A 0%,#2d3f6e 100%);padding:36px 48px;color:#fff;}
+  .header h1{font-size:1.7em;font-weight:700;margin-bottom:4px;}
+  .header .sub{color:#94a3b8;font-size:0.9em;margin-bottom:14px;}
+  .header .badges{display:flex;gap:10px;flex-wrap:wrap;}
+  .badge{padding:3px 12px;border-radius:20px;font-size:0.75em;font-weight:600;}
+  .badge.red{background:#fee2e2;color:#dc2626;}
+  .badge.blue{background:#dbeafe;color:#1d4ed8;}
+  .badge.gray{background:rgba(255,255,255,0.15);color:#e2e8f0;}
+  .badge.amber{background:#fef3c7;color:#b45309;}
+  .data-note{background:#1e3a5f;border-left:3px solid #f59e0b;padding:10px 16px;margin-top:14px;border-radius:0 6px 6px 0;font-size:0.82em;color:#fbbf24;}
+  .container{max-width:1080px;margin:0 auto;padding:30px 24px;}
+  .section{margin-bottom:36px;}
+  .section-title{font-size:1em;font-weight:700;color:#1B2A4A;border-bottom:2px solid #1B2A4A;padding-bottom:6px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;}
+  .alert-box{background:#fff;border:1px solid #fca5a5;border-left:4px solid #dc2626;border-radius:6px;padding:16px 20px;margin-bottom:16px;}
+  .alert-box h4{color:#dc2626;font-size:0.88em;font-weight:700;margin-bottom:8px;text-transform:uppercase;}
+  .alert-box p{font-size:0.88em;color:#374151;}
+  .info-box{background:#fff;border:1px solid #bfdbfe;border-left:4px solid #3b82f6;border-radius:6px;padding:16px 20px;margin-bottom:16px;}
+  .info-box h4{color:#1d4ed8;font-size:0.88em;font-weight:700;margin-bottom:8px;text-transform:uppercase;}
+  .info-box p{font-size:0.88em;color:#374151;}
+  .green-box{background:#fff;border:1px solid #bbf7d0;border-left:4px solid #16a34a;border-radius:6px;padding:16px 20px;margin-bottom:16px;}
+  .green-box h4{color:#15803d;font-size:0.88em;font-weight:700;margin-bottom:8px;text-transform:uppercase;}
+  .green-box p{font-size:0.88em;color:#374151;}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:16px;}
+  th{background:#1B2A4A;color:#fff;padding:10px 14px;text-align:left;font-size:0.82em;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
+  td{padding:10px 14px;border-bottom:1px solid #f3f4f6;font-size:0.88em;color:#374151;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f9fafb;}
+  .pct-bar{display:flex;align-items:center;gap:8px;}
+  .bar-wrap{flex:1;height:7px;background:#e5e7eb;border-radius:4px;overflow:hidden;min-width:60px;}
+  .bar-fill{height:100%;border-radius:4px;}
+  .pct-label{font-weight:700;font-size:0.85em;min-width:38px;text-align:right;}
+  .green{color:#16a34a;font-weight:700;}
+  .red{color:#dc2626;font-weight:700;}
+  .amber{color:#d97706;font-weight:700;}
+  .tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:0.72em;font-weight:700;}
+  .tag-red{background:#fee2e2;color:#dc2626;}
+  .tag-green{background:#dcfce7;color:#15803d;}
+  .tag-amber{background:#fef3c7;color:#b45309;}
+  .tag-blue{background:#dbeafe;color:#1d4ed8;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
+  .kpi{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.08);border-top:3px solid #1B2A4A;}
+  .kpi.warn{border-top-color:#f59e0b;}
+  .kpi.ok{border-top-color:#16a34a;}
+  .kpi.danger{border-top-color:#dc2626;}
+  .kpi label{font-size:0.72em;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;}
+  .kpi .val{font-size:1.5em;font-weight:700;color:#1B2A4A;}
+  .kpi .sub{font-size:0.75em;color:#6b7280;margin-top:2px;}
+  .timeline{position:relative;padding-left:24px;}
+  .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:#e5e7eb;}
+  .tl-item{position:relative;margin-bottom:16px;}
+  .tl-item::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:#1B2A4A;}
+  .tl-item.done::before{background:#16a34a;}
+  .tl-item.warn::before{background:#f59e0b;}
+  .tl-item.red::before{background:#dc2626;}
+  .tl-date{font-size:0.75em;color:#6b7280;font-weight:600;}
+  .tl-text{font-size:0.88em;color:#374151;margin-top:2px;}
+  .action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;}
+  .action-card{background:#fff;border-radius:8px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+  .action-card h4{font-size:0.88em;font-weight:700;color:#1B2A4A;margin-bottom:10px;}
+  .action-card ul{list-style:none;padding:0;}
+  .action-card ul li{font-size:0.84em;color:#374151;padding:4px 0;border-bottom:1px solid #f3f4f6;display:flex;gap:8px;align-items:flex-start;}
+  .action-card ul li:last-child{border-bottom:none;}
+  .action-card ul li::before{content:'→';color:#1B2A4A;flex-shrink:0;}
+  .pri-high::before{color:#dc2626!important;content:'●'!important;}
+  .pri-med::before{color:#f59e0b!important;content:'●'!important;}
+  .pri-low::before{color:#16a34a!important;content:'●'!important;}
+  .forecast-table td:first-child{font-weight:600;}
+  footer{text-align:center;padding:24px;color:#9ca3af;font-size:0.78em;border-top:1px solid #e5e7eb;margin-top:20px;}
+  @media(max-width:640px){.kpi-grid{grid-template-columns:repeat(2,1fr)};.action-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Le Meridien Saigon — Iran War: Impact & Fallout Management</h1>
+  <div class="sub">Operational Intelligence Report · Prepared for RCC Management & Le Meridien Leadership</div>
+  <div class="badges">
+    <span class="badge red">⚠️ Active Disruption</span>
+    <span class="badge amber">Conflict Day 22 (as of Mar 23)</span>
+    <span class="badge blue">Oil: Brent ~$95–100/bbl (EIA)</span>
+    <span class="badge gray">Prepared by Zera 🌟 · March 23, 2026</span>
+  </div>
+  <div class="data-note">📊 Hotel performance data: Le Meridien Saigon SharePoint · File: 2026-03-15.xlsx · Last modified: 16 Mar 2026 14:37 · Report date: March 15, 2026. External market data sourced from EIA, Reuters, VnExpress, Oxford Economics, Flightradar24 as of March 23, 2026.</div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1: CURRENT STATUS -->
+  <div class="section">
+    <div class="section-title">I. Current Situation — Conflict Status (Mar 23, 2026)</div>
+
+    <div class="alert-box">
+      <h4>🔴 Active Disruption — No Ceasefire Confirmed</h4>
+      <p>Trump stated on Mar 6: <strong>"no time limits"</strong> on conflict duration. As of Mar 20, US is considering occupying Iran's Kharg Island to pressure Hormuz reopening. UAE airspace partially reopened Mar 16-17, but Iranian and Iraqi airspace remains partially restricted. <strong>No ceasefire timeline confirmed.</strong> (Sources: The Hindu Mar 20; The Guardian Mar 16; Flightradar24 Mar 22)</p>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi danger">
+        <label>Conflict Duration</label>
+        <div class="val">22 days</div>
+        <div class="sub">Since Feb 28 airstrikes</div>
+      </div>
+      <div class="kpi danger">
+        <label>Brent Crude</label>
+        <div class="val">~$97/bbl</div>
+        <div class="sub">EIA: above $95 next 2 months</div>
+      </div>
+      <div class="kpi warn">
+        <label>Flight Cost Increase</label>
+        <div class="val">+35–55%</div>
+        <div class="sub">Europe–HCMC business class</div>
+      </div>
+      <div class="kpi danger">
+        <label>SEA Tourist Decline</label>
+        <div class="val">-9% to -18%</div>
+        <div class="sub">Thailand -8.9% wk1 Mar (vietnam.vn)</div>
+      </div>
+      <div class="kpi warn">
+        <label>Middle East Arrivals</label>
+        <div class="val">-11% to -27%</div>
+        <div class="sub">Oxford Economics full-year forecast</div>
+      </div>
+      <div class="kpi warn">
+        <label>EIA Oil Forecast</label>
+        <div class="val">$80 Q3 · $70 Q4</div>
+        <div class="sub">Relief expected mid-year</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: LMS PERFORMANCE DATA -->
+  <div class="section">
+    <div class="section-title">II. Le Meridien Saigon — Actual Performance (Data: March 15, 2026)</div>
+
+    <h4 style="font-size:0.85em;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.3px;">YTD Performance (January – March 15, 2026)</h4>
+    <table>
+      <tr>
+        <th>Business Unit</th>
+        <th>YTD Target (VND)</th>
+        <th>YTD Actual (VND)</th>
+        <th>YTD Progress</th>
+        <th>Day % Elapsed</th>
+        <th>Status</th>
+      </tr>
+      <tr>
+        <td><strong>Hotel Total</strong></td>
+        <td>651.9 tỷ</td>
+        <td>128.6 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:19.7%;background:#dc2626;"></div></div>
+            <span class="pct-label red">19.7%</span>
+          </div>
+        </td>
+        <td>20.3%</td>
+        <td><span class="tag tag-amber">Near Target</span></td>
+      </tr>
+      <tr>
+        <td>Room Revenue</td>
+        <td>460.7 tỷ</td>
+        <td>92.7 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:20.1%;background:#f59e0b;"></div></div>
+            <span class="pct-label amber">20.1%</span>
+          </div>
+        </td>
+        <td>20.3%</td>
+        <td><span class="tag tag-amber">On Track (barely)</span></td>
+      </tr>
+      <tr>
+        <td>Latest Recipe (F&B)</td>
+        <td>58.6 tỷ</td>
+        <td>11.3 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:19.2%;background:#f59e0b;"></div></div>
+            <span class="pct-label amber">19.2%</span>
+          </div>
+        </td>
+        <td>20.3%</td>
+        <td><span class="tag tag-amber">Slightly Behind</span></td>
+      </tr>
+      <tr>
+        <td>Barson (Bar)</td>
+        <td>19.9 tỷ</td>
+        <td>3.2 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:16.3%;background:#dc2626;"></div></div>
+            <span class="pct-label red">16.3%</span>
+          </div>
+        </td>
+        <td>20.3%</td>
+        <td><span class="tag tag-red">Behind Target</span></td>
+      </tr>
+      <tr>
+        <td>AKUNA</td>
+        <td>33.2 tỷ</td>
+        <td>5.6 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:16.9%;background:#dc2626;"></div></div>
+            <span class="pct-label red">16.9%</span>
+          </div>
+        </td>
+        <td>20.3%</td>
+        <td><span class="tag tag-red">Behind Target</span></td>
+      </tr>
+      <tr style="background:#f0fdf4;">
+        <td><strong>Banquet / Catering</strong></td>
+        <td>45.1 tỷ</td>
+        <td><strong>11.9 tỷ</strong></td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:26.4%;background:#16a34a;"></div></div>
+            <span class="pct-label green">26.4%</span>
+          </div>
+        </td>
+        <td>20.3%</td>
+        <td><span class="tag tag-green">✅ Outperforming</span></td>
+      </tr>
+      <tr>
+        <td>La Victoire Hotel</td>
+        <td>421.6 tỷ</td>
+        <td>52.5 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:12.5%;background:#dc2626;"></div></div>
+            <span class="pct-label red">12.5%</span>
+          </div>
+        </td>
+        <td>20.3%</td>
+        <td><span class="tag tag-red">Behind Target</span></td>
+      </tr>
+    </table>
+
+    <h4 style="font-size:0.85em;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.3px;margin-top:20px;">MTD Performance (March 1–15, 2026) · 16 days remaining</h4>
+    <table>
+      <tr>
+        <th>Business Unit</th>
+        <th>MTD Target (VND)</th>
+        <th>MTD Actual (VND)</th>
+        <th>MTD Progress</th>
+        <th>Day % Elapsed</th>
+        <th>Pace Assessment</th>
+      </tr>
+      <tr>
+        <td><strong>Hotel Total</strong></td>
+        <td>62.9 tỷ</td>
+        <td>30.4 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:48.3%;background:#f59e0b;"></div></div>
+            <span class="pct-label amber">48.3%</span>
+          </div>
+        </td>
+        <td>48.4%</td>
+        <td><span class="tag tag-amber">On Pace</span></td>
+      </tr>
+      <tr>
+        <td>Room Revenue</td>
+        <td>46.9 tỷ</td>
+        <td>23.0 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:49.1%;background:#f59e0b;"></div></div>
+            <span class="pct-label amber">49.1%</span>
+          </div>
+        </td>
+        <td>48.4%</td>
+        <td><span class="tag tag-amber">On Pace</span></td>
+      </tr>
+      <tr>
+        <td>Latest Recipe (F&B)</td>
+        <td>5.2 tỷ</td>
+        <td>2.6 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:49.6%;background:#f59e0b;"></div></div>
+            <span class="pct-label amber">49.6%</span>
+          </div>
+        </td>
+        <td>48.4%</td>
+        <td><span class="tag tag-green">Slightly Ahead</span></td>
+      </tr>
+      <tr>
+        <td>Barson (Bar)</td>
+        <td>1.7 tỷ</td>
+        <td>0.7 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:40%;background:#dc2626;"></div></div>
+            <span class="pct-label red">40.0%</span>
+          </div>
+        </td>
+        <td>48.4%</td>
+        <td><span class="tag tag-red">Behind Pace</span></td>
+      </tr>
+      <tr>
+        <td>AKUNA</td>
+        <td>2.9 tỷ</td>
+        <td>0.9 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:30.7%;background:#dc2626;"></div></div>
+            <span class="pct-label red">30.7%</span>
+          </div>
+        </td>
+        <td>48.4%</td>
+        <td><span class="tag tag-red">Significantly Behind</span></td>
+      </tr>
+      <tr style="background:#f0fdf4;">
+        <td><strong>Banquet / Catering</strong></td>
+        <td>3.6 tỷ</td>
+        <td><strong>2.4 tỷ</strong></td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:66.7%;background:#16a34a;"></div></div>
+            <span class="pct-label green">66.7%</span>
+          </div>
+        </td>
+        <td>48.4%</td>
+        <td><span class="tag tag-green">✅ Strong — Ahead of Pace</span></td>
+      </tr>
+      <tr style="background:#f0fdf4;">
+        <td><strong>La Victoire Hotel</strong></td>
+        <td>26.8 tỷ</td>
+        <td>22.3 tỷ</td>
+        <td>
+          <div class="pct-bar">
+            <div class="bar-wrap"><div class="bar-fill" style="width:83.3%;background:#16a34a;"></div></div>
+            <span class="pct-label green">83.3%</span>
+          </div>
+        </td>
+        <td>48.4%</td>
+        <td><span class="tag tag-green">✅ Strong Ahead of Pace</span></td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      <h4>📌 Key Performance Observations</h4>
+      <p>
+        <strong>Positive signals:</strong> Hotel Total MTD is on pace (48.3% actual vs 48.4% days elapsed). La Victoire Hotel MTD at 83.3% — significantly ahead. Banquet/Catering remains the standout at 66.7% MTD progress and 26.4% YTD (vs 20.3% days elapsed).<br><br>
+        <strong>Pressure points:</strong> AKUNA (30.7% MTD) and Barson (40.0% MTD) are materially behind — outlet revenue dependent on international F&B-spending guests. YTD gaps widest at AKUNA (-3.4pp) and Barson (-4.0pp) vs day-elapsed benchmark.<br><br>
+        <strong>Critical YTD gap:</strong> La Victoire Hotel YTD at only 12.5% vs 20.3% days elapsed — represents the largest absolute revenue shortfall, driven by lower room revenue contribution from the La Victoire tower.
+      </p>
+    </div>
+  </div>
+
+  <!-- SECTION 3: IMPACT ANALYSIS -->
+  <div class="section">
+    <div class="section-title">III. Iran War — Transmission Mechanism to Le Meridien</div>
+
+    <table>
+      <tr>
+        <th>Channel</th>
+        <th>Mechanism</th>
+        <th>Affected LMS Segment</th>
+        <th>Severity</th>
+        <th>Evidence</th>
+      </tr>
+      <tr>
+        <td><strong>Flight Cost +35–55%</strong></td>
+        <td>Airspace closure → reroute → +3-4h + fuel surcharge. Carriers: Lufthansa, British Airways, Cathay, Vietnam Airlines all raising surcharges</td>
+        <td>Special Corporate, European FIT/OTA</td>
+        <td><span class="tag tag-red">High</span></td>
+        <td>Reuters Mar 9; Guardian Mar 12</td>
+      </tr>
+      <tr>
+        <td><strong>GCC Hub Disruption</strong></td>
+        <td>Emirates/flydubai capacity cut; UAE evacuation advisory; GCC travellers staying regional</td>
+        <td>Middle East Bonvoy segment, premium F&B (AKUNA, Barson)</td>
+        <td><span class="tag tag-red">High</span></td>
+        <td>BBC Mar 3; Al Jazeera Mar 3</td>
+      </tr>
+      <tr>
+        <td><strong>Corporate Travel Freeze</strong></td>
+        <td>MNCs freeze non-essential international travel per risk policy; HQ approval harder</td>
+        <td>Special Corporate (confirmed -46% vs LY in prior data)</td>
+        <td><span class="tag tag-red">High</span></td>
+        <td>CFR Mar 19; Oxford Economics</td>
+      </tr>
+      <tr>
+        <td><strong>Travel Advisories</strong></td>
+        <td>US "depart now" for 14 ME nations; psychic contagion → broader cancellations beyond ME</td>
+        <td>US Corporate, Western leisure FIT</td>
+        <td><span class="tag tag-amber">Medium</span></td>
+        <td>BBC Travel Mar 3</td>
+      </tr>
+      <tr>
+        <td><strong>SEA-wide Decline</strong></td>
+        <td>Thailand international arrivals -8.9% wk1 Mar; Vietnam estimated -10–18% European arrivals</td>
+        <td>Wholesale/OTA (European source markets)</td>
+        <td><span class="tag tag-amber">Medium</span></td>
+        <td>vietnam.vn Mar 20; VnExpress Mar 16</td>
+      </tr>
+      <tr style="background:#f0fdf4;">
+        <td><strong>Domestic MICE Uplift</strong></td>
+        <td>International events cancelled → local corporates substitute with domestic venues</td>
+        <td>Banquet/Catering ✅ (outperforming)</td>
+        <td><span class="tag tag-green">Positive</span></td>
+        <td>LMS data: Catering 66.7% MTD</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SECTION 4: FORECAST -->
+  <div class="section">
+    <div class="section-title">IV. Forecast — Three Scenarios (Based on EIA + Global Sources)</div>
+
+    <table class="forecast-table">
+      <tr>
+        <th>Scenario</th>
+        <th>Trigger</th>
+        <th>Timeline</th>
+        <th>Oil Price Path</th>
+        <th>Flight Cost</th>
+        <th>LMS RevPAR Impact</th>
+        <th>SC Recovery</th>
+      </tr>
+      <tr style="background:#f0fdf4;">
+        <td><span class="tag tag-green">A · Ceasefire Apr</span></td>
+        <td>Diplomatic pressure + ceasefire by end April</td>
+        <td>8–10 weeks disruption</td>
+        <td>$80 by Q3 · $70 Q4 (EIA base)</td>
+        <td>Surcharges lifted May–June</td>
+        <td>-8% to -12% RevPAR (Mar–Apr) · Recovery Q3</td>
+        <td>May–June (SC lag 4–6 weeks)</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-amber">B · Prolonged Jun</span></td>
+        <td>No ceasefire; partial Hormuz disruption continues</td>
+        <td>4–5 months disruption</td>
+        <td>$90–95 through Q2 · decline H2</td>
+        <td>Surcharges persist Q2; airlines cut capacity</td>
+        <td>-15% to -20% RevPAR full-year vs budget</td>
+        <td>Q3 at earliest</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-red">C · Escalation</span></td>
+        <td>Hormuz fully closed; broader regional war</td>
+        <td>6+ months</td>
+        <td>>$120; recession risk</td>
+        <td>Mass cancellations; capacity collapse on key routes</td>
+        <td>-25%+ RevPAR; potential force majeure events</td>
+        <td>2027</td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      <h4>📈 Current Probability Assessment (Mar 23)</h4>
+      <p>
+        <strong>Scenario A (Ceasefire Apr): 35%</strong> — UAE airspace partially reopened Mar 16-17 is positive signal, but Trump "no time limits" statement (Mar 6) and Kharg Island blockade consideration (Mar 20) suggest prolonged duration is more likely.<br>
+        <strong>Scenario B (Prolonged): 50%</strong> — Most likely base case given current political dynamics. EIA already forecasting oil above $95 for next 2 months.<br>
+        <strong>Scenario C (Escalation): 15%</strong> — Tail risk. Hormuz blockade by US would fundamentally change the calculus.
+      </p>
+    </div>
+
+    <div class="green-box">
+      <h4>🌏 Structural Positive: Vietnam Recovery Advantage</h4>
+      <p>SCMP (Mar 16): "Asia's crisis-hardened hotel sector can withstand Iran war shock." Vietnam specifically cited with strong domestic demand + China/India/Vietnam projected to lead APAC passenger growth. Domestic corporate segment and MICE from regional corporates (Singapore, HK, Thailand re-routing F&B events) offer meaningful buffer. Ceasefire + FTSE upgrade (Sept 21) = dual catalyst for H2 recovery.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 5: FALLOUT MANAGEMENT -->
+  <div class="section">
+    <div class="section-title">V. Fallout Management — Priority Actions</div>
+
+    <div class="action-grid">
+      <div class="action-card">
+        <h4>🔴 Immediate (This Week)</h4>
+        <ul>
+          <li class="pri-high">Proactively contact top 10 Special Corporate accounts — offer rate flexibility or complimentary upgrades to retain bookings before cancellations materialize</li>
+          <li class="pri-high">Activate domestic MICE push — brief sales team to target VN corporates (banking, tech, FMCG) for Q2 events; Catering at 67% MTD demonstrates clear demand</li>
+          <li class="pri-high">Review upcoming group cancellation clauses — identify any force majeure exposure in contracts with European/ME group bookings</li>
+          <li class="pri-high">Inform revenue management: maintain rate discipline for domestic segments (do NOT discount to offset international shortfall — could devalue positioning)</li>
+        </ul>
+      </div>
+      <div class="action-card">
+        <h4>🟡 Short-Term (April–May)</h4>
+        <ul>
+          <li class="pri-med">Activate OTA promotional campaigns targeting domestic VN + APAC (SG, HK, Bangkok) short-haul segments — unaffected by airspace closure</li>
+          <li class="pri-med">Partner with Vietnam Airlines and Bangkok Airways on rerouted traveller packages — Europe-to-HCMC via Bangkok stopover could generate walk-in business</li>
+          <li class="pri-med">Negotiate extended corporate RFP terms (H2 2026) before clients renegotiate downward — lock in rates now while relationship is warm</li>
+          <li class="pri-med">Double MICE sales team KPIs: prioritize ballroom occupancy — each additional event day at full capacity generates ~150–200M VND revenue</li>
+        </ul>
+      </div>
+      <div class="action-card">
+        <h4>🟢 Recovery Prep (Q3–Q4)</h4>
+        <ul>
+          <li class="pri-low">Pre-position ceasefire rebound: rebuild GDS presence for Europe + UAE corridors before airspace reopens — be first to market when demand returns</li>
+          <li class="pri-low">Brief Marriott Bonvoy APAC on Le Meridien Saigon reopening pipeline for GCC members — reactivate Middle East feeder channels</li>
+          <li class="pri-low">FTSE upgrade (Sept 21) prep: corporate finance community in HCMC will increase; align corporate sales pitch to RCC investment story + hotel positioning</li>
+          <li class="pri-low">Leverage AKUNA and Barson recovery: plan themed events/activations for post-ceasefire to rebuild outlet revenue momentum in H2</li>
+        </ul>
+      </div>
+      <div class="action-card">
+        <h4>📊 Monitoring Triggers</h4>
+        <ul>
+          <li class="pri-med">Watch: Emirates Dubai route frequency restoration — first signal inbound HCMC recovery</li>
+          <li class="pri-med">Watch: Iran/Iraqi NOTAM (airspace notice) updates on Flightradar24 — reopen = 2-3 week lead to demand recovery</li>
+          <li class="pri-med">Watch: Weekly Marriott Bonvoy pace report — SC segment booking window shows recovery first</li>
+          <li class="pri-low">Watch: EIA monthly oil report (next: mid-April) — $80 threshold signals airline surcharge relief</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: TIMELINE -->
+  <div class="section">
+    <div class="section-title">VI. Expected Recovery Timeline (Scenario A — Base Case)</div>
+
+    <div class="timeline">
+      <div class="tl-item done">
+        <div class="tl-date">Feb 28 — Mar 15</div>
+        <div class="tl-text"><strong>Disruption onset.</strong> Airspace closes. Flights rerouted. Corporate freeze begins. LMS performance diverges: Catering holds, AKUNA/Barson soften. LMS data shows MTD broadly on pace despite pressure.</div>
+      </div>
+      <div class="tl-item warn">
+        <div class="tl-date">Mar 16 — Apr (Current)</div>
+        <div class="tl-text"><strong>Maximum disruption period.</strong> UAE airspace partially reopened (Mar 16-17) but Iran/Iraq restricted. Fuel surcharges active. SC bookings weakest. Domestic MICE offsetting. Focus: defend base, aggressive catering push.</div>
+      </div>
+      <div class="tl-item warn">
+        <div class="tl-date">Apr — May (Scenario A)</div>
+        <div class="tl-text"><strong>Ceasefire signal.</strong> If ceasefire occurs late April: flight surcharges begin easing. OTA/leisure first to recover (shorter booking window). SC begins recovering 4–6 weeks later. La Victoire Hotel should lead rebound.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">May — Jun</div>
+        <div class="tl-text"><strong>OTA & leisure recovery.</strong> European summer travel bookings restart. GCC reconnects via UAE hub. AKUNA and Barson outlet revenue rebounds with international F&B spenders returning.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Jun — Sep</div>
+        <div class="tl-text"><strong>Corporate (SC) recovery.</strong> MNC travel policies unlock. Account managers re-engage. EIA oil forecast: below $80 Q3. Airline surcharges largely removed. Full recovery path to budget.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">Sep 21 — Q4</div>
+        <div class="tl-text"><strong>FTSE Vietnam upgrade.</strong> $1–3B foreign capital inflows anticipated. Corporate finance community in HCMC expands. Strong H2 finish possible if Scenario A materializes on schedule.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Le Meridien Saigon · Iran War Impact Analysis · Prepared by Zera 🌟 for RCC Management · March 23, 2026<br>
+  Hotel data: SharePoint 2026-03-15.xlsx · External sources: EIA STEO Mar 2026, Reuters, VnExpress, Oxford Economics, Flightradar24, The Hindu, The Guardian, SCMP, CFR<br>
+  <em>This report is for internal management use. Forward distribution within Le Meridien leadership is authorized.</em>
+</footer>
+
+</body>
+</html>
