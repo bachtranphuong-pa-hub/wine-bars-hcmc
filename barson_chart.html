@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barson — Weekly Revenue Trend MTD 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8f7f4; color: #1a1a1a; }
+  .header { background: #1B2A4A; padding: 28px 40px; color: #fff; }
+  .header h1 { font-size: 1.4em; font-weight: 700; margin-bottom: 4px; }
+  .header .sub { color: #94a3b8; font-size: 0.82em; }
+  .container { max-width: 960px; margin: 0 auto; padding: 28px 22px; }
+  .chart-wrap { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  canvas { display: block; max-width: 100%; }
+  .legend { display: flex; gap: 24px; justify-content: center; margin-top: 16px; font-size: 0.82em; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 20px; }
+  .stat { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); text-align: center; }
+  .stat label { font-size: 0.72em; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px; }
+  .stat .val { font-size: 1.4em; font-weight: 700; color: #1B2A4A; }
+  .stat .sub { font-size: 0.75em; color: #9ca3af; margin-top: 2px; }
+  .green { color: #16a34a !important; }
+  .red { color: #dc2626 !important; }
+  footer { text-align: center; padding: 20px; color: #9ca3af; font-size: 0.78em; margin-top: 20px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Barson — Weekly Revenue Trend</h1>
+  <div class="sub">Dữ liệu từ SharePoint · 01/01/2026 – 22/03/2026 · Đơn vị: triệu VND</div>
+</div>
+<div class="container">
+  <div class="chart-wrap">
+    <canvas id="barsonChart" height="320"></canvas>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#1B2A4A;"></div> Actual Revenue</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e2e8f0;border:1px solid #94a3b8;"></div> Target</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8B0000;border-radius:50%;"></div> Trend (7-day MA)</div>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <label>YTD Actual (đến 22/3)</label>
+      <div class="val" id="ytdActual">—</div>
+      <div class="sub">tỷ VND</div>
+    </div>
+    <div class="stat">
+      <label>YTD Target</label>
+      <div class="val" id="ytdTarget">—</div>
+      <div class="sub">tỷ VND</div>
+    </div>
+    <div class="stat">
+      <label>YTD Achievement</label>
+      <div class="val" id="ytdPct">—</div>
+      <div class="sub">vs target</div>
+    </div>
+    <div class="stat">
+      <label>Best Week</label>
+      <div class="val" id="bestWeek">—</div>
+      <div class="sub">tỷ VND</div>
+    </div>
+    <div class="stat">
+      <label>Worst Week</label>
+      <div class="val" id="worstWeek">—</div>
+      <div class="sub">tỷ VND</div>
+    </div>
+    <div class="stat">
+      <label>Avg Weekly</label>
+      <div class="val" id="avgWeek">—</div>
+      <div class="sub">tỷ VND</div>
+    </div>
+  </div>
+</div>
+
+<footer>Data as of March 22, 2026 · Source: Le Meridien Saigon SharePoint · Prepared by Zera 🌟</footer>
+
+<script>
+const weeklyData = [
+  { week: "W1\n01/01", label: "01/01\n(3 ngày)", actual: 87.3, target: 140.2 },
+  { week: "W2\n04/01", label: "04–10/01", actual: 216.8, target: 333.6 },
+  { week: "W3\n11/01", label: "11–17/01", actual: 371.4, target: 333.6 },
+  { week: "W4\n18/01", label: "18–24/01", actual: 497.8, target: 333.6 },
+  { week: "W5\n25/01", label: "25–31/01", actual: 314.7, target: 333.6 },
+  { week: "W6\n01/02", label: "01–07/02", actual: 412.6, target: 316.7 },
+  { week: "W7\n08/02", label: "08–14/02", actual: 274.9, target: 313.9 },
+  { week: "W8\n15/02", label: "15–21/02", actual: 182.6, target: 313.9 },
+  { week: "W9\n22/02", label: "22–28/02", actual: 181.8, target: 313.9 },
+  { week: "W10\n01/03", label: "01–07/03", actual: 365.7, target: 386.9 },
+  { week: "W11\n08/03", label: "08–14/03", actual: 308.5, target: 386.9 },
+  { week: "W12\n15/03", label: "15–21/03", actual: 566.1, target: 386.9 },
+  { week: "W13\n22/03", label: "22/03\n(1 ngày)", actual: 210.9, target: 55.3 }
+];
+
+// Stats
+const totActual = weeklyData.reduce((s,w) => s+w.actual, 0);
+const totTarget = weeklyData.reduce((s,w) => s+w.target, 0);
+const pct = (totActual/totTarget*100).toFixed(1);
+const sorted = [...weeklyData].sort((a,b) => b.actual - a.actual);
+const avg = totActual / weeklyData.length;
+
+document.getElementById('ytdActual').textContent = (totActual/1000).toFixed(2);
+document.getElementById('ytdTarget').textContent = (totTarget/1000).toFixed(2);
+const pctEl = document.getElementById('ytdPct');
+pctEl.textContent = pct + '%';
+pctEl.className = 'val ' + (parseFloat(pct) >= 100 ? 'green' : parseFloat(pct) >= 80 ? '' : 'red');
+document.getElementById('bestWeek').textContent = (sorted[0].actual/1000).toFixed(3) + ' (' + sorted[0].week.split('\n')[1] + ')';
+document.getElementById('worstWeek').textContent = (sorted[sorted.length-1].actual/1000).toFixed(3);
+document.getElementById('avgWeek').textContent = (avg/1000).toFixed(3);
+
+// Chart
+const canvas = document.getElementById('barsonChart');
+const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+const W = canvas.parentElement.clientWidth - 56;
+const H = 320;
+canvas.width = W * dpr;
+canvas.height = H * dpr;
+canvas.style.width = W + 'px';
+canvas.style.height = H + 'px';
+ctx.scale(dpr, dpr);
+
+const pad = { top: 30, right: 20, bottom: 55, left: 55 };
+const cw = W - pad.left - pad.right;
+const ch = H - pad.top - pad.bottom;
+const n = weeklyData.length;
+const barW = (cw / n) * 0.55;
+const gap = cw / n;
+const maxVal = Math.max(...weeklyData.map(w => Math.max(w.actual, w.target))) * 1.12;
+
+function toX(i) { return pad.left + gap * i + gap / 2; }
+function toY(v) { return pad.top + ch - (v / maxVal) * ch; }
+
+// Grid
+ctx.strokeStyle = '#f0f0f0';
+ctx.lineWidth = 1;
+for (let i = 0; i <= 5; i++) {
+  const y = pad.top + (ch / 5) * i;
+  ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
+  const val = maxVal * (1 - i/5);
+  ctx.fillStyle = '#9ca3af';
+  ctx.font = '10px Segoe UI';
+  ctx.textAlign = 'right';
+  ctx.fillText((val/1000).toFixed(1) + 'B', pad.left - 6, y + 4);
+}
+
+// Target bars (light)
+weeklyData.forEach((w, i) => {
+  const x = toX(i) - barW/2;
+  const y = toY(w.target);
+  const h = toY(0) - y;
+  ctx.fillStyle = '#e2e8f0';
+  ctx.strokeStyle = '#94a3b8';
+  ctx.lineWidth = 0.5;
+  ctx.fillRect(x, y, barW, h);
+  ctx.strokeRect(x, y, barW, h);
+});
+
+// Actual bars
+weeklyData.forEach((w, i) => {
+  const x = toX(i) - barW/2;
+  const y = toY(w.actual);
+  const h = toY(0) - y;
+  const isAbove = w.actual >= w.target;
+  ctx.fillStyle = isAbove ? '#1B2A4A' : '#8B0000';
+  ctx.fillRect(x + 2, y, barW - 4, h);
+
+  // Value label on bar
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 8px Segoe UI';
+  ctx.textAlign = 'center';
+  if (h > 16) ctx.fillText(Math.round(w.actual) + 'M', x + barW/2, y + 12);
+});
+
+// Trend line (connect actual tops)
+ctx.strokeStyle = '#8B0000';
+ctx.lineWidth = 2;
+ctx.setLineDash([4, 3]);
+ctx.beginPath();
+weeklyData.forEach((w, i) => {
+  const x = toX(i);
+  const y = toY(w.actual);
+  if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+});
+ctx.stroke();
+ctx.setLineDash([]);
+
+// Trend dots
+weeklyData.forEach((w, i) => {
+  ctx.beginPath();
+  ctx.arc(toX(i), toY(w.actual), 3.5, 0, Math.PI*2);
+  ctx.fillStyle = '#8B0000';
+  ctx.fill();
+});
+
+// X labels
+ctx.fillStyle = '#374151';
+ctx.font = '9px Segoe UI';
+ctx.textAlign = 'center';
+weeklyData.forEach((w, i) => {
+  const lines = w.week.split('\n');
+  ctx.fillText(lines[0], toX(i), H - pad.bottom + 14);
+  ctx.fillStyle = '#9ca3af';
+  ctx.fillText(lines[1], toX(i), H - pad.bottom + 24);
+  ctx.fillStyle = '#374151';
+});
+
+// Y axis label
+ctx.save();
+ctx.translate(12, pad.top + ch/2);
+ctx.rotate(-Math.PI/2);
+ctx.fillStyle = '#6b7280';
+ctx.font = '10px Segoe UI';
+ctx.textAlign = 'center';
+ctx.fillText('Triệu VND', 0, 0);
+ctx.restore();
+
+// Tết annotation
+ctx.fillStyle = '#d97706';
+ctx.font = '9px Segoe UI';
+ctx.textAlign = 'center';
+ctx.fillText('← Tết', toX(4), pad.top + 10);
+
+// Post-Tết dip annotation
+ctx.fillStyle = '#dc2626';
+ctx.fillText('Post-Tết\ndip', toX(7.5), pad.top + 14);
+</script>
+</body>
+</html>
