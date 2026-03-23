@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMW 330i G20 — Build Summary | PhiPhi Performance</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;font-size:14px;line-height:1.7;}
+  .header{background:#1a1a1a;padding:40px 48px;color:#fff;border-bottom:4px solid #0070cc;}
+  .header h1{font-size:2em;font-weight:700;margin-bottom:4px;}
+  .header .sub{color:#999;font-size:0.9em;margin-bottom:16px;}
+  .header .badges{display:flex;gap:10px;flex-wrap:wrap;}
+  .badge{padding:4px 14px;border-radius:20px;font-size:0.78em;font-weight:600;}
+  .badge.blue{background:#0070cc;color:#fff;}
+  .badge.gray{background:#2a2a2a;color:#ccc;border:1px solid #333;}
+  .badge.green{background:#166534;color:#bbf7d0;}
+  .container{max-width:980px;margin:0 auto;padding:32px 22px;}
+  .section{margin-bottom:40px;}
+  .section-title{font-size:1em;font-weight:700;color:#0070cc;border-bottom:2px solid #0070cc;padding-bottom:6px;margin-bottom:18px;text-transform:uppercase;letter-spacing:0.5px;}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:16px;font-size:0.88em;}
+  th{background:#1a1a1a;color:#fff;padding:11px 14px;text-align:left;font-weight:600;}
+  td{padding:11px 14px;border-bottom:1px solid #f0f0f0;color:#374151;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f9f9f7;}
+  td a{color:#0070cc;text-decoration:none;font-weight:600;}
+  td a:hover{text-decoration:underline;}
+  .price{font-weight:700;color:#1a1a1a;white-space:nowrap;}
+  .tag{display:inline-block;padding:2px 9px;border-radius:12px;font-size:0.75em;font-weight:700;}
+  .tag-power{background:#fef3c7;color:#92400e;}
+  .tag-handling{background:#dbeafe;color:#1e40af;}
+  .tag-safety{background:#dcfce7;color:#15803d;}
+  .tag-exhaust{background:#f3e8ff;color:#6b21a8;}
+  .total-box{background:#1a1a1a;color:#fff;border-radius:12px;padding:24px 28px;margin-top:24px;}
+  .total-box h3{color:#0070cc;margin-bottom:16px;font-size:1.05em;}
+  .total-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2a2a2a;font-size:0.92em;}
+  .total-row:last-child{border-bottom:none;padding-top:14px;margin-top:4px;}
+  .total-row.grand{font-size:1.1em;font-weight:700;color:#fff;}
+  .total-row .label{color:#aaa;}
+  .total-row .val{font-weight:700;color:#fff;}
+  .total-row.grand .val{color:#0070cc;font-size:1.15em;}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px;}
+  .kpi{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07);text-align:center;border-top:3px solid #0070cc;}
+  .kpi label{font-size:0.72em;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;}
+  .kpi .before{font-size:0.95em;color:#9ca3af;text-decoration:line-through;}
+  .kpi .after{font-size:1.3em;font-weight:700;color:#0070cc;}
+  .note-box{background:#fff;border-left:4px solid #0070cc;border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0;font-size:0.88em;color:#374151;}
+  .note-box strong{color:#1a1a1a;}
+  .sequence{background:#fff;border-radius:10px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+  .seq-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #f0f0f0;}
+  .seq-item:last-child{border-bottom:none;}
+  .seq-num{min-width:32px;height:32px;border-radius:50%;background:#0070cc;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85em;flex-shrink:0;}
+  .seq-content h4{font-size:0.9em;font-weight:700;color:#1a1a1a;margin-bottom:3px;}
+  .seq-content p{font-size:0.83em;color:#6b7280;}
+  .seq-content .cost{font-size:0.82em;font-weight:700;color:#0070cc;margin-top:3px;}
+  .vendor-box{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.08);display:flex;gap:16px;align-items:flex-start;}
+  .vendor-box .icon{font-size:2em;flex-shrink:0;}
+  .vendor-box h4{font-weight:700;margin-bottom:4px;}
+  .vendor-box p{font-size:0.85em;color:#6b7280;margin-bottom:4px;}
+  .vendor-box a{color:#0070cc;font-weight:600;font-size:0.85em;}
+  footer{text-align:center;padding:30px;color:#999;font-size:0.8em;border-top:1px solid #e5e5e5;margin-top:40px;}
+  @media(max-width:600px){.result-grid{grid-template-columns:repeat(2,1fr);}.header{padding:28px 20px;}.header h1{font-size:1.5em;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏎️ BMW 330i G20 — Stage 2 Build Summary</h1>
+  <div class="sub">PhiPhi Performance Workshop · HCMC · March 2026</div>
+  <div class="badges">
+    <span class="badge blue">B48 2.0T Turbo</span>
+    <span class="badge blue">Stage 2 Power</span>
+    <span class="badge green">Daily Driver Build</span>
+    <span class="badge gray">100% PhiPhi Performance</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- EXPECTED RESULTS -->
+  <div class="section">
+    <div class="section-title">Expected Result sau Full Build</div>
+    <div class="result-grid">
+      <div class="kpi"><label>Horsepower</label><div class="before">255 HP</div><div class="after">~325 HP</div></div>
+      <div class="kpi"><label>Torque</label><div class="before">400 Nm</div><div class="after">~500 Nm</div></div>
+      <div class="kpi"><label>0–100 km/h</label><div class="before">5.8s</div><div class="after">~4.8s</div></div>
+      <div class="kpi"><label>Handling</label><div class="before">Soft/Roll</div><div class="after">Flat/Sharp</div></div>
+      <div class="kpi"><label>Sound (Comfort)</label><div class="before">Stock quiet</div><div class="after">Refined growl</div></div>
+      <div class="kpi"><label>Sound (Sport)</label><div class="before">—</div><div class="after">Full roar</div></div>
+    </div>
+  </div>
+
+  <!-- BUILD LIST TABLE -->
+  <div class="section">
+    <div class="section-title">Build List — 100% tại PhiPhi Performance</div>
+
+    <table>
+      <tr>
+        <th>#</th>
+        <th>Sản phẩm</th>
+        <th>Category</th>
+        <th>Giá (VND)</th>
+        <th>Link</th>
+      </tr>
+      <!-- POWER -->
+      <tr>
+        <td>1</td>
+        <td><strong>ECU Remap Bootmod3 (BM3)</strong><br><small style="color:#6b7280;">Stage 1 → Stage 2 · B48 G-Series · Năm xe: 07/2020+</small></td>
+        <td><span class="tag tag-power">⚡ Power</span></td>
+        <td class="price">18.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/remap-ecu-dong-co-bmw-g-series-may-b48/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Eventuri Air Intake Carbon Fiber</strong><br><small style="color:#6b7280;">SKU: EVE-G20B48-V2-INT · Fit: G20 330i B48 · Plug & play</small></td>
+        <td><span class="tag tag-power">⚡ Power</span></td>
+        <td class="price">46.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/air-intake-eventuri-bmw-34-series-g20g23g26-carbon-dong-co-b48/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Downpipe Mach5 Catted B48</strong><br><small style="color:#6b7280;">Inox 304 · 200-cell high-flow CAT · Không mùi · Không check engine</small></td>
+        <td><span class="tag tag-power">⚡ Power</span></td>
+        <td class="price">25.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/downpipe-co-po-the-thao-mach5-catted-dong-co-bmw-b48/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Pô Fi Exhaust G20 330i</strong><br><small style="color:#6b7280;">Van on/off qua Sport/Comfort · Carbon Fibre tips · Bảo hành 12 tháng · Đại lý chính hãng VN</small></td>
+        <td><span class="tag tag-exhaust">🔊 Exhaust</span></td>
+        <td class="price">80.000.000 ₫<br><small style="color:#6b7280;">+4tr nếu thêm remote van</small></td>
+        <td><a href="https://shop.phiphiperformance.vn/po-the-thao-thuong-hieu-fi-bmw-320i-330i-g20/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr style="background:#fffbeb;">
+        <td>5</td>
+        <td><strong>Intercooler FMIC</strong><br><small style="color:#6b7280;">Wagner / Mishimoto — hỏi PhiPhi custom order · Bắt buộc cho Stage 2</small></td>
+        <td><span class="tag tag-power">⚡ Power</span></td>
+        <td class="price">~20–30.000.000 ₫</td>
+        <td><span style="color:#d97706;font-size:0.82em;">Hỏi PhiPhi</span></td>
+      </tr>
+      <!-- HANDLING -->
+      <tr>
+        <td>6</td>
+        <td><strong>KW V3 Leveing Coilover</strong><br><small style="color:#6b7280;">Fit: BMW 3 Series G20 320i/330i · Adjustable height & damping</small></td>
+        <td><span class="tag tag-handling">🔧 Handling</span></td>
+        <td class="price">86.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/phuoc-the-thao-kw-v3-leveing-bmw-3-series-g20-320i-330i/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>Thanh giằng chéo G20</strong><br><small style="color:#6b7280;">Chính hãng BMW · SKU: 51617456115 · Giảm xoắn khung</small></td>
+        <td><span class="tag tag-handling">🔧 Handling</span></td>
+        <td class="price">4.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/thanh-giang-cheo-bmw-3-series-g20-chinh-hang/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><strong>Thanh giằng ngang G20</strong><br><small style="color:#6b7280;">Chính hãng BMW · Tăng rigidity khoang máy</small></td>
+        <td><span class="tag tag-handling">🔧 Handling</span></td>
+        <td class="price">4.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/thanh-giang-ngang-3-series-g20-chinh-hang-bmw/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong>Alignment sau coilover</strong><br><small style="color:#6b7280;">Camber -1.5° F, -1.5° R · Toe in/out optimize</small></td>
+        <td><span class="tag tag-handling">🔧 Handling</span></td>
+        <td class="price">~2.000.000 ₫</td>
+        <td>—</td>
+      </tr>
+      <!-- SAFETY/TECH -->
+      <tr>
+        <td>9</td>
+        <td><strong>Blind Spot Detection G20</strong><br><small style="color:#6b7280;">Chính hãng BMW · Cảnh báo điểm mù chủ động</small></td>
+        <td><span class="tag tag-safety">🛡️ Safety</span></td>
+        <td class="price">24.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/canh-bao-diem-mu-chu-dong-blind-spot-detection-bmw-3-series-g20/" target="_blank">Xem →</a></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><strong>Camera 360 G20</strong><br><small style="color:#6b7280;">Chính hãng BMW · Chọn Pre LCI hoặc LCI đúng đời xe</small></td>
+        <td><span class="tag tag-safety">🛡️ Safety</span></td>
+        <td class="price">21.000.000 ₫</td>
+        <td><a href="https://shop.phiphiperformance.vn/camera-360-chinh-hang-bmw-3-series-g20-lci/" target="_blank">LCI →</a> / <a href="https://shop.phiphiperformance.vn/camera-360-chinh-hang-bmw-3-series-g20-pre-lci/" target="_blank">Pre LCI →</a></td>
+      </tr>
+    </table>
+
+    <!-- TOTAL BOX -->
+    <div class="total-box">
+      <h3>💰 Tổng Chi Phí</h3>
+      <div class="total-row">
+        <span class="label">⚡ Power (ECU + Intake + Downpipe + FMIC)</span>
+        <span class="val">~114.000.000 ₫</span>
+      </div>
+      <div class="total-row">
+        <span class="label">🔊 Exhaust (Fi Exhaust + Remote)</span>
+        <span class="val">84.000.000 ₫</span>
+      </div>
+      <div class="total-row">
+        <span class="label">🔧 Handling (KW V3 + Braces + Alignment)</span>
+        <span class="val">96.000.000 ₫</span>
+      </div>
+      <div class="total-row">
+        <span class="label">🛡️ Safety/Tech (BSD + Camera 360)</span>
+        <span class="val">45.000.000 ₫</span>
+      </div>
+      <div class="total-row grand">
+        <span class="label">TOTAL ESTIMATE</span>
+        <span class="val">~339.000.000 ₫</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="section">
+    <div class="section-title">Lưu ý quan trọng</div>
+    <div class="note-box">
+      <strong>ECU Remap:</strong> Chọn đúng năm xe — Trước 07/2020 hay 07/2020 đến nay. Thực hiện Stage 1 trước, upgrade Stage 2 sau khi đã lắp Downpipe + FMIC. Bootmod3 reversible hoàn toàn.
+    </div>
+    <div class="note-box">
+      <strong>Pô Fi Exhaust 330i:</strong> Van on/off điều khiển qua chế độ Comfort/Sport có sẵn trên xe — không cần remote bổ sung. Thêm remote (+4tr) nếu muốn điều khiển độc lập. Chọn <strong>Dual Tips + Carbon Fibre</strong> — không cần đổi cản sau.
+    </div>
+    <div class="note-box">
+      <strong>Downpipe Catted vs Catless:</strong> Chọn <strong>Catted</strong> cho daily driving HCMC — ít mùi, ít ồn, không check engine, bền hơn. Catless chỉ phù hợp track/race.
+    </div>
+    <div class="note-box">
+      <strong>Camera 360:</strong> Cần xác định đúng đời xe — Pre LCI (trước 2022) hay LCI (2022+) để chọn đúng sản phẩm.
+    </div>
+    <div class="note-box">
+      <strong>FMIC:</strong> Hỏi PhiPhi trực tiếp về intercooler cho B48 G20 — họ có thể order Wagner/Mishimoto. Bắt buộc khi upgrade lên Stage 2 để tránh heat soak.
+    </div>
+  </div>
+
+  <!-- SEQUENCE -->
+  <div class="section">
+    <div class="section-title">Sequence Thực Hiện Gợi Ý</div>
+    <div class="sequence">
+      <div class="seq-item">
+        <div class="seq-num">1</div>
+        <div class="seq-content">
+          <h4>KW V3 + Thanh giằng + Alignment</h4>
+          <p>Cảm nhận handling thay đổi ngay — xe flat hơn, cornering sharp hơn</p>
+          <div class="cost">86 + 4 + 4 + 2 = 96.000.000 ₫</div>
+        </div>
+      </div>
+      <div class="seq-item">
+        <div class="seq-num">2</div>
+        <div class="seq-content">
+          <h4>ECU BM3 Stage 1 + Eventuri Intake</h4>
+          <p>Power feel + throttle response thay đổi rõ — tăng tốc nhạy hơn hẳn</p>
+          <div class="cost">18 + 46 = 64.000.000 ₫</div>
+        </div>
+      </div>
+      <div class="seq-item">
+        <div class="seq-num">3</div>
+        <div class="seq-content">
+          <h4>Downpipe Mach5 + FMIC → BM3 upgrade Stage 2</h4>
+          <p>Full Stage 2: ~325HP · Downpipe trước, FMIC sau, retune cuối</p>
+          <div class="cost">25 + ~25 + retune = ~55.000.000 ₫</div>
+        </div>
+      </div>
+      <div class="seq-item">
+        <div class="seq-num">4</div>
+        <div class="seq-content">
+          <h4>Fi Exhaust G20 330i</h4>
+          <p>Van on/off — Comfort: stock quiet · Sport: full roar · 12 tháng bảo hành</p>
+          <div class="cost">80.000.000 ₫</div>
+        </div>
+      </div>
+      <div class="seq-item">
+        <div class="seq-num">5</div>
+        <div class="seq-content">
+          <h4>Blind Spot Detection + Camera 360</h4>
+          <p>Safety & tech upgrade — bất kỳ lúc nào</p>
+          <div class="cost">24 + 21 = 45.000.000 ₫</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENDOR -->
+  <div class="section">
+    <div class="section-title">Vendor</div>
+    <div class="vendor-box">
+      <div class="icon">🔧</div>
+      <div>
+        <h4>PhiPhi Performance Workshop</h4>
+        <p>📍 97 Trương Văn Bang, Thạnh Mỹ Lợi, Quận 2 (Thủ Đức), TP.HCM</p>
+        <p>📞 <a href="tel:+84976638836">097 663 88 36</a> &nbsp;|&nbsp; <a href="https://zalo.me/0976638836">Zalo</a> &nbsp;|&nbsp; <a href="https://www.facebook.com/phiphiperformance">Facebook</a></p>
+        <p>✅ Đại lý chính hãng Fi Exhaust tại VN · 10+ năm kinh nghiệm · 500+ dự án</p>
+        <p><a href="https://shop.phiphiperformance.vn/" target="_blank">shop.phiphiperformance.vn →</a></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  BMW 330i G20 Build Summary · Prepared by Zera 🌟 · March 2026<br>
+  Giá có thể thay đổi — confirm với PhiPhi trước khi đặt hàng.
+</footer>
+
+</body>
+</html>
