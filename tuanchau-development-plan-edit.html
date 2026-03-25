@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuần Châu — Development Plan [EDIT MODE]</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; font-size: 14px; }
+
+/* ── NAV ── */
+.topbar { background: #1B2A4A; color: white; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.topbar h1 { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
+.topbar .sub { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+.tab-nav { display: flex; gap: 6px; }
+.tab-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 7px 16px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; transition: background 0.2s; white-space: nowrap; }
+.tab-btn:hover { background: rgba(255,255,255,0.2); }
+.tab-btn.active { background: #c9a84c; color: #1B2A4A; }
+
+/* ── LAYOUT ── */
+.page { display: none; padding: 32px 40px 64px; max-width: 1300px; margin: 0 auto; }
+.page.active { display: block; }
+
+/* ── SECTION TITLE ── */
+.section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #1B2A4A; font-weight: 700; margin: 28px 0 14px; border-bottom: 2px solid #1B2A4A22; padding-bottom: 6px; }
+
+/* ── LEGEND ── */
+.legend { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #555; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.dot-green { background: #1a7a3a; }
+.dot-amber { background: #d97706; }
+.dot-red { background: #c0392b; }
+.dot-blue { background: #2563eb; }
+
+/* ── FUNCTION CARDS ── */
+.func-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+.func-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 0.2s, transform 0.15s; border: 2px solid transparent; }
+.func-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); transform: translateY(-2px); }
+.func-card.selected { border-color: #1B2A4A; }
+.func-card-header { padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #f0f0f0; }
+.func-name { font-size: 13px; font-weight: 700; color: #1B2A4A; }
+.func-sub { font-size: 10px; color: #888; margin-top: 2px; }
+.status-pill { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.pill-partial { background: #fef3c7; color: #92400e; }
+.pill-missing { background: #fee2e2; color: #991b1b; }
+.pill-present { background: #d1fae5; color: #065f46; }
+.func-card-body { padding: 12px 16px; }
+.skill-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11.5px; }
+.skill-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.skill-text { flex: 1; color: #444; }
+.skill-tag { font-size: 10px; padding: 1px 8px; border-radius: 10px; font-weight: 600; }
+.tag-have { background: #d1fae5; color: #065f46; }
+.tag-need { background: #fee2e2; color: #991b1b; }
+.tag-hire { background: #dbeafe; color: #1e40af; }
+.tag-outsource { background: #f3e8ff; color: #6b21a8; }
+.func-card-footer { background: #f8fafc; padding: 10px 16px; font-size: 11px; color: #666; border-top: 1px solid #f0f0f0; }
+
+/* ── DETAIL PANEL ── */
+.detail-panel { background: white; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); padding: 24px 28px; margin-top: 8px; display: none; border-left: 4px solid #1B2A4A; }
+.detail-panel.open { display: block; }
+.detail-panel h3 { font-size: 15px; font-weight: 700; color: #1B2A4A; margin-bottom: 16px; }
+.detail-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.detail-col h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 10px; font-weight: 700; }
+.detail-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; color: #333; line-height: 1.5; }
+.detail-item .di-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.action-box { background: #1B2A4A; color: white; border-radius: 6px; padding: 14px 18px; margin-top: 16px; }
+.action-box h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 8px; }
+.action-box p { font-size: 12px; line-height: 1.7; }
+.action-box strong { color: #c9a84c; }
+
+/* ── SUMMARY BAR ── */
+.summary-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+.sum-card { background: white; border-radius: 8px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); text-align: center; }
+.sum-num { font-size: 32px; font-weight: 700; }
+.sum-num.green { color: #1a7a3a; }
+.sum-num.amber { color: #d97706; }
+.sum-num.red { color: #c0392b; }
+.sum-num.blue { color: #2563eb; }
+.sum-label { font-size: 11px; color: #888; margin-top: 4px; }
+
+/* ── TIMELINE PAGE ── */
+.timeline-wrapper { overflow-x: auto; padding-bottom: 16px; }
+.timeline-table { border-collapse: collapse; min-width: 1100px; width: 100%; }
+.timeline-table th { background: #1B2A4A; color: white; padding: 10px 14px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; border-right: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
+.timeline-table th:first-child { width: 180px; text-align: left; }
+.timeline-table td { border-bottom: 1px solid #eee; border-right: 1px solid #f0f0f0; padding: 0; vertical-align: middle; }
+.timeline-table td:first-child { padding: 10px 14px; background: #f8fafc; }
+.func-label { font-size: 12px; font-weight: 700; color: #1B2A4A; }
+.func-label small { display: block; font-size: 10px; color: #888; font-weight: 400; margin-top: 2px; }
+.phase-label { text-align: center; font-size: 9px; color: rgba(255,255,255,0.7); margin-top: 2px; letter-spacing: 0.3px; }
+.phase-header { border-right: 2px solid rgba(255,255,255,0.3) !important; }
+
+.cell-block { height: 44px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: white; cursor: pointer; transition: opacity 0.15s; position: relative; }
+.cell-block:hover { opacity: 0.85; }
+.cell-empty { height: 44px; background: #f8fafc; }
+.cell-plan { background: #dbeafe; }
+.cell-ramp { background: #fef3c7; }
+
+/* Phase colors */
+.ph-0 { background: #1B2A4A22; } /* Pre-concept — ghost */
+.ph-active-high { background: #1a7a3a; }
+.ph-active-med { background: #2563eb; }
+.ph-active-low { background: #9ca3af; }
+.ph-outsource { background: #7c3aed; }
+.ph-hire { background: #d97706; }
+.ph-plan { background: #dbeafe; color: #1e40af; }
+
+/* Phase headers */
+.ph-header-concept { background: #374151; }
+.ph-header-feasibility { background: #1e3a5f; }
+.ph-header-design { background: #1a5276; }
+.ph-header-sales { background: #145a32; }
+.ph-header-construction { background: #6b3a2a; }
+.ph-header-opening { background: #1B2A4A; }
+
+/* Timeline legend */
+.tl-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.tl-leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #555; }
+.tl-leg-box { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
+
+/* Tooltip */
+.tooltip { position: fixed; background: #1B2A4A; color: white; padding: 10px 14px; border-radius: 6px; font-size: 11px; max-width: 260px; pointer-events: none; z-index: 999; display: none; line-height: 1.6; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+
+/* ── GAP ANALYSIS PAGE ── */
+.gap-section { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; margin-bottom: 20px; }
+.gap-section-header { background: #1B2A4A; color: white; padding: 12px 20px; font-size: 12px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.gap-section-header .badge { background: rgba(255,255,255,0.15); padding: 2px 10px; border-radius: 12px; font-size: 10px; }
+.gap-body { padding: 0; }
+.gap-row { display: grid; grid-template-columns: 200px 1fr 1fr 120px 100px; gap: 0; border-bottom: 1px solid #f0f0f0; }
+.gap-row:last-child { border-bottom: none; }
+.gap-row.header { background: #f8fafc; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 700; }
+.gap-cell { padding: 10px 16px; font-size: 12px; color: #333; border-right: 1px solid #f5f5f5; display: flex; align-items: center; }
+.gap-cell:last-child { border-right: none; justify-content: center; }
+.action-pill { padding: 3px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; white-space: nowrap; text-align: center; }
+.ap-hire { background: #dbeafe; color: #1e40af; }
+.ap-outsource { background: #f3e8ff; color: #6b21a8; }
+.ap-partner { background: #d1fae5; color: #065f46; }
+.ap-upskill { background: #fef3c7; color: #92400e; }
+.urgency-high { color: #c0392b; font-weight: 700; font-size: 11px; }
+.urgency-med { color: #d97706; font-weight: 700; font-size: 11px; }
+.urgency-low { color: #1a7a3a; font-weight: 700; font-size: 11px; }
+
+/* Collapsible */
+.collapsible-body { display: block; }
+.collapsible-body.collapsed { display: none; }
+.toggle-icon { transition: transform 0.2s; }
+.rotated { transform: rotate(180deg); }
+
+/* ── ROADMAP ── */
+.roadmap-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.rm-phase { border-right: 1px solid #e5e7eb; }
+.rm-phase:last-child { border-right: none; }
+.rm-phase-header { padding: 12px 14px; text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.rm-phase-body { padding: 12px 14px; min-height: 200px; }
+.rm-item { background: #f8fafc; border-left: 3px solid #1B2A4A; border-radius: 0 4px 4px 0; padding: 6px 10px; margin-bottom: 8px; font-size: 11px; line-height: 1.5; }
+.rm-item.critical { border-left-color: #c0392b; background: #fff5f5; }
+.rm-item.hire { border-left-color: #2563eb; background: #eff6ff; }
+.rm-item.outsource { border-left-color: #7c3aed; background: #faf5ff; }
+.rm-item.milestone { border-left-color: #1a7a3a; background: #f0fdf4; font-weight: 600; }
+
+/* phase colors */
+.phase-c1 { background: #374151; color: white; }
+.phase-c2 { background: #1e3a5f; color: white; }
+.phase-c3 { background: #1a5276; color: white; }
+.phase-c4 { background: #145a32; color: white; }
+.phase-c5 { background: #6b3a2a; color: white; }
+.phase-c6 { background: #1B2A4A; color: white; }
+
+footer { text-align: center; padding: 20px; color: #aaa; font-size: 11px; margin-top: 20px; }
+
+/* ── EDIT MODE ── */
+.edit-bar { background: #0f172a; color: white; padding: 10px 40px; display: flex; align-items: center; gap: 16px; position: sticky; top: 64px; z-index: 99; border-bottom: 2px solid #c9a84c; }
+.edit-badge { background: #c9a84c; color: #1a1a2e; font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 4px; letter-spacing: 1px; }
+.edit-hint { font-size: 11px; opacity: 0.7; flex: 1; }
+.edit-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; transition: background 0.2s; }
+.edit-btn:hover { background: rgba(255,255,255,0.22); }
+.edit-btn.primary { background: #c9a84c; color: #1a1a2e; border-color: #c9a84c; }
+.edit-btn.primary:hover { background: #b8953f; }
+.edit-btn.danger { background: rgba(192,57,43,0.3); border-color: rgba(192,57,43,0.5); }
+
+[contenteditable] { outline: none; cursor: text; }
+[contenteditable]:hover { background: rgba(201,168,76,0.08); border-radius: 3px; }
+[contenteditable]:focus { background: rgba(201,168,76,0.15); border-radius: 3px; box-shadow: 0 0 0 2px #c9a84c44; }
+
+.edit-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; }
+.edit-overlay.open { display: flex; }
+.edit-modal { background: white; border-radius: 10px; padding: 28px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.edit-modal h3 { font-size: 14px; font-weight: 700; color: #1B2A4A; margin-bottom: 8px; }
+.edit-modal p { font-size: 12px; color: #666; margin-bottom: 16px; line-height: 1.6; }
+.edit-modal textarea { width: 100%; height: 300px; font-family: monospace; font-size: 11px; border: 1px solid #ddd; border-radius: 6px; padding: 12px; resize: vertical; color: #333; }
+.edit-modal .modal-btns { display: flex; gap: 8px; margin-top: 14px; justify-content: flex-end; }
+.modal-btn { padding: 8px 20px; border-radius: 5px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
+.modal-btn.copy { background: #1B2A4A; color: white; }
+.modal-btn.close { background: #f0f0f0; color: #333; }
+.copied-toast { position: fixed; bottom: 24px; right: 24px; background: #1a7a3a; color: white; padding: 10px 20px; border-radius: 6px; font-size: 12px; font-weight: 600; z-index: 999; display: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar" id="mainTopbar">
+  <div>
+    <div class="h1" style="font-size:14px;font-weight:700;letter-spacing:0.5px;color:white;">TUẦN CHÂU PRIVATE ESTATE — DEVELOPMENT CAPABILITY PLAN</div>
+    <div class="sub" style="font-size:11px;opacity:0.6;margin-top:3px;color:white;">Internal Assessment · March 2026 · Confidential</div>
+  </div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('capability')">📊 Capability Map</button>
+    <button class="tab-btn" onclick="showTab('gap')">⚠️ Gap Analysis</button>
+    <button class="tab-btn" onclick="showTab('timeline')">📅 Activation Timeline</button>
+    <button class="tab-btn" onclick="showTab('roadmap')">🗺️ Action Roadmap</button>
+  </div>
+</div>
+
+<!-- EDIT BAR -->
+<div class="edit-bar">
+  <span class="edit-badge">✏️ EDIT MODE</span>
+  <span class="edit-hint">Click vào bất kỳ text nào để chỉnh sửa trực tiếp. Sau khi xong → nhấn "Export" để lấy nội dung gửi Zera cập nhật.</span>
+  <button class="edit-btn" onclick="toggleEditAll()">🔓 Bật/Tắt edit toàn trang</button>
+  <button class="edit-btn" onclick="resetChanges()">↩ Reset</button>
+  <button class="edit-btn primary" onclick="openExport()">📤 Export changes</button>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="edit-overlay" id="exportOverlay">
+  <div class="edit-modal">
+    <h3>📤 Export nội dung đã chỉnh sửa</h3>
+    <p>Copy toàn bộ nội dung bên dưới và gửi cho Zera qua Telegram. Zera sẽ cập nhật file chính thức trên GitHub và học theo nội dung anh đã điều chỉnh.</p>
+    <textarea id="exportText" readonly></textarea>
+    <div class="modal-btns">
+      <button class="modal-btn close" onclick="closeExport()">Đóng</button>
+      <button class="modal-btn copy" onclick="copyExport()">📋 Copy tất cả</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="copied-toast" id="toast">✅ Đã copy! Gửi cho Zera nhé.</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 1: CAPABILITY MAP                                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page active" id="tab-capability">
+  <div class="section-title" style="margin-top:20px;">Tổng quan — Năng lực hiện tại theo Function</div>
+
+  <div class="summary-bar">
+    <div class="sum-card">
+      <div class="sum-num green">2</div>
+      <div class="sum-label">Functions có sẵn<br><small>(generic — cần reorient)</small></div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-num amber">3</div>
+      <div class="sum-label">Functions có một phần<br><small>(thiếu real estate expertise)</small></div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-num red">5</div>
+      <div class="sum-label">Functions hoàn toàn thiếu<br><small>(cần hire/outsource)</small></div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-num blue">10</div>
+      <div class="sum-label">Tổng functions<br><small>cần thiết cho dự án</small></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-green"></div> Có sẵn</div>
+    <div class="legend-item"><div class="legend-dot dot-amber"></div> Có một phần (generic skill)</div>
+    <div class="legend-item"><div class="legend-dot dot-red"></div> Thiếu hoàn toàn</div>
+    <div class="legend-item"><div class="legend-dot dot-blue"></div> Outsource/Partner</div>
+    <div style="font-size:11px;color:#888;margin-left:auto;">Click card để xem chi tiết →</div>
+  </div>
+
+  <div class="func-grid" id="funcGrid">
+
+    <!-- F1: Finance -->
+    <div class="func-card" onclick="toggleDetail('d1', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">💰 Finance & Treasury</div><div class="func-sub">Financial modeling, project funding, cashflow</div></div>
+        <span class="status-pill pill-partial">Có một phần</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Kế toán, báo cáo tài chính</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Cash management, budgeting</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Real estate financial modeling (DCF, IRR)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Project finance & construction draw</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Investor reporting (JV/REIT standards)</div><span class="skill-tag tag-need">Thiếu</span></div>
+      </div>
+      <div class="func-card-footer">⚡ Action: Upskill 1 senior finance → real estate modeling. Hire 1 Project Finance Manager.</div>
+    </div>
+
+    <!-- F2: Legal -->
+    <div class="func-card" onclick="toggleDetail('d2', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">⚖️ Legal & Compliance</div><div class="func-sub">Land title, permits, contracts, regulatory</div></div>
+        <span class="status-pill pill-partial">Có một phần</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Corporate legal, commercial contracts</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Labor law, HR compliance</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Real estate / land law (Luật Đất Đai 2024)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">BĐS permit process (1/500, xây dựng, PCCC)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">Foreign ownership structuring (SPA, escrow)</div><span class="skill-tag tag-outsource">Outsource</span></div>
+      </div>
+      <div class="func-card-footer">⚡ Action: Retain specialist real estate law firm (Quảng Ninh + HCMC). Hire 1 in-house RE Legal Counsel.</div>
+    </div>
+
+    <!-- F3: Procurement -->
+    <div class="func-card" onclick="toggleDetail('d3', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">🛒 Procurement & Supply Chain</div><div class="func-sub">Vendor management, FF&E, materials</div></div>
+        <span class="status-pill pill-partial">Có một phần</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">General vendor management, POs</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Hospitality F&B procurement</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Construction materials sourcing & QC</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Ultra-luxury FF&E spec & procurement</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">International supplier negotiation (EU brands)</div><span class="skill-tag tag-need">Thiếu</span></div>
+      </div>
+      <div class="func-card-footer">⚡ Action: Hire 1 FF&E Procurement Manager (ultra-luxury experience). Partner with specialist FF&E consultant.</div>
+    </div>
+
+    <!-- F4: IT / Data -->
+    <div class="func-card" onclick="toggleDetail('d4', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">💻 IT & Technology</div><div class="func-sub">Infrastructure, smart home, data systems</div></div>
+        <span class="status-pill pill-partial">Có một phần</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Corporate IT, ERP, M365</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Data analytics, dashboards (Power BI)</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Smart villa / BMS / HVAC automation</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Sales technology (CRM, buyer portal)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">Branded estate app / owner platform</div><span class="skill-tag tag-outsource">Outsource</span></div>
+      </div>
+      <div class="func-card-footer">⚡ Action: Outsource smart home integration to specialist. Build CRM platform with external partner.</div>
+    </div>
+
+    <!-- F5: Project Development -->
+    <div class="func-card" onclick="toggleDetail('d5', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">🏗️ Project Development</div><div class="func-sub">Feasibility, planning, design management</div></div>
+        <span class="status-pill pill-missing">Thiếu hoàn toàn</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Project Feasibility & Market Study</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Development Management (PMO)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Masterplan & Design Coordination</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Permit Expediting & Regulatory Navigation</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">Operator Brand Standards Liaison</div><span class="skill-tag tag-outsource">Outsource</span></div>
+      </div>
+      <div class="func-card-footer">🚨 Critical gap: Hire Project Development Director (ASAP). This is the nerve center of the entire project.</div>
+    </div>
+
+    <!-- F6: Architecture & Design -->
+    <div class="func-card" onclick="toggleDetail('d6', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">🏛️ Architecture & Design</div><div class="func-sub">Architecture, ID, landscape, brand standards</div></div>
+        <span class="status-pill pill-missing">Thiếu hoàn toàn</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Lead Architecture Firm (ultra-luxury villa)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Interior Design Firm (operator brand-aligned)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Landscape Architecture (island + Hạ Long context)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">MEP Engineering Consultants</div><span class="skill-tag tag-outsource">Outsource</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">Structural Engineering</div><span class="skill-tag tag-outsource">Outsource</span></div>
+      </div>
+      <div class="func-card-footer">🚨 Fully outsourced function: Commission international architect + Vietnamese EPC partner. Brief within 3 months.</div>
+    </div>
+
+    <!-- F7: Construction Management -->
+    <div class="func-card" onclick="toggleDetail('d7', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">🔧 Construction Management</div><div class="func-sub">Site management, QA/QC, contractor oversight</div></div>
+        <span class="status-pill pill-missing">Thiếu hoàn toàn</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Owner's Representative / Project Manager</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">QA/QC Management (luxury finish standard)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Site Safety (island logistics = complex)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">General Contractor (GC / EPC)</div><span class="skill-tag tag-outsource">Outsource</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">Independent Certifier (draws)</div><span class="skill-tag tag-outsource">Outsource</span></div>
+      </div>
+      <div class="func-card-footer">🚨 Hire 1 Owner's Representative (construction PM). Rest via GC + specialist subs. Island logistics require extra planning.</div>
+    </div>
+
+    <!-- F8: Sales & Marketing -->
+    <div class="func-card" onclick="toggleDetail('d8', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">📣 Sales & Marketing</div><div class="func-sub">Developer sales, UHNWI marketing, brand</div></div>
+        <span class="status-pill pill-missing">Thiếu hoàn toàn</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Real estate developer sales (primary market)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">UHNWI private client relationship management</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Luxury brand storytelling & content</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Sales Gallery design & operations</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">International agents & referral network</div><span class="skill-tag tag-outsource">Outsource</span></div>
+      </div>
+      <div class="func-card-footer">🚨 Hire Head of Sales (luxury RE background). Engage specialist UHNWI marketing agency. Build referral network Q3.</div>
+    </div>
+
+    <!-- F9: Operations / Hospitality -->
+    <div class="func-card" onclick="toggleDetail('d9', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">🏨 Operations & Hospitality</div><div class="func-sub">Pre-opening, estate management, owner services</div></div>
+        <span class="status-pill pill-partial">Có một phần</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Hotel operations (Le Méridien, La Victoire)</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">F&B management, culinary standards</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Private estate / villa management (non-hotel)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Ultra-luxury butler & concierge training</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">Operator brand standards (Rosewood/St.Regis etc.)</div><span class="skill-tag tag-outsource">Partner</span></div>
+      </div>
+      <div class="func-card-footer">⚡ Existing hospitality DNA = strong base. Gap = private estate model. Operator partner will train & standardize.</div>
+    </div>
+
+    <!-- F10: HR -->
+    <div class="func-card" onclick="toggleDetail('d10', this)">
+      <div class="func-card-header">
+        <div><div class="func-name">👥 HR & Talent</div><div class="func-sub">Recruitment, org design, compensation</div></div>
+        <span class="status-pill pill-partial">Có một phần</span>
+      </div>
+      <div class="func-card-body">
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">HR operations, payroll, compliance</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#1a7a3a"></div><div class="skill-text">Hospitality talent pipeline</div><span class="skill-tag tag-have">Có</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Real estate professional recruitment (senior)</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#c0392b"></div><div class="skill-text">Incentive structure for developer talent</div><span class="skill-tag tag-need">Thiếu</span></div>
+        <div class="skill-row"><div class="skill-dot" style="background:#2563eb"></div><div class="skill-text">Executive search (international)</div><span class="skill-tag tag-outsource">Outsource</span></div>
+      </div>
+      <div class="func-card-footer">⚡ Engage executive search firm for senior RE roles. Redesign comp structure to attract developer talent.</div>
+    </div>
+
+  </div>
+
+  <!-- DETAIL PANELS -->
+  <div id="d1" class="detail-panel">
+    <h3>💰 Finance & Treasury — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Năng lực hiện có</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Team kế toán và tài chính doanh nghiệp đang vận hành tốt cho Le Méridien + La Victoire</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Có kinh nghiệm budgeting hàng năm, monthly closing, audit</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Cash management và treasury operations ổn định</div>
+      </div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Financial modeling cho development project: DCF, IRR, sensitivity analysis theo từng giai đoạn</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Project finance: draw schedules, lender reporting, construction loan covenants</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Investor/JV reporting nếu có đối tác vốn</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Sales proceeds management, escrow, payment milestone tracking</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. Upskill:</strong> Gửi 1 senior finance manager học khóa Real Estate Finance (CREA, RICS) — 3 tháng.<br><strong>2. Hire:</strong> 1 Project Finance Manager (background tài chính BĐS hoặc ngân hàng đầu tư) — bắt đầu Q2 2026.<br><strong>3. Advisor:</strong> Engage financial advisory firm (Big 4 hoặc chuyên BĐS) để hỗ trợ feasibility và funding structure.</p></div>
+  </div>
+
+  <div id="d2" class="detail-panel">
+    <h3>⚖️ Legal & Compliance — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Năng lực hiện có</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Corporate legal team xử lý commercial contracts, labor law tốt</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Compliance với hospitality regulations (food safety, labor, fire)</div>
+      </div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Luật Đất Đai 2024 — đặc thù đảo Tuần Châu (quyền sử dụng đất, chuyển nhượng sổ đỏ villa)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Quy trình xin phép: 1/500, giấy phép xây dựng, PCCC, nghiệm thu</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>SPA (Sale & Purchase Agreement) ultra-luxury phức tạp với điều khoản brand operator</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Cấu trúc sở hữu cho người nước ngoài (nếu có)</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. Retain:</strong> Law firm chuyên BĐS tại Quảng Ninh (permit process) + HCMC firm cho SPA/corporate structure.<br><strong>2. Hire:</strong> 1 In-house RE Legal Counsel (có kinh nghiệm developer) — bắt đầu Q3 2026.<br><strong>3. Priority:</strong> Land due diligence Tuần Châu phải xong trước tháng 6/2026.</p></div>
+  </div>
+
+  <div id="d3" class="detail-panel">
+    <h3>🛒 Procurement — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Hospitality procurement (F&B, linen, amenities) vận hành tốt</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Vendor management, PO workflow, 3-way matching</div>
+      </div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>FF&E ultra-luxury: specify, source, và manage European/Asian luxury furniture brands</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Construction materials QC cho luxury finish standard (không được phép defect)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Logistics island-specific: mọi vật tư phải vào bằng tàu/cần trẩu</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. Hire:</strong> FF&E Procurement Manager (có kinh nghiệm luxury resort FF&E) — Q4 2026.<br><strong>2. Engage:</strong> FF&E specialist consultant ngay từ giai đoạn design để spec đúng từ đầu.<br><strong>3. Plan:</strong> Logistics study riêng cho island delivery — coordinate với GC ngay từ pre-construction.</p></div>
+  </div>
+
+  <div id="d4" class="detail-panel">
+    <h3>💻 IT & Technology — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>IT infrastructure, M365, Azure AD vận hành tốt</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Power BI, data analytics — strong team</div>
+      </div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Smart villa / BMS: HVAC, security, lighting automation — riêng biệt với corporate IT</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Sales CRM cho developer sales + buyer portal (doc signing, milestone tracking)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Owner estate app (concierge, request, villa status) — thường do operator cung cấp</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. Outsource:</strong> Smart home/BMS integration cho chuyên gia — Crestron, Savant, hoặc local luxury integrator.<br><strong>2. Build:</strong> CRM developer sales với Salesforce RE Edition hoặc HubSpot — Q3 2026.<br><strong>3. Defer:</strong> Owner app → operator sẽ cung cấp sau khi ký HMA/branding agreement.</p></div>
+  </div>
+
+  <div id="d5" class="detail-panel">
+    <h3>🏗️ Project Development — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#9ca3af"></div>Không có năng lực real estate development nào sẵn</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>General project management từ hospitality operations (có thể reapply một phần)</div>
+      </div>
+      <div><h4>❌ Cần bổ sung — ĐẦY ĐỦ</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Project Development Director — chỉ huy toàn bộ dự án từ A-Z</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Feasibility & market study (commission ngay)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>PMO: tracking milestones, risks, dependencies</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Permit navigator (Quảng Ninh-specific)</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>🚨 Critical — Hire First, Hire Fast</h4><p><strong>Priority #1:</strong> Project Development Director — phải có trong vòng 60 ngày. Đây là người thiết kế toàn bộ development plan, coordinate tất cả consultants và departments.<br><strong>Profile:</strong> Minimum 10 năm kinh nghiệm phát triển dự án BĐS luxury tại Vietnam. Có network permit tại northern Vietnam là plus.<br><strong>Compensation:</strong> Design attractive package — đây là role define success/failure của dự án.</p></div>
+  </div>
+
+  <div id="d6" class="detail-panel">
+    <h3>🏛️ Architecture & Design — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn</h4><div class="detail-item"><div class="di-dot" style="background:#9ca3af"></div>Không có in-house design capability</div></div>
+      <div><h4>❌ Cần bổ sung — Toàn bộ outsource</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Lead Architect: international firm chuyên ultra-luxury villa (W Architects SG, AW² France, v.v.)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Interior Design: operator brand-aligned firm (nếu Rosewood/St.Regis → họ approve ID firm)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Landscape: firm có kinh nghiệm coastal Vietnam, tidal zone</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>MEP + Structural Engineering consultants</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. RFQ (Request for Qualification):</strong> Phát cho 3-4 international architects sau khi có Project Dev Director.<br><strong>2. Operator alignment:</strong> Đợi LOI với operator trước khi lock ID firm — operator có approved vendor list.<br><strong>3. Vietnamese EPC partner:</strong> Cần local GC có kinh nghiệm luxury và Quảng Ninh context (Coteccons, Hòa Bình).</p></div>
+  </div>
+
+  <div id="d7" class="detail-panel">
+    <h3>🔧 Construction Management — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn</h4><div class="detail-item"><div class="di-dot" style="background:#9ca3af"></div>Không có in-house construction capability</div></div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Owner's Representative (Resident Engineer) — đại diện RCC tại công trình full-time</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>QA/QC Manager — luxury finish tolerance cực thấp (nhất là khi operator có brand standards)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Island logistics planner — tide schedule, barge access, storage constraints</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. Hire:</strong> Owner's Representative / Construction PM (1 người, bắt đầu 3 tháng trước groundbreaking).<br><strong>2. Engage:</strong> Independent QA/QC firm cho luxury finish inspection — nên là firm operator approved.<br><strong>3. GC selection:</strong> Tender process với minimum 3 contractors, island-experience weighting cao.</p></div>
+  </div>
+
+  <div id="d8" class="detail-panel">
+    <h3>📣 Sales & Marketing — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn</h4><div class="detail-item"><div class="di-dot" style="background:#9ca3af"></div>Không có B2C luxury real estate sales capability</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Hospitality marketing experience (brand, digital, events)</div>
+      </div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Head of Sales — UHNWI relationship network (Hanoi + Haiphong focus)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Sales Gallery concept + operations (physical experience center)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Luxury lifestyle marketing agency (brand story, collateral, events)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Private client / referral agent network</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. Hire:</strong> Head of Sales — minimum 10 năm luxury real estate, Hanoi UHNWI network. This person IS the early sales.<br><strong>2. Agency:</strong> Engage luxury lifestyle marketing agency cho brand identity + teaser campaign — 6 tháng trước sales launch.<br><strong>3. Referral network:</strong> Private bankers (VPBank, Techcombank Private), luxury advisors, architects — xây dựng từ Q3 2026.</p></div>
+  </div>
+
+  <div id="d9" class="detail-panel">
+    <h3>🏨 Operations & Hospitality — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn — Solid Base</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Hotel operations tại Le Méridien Saigon + La Victoire = proven hospitality management</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>F&B, culinary, housekeeping, engineering team</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Hiểu culture service UHNWI (từ Le Méridien)</div>
+      </div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Private estate model = khác hoàn toàn với hotel: không có front desk, không check-in, villa luôn "ready"</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Butler training chuyên sâu ultra-luxury level (khác F&B waiter)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Estate Management SOP — do operator định nghĩa</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>Strength to leverage:</strong> Hospitality DNA là competitive advantage — không phải build từ đầu.<br><strong>Gap to fill:</strong> Operator partner (Rosewood/St.Regis) sẽ cung cấp training, SOP, và brand standards. Focus RCC effort vào recruiter estate management team 12 tháng trước opening.<br><strong>Pre-opening GM:</strong> Hire Estate Director 18 tháng trước opening — preferably from operator network.</p></div>
+  </div>
+
+  <div id="d10" class="detail-panel">
+    <h3>👥 HR & Talent — Chi tiết</h3>
+    <div class="detail-cols">
+      <div><h4>✅ Có sẵn</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>HR ops, payroll, labor compliance hoạt động tốt</div>
+        <div class="detail-item"><div class="di-dot" style="background:#1a7a3a"></div>Hospitality talent pipeline từ Le Méridien</div>
+      </div>
+      <div><h4>❌ Cần bổ sung</h4>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Executive search cho senior real estate professionals (không phải hospitality)</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Incentive structure: developer bonuses, carried interest, project completion bonuses</div>
+        <div class="detail-item"><div class="di-dot" style="background:#c0392b"></div>Retention plan cho key hires trong suốt 3-4 năm dự án</div>
+      </div>
+    </div>
+    <div class="action-box"><h4>Recommended Actions</h4><p><strong>1. Executive Search:</strong> Engage Talentnet, NaviGate, hoặc international headhunter (Michael Page, Robert Walters) cho Project Dev Director và Head of Sales.<br><strong>2. Comp structure:</strong> Design development project bonus pool — tied to milestones (permit, sales velocity, completion).<br><strong>3. Timeline:</strong> Start executive search process tháng 4/2026 — senior hires cần 60–90 ngày tìm và onboard.</p></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 2: GAP ANALYSIS                                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page" id="tab-gap">
+
+  <div class="section-title" style="margin-top:20px;">Gap Analysis — Ưu tiên bổ sung năng lực</div>
+  <p style="font-size:12px;color:#666;margin-bottom:20px;">Phân loại theo mức độ khẩn cấp và phương thức bổ sung (Hire / Outsource / Partner / Upskill)</p>
+
+  <!-- CRITICAL -->
+  <div class="gap-section">
+    <div class="gap-section-header" onclick="toggleSection('gap1')">
+      <span>🚨 CRITICAL — Cần trong 0–3 tháng <small style="opacity:0.7">(dự án không thể bắt đầu nếu thiếu)</small></span>
+      <span class="badge" id="gap1-badge">▲ Đang mở</span>
+    </div>
+    <div class="collapsible-body" id="gap1">
+      <div class="gap-body">
+        <div class="gap-row header">
+          <div class="gap-cell">Function / Role</div>
+          <div class="gap-cell">Năng lực thiếu</div>
+          <div class="gap-cell">Tại sao critical</div>
+          <div class="gap-cell">Phương thức</div>
+          <div class="gap-cell">Urgency</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Project Dev Director</div>
+          <div class="gap-cell">Toàn bộ development management: feasibility, planning, consultant coordination, permit, design brief</div>
+          <div class="gap-cell">Không có người này → không thể phê duyệt bất kỳ bước nào. Mọi consultant đều cần 1 owner's representative để brief và manage.</div>
+          <div class="gap-cell"><span class="action-pill ap-hire">Hire ngay</span></div>
+          <div class="gap-cell"><span class="urgency-high">⚡ Ngay</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Real Estate Law Firm</div>
+          <div class="gap-cell">Land due diligence, Luật Đất Đai 2024, Quảng Ninh permit process, SPA structure</div>
+          <div class="gap-cell">Land status của Tuần Châu cần được xác nhận trước khi bất kỳ chi phí lớn nào được phê duyệt.</div>
+          <div class="gap-cell"><span class="action-pill ap-outsource">Outsource</span></div>
+          <div class="gap-cell"><span class="urgency-high">⚡ Ngay</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Feasibility Consultant</div>
+          <div class="gap-cell">Independent market study, revenue projection, comparables analysis cho 18-villa ultra-luxury</div>
+          <div class="gap-cell">Cần trước khi tiếp cận operator (Rosewood/St.Regis yêu cầu feasibility deck). Cũng cần để justify capital commitment.</div>
+          <div class="gap-cell"><span class="action-pill ap-outsource">Outsource</span></div>
+          <div class="gap-cell"><span class="urgency-high">⚡ Ngay</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Project Finance Manager</div>
+          <div class="gap-cell">Construction loan, draw schedule, lender reporting, investor cashflow model</div>
+          <div class="gap-cell">Capital structure phải được xác định sớm — ảnh hưởng toàn bộ design scope, timeline, và operator negotiation leverage.</div>
+          <div class="gap-cell"><span class="action-pill ap-hire">Hire</span></div>
+          <div class="gap-cell"><span class="urgency-high">⚡ Q2/2026</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIGH -->
+  <div class="gap-section">
+    <div class="gap-section-header" onclick="toggleSection('gap2')">
+      <span>🟠 HIGH PRIORITY — Cần trong 3–9 tháng <small style="opacity:0.7">(cần trước khi vào giai đoạn design & sales)</small></span>
+      <span class="badge" id="gap2-badge">▲ Đang mở</span>
+    </div>
+    <div class="collapsible-body" id="gap2">
+      <div class="gap-body">
+        <div class="gap-row header">
+          <div class="gap-cell">Function / Role</div>
+          <div class="gap-cell">Năng lực thiếu</div>
+          <div class="gap-cell">Context</div>
+          <div class="gap-cell">Phương thức</div>
+          <div class="gap-cell">Timeline</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">International Architect</div>
+          <div class="gap-cell">Ultra-luxury villa design, island site constraints, brand standards alignment</div>
+          <div class="gap-cell">Cần sau khi có operator LOI — operator sẽ co-approve architect. Brief process mất 2-3 tháng.</div>
+          <div class="gap-cell"><span class="action-pill ap-outsource">Outsource</span></div>
+          <div class="gap-cell"><span class="urgency-med">Q3/2026</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Head of Sales</div>
+          <div class="gap-cell">UHNWI private client network (Hanoi/Haiphong), luxury RE sales methodology, referral network</div>
+          <div class="gap-cell">Cần trước khi launch sales campaign (Q1/2027 est.). Hire sớm để build network và brief on project before Sales Gallery opens.</div>
+          <div class="gap-cell"><span class="action-pill ap-hire">Hire</span></div>
+          <div class="gap-cell"><span class="urgency-med">Q4/2026</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">In-house RE Legal Counsel</div>
+          <div class="gap-cell">Day-to-day legal management cho SPA, permit, contractor agreements</div>
+          <div class="gap-cell">Retained external firm xử lý strategy; in-house counsel xử lý execution khối lượng lớn.</div>
+          <div class="gap-cell"><span class="action-pill ap-hire">Hire</span></div>
+          <div class="gap-cell"><span class="urgency-med">Q3/2026</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Luxury Marketing Agency</div>
+          <div class="gap-cell">Brand identity, project name, visual identity, sales collateral, teaser campaign</div>
+          <div class="gap-cell">Lead time dài — brand development mất 4-6 tháng. Cần trước Sales Gallery opening.</div>
+          <div class="gap-cell"><span class="action-pill ap-outsource">Outsource</span></div>
+          <div class="gap-cell"><span class="urgency-med">Q3/2026</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">FF&E Consultant</div>
+          <div class="gap-cell">Ultra-luxury furniture spec, international sourcing, operator brand compliance</div>
+          <div class="gap-cell">Phải engage ngay từ design phase — nếu spec FF&E sai → không thể sửa sau khi xây xong.</div>
+          <div class="gap-cell"><span class="action-pill ap-outsource">Outsource</span></div>
+          <div class="gap-cell"><span class="urgency-med">Q3/2026</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEDIUM -->
+  <div class="gap-section">
+    <div class="gap-section-header" onclick="toggleSection('gap3')">
+      <span>🟡 MEDIUM — Cần trong 9–18 tháng <small style="opacity:0.7">(cần trước pre-opening & construction)</small></span>
+      <span class="badge" id="gap3-badge">▼ Thu gọn</span>
+    </div>
+    <div class="collapsible-body collapsed" id="gap3">
+      <div class="gap-body">
+        <div class="gap-row header">
+          <div class="gap-cell">Function / Role</div>
+          <div class="gap-cell">Năng lực thiếu</div>
+          <div class="gap-cell">Context</div>
+          <div class="gap-cell">Phương thức</div>
+          <div class="gap-cell">Timeline</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Owner's Rep (Construction)</div>
+          <div class="gap-cell">Full-time site representative, QA/QC oversight, GC management</div>
+          <div class="gap-cell">Hire 3 tháng trước groundbreaking để brief on design intent.</div>
+          <div class="gap-cell"><span class="action-pill ap-hire">Hire</span></div>
+          <div class="gap-cell"><span class="urgency-low">Q1/2027</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Estate Director (GM)</div>
+          <div class="gap-cell">Pre-opening planning, operator training coordination, staff recruitment</div>
+          <div class="gap-cell">Hire 18 tháng trước opening — prefer từ operator's own network.</div>
+          <div class="gap-cell"><span class="action-pill ap-hire">Hire</span></div>
+          <div class="gap-cell"><span class="urgency-low">Q2/2027</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Sales CRM Platform</div>
+          <div class="gap-cell">Developer sales tracking, buyer portal, document management</div>
+          <div class="gap-cell">Build 6 tháng trước sales launch. Outsource to Salesforce RE hoặc specialist vendor.</div>
+          <div class="gap-cell"><span class="action-pill ap-outsource">Outsource</span></div>
+          <div class="gap-cell"><span class="urgency-low">Q4/2026</span></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-cell" style="font-weight:700;">Smart Villa Integration</div>
+          <div class="gap-cell">BMS, HVAC automation, security, lighting — luxury smart home</div>
+          <div class="gap-cell">Spec must be locked at DD stage. System commissioning starts 6 months before completion.</div>
+          <div class="gap-cell"><span class="action-pill ap-outsource">Outsource</span></div>
+          <div class="gap-cell"><span class="urgency-low">Q2/2027</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 3: ACTIVATION TIMELINE                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page" id="tab-timeline">
+  <div class="section-title" style="margin-top:20px;">Department Activation Timeline — Theo giai đoạn dự án</div>
+
+  <div class="tl-legend">
+    <div class="tl-leg-item"><div class="tl-leg-box" style="background:#1a7a3a"></div> Full Active (critical path)</div>
+    <div class="tl-leg-item"><div class="tl-leg-box" style="background:#2563eb"></div> Active (supporting)</div>
+    <div class="tl-leg-item"><div class="tl-leg-box" style="background:#7c3aed"></div> Outsourced/Partner active</div>
+    <div class="tl-leg-item"><div class="tl-leg-box" style="background:#d97706"></div> Ramping up / hiring</div>
+    <div class="tl-leg-item"><div class="tl-leg-box" style="background:#9ca3af"></div> Monitoring only</div>
+    <div class="tl-leg-item"><div class="tl-leg-box" style="background:#f3f4f6;border:1px solid #e5e7eb"></div><span style="color:#bbb">—</span> Not yet active</div>
+  </div>
+
+  <div class="timeline-wrapper">
+    <table class="timeline-table">
+      <thead>
+        <tr>
+          <th rowspan="2" style="text-align:left;">Function / Department</th>
+          <th colspan="2" class="ph-header-concept phase-header">CONCEPT & FEASIBILITY<br><div class="phase-label">Q2–Q3 2026 · ~6 months</div></th>
+          <th colspan="3" class="ph-header-design phase-header">DESIGN & APPROVAL<br><div class="phase-label">Q4 2026–Q2 2027 · ~9 months</div></th>
+          <th colspan="2" class="ph-header-sales phase-header">SALES LAUNCH<br><div class="phase-label">Q1–Q3 2027 · ~9 months</div></th>
+          <th colspan="3" class="ph-header-construction phase-header">CONSTRUCTION<br><div class="phase-label">Q3 2027–Q4 2028 · ~18 months</div></th>
+          <th colspan="2" class="ph-header-opening phase-header">PRE-OPENING & OPENING<br><div class="phase-label">Q1–Q3 2029 · ~9 months</div></th>
+        </tr>
+        <tr>
+          <th class="ph-header-concept">Land DD & Feasibility</th>
+          <th class="ph-header-concept">Operator LOI</th>
+          <th class="ph-header-design">Masterplan & Concept Design</th>
+          <th class="ph-header-design">Permits & Approvals</th>
+          <th class="ph-header-design">DD & Tender</th>
+          <th class="ph-header-sales">Sales Gallery</th>
+          <th class="ph-header-sales">Unit Sales</th>
+          <th class="ph-header-construction">Groundbreaking</th>
+          <th class="ph-header-construction">Structure</th>
+          <th class="ph-header-construction">Fit-out & FF&E</th>
+          <th class="ph-header-opening">Pre-Opening</th>
+          <th class="ph-header-opening">Opening</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td><div class="func-label">🏗️ Project Development<div class="func-label" style="font-size:10px;color:#c0392b;font-weight:700;">⚡ HIRE IMMEDIATELY</div></div></td>
+          <td><div class="cell-block ph-active-high" data-tip="CRITICAL: Leads feasibility study, land DD brief, operator selection">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Drives operator negotiations, feasibility deck prep">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Design brief, consultant selection, masterplan approval">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Permit strategy, regulatory navigation Quảng Ninh">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="DD management, contractor tender, contract award">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Supports sales team with project specs, design updates">🔵 Support</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Change order management, buyer spec requests">🔵 Support</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Construction oversight, milestone tracking, budget control">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Variation orders, QA sign-off, progress reporting">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="FF&E delivery schedule, punch list management">🟢 Lead</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Handover coordination, defect resolution">🔵 Support</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Lessons learned, warranty period oversight">Monitoring</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">⚖️ Legal & Compliance<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Retain law firm + hire in-house</div></div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Land due diligence, title search, ownership structure. CRITICAL to resolve before any spend.">🟢 DD</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Operator HMA/branding agreement negotiation, review">🟢 Contract</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Design consultant contracts, NDA, architect agreements">🔵 Contracts</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Permit applications, regulatory submissions, liaise authorities">🟢 Permits</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Construction contract (FIDIC/local), GC agreement">🔵 Contracts</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="SPA drafting, escrow structure, buyer legal framework">🟢 SPA</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Buyer SPA execution, title transfer process, compliance">🟢 SPA exec</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Construction regulatory compliance, insurance">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Variation order legal review, subcontractor disputes">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Completion certificates, snagging legal">Monitor</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Title transfer to buyers, handover agreements">🟢 Transfer</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Post-handover legal, warranty, HOA structure">🔵 HOA</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">💰 Finance & Treasury<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Upskill + hire Project Finance Mgr</div></div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Financial model: IRR, DCF, funding structure, capital requirement">🟢 Model</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Funding confirmation, JV structure if any, lender selection">🟢 Funding</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Budget tracking, consultant fee payments, cashflow forecast">🔵 Budget</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Permit fee budgeting, government payment tracking">Monitor</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="GC contract financial terms, bank guarantee review">🔵 Review</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Sales proceeds management, escrow monitoring">🔵 Escrow</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Revenue recognition, milestone payment tracking, lender draws">🟢 Revenue</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Construction draw schedule, progress payment certification">🟢 Draws</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Ongoing draw management, cost-to-complete reporting">🟢 Draws</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="FF&E payment schedule, final cost reconciliation">🟢 Final costs</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Project cost closeout, investor reporting">🔵 Closeout</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Operational finance handover to estate management">🔵 Handover</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">🏛️ Architecture & Design<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Fully outsourced</div></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block ph-hire" data-tip="RFQ process: shortlist 3-4 international architects, briefing begins">⏳ RFQ</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Schematic design, masterplan, concept presentations to operator">🟣 Concept</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Design development, permit drawings, authority submissions">🟣 DD drawings</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Construction drawings (CDs), tender package preparation">🟣 CDs</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Support Sales Gallery design and material board">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Answer buyer queries on design specifications">Monitor</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Site inspections, RFI responses, design clarifications">🟣 CA phase</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Ongoing contract administration, shop drawing review">🟣 CA phase</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="FF&E sign-off, finish inspection, snagging list">🟣 Snagging</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Final inspections, completion certificate sign-off">Monitor</div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">🔧 Construction Mgmt<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Owner's Rep hire + GC outsource</div></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Constructability review, early contractor engagement (ECI)">Monitor</div></td>
+          <td><div class="cell-block ph-hire" data-tip="Hire Owner's Rep, GC tender & selection, contract negotiation">⏳ Hire/Tender</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Pre-construction planning, site mobilization prep">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Logistics planning, island access, laydown area">Monitor</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Groundbreaking, site mobilization, first activities">🟢 Mobilize</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Structure construction oversight, QA/QC, progress reports">🟢 Full site</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="FF&E delivery coordination, fit-out management, snagging">🟢 Fit-out</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Final snagging, defect rectification, handover inspections">🟣 Snagging</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Defects liability period management">Monitor</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">📣 Sales & Marketing<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Head of Sales hire + agency</div></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Early brand identity brief, project naming, teaser strategy">Monitor</div></td>
+          <td><div class="cell-block ph-hire" data-tip="Hire Head of Sales, brief luxury marketing agency, start brand development">⏳ Hire/Brief</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Brand identity finalization, Sales Gallery design, agent network development">🔵 Brand</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Sales materials production, collateral, digital presence">🔵 Collateral</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Sales Gallery launch, private preview events for UHNWI buyers">🟢 Launch</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Active unit sales, buyer relationship management, referral activation">🟢 Sales</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Buyer updates, construction progress communications">🔵 Updates</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Buyer progress updates, remaining unit sales">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Final unit sales, completion event planning">Monitor</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Owner handover events, opening celebration, PR">🟢 Events</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Post-opening PR, community building, referrals">🔵 PR</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">🛒 Procurement<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">FF&E specialist engage</div></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block ph-hire" data-tip="Engage FF&E consultant, begin operator spec alignment">⏳ Engage</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="FF&E specification with designer + operator approval">🟣 FF&E spec</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="FF&E procurement: supplier selection, POs, delivery schedule">🟢 Procure</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Construction materials ongoing procurement">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Ongoing materials, sample approvals">Monitor</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Construction materials delivery management, logistics coordination">🔵 Logistics</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Island delivery scheduling (barge/crane logistics)">🔵 Logistics</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="FF&E installation management, damage control, on-site QC">🟢 FF&E install</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Final items, snag replacements, owner kit procurement">🔵 Final</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Operating supplies (OS&E) for opening">Monitor</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">🏨 Operations<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Estate Director hire + operator training</div></div></td>
+          <td><div class="cell-block" style="background:#f3f4f6;height:44px;"></div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Input to operator selection (service philosophy, staffing model)">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Participate in design review (operational functionality)">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Develop operational concept document">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Operating model planning, staffing structure design">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Support sales with service proposition narrative">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Operational planning ongoing">Monitor</div></td>
+          <td><div class="cell-block ph-hire" data-tip="Hire Estate Director (GM) — from operator network preferred">⏳ Hire GM</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Pre-opening planning, SOP development with operator">🔵 Pre-open plan</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Staff recruitment, butler training, villa readiness protocols">🟢 Training</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Mock operations, owner onboarding protocol, soft opening">🟢 Soft open</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Full operations launch, estate management live">🟢 Live</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">💻 IT & Technology<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Smart home outsource + CRM build</div></div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Technology requirements brief, operator tech standards review">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="CRM platform selection decision">Monitor</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Smart villa/BMS spec with architect, tech integration planning">🟣 Spec</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Permit-related tech compliance (fire, security)">Monitor</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="CRM development for sales, buyer portal build">🔵 CRM build</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="CRM live for sales team, buyer portal for sales process">🟢 CRM live</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="CRM maintenance, buyer document management">🔵 Maintain</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Smart home pre-installation coordination">Monitor</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Smart home installation, BMS commissioning">🟣 BMS install</div></td>
+          <td><div class="cell-block ph-outsource" data-tip="Smart home commissioning, handover to operations">🟣 Commission</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="All tech systems live, owner app activated, estate platform">🟢 All live</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Ongoing tech support, owner platform management">🔵 Support</div></td>
+        </tr>
+
+        <tr>
+          <td><div class="func-label">👥 HR & Talent<div class="func-label" style="font-size:10px;color:#888;font-weight:400;">Executive search engagement</div></div></td>
+          <td><div class="cell-block ph-active-high" data-tip="CRITICAL: Executive search for Project Dev Director — start immediately">🟢 Exec search</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Ongoing senior hires: Finance, Legal, Sales Head">🟢 Hiring</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Design comp structure for dev team, incentive plan">🔵 Comp design</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Mid-level hires (project coordinators, permit liaisons)">Monitor</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Construction team hires (Owner's Rep, QA manager)">🔵 Hiring</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Sales team support hires">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Referral agent agreements, agent management">Monitor</div></td>
+          <td><div class="cell-block ph-hire" data-tip="Estate Director (GM) hire — must start 18 months before opening">⏳ Hire GM</div></td>
+          <td><div class="cell-block ph-active-med" data-tip="Estate team recruitment: butlers, concierge, maintenance">🔵 Ops hiring</div></td>
+          <td><div class="cell-block ph-active-high" data-tip="Full estate team onboard, operator training program start">🟢 Team ready</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Final team adjustments, performance management">Monitor</div></td>
+          <td><div class="cell-block ph-active-low" data-tip="Ongoing HR operations for estate">Monitor</div></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:11px;color:#999;margin-top:12px;">* Hover/click vào ô để xem chi tiết. Timeline est. based on typical Vietnam luxury villa development cycle 3–3.5 years from concept to opening.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 4: ACTION ROADMAP                                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page" id="tab-roadmap">
+  <div class="section-title" style="margin-top:20px;">Action Roadmap — Tuần Châu Private Estate Development</div>
+  <p style="font-size:12px;color:#666;margin-bottom:20px;">Các hành động cụ thể theo từng giai đoạn · Màu sắc = loại action</p>
+
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;"><div style="width:12px;height:12px;border-left:3px solid #c0392b;background:#fff5f5;"></div> Critical / Unblock</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;"><div style="width:12px;height:12px;border-left:3px solid #2563eb;background:#eff6ff;"></div> Hire</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;"><div style="width:12px;height:12px;border-left:3px solid #7c3aed;background:#faf5ff;"></div> Outsource/Engage</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;"><div style="width:12px;height:12px;border-left:3px solid #1a7a3a;background:#f0fdf4;"></div> Milestone</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;"><div style="width:12px;height:12px;background:#1a7a3a;"></div> (dark)</div>
+  </div>
+
+  <div class="roadmap-grid">
+
+    <div class="rm-phase">
+      <div class="rm-phase-header phase-c1">PHASE 0<br><small style="opacity:0.8;font-size:9px;">NOW → Q3 2026</small><br><small style="opacity:0.7;font-size:9px;">Setup & Feasibility</small></div>
+      <div class="rm-phase-body">
+        <div class="rm-item critical">🚨 Hire Project Development Director — #1 priority, 60 days</div>
+        <div class="rm-item critical">🚨 Retain RE Law Firm (Quảng Ninh + HCMC) — land DD</div>
+        <div class="rm-item critical">🚨 Commission Independent Feasibility Study</div>
+        <div class="rm-item hire">👤 Hire Project Finance Manager</div>
+        <div class="rm-item outsource">📋 Engage executive search firm (Talentnet/Robert Walters)</div>
+        <div class="rm-item outsource">📋 HVS / JLL feasibility mandate</div>
+        <div class="rm-item">💰 Design incentive comp structure for dev hires</div>
+        <div class="rm-item milestone">✅ Land DD complete + title confirmed</div>
+        <div class="rm-item milestone">✅ Feasibility report → internal GO/NO-GO</div>
+      </div>
+    </div>
+
+    <div class="rm-phase">
+      <div class="rm-phase-header phase-c2">PHASE 1<br><small style="opacity:0.8;font-size:9px;">Q3–Q4 2026</small><br><small style="opacity:0.7;font-size:9px;">Operator & Team</small></div>
+      <div class="rm-phase-body">
+        <div class="rm-item critical">🚨 Approach Rosewood APAC + St.Regis Marriott APAC (parallel)</div>
+        <div class="rm-item critical">🚨 Prepare operator pitch deck (feasibility + vision)</div>
+        <div class="rm-item hire">👤 Hire In-house RE Legal Counsel</div>
+        <div class="rm-item hire">👤 Hire Head of Sales</div>
+        <div class="rm-item outsource">🏛️ RFQ: International Architect (3–4 firms)</div>
+        <div class="rm-item outsource">🎨 Brief Luxury Marketing Agency</div>
+        <div class="rm-item outsource">📋 Engage FF&E Consultant</div>
+        <div class="rm-item">🤝 Build referral network (private bankers, advisors)</div>
+        <div class="rm-item milestone">✅ Operator LOI signed (target: Rosewood or St.Regis)</div>
+        <div class="rm-item milestone">✅ Lead Architect appointed</div>
+      </div>
+    </div>
+
+    <div class="rm-phase">
+      <div class="rm-phase-header phase-c3">PHASE 2<br><small style="opacity:0.8;font-size:9px;">Q4 2026–Q2 2027</small><br><small style="opacity:0.7;font-size:9px;">Design & Permits</small></div>
+      <div class="rm-phase-body">
+        <div class="rm-item">🏛️ Masterplan & concept design (architect + operator sign-off)</div>
+        <div class="rm-item critical">🚨 Permit process: 1/500 masterplan approval</div>
+        <div class="rm-item critical">🚨 Permit: Giấy phép xây dựng application</div>
+        <div class="rm-item outsource">🎨 Brand identity finalization + project name launch</div>
+        <div class="rm-item outsource">📐 Interior design firm appointment</div>
+        <div class="rm-item outsource">🌿 Landscape architect appointment</div>
+        <div class="rm-item outsource">💡 Smart home/BMS spec locked</div>
+        <div class="rm-item">💰 CRM platform development start</div>
+        <div class="rm-item">📣 Sales Gallery design + construction brief</div>
+        <div class="rm-item milestone">✅ All permits received</div>
+        <div class="rm-item milestone">✅ Brand + project name public</div>
+      </div>
+    </div>
+
+    <div class="rm-phase">
+      <div class="rm-phase-header phase-c4">PHASE 3<br><small style="opacity:0.8;font-size:9px;">Q1–Q3 2027</small><br><small style="opacity:0.7;font-size:9px;">Sales Launch</small></div>
+      <div class="rm-phase-body">
+        <div class="rm-item critical">🚨 Sales Gallery opening — private preview event</div>
+        <div class="rm-item">📣 UHNWI private outreach (Hanoi/Haiphong target buyers)</div>
+        <div class="rm-item">💻 CRM + Buyer Portal live</div>
+        <div class="rm-item outsource">⚖️ SPA finalization + buyer legal process</div>
+        <div class="rm-item">🏗️ GC tender process (parallel with early sales)</div>
+        <div class="rm-item hire">👤 Owner's Representative hire</div>
+        <div class="rm-item outsource">🔧 GC selection + contract award</div>
+        <div class="rm-item">📋 DD package complete, construction docs ready</div>
+        <div class="rm-item milestone">✅ First SPA signed</div>
+        <div class="rm-item milestone">✅ GC appointed</div>
+        <div class="rm-item milestone">✅ 50% pre-sales achieved</div>
+      </div>
+    </div>
+
+    <div class="rm-phase">
+      <div class="rm-phase-header phase-c5">PHASE 4<br><small style="opacity:0.8;font-size:9px;">Q3 2027–Q4 2028</small><br><small style="opacity:0.7;font-size:9px;">Construction</small></div>
+      <div class="rm-phase-body">
+        <div class="rm-item milestone">✅ Groundbreaking ceremony</div>
+        <div class="rm-item critical">🚨 Island logistics plan active (barge schedule, crane)</div>
+        <div class="rm-item">🔧 QA/QC management — luxury finish standard</div>
+        <div class="rm-item outsource">🔧 Smart home installation (BMS, HVAC, security)</div>
+        <div class="rm-item hire">👤 Estate Director (GM) hire — 18 months pre-opening</div>
+        <div class="rm-item">🏨 Pre-opening planning + operator training program</div>
+        <div class="rm-item">💰 FF&E procurement + delivery schedule</div>
+        <div class="rm-item outsource">🪑 FF&E installation management</div>
+        <div class="rm-item">👥 Estate team recruitment (butlers, concierge)</div>
+        <div class="rm-item milestone">✅ Structure complete</div>
+        <div class="rm-item milestone">✅ FF&E installation complete</div>
+      </div>
+    </div>
+
+    <div class="rm-phase">
+      <div class="rm-phase-header phase-c6">PHASE 5<br><small style="opacity:0.8;font-size:9px;">Q1–Q3 2029</small><br><small style="opacity:0.7;font-size:9px;">Opening</small></div>
+      <div class="rm-phase-body">
+        <div class="rm-item">🏨 Mock operations + butler training</div>
+        <div class="rm-item">💻 Owner estate app + all tech systems live</div>
+        <div class="rm-item">⚖️ Title transfer to buyers</div>
+        <div class="rm-item critical">🚨 Villa handover inspections (snagging)</div>
+        <div class="rm-item outsource">🏗️ Defect rectification period</div>
+        <div class="rm-item">📣 Opening events + PR campaign</div>
+        <div class="rm-item">🏨 HOA structure activated</div>
+        <div class="rm-item">👥 Full estate team operational</div>
+        <div class="rm-item milestone">✅ Soft opening</div>
+        <div class="rm-item milestone">✅ 🎉 Grand opening — Tuần Châu Private Estate Collection</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background:#1B2A4A;color:white;border-radius:8px;padding:20px 24px;margin-top:20px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;opacity:0.7;margin-bottom:12px;">Timeline Summary</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;font-size:12px;">
+      <div><div style="color:#c9a84c;font-weight:700;font-size:18px;">~3.5 năm</div><div style="opacity:0.7;margin-top:4px;">Tổng thời gian concept → opening</div></div>
+      <div><div style="color:#c9a84c;font-weight:700;font-size:18px;">10–12</div><div style="opacity:0.7;margin-top:4px;">Senior hires cần thực hiện</div></div>
+      <div><div style="color:#c9a84c;font-weight:700;font-size:18px;">60 ngày</div><div style="opacity:0.7;margin-top:4px;">Để hire Project Dev Director đầu tiên</div></div>
+      <div><div style="color:#c9a84c;font-weight:700;font-size:18px;">Q3 2029</div><div style="opacity:0.7;margin-top:4px;">Target opening date</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>Tuần Châu Private Estate Collection — Internal Development Plan · Confidential · March 2026 · v1.0</footer>
+
+<script>
+// ── EDIT MODE ──────────────────────────────────────────────
+const EDITABLE_SELECTORS = [
+  '.func-name', '.func-sub', '.skill-text', '.func-card-footer',
+  '.status-pill', '.card-row .card-value', '.card-row .card-label',
+  '.detail-panel h3', '.detail-panel .detail-item', '.action-box p',
+  '.gap-cell', '.rm-item', '.sum-label',
+  '.action-pill', '.urgency-high', '.urgency-med', '.urgency-low',
+  '.cell-block', '.func-label',
+  '.positioning p', '.positioning .tagline',
+  '.rec-text', '.action-box h4',
+  'footer'
+];
+let editMode = false;
+let originalContent = {};
+
+function enableEditing() {
+  EDITABLE_SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.setAttribute('contenteditable', 'true');
+    });
+  });
+}
+
+function disableEditing() {
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+  });
+}
+
+function toggleEditAll() {
+  editMode = !editMode;
+  if (editMode) {
+    enableEditing();
+  } else {
+    disableEditing();
+  }
+}
+
+function resetChanges() {
+  if (!confirm('Reset về nội dung gốc? Mọi thay đổi sẽ mất.')) return;
+  location.reload();
+}
+
+function openExport() {
+  // collect all edited content
+  const changes = [];
+  EDITABLE_SELECTORS.forEach(sel => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      const text = el.innerText.trim();
+      if (text) changes.push({ selector: sel, index: i, content: text });
+    });
+  });
+
+  const summary = `TUẦN CHÂU DEVELOPMENT PLAN — NỘI DUNG CẬP NHẬT
+Ngày: ${new Date().toLocaleString('vi-VN')}
+Gửi Zera để cập nhật GitHub.
+
+${'='.repeat(60)}
+
+${changes.map(c => `[${c.selector} #${c.index}]\n${c.content}`).join('\n\n')}
+
+${'='.repeat(60)}
+EOF`;
+
+  document.getElementById('exportText').value = summary;
+  document.getElementById('exportOverlay').classList.add('open');
+}
+
+function closeExport() {
+  document.getElementById('exportOverlay').classList.remove('open');
+}
+
+function copyExport() {
+  const ta = document.getElementById('exportText');
+  ta.select();
+  document.execCommand('copy');
+  const toast = document.getElementById('toast');
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 3000);
+}
+
+// Auto-enable editing on page load
+window.addEventListener('load', () => {
+  editMode = true;
+  enableEditing();
+});
+
+// Close modal on overlay click
+document.addEventListener('click', e => {
+  if (e.target.id === 'exportOverlay') closeExport();
+});
+
+// ── ORIGINAL TAB LOGIC ──────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  // close all detail panels when switching tabs
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.func-card').forEach(c => c.classList.remove('selected'));
+}
+
+function toggleDetail(id, card) {
+  const panel = document.getElementById(id);
+  const allPanels = document.querySelectorAll('.detail-panel');
+  const allCards = document.querySelectorAll('.func-card');
+  const isOpen = panel.classList.contains('open');
+
+  allPanels.forEach(p => p.classList.remove('open'));
+  allCards.forEach(c => c.classList.remove('selected'));
+
+  if (!isOpen) {
+    panel.classList.add('open');
+    card.classList.add('selected');
+    // scroll panel into view
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+  }
+}
+
+function toggleSection(id) {
+  const body = document.getElementById(id);
+  const badge = document.getElementById(id + '-badge');
+  body.classList.toggle('collapsed');
+  badge.textContent = body.classList.contains('collapsed') ? '▼ Thu gọn' : '▲ Đang mở';
+}
+
+// Tooltip for timeline
+const tooltip = document.getElementById('tooltip');
+document.querySelectorAll('[data-tip]').forEach(el => {
+  el.addEventListener('mouseenter', e => {
+    tooltip.textContent = e.target.dataset.tip;
+    tooltip.style.display = 'block';
+  });
+  el.addEventListener('mousemove', e => {
+    tooltip.style.left = (e.clientX + 14) + 'px';
+    tooltip.style.top = (e.clientY - 10) + 'px';
+  });
+  el.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
+});
+</script>
+</body>
+</html>
