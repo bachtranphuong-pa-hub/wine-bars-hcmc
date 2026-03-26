@@ -49,11 +49,24 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #
 .skill-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11.5px; }
 .skill-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .skill-text { flex: 1; color: #444; }
-.skill-tag { font-size: 10px; padding: 1px 8px; border-radius: 10px; font-weight: 600; }
+.skill-tag { font-size: 10px; padding: 2px 10px; border-radius: 10px; font-weight: 700; cursor: pointer; user-select: none; transition: transform 0.1s, box-shadow 0.1s; border: none; outline: none; }
+.skill-tag:hover { transform: scale(1.08); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+.skill-tag:active { transform: scale(0.96); }
 .tag-have { background: #d1fae5; color: #065f46; }
 .tag-need { background: #fee2e2; color: #991b1b; }
 .tag-hire { background: #dbeafe; color: #1e40af; }
 .tag-outsource { background: #f3e8ff; color: #6b21a8; }
+.tag-partner { background: #fef9c3; color: #854d0e; }
+
+/* Status pill toggle */
+.status-pill { cursor: pointer; user-select: none; transition: transform 0.1s; }
+.status-pill:hover { transform: scale(1.05); }
+
+/* Skill dot syncs with tag */
+.skill-dot { transition: background 0.2s; }
+
+/* Changed indicator */
+.tag-changed { box-shadow: 0 0 0 2px #c9a84c; }
 .func-card-footer { background: #f8fafc; padding: 10px 16px; font-size: 11px; color: #666; border-top: 1px solid #f0f0f0; }
 
 /* ── DETAIL PANEL ── */
@@ -1095,6 +1108,70 @@ footer { text-align: center; padding: 20px; color: #aaa; font-size: 11px; margin
 <footer>Tuần Châu Private Estate Collection — Internal Development Plan · Confidential · March 2026 · v1.0</footer>
 
 <script>
+// ── SKILL TAG TOGGLE ───────────────────────────────────────
+const TAG_CYCLE = [
+  { cls: 'tag-have',     label: 'Có',        dot: '#1a7a3a' },
+  { cls: 'tag-need',     label: 'Thiếu',     dot: '#c0392b' },
+  { cls: 'tag-hire',     label: 'Hire',      dot: '#2563eb' },
+  { cls: 'tag-outsource',label: 'Outsource', dot: '#7c3aed' },
+  { cls: 'tag-partner',  label: 'Partner',   dot: '#d97706' },
+];
+
+const PILL_CYCLE = [
+  { cls: 'pill-present', label: 'Có sẵn' },
+  { cls: 'pill-partial', label: 'Có một phần' },
+  { cls: 'pill-missing', label: 'Thiếu hoàn toàn' },
+];
+
+function getCurrentTagIdx(el) {
+  for (let i = 0; i < TAG_CYCLE.length; i++) {
+    if (el.classList.contains(TAG_CYCLE[i].cls)) return i;
+  }
+  return 0;
+}
+
+function getCurrentPillIdx(el) {
+  for (let i = 0; i < PILL_CYCLE.length; i++) {
+    if (el.classList.contains(PILL_CYCLE[i].cls)) return i;
+  }
+  return 0;
+}
+
+function initToggles() {
+  // Skill tags
+  document.querySelectorAll('.skill-tag').forEach(tag => {
+    tag.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const idx = getCurrentTagIdx(this);
+      const next = TAG_CYCLE[(idx + 1) % TAG_CYCLE.length];
+      // remove all tag classes
+      TAG_CYCLE.forEach(t => this.classList.remove(t.cls));
+      this.classList.add(next.cls);
+      this.textContent = next.label;
+      this.classList.add('tag-changed');
+      // sync dot
+      const dot = this.closest('.skill-row')?.querySelector('.skill-dot');
+      if (dot) dot.style.background = next.dot;
+    });
+  });
+
+  // Status pills (card header)
+  document.querySelectorAll('.status-pill').forEach(pill => {
+    pill.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const idx = getCurrentPillIdx(this);
+      const next = PILL_CYCLE[(idx + 1) % PILL_CYCLE.length];
+      PILL_CYCLE.forEach(p => this.classList.remove(p.cls));
+      this.classList.add(next.cls);
+      this.textContent = next.label;
+    });
+  });
+}
+
+window.addEventListener('load', () => {
+  initToggles();
+});
+
 // ── EDIT MODE ──────────────────────────────────────────────
 const EDITABLE_SELECTORS = [
   '.func-name', '.func-sub', '.skill-text', '.func-card-footer',
@@ -1139,22 +1216,45 @@ function resetChanges() {
 }
 
 function openExport() {
-  // collect all edited content
   const changes = [];
+
+  // Text content changes
   EDITABLE_SELECTORS.forEach(sel => {
     document.querySelectorAll(sel).forEach((el, i) => {
       const text = el.innerText.trim();
-      if (text) changes.push({ selector: sel, index: i, content: text });
+      if (text) changes.push({ type: 'text', selector: sel, index: i, content: text });
     });
   });
+
+  // Tag toggle changes
+  document.querySelectorAll('.skill-tag.tag-changed').forEach((tag, i) => {
+    const skillText = tag.closest('.skill-row')?.querySelector('.skill-text')?.innerText || '';
+    changes.push({ type: 'tag', skill: skillText, value: tag.textContent.trim() });
+  });
+
+  // Status pill changes
+  document.querySelectorAll('.status-pill').forEach((pill, i) => {
+    const cardName = pill.closest('.func-card')?.querySelector('.func-name')?.innerText || '';
+    changes.push({ type: 'pill', card: cardName, value: pill.textContent.trim() });
+  });
+
+  // Build tag summary
+  const tagChanges = changes.filter(c => c.type === 'tag');
+  const textChanges = changes.filter(c => c.type === 'text');
 
   const summary = `TUẦN CHÂU DEVELOPMENT PLAN — NỘI DUNG CẬP NHẬT
 Ngày: ${new Date().toLocaleString('vi-VN')}
 Gửi Zera để cập nhật GitHub.
 
 ${'='.repeat(60)}
+THAY ĐỔI STATUS (CÓ/THIẾU/HIRE/OUTSOURCE):
+${'='.repeat(60)}
+${tagChanges.length > 0 ? tagChanges.map(c => `• "${c.skill}" → ${c.value}`).join('\n') : '(không có thay đổi tag)'}
 
-${changes.map(c => `[${c.selector} #${c.index}]\n${c.content}`).join('\n\n')}
+${'='.repeat(60)}
+THAY ĐỔI TEXT:
+${'='.repeat(60)}
+${textChanges.slice(0, 50).map(c => `[${c.selector} #${c.index}]\n${c.content}`).join('\n\n')}
 
 ${'='.repeat(60)}
 EOF`;
