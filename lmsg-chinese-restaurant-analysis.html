@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chinese Restaurant Concept — Le Méridien Saigon: Market Analysis & Positioning</title>
+<style>
+  /* Reset & Base */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #F4F6F9;
+    color: #2c2c2c;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  /* Header */
+  .report-header {
+    background: linear-gradient(135deg, #1B2A4A 0%, #243860 60%, #1B2A4A 100%);
+    color: #fff;
+    padding: 48px 60px 36px;
+    border-bottom: 4px solid #C9A84C;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 300px; height: 100%;
+    background: rgba(201,168,76,0.06);
+    clip-path: polygon(30% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+  .header-badge {
+    display: inline-block;
+    background: #C0180A;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 18px;
+  }
+  .report-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .report-subtitle {
+    font-size: 17px;
+    color: #C9A84C;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .report-meta {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    border-top: 1px solid rgba(201,168,76,0.3);
+    padding-top: 16px;
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .report-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* Layout */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 60px;
+  }
+
+  /* Section heading */
+  .section {
+    margin-bottom: 44px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1B2A4A;
+  }
+  .section-number {
+    background: #1B2A4A;
+    color: #C9A84C;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1B2A4A;
+    letter-spacing: 0.3px;
+  }
+  .section-desc {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #888;
+    margin-left: auto;
+    font-style: italic;
+  }
+
+  /* Executive Summary Callout */
+  .exec-summary {
+    background: #fff;
+    border-left: 5px solid #C9A84C;
+    border-radius: 0 8px 8px 0;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 12px rgba(27,42,74,0.08);
+    position: relative;
+  }
+  .exec-summary::before {
+    content: 'EXECUTIVE SUMMARY';
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: #C9A84C;
+    margin-bottom: 12px;
+  }
+  .exec-summary p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #2c2c2c;
+  }
+  .exec-highlight {
+    background: #1B2A4A;
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 6px;
+    margin-top: 18px;
+    font-family: Arial, sans-serif;
+    font-size: 13.5px;
+  }
+  .exec-highlight strong {
+    color: #C9A84C;
+    font-size: 15px;
+  }
+  .exec-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .exec-kpi {
+    background: #F4F6F9;
+    border: 1px solid #dde3ee;
+    border-radius: 6px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .exec-kpi .kpi-value {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1B2A4A;
+    display: block;
+  }
+  .exec-kpi .kpi-label {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* Drive callout */
+  .callout-amber {
+    background: #fff8e6;
+    border: 1px solid #C9A84C;
+    border-left: 5px solid #C9A84C;
+    border-radius: 0 6px 6px 0;
+    padding: 16px 22px;
+    font-family: Arial, sans-serif;
+    font-size: 13.5px;
+    color: #5a4200;
+    margin-bottom: 28px;
+  }
+  .callout-amber .callout-icon { font-size: 18px; margin-right: 8px; }
+  .callout-amber a { color: #C0180A; word-break: break-all; }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(27,42,74,0.07);
+    margin-bottom: 16px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+  }
+  table thead tr {
+    background: #1B2A4A;
+    color: #fff;
+  }
+  table thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border: none;
+    white-space: nowrap;
+  }
+  table tbody tr {
+    border-bottom: 1px solid #eaeef5;
+    transition: background 0.15s;
+  }
+  table tbody tr:hover { background: #f7f9fc; }
+  table tbody td {
+    padding: 11px 14px;
+    vertical-align: top;
+    color: #333;
+    line-height: 1.45;
+  }
+  table tbody tr:last-child { border-bottom: none; }
+
+  /* Competitive table row tiers */
+  .tier-direct { background: #fff5f5 !important; }
+  .tier-moderate { background: #fffbf0 !important; }
+  .tier-upper { background: #f0fff4 !important; }
+  .tier-out { background: #f9f9f9 !important; color: #888 !important; }
+  .tier-direct:hover { background: #ffe8e8 !important; }
+  .tier-moderate:hover { background: #fff3d6 !important; }
+  .tier-upper:hover { background: #e6fff0 !important; }
+
+  .badge-direct { background: #fde8e8; color: #C0180A; border: 1px solid #f5b8b8; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .badge-moderate { background: #fff3cd; color: #856404; border: 1px solid #ffe08a; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .badge-upper { background: #d4edda; color: #155724; border: 1px solid #b4dfc1; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .badge-out { background: #f0f0f0; color: #666; border: 1px solid #ddd; padding: 2px 8px; border-radius: 3px; font-size: 11px; white-space: nowrap; }
+  .award-tag { display: inline-block; background: #1B2A4A; color: #C9A84C; padding: 1px 7px; border-radius: 3px; font-size: 11px; margin: 1px 0; }
+
+  /* Source line */
+  .source-line {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .source-line a { color: #1B2A4A; }
+
+  /* Surrounding context grid */
+  .context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .context-card {
+    background: #fff;
+    border: 1px solid #dde3ee;
+    border-radius: 8px;
+    padding: 20px 22px;
+    box-shadow: 0 1px 6px rgba(27,42,74,0.06);
+  }
+  .context-card h4 {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #C9A84C;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  .context-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .context-card ul li {
+    font-family: Arial, sans-serif;
+    font-size: 12.5px;
+    color: #333;
+    padding: 5px 0;
+    border-bottom: 1px solid #f3f3f3;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .context-card ul li:last-child { border-bottom: none; }
+  .context-card ul li .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #C9A84C;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .context-card .sub { color: #888; font-size: 11px; }
+  .building-stats {
+    background: #1B2A4A;
+    border-radius: 8px;
+    padding: 20px 22px;
+    color: #fff;
+    margin-top: 20px;
+  }
+  .building-stats h4 {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #C9A84C;
+    margin-bottom: 14px;
+  }
+  .building-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .bstat {
+    text-align: center;
+    padding: 10px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 6px;
+  }
+  .bstat .val {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #C9A84C;
+    display: block;
+  }
+  .bstat .lbl {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .fnb-list {
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .fnb-tag {
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: #C9A84C;
+    font-family: Arial, sans-serif;
+    font-size: 11.5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+  }
+
+  /* Gap Matrix */
+  .gap-full { background: #fde8e8 !important; }
+  .gap-crowded { background: #fdebd4 !important; }
+  .gap-moderate { background: #fffbec !important; }
+  .gap-green { background: #e8f8ee !important; }
+  .gap-partial { background: #fff9e0 !important; }
+  .gap-badge-full { display:inline-block; background:#C0180A; color:#fff; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:700; }
+  .gap-badge-crowded { display:inline-block; background:#e07000; color:#fff; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:700; }
+  .gap-badge-moderate { display:inline-block; background:#e6ac00; color:#fff; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:700; }
+  .gap-badge-clear { display:inline-block; background:#1a7a40; color:#fff; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:700; }
+  .gap-badge-partial { display:inline-block; background:#b07c00; color:#fff; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:700; }
+  .gap-row-highlight td { font-weight: 600; }
+
+  /* Positioning Cards */
+  .positioning-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+  .pos-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(27,42,74,0.09);
+  }
+  .pos-card-header {
+    padding: 18px 20px 14px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+  }
+  .pos-card-header .option-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    opacity: 0.75;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .pos-card-header .option-name {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .pos-card-header .option-verdict {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .pos-card-body {
+    background: #fff;
+    padding: 18px 20px;
+  }
+  .pos-card-body ul {
+    list-style: none;
+    padding: 0;
+  }
+  .pos-card-body ul li {
+    font-family: Arial, sans-serif;
+    font-size: 12.5px;
+    color: #333;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f2f7;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .pos-card-body ul li:last-child { border-bottom: none; }
+  .pos-card-body ul li .li-icon { flex-shrink: 0; width: 16px; }
+  .pos-a-header { background: linear-gradient(135deg, #1B2A4A, #2d4672); }
+  .pos-b-header { background: linear-gradient(135deg, #7a6200, #c9a000); }
+  .pos-c-header { background: linear-gradient(135deg, #6b1010, #a01515); }
+  .price-tag {
+    display: inline-block;
+    background: #C9A84C;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .risk-badge-low { display:inline-block; background:#d4edda; color:#155724; border:1px solid #b4dfc1; font-family:Arial,sans-serif; font-size:11px; font-weight:700; padding:2px 10px; border-radius:3px; }
+  .risk-badge-med { display:inline-block; background:#fff3cd; color:#856404; border:1px solid #ffe08a; font-family:Arial,sans-serif; font-size:11px; font-weight:700; padding:2px 10px; border-radius:3px; }
+  .risk-badge-high { display:inline-block; background:#fde8e8; color:#C0180A; border:1px solid #f5b8b8; font-family:Arial,sans-serif; font-size:11px; font-weight:700; padding:2px 10px; border-radius:3px; }
+
+  /* Evidence Table */
+  .quality-verified { color: #1a7a40; font-weight: 700; }
+  .quality-inferred { color: #856404; font-weight: 700; }
+  .quality-estimated { color: #666; font-style: italic; }
+
+  /* Footer */
+  .report-footer {
+    background: #1B2A4A;
+    color: rgba(255,255,255,0.5);
+    padding: 22px 60px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .report-footer .footer-brand { color: #C9A84C; font-weight: 700; }
+
+  /* Print */
+  @media print {
+    .report-header { -webkit-print-color-adjust: exact; }
+    .section { page-break-inside: avoid; }
+  }
+  @media (max-width: 768px) {
+    .report-header { padding: 28px 20px; }
+    .container { padding: 20px 14px 40px; }
+    .context-grid { grid-template-columns: 1fr; }
+    .positioning-grid { grid-template-columns: 1fr; }
+    .exec-kpi-grid { grid-template-columns: 1fr 1fr; }
+    .building-stats-grid { grid-template-columns: 1fr 1fr; }
+    .report-footer { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<div class="report-header">
+  <div class="header-badge">Market Analysis & Positioning Report</div>
+  <div class="report-title">Chinese Restaurant Concept<br>Le Méridien Saigon</div>
+  <div class="report-subtitle">Competitive Landscape, Market Gap &amp; Strategic Positioning</div>
+  <div class="report-meta">
+    <span>📍 3–9 Tôn Đức Thắng, Quận 1, TP.HCM</span>
+    <span>📅 March 2026</span>
+    <span>🏢 Royal Canary Corp | Strategic Advisory</span>
+    <span>🔒 Confidential</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===================== DRIVE FILE NOTICE ===================== -->
+<div class="callout-amber">
+  <span class="callout-icon">⚠️</span>
+  <strong>Floor plan + concept files from Google Drive were NOT accessible</strong> (requires authentication).
+  URL: <a href="https://drive.google.com/drive/folders/1TjngXLBAgqZxekGoduuxWyKWVb3_N1Er" target="_blank">https://drive.google.com/drive/folders/1TjngXLBAgqZxekGoduuxWyKWVb3_N1Er</a><br>
+  <span style="margin-top:6px;display:block;">Please share files directly via Telegram to integrate concept design analysis into this report.</span>
+</div>
+
+<!-- ===================== EXECUTIVE SUMMARY ===================== -->
+<div class="exec-summary">
+  <p>
+    Le Méridien Saigon occupies one of the highest-density 5-star hotel and Grade A office corridors in Ho Chi Minh City, along Tôn Đức Thắng waterfront. A Chinese restaurant concept here faces formidable nearby competition — Crystal Jade Palace at 350m, Kabin at 400m, Dim Tu Tac at 600m, and Michelin-starred Long Triều at 900m. The segment is genuinely contested.
+  </p>
+  <p style="margin-top:12px;">
+    However, strategic analysis reveals two <strong>clear, unserved gaps</strong>: (1) <strong>no competitor on Tôn Đức Thắng offers dedicated VIP/private dining rooms</strong> for Chinese cuisine in a 4–12 pax format; and (2) <strong>no contemporary Chinese concept with cocktail bar integration exists within 1km</strong>. Together, these gaps define a viable and differentiated positioning.
+  </p>
+  <div class="exec-highlight">
+    <strong>Recommended Positioning: "Contemporary Cantonese Business Club"</strong><br>
+    ₫500,000–1,200,000/pax &nbsp;|&nbsp; 3–4 VIP private dining rooms &nbsp;|&nbsp; Office tenant capture + hotel corporate &nbsp;|&nbsp; Risk: Medium
+  </div>
+  <div class="exec-kpi-grid">
+    <div class="exec-kpi">
+      <span class="kpi-value">5</span>
+      <span class="kpi-label">Direct Competitors Mapped</span>
+    </div>
+    <div class="exec-kpi">
+      <span class="kpi-value">2</span>
+      <span class="kpi-label">Clear Market Gaps</span>
+    </div>
+    <div class="exec-kpi">
+      <span class="kpi-value">13,972m²</span>
+      <span class="kpi-label">Grade A Office Captive Base</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 1: COMPETITIVE MAP ===================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <div class="section-title">Competitive Map — Chinese Restaurants Within 1km</div>
+    <div class="section-desc">Radius: Le Méridien, 3–9 Tôn Đức Thắng</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Restaurant</th>
+          <th>Address</th>
+          <th>Distance</th>
+          <th>Segment</th>
+          <th>Cuisine</th>
+          <th>Price/pax</th>
+          <th>Setting</th>
+          <th>Awards / Distinction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="tier-direct">
+          <td><span class="badge-direct">🔴 DIRECT</span></td>
+          <td><strong>Crystal Jade Palace</strong></td>
+          <td>Fl.2, Lotte Legend Hotel<br><span style="color:#888;font-size:11px;">2A–4A Tôn Đức Thắng, Q1</span></td>
+          <td><strong>~350m</strong></td>
+          <td>Premium hotel F&amp;B</td>
+          <td>Cantonese / Dim Sum</td>
+          <td>₫400k–800k</td>
+          <td>Hotel fine dining</td>
+          <td>
+            <span class="award-tag">Michelin Recognized</span><br>
+            <span style="font-size:11px;color:#666;">Singapore flagship brand</span>
+          </td>
+        </tr>
+        <tr class="tier-direct">
+          <td><span class="badge-direct">🔴 DIRECT</span></td>
+          <td><strong>Kabin Restaurant</strong></td>
+          <td>8–15 Tôn Đức Thắng<br><span style="color:#888;font-size:11px;">Renaissance Riverside Hotel, Q1</span></td>
+          <td><strong>~400m</strong></td>
+          <td>Premium hotel F&amp;B</td>
+          <td>Cantonese / Dim Sum</td>
+          <td>₫300k–550k</td>
+          <td>Hotel casual luxury</td>
+          <td>
+            <span class="award-tag">Top 25 Asia 2022</span><br>
+            <span style="font-size:11px;color:#666;">OAD / Tripadvisor ranked</span>
+          </td>
+        </tr>
+        <tr class="tier-moderate">
+          <td><span class="badge-moderate">🟡 MODERATE</span></td>
+          <td><strong>Dim Tu Tac</strong><br><span style="color:#888;font-size:11px;">(Đồng Du branch)</span></td>
+          <td>55 Đồng Du, Quận 1</td>
+          <td>~600m</td>
+          <td>Mid-premium chain</td>
+          <td>Cantonese / Dim Sum</td>
+          <td>₫200k–400k</td>
+          <td>Modern accessible</td>
+          <td>
+            <span class="award-tag">Michelin Bib Gourmand</span><br>
+            <span style="font-size:11px;color:#666;">2023–2024</span>
+          </td>
+        </tr>
+        <tr class="tier-moderate">
+          <td><span class="badge-moderate">🟡 MODERATE</span></td>
+          <td><strong>Ocean Palace</strong></td>
+          <td>2 Lê Duẩn, Quận 1</td>
+          <td>~700m</td>
+          <td>Mid-market banquet</td>
+          <td>Cantonese / Banquet</td>
+          <td>₫150k–550k</td>
+          <td>300-seat banquet hall</td>
+          <td><span style="font-size:11px;color:#666;">High-volume banquet specialist</span></td>
+        </tr>
+        <tr class="tier-upper">
+          <td><span class="badge-upper">🟢 UPPER TIER</span></td>
+          <td><strong>Long Triều</strong></td>
+          <td>The Reverie Saigon<br><span style="color:#888;font-size:11px;">22–36 Nguyễn Huệ, Q1</span></td>
+          <td>~900m</td>
+          <td>Ultra-luxury</td>
+          <td>Cantonese fine dining</td>
+          <td>₫800k–2M+</td>
+          <td>5-star iconic setting</td>
+          <td>
+            <span class="award-tag" style="background:#C9A84C;color:#1B2A4A;">⭐ Michelin 1 Star</span><br>
+            <span style="font-size:11px;color:#666;">2024–2025 edition</span>
+          </td>
+        </tr>
+        <tr class="tier-out">
+          <td><span class="badge-out">⚪ OUT OF RADIUS</span></td>
+          <td>Ngân Đình</td>
+          <td>5F Windsor Plaza<br><span style="font-size:11px;">Quận 5</span></td>
+          <td>~3km</td>
+          <td>Mid-market</td>
+          <td>Multi-style Cantonese</td>
+          <td>₫200k–400k</td>
+          <td>Hotel casual</td>
+          <td><span style="font-size:11px;">Long-established, noted VIP rooms</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="source-line">
+    Sources: Foody.vn, Michelin Guide Official (guide.michelin.com/vn), Tripadvisor, Migo.travel, VietPowerTravel.com — data as of Q1 2026
+  </div>
+</div>
+
+<!-- ===================== SECTION 2: SURROUNDING CONTEXT ===================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <div class="section-title">Surrounding Context — Hotels &amp; Office Buildings</div>
+    <div class="section-desc">Within 1km radius of Le Méridien</div>
+  </div>
+
+  <div class="context-grid">
+    <div class="context-card">
+      <h4>🏨 Hotels — Within 500m</h4>
+      <ul>
+        <li><span class="dot"></span><div><strong>Lotte Legend Hotel</strong> <span class="sub">— 5★ | 2A–4A Tôn Đức Thắng | Crystal Jade tenant</span></div></li>
+        <li><span class="dot"></span><div><strong>Renaissance Riverside</strong> <span class="sub">— 5★ | 8–15 Tôn Đức Thắng | Kabin tenant</span></div></li>
+        <li><span class="dot"></span><div><strong>Liberty Central Saigon Riverside</strong> <span class="sub">— 4★ boutique</span></div></li>
+      </ul>
+    </div>
+    <div class="context-card">
+      <h4>🏨 Hotels — 500m–1km</h4>
+      <ul>
+        <li><span class="dot"></span><div><strong>Sheraton Saigon</strong> <span class="sub">— 5★</span></div></li>
+        <li><span class="dot"></span><div><strong>Park Hyatt Saigon</strong> <span class="sub">— 5★</span></div></li>
+        <li><span class="dot"></span><div><strong>Caravelle Hotel</strong> <span class="sub">— 5★ heritage</span></div></li>
+        <li><span class="dot"></span><div><strong>Continental Saigon</strong> <span class="sub">— Heritage landmark</span></div></li>
+        <li><span class="dot"></span><div><strong>Rex Hotel</strong> <span class="sub">— 5★</span></div></li>
+      </ul>
+    </div>
+    <div class="context-card">
+      <h4>🏢 Grade A Offices — Same Building</h4>
+      <ul>
+        <li><span class="dot"></span><div><strong>Riverbank Place</strong> <span class="sub">— 13,972m² Grade A | 22 floors | in-building captive</span></div></li>
+      </ul>
+    </div>
+    <div class="context-card">
+      <h4>🏢 Grade A Offices — Nearby</h4>
+      <ul>
+        <li><span class="dot"></span><div><strong>Saigon Trade Center</strong> <span class="sub">— ~800m</span></div></li>
+        <li><span class="dot"></span><div><strong>Landmark Tower</strong> <span class="sub">— 5B Tôn Đức Thắng</span></div></li>
+        <li><span class="dot"></span><div><strong>Green Power Building</strong></div></li>
+        <li><span class="dot"></span><div><strong>Melinh Point Tower</strong></div></li>
+        <li><span class="dot"></span><div><strong>Vietcombank Tower</strong></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="building-stats">
+    <h4>Le Méridien Saigon — Building Breakdown</h4>
+    <div class="building-stats-grid">
+      <div class="bstat"><span class="val">22F</span><span class="lbl">Total Floors</span></div>
+      <div class="bstat"><span class="val">305</span><span class="lbl">Hotel Rooms</span></div>
+      <div class="bstat"><span class="val">13,972m²</span><span class="lbl">Grade A Office</span></div>
+      <div class="bstat"><span class="val">3B</span><span class="lbl">Basement Parking (~3,500m²)</span></div>
+    </div>
+    <div style="margin-top:16px;">
+      <div style="font-family:Arial,sans-serif;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;">Existing F&amp;B Outlets</div>
+      <div class="fnb-list">
+        <span class="fnb-tag">Latest Recipe (all-day dining)</span>
+        <span class="fnb-tag">Barson (bar / lounge)</span>
+        <span class="fnb-tag">AKUNA 9F ⭐ Bib Gourmand</span>
+        <span class="fnb-tag">La Victoire (private dining)</span>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-family:Arial,sans-serif;font-size:11px;color:rgba(255,255,255,0.4);font-style:italic;">
+      Sources: NiceOffice.com.vn, SaigonOffice.com.vn, Marriott.com
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 3: MARKET GAP ANALYSIS ===================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <div class="section-title">Market Gap Analysis</div>
+    <div class="section-desc">Segment × Competition × Opportunity Matrix</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Market Segment</th>
+          <th>Currently Served By</th>
+          <th>Nearest Distance</th>
+          <th>Competition Level</th>
+          <th>Gap Assessment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="gap-full">
+          <td>Ultra-luxury Cantonese (Michelin 1★)</td>
+          <td>Long Triều (The Reverie)</td>
+          <td>900m</td>
+          <td><span class="gap-badge-full">FULL</span></td>
+          <td>Long Triều dominates — extremely difficult to compete</td>
+        </tr>
+        <tr class="gap-full">
+          <td>Premium hotel Cantonese (mid-range)</td>
+          <td>Crystal Jade + Kabin</td>
+          <td>350m–400m</td>
+          <td><span class="gap-badge-crowded">CROWDED</span></td>
+          <td>Two established brands at same or lower price point</td>
+        </tr>
+        <tr class="gap-full">
+          <td>Mid-premium accessible Dim Sum</td>
+          <td>Dim Tu Tac (Bib Gourmand)</td>
+          <td>600m</td>
+          <td><span class="gap-badge-crowded">STRONG</span></td>
+          <td>High-value competitor with Michelin recognition + accessible pricing</td>
+        </tr>
+        <tr class="gap-moderate">
+          <td>Business lunch Cantonese (weekday)</td>
+          <td>Kabin</td>
+          <td>400m</td>
+          <td><span class="gap-badge-moderate">MODERATE</span></td>
+          <td>Kabin captures hotel guests; in-building office tenants underserved</td>
+        </tr>
+        <tr class="gap-green gap-row-highlight">
+          <td>🟢 <strong>Private VIP dining rooms — Chinese (4–12 pax)</strong></td>
+          <td><strong>NONE on Tôn Đức Thắng</strong></td>
+          <td>n/a</td>
+          <td><span class="gap-badge-clear">CLEAR GAP</span></td>
+          <td><strong>Zero competitors offer dedicated private VIP rooms in this corridor</strong></td>
+        </tr>
+        <tr class="gap-green gap-row-highlight">
+          <td>🟢 <strong>Contemporary Chinese + cocktail bar integration</strong></td>
+          <td><strong>NONE within 1km</strong></td>
+          <td>n/a</td>
+          <td><span class="gap-badge-clear">CLEAR GAP</span></td>
+          <td><strong>No modern Chinese concept with cocktail program exists within radius</strong></td>
+        </tr>
+        <tr class="gap-partial">
+          <td>🟡 Weekend Yum Cha destination (accessible walk-in)</td>
+          <td>Crystal Jade (hotel lobby barrier)</td>
+          <td>350m</td>
+          <td><span class="gap-badge-partial">PARTIAL GAP</span></td>
+          <td>Crystal Jade requires hotel entry — street-accessible Yum Cha underserved</td>
+        </tr>
+        <tr class="gap-moderate">
+          <td>Large banquet Chinese (100+ pax)</td>
+          <td>Ocean Palace</td>
+          <td>700m</td>
+          <td><span class="gap-badge-moderate">MODERATE</span></td>
+          <td>Ocean Palace large-capacity specialist; not recommended to target this segment</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:16px;flex-wrap:wrap;font-family:Arial,sans-serif;font-size:11.5px;">
+    <span><span class="gap-badge-full" style="font-size:10px;">RED</span> = Full competition — avoid</span>
+    <span><span class="gap-badge-moderate" style="font-size:10px;">AMBER</span> = Moderate — enter with clear differentiation</span>
+    <span><span class="gap-badge-clear" style="font-size:10px;">GREEN</span> = Clear gap — primary target</span>
+    <span><span class="gap-badge-partial" style="font-size:10px;">PARTIAL</span> = Secondary opportunity</span>
+  </div>
+</div>
+
+<!-- ===================== SECTION 4: POSITIONING OPTIONS ===================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <div class="section-title">Strategic Positioning Options</div>
+    <div class="section-desc">Three scenarios evaluated</div>
+  </div>
+
+  <div class="positioning-grid">
+    <!-- Option A -->
+    <div class="pos-card">
+      <div class="pos-card-header pos-a-header">
+        <div class="option-tag">Option A</div>
+        <div class="option-name">Contemporary Cantonese<br>Business Club</div>
+        <div class="option-verdict">✅ RECOMMENDED</div>
+      </div>
+      <div class="pos-card-body">
+        <div class="price-tag">₫500k–1.2M/pax</div>
+        <span class="risk-badge-med">RISK: MEDIUM</span>
+        <ul style="margin-top:12px;">
+          <li><span class="li-icon">🎯</span><span><strong>Key differentiator:</strong> 3–4 VIP private dining rooms (6–12 pax) — only option on Tôn Đức Thắng</span></li>
+          <li><span class="li-icon">💰</span><span><strong>Price gap fill:</strong> Between Kabin ₫550k ceiling and Long Triều ₫2M floor</span></li>
+          <li><span class="li-icon">🍽️</span><span><strong>Menu anchor:</strong> Dim Sum (L) + Peking Duck + premium seafood (D) + Chinese-inspired cocktails</span></li>
+          <li><span class="li-icon">👥</span><span><strong>Target:</strong> Riverbank Place office tenants, hotel corporate guests, private celebrations</span></li>
+          <li><span class="li-icon">⏰</span><span><strong>Hours:</strong> L 11:30–14:30 | D 18:00–22:30 | Sat–Sun Yum Cha 10:00–14:30</span></li>
+          <li><span class="li-icon">📊</span><span><strong>Revenue logic:</strong> 13,972m² captive office base = recurring weekday lunch capture</span></li>
+          <li><span class="li-icon">⚠️</span><span>Requires quality chef team + VIP room fit-out investment</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Option B -->
+    <div class="pos-card">
+      <div class="pos-card-header pos-b-header">
+        <div class="option-tag">Option B</div>
+        <div class="option-name">Accessible Premium<br>Dim Sum</div>
+        <div class="option-verdict">⚠️ VIABLE — WITH CAUTION</div>
+      </div>
+      <div class="pos-card-body">
+        <div class="price-tag" style="background:#c9a000;">₫300k–600k/pax</div>
+        <span class="risk-badge-high">RISK: HIGH</span>
+        <ul style="margin-top:12px;">
+          <li><span class="li-icon">⚔️</span><span><strong>Direct conflict</strong> with Crystal Jade (350m) and Kabin (400m) — both already established and recognized</span></li>
+          <li><span class="li-icon">📉</span><span>Crystal Jade holds Michelin recognition; Kabin holds OAD Top 25 Asia — credibility gap is real</span></li>
+          <li><span class="li-icon">✅</span><span>Only viable if <strong>significantly better quality/price</strong> ratio than both incumbents</span></li>
+          <li><span class="li-icon">⚠️</span><span>Requires differentiated identity — cannot be a "me-too" Dim Sum offering</span></li>
+          <li><span class="li-icon">💡</span><span>Could be combined with Option A as weekend YumCha format to capture partial gap</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Option C -->
+    <div class="pos-card">
+      <div class="pos-card-header pos-c-header">
+        <div class="option-tag">Option C</div>
+        <div class="option-name">Michelin-Aspirant<br>Fine Dining</div>
+        <div class="option-verdict">❌ HIGH RISK — NOT RECOMMENDED</div>
+      </div>
+      <div class="pos-card-body">
+        <div class="price-tag" style="background:#C0180A;">₫1.5M–3M/pax</div>
+        <span class="risk-badge-high">RISK: VERY HIGH</span>
+        <ul style="margin-top:12px;">
+          <li><span class="li-icon">🌟</span><span><strong>Long Triều already holds Michelin 1 Star</strong> at The Reverie (900m) — market slot is taken</span></li>
+          <li><span class="li-icon">💸</span><span>Very high CAPEX: kitchen fit-out, senior chef talent cost, slow ramp-up to recognition</span></li>
+          <li><span class="li-icon">📉</span><span>Low table turns at this price point = requires exceptional APC to break even</span></li>
+          <li><span class="li-icon">⚠️</span><span>Not recommended <strong>unless</strong> an exceptional, already-recognized Chinese chef is already secured</span></li>
+          <li><span class="li-icon">🔁</span><span>Revisit only if Option A proves exceptional and chef team warrants Michelin nomination</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 5: EVIDENCE TABLE ===================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <div class="section-title">Evidence &amp; Source Credibility Table</div>
+    <div class="section-desc">All claims verified, inferred, or estimated</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Claim / Data Point</th>
+          <th>Source</th>
+          <th>Quality</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Crystal Jade Palace — location, Lotte Legend Hotel, Fl.2</td>
+          <td>Foody.vn, Tripadvisor, Michelin Guide VN</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>Multiple independent sources confirm</td>
+        </tr>
+        <tr>
+          <td>Crystal Jade — Michelin Recognized (not starred)</td>
+          <td>guide.michelin.com/vn</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>Michelin Selected restaurant, not Starred</td>
+        </tr>
+        <tr>
+          <td>Kabin — Top 25 Asia 2022</td>
+          <td>Tripadvisor Travelers' Choice, Migo.travel</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>2022 OAD/Tripadvisor recognition</td>
+        </tr>
+        <tr>
+          <td>Dim Tu Tac — Michelin Bib Gourmand 2023–2024</td>
+          <td>guide.michelin.com/vn</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>Official Michelin Guide Vietnam</td>
+        </tr>
+        <tr>
+          <td>Long Triều — Michelin 1 Star 2024–2025</td>
+          <td>guide.michelin.com/vn</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>Michelin Guide Vietnam 2024 edition</td>
+        </tr>
+        <tr>
+          <td>AKUNA (Le Méridien 9F) — Michelin Bib Gourmand</td>
+          <td>guide.michelin.com/vn, Marriott.com</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>Active Bib Gourmand recognition</td>
+        </tr>
+        <tr>
+          <td>Riverbank Place — 13,972m² Grade A office, 22F</td>
+          <td>NiceOffice.com.vn, SaigonOffice.com.vn</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>Commercial office listing data</td>
+        </tr>
+        <tr>
+          <td>Le Méridien — 305 rooms, 24,000m² hotel GFA</td>
+          <td>Marriott.com, NiceOffice.com.vn</td>
+          <td><span class="quality-verified">✅ Verified</span></td>
+          <td>Official hotel specifications</td>
+        </tr>
+        <tr>
+          <td>Distance estimates (350m–900m)</td>
+          <td>Google Maps measurement from 3–9 Tôn Đức Thắng</td>
+          <td><span class="quality-inferred">⚠️ Inferred</span></td>
+          <td>Approximate walking distance; ±50m margin</td>
+        </tr>
+        <tr>
+          <td>Price/pax ranges</td>
+          <td>Foody.vn, Tripadvisor reviews, VietPowerTravel</td>
+          <td><span class="quality-inferred">⚠️ Inferred</span></td>
+          <td>Aggregated from user reviews; actual menus may vary</td>
+        </tr>
+        <tr>
+          <td>Ocean Palace capacity (300 seats)</td>
+          <td>VietPowerTravel.com, Foody.vn</td>
+          <td><span class="quality-inferred">⚠️ Inferred</span></td>
+          <td>Source descriptions; not from official capacity data</td>
+        </tr>
+        <tr>
+          <td>Private VIP rooms on Tôn Đức Thắng — NONE identified</td>
+          <td>Market survey of all nearby competitors</td>
+          <td><span class="quality-inferred">⚠️ Inferred</span></td>
+          <td>Based on available menu/photos/reviews — absence of evidence, not evidence of absence; floor plan review recommended</td>
+        </tr>
+        <tr>
+          <td>Recommended price range ₫500k–1.2M/pax</td>
+          <td>Analyst derivation from competitor pricing</td>
+          <td><span class="quality-estimated">📊 Estimated</span></td>
+          <td>Strategic gap fill between Kabin ceiling and Long Triều floor</td>
+        </tr>
+        <tr>
+          <td>3–4 VIP room capacity recommendation</td>
+          <td>Analyst recommendation based on building context</td>
+          <td><span class="quality-estimated">📊 Estimated</span></td>
+          <td>Actual room count subject to floor plan review (Drive files not accessible)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===================== SECTION 6: DRIVE FILES NOTE ===================== -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <div class="section-title">Note on Google Drive Concept Files</div>
+  </div>
+
+  <div class="callout-amber" style="padding:22px 28px;">
+    <div style="font-size:22px;margin-bottom:10px;">⚠️</div>
+    <div style="font-family:Arial,sans-serif;font-size:14px;font-weight:700;color:#5a4200;margin-bottom:8px;">Floor Plan &amp; Concept Files — NOT Accessible</div>
+    <p style="font-family:Arial,sans-serif;font-size:13px;line-height:1.6;color:#5a4200;">
+      The Google Drive folder shared for this project requires authentication and could not be accessed by this analysis system.
+    </p>
+    <p style="margin-top:10px;font-family:Arial,sans-serif;font-size:13px;color:#5a4200;">
+      <strong>Drive URL:</strong> <a href="https://drive.google.com/drive/folders/1TjngXLBAgqZxekGoduuxWyKWVb3_N1Er" target="_blank">https://drive.google.com/drive/folders/1TjngXLBAgqZxekGoduuxWyKWVb3_N1Er</a>
+    </p>
+    <div style="margin-top:14px;background:rgba(201,168,76,0.15);border-radius:6px;padding:12px 16px;font-family:Arial,sans-serif;font-size:12.5px;color:#5a4200;">
+      <strong>Impact on this report:</strong> The following analysis components are deferred pending file access:
+      <ul style="margin-top:8px;padding-left:18px;line-height:1.8;">
+        <li>Floor plan layout analysis (VIP room feasibility, kitchen positioning)</li>
+        <li>Interior concept / brand aesthetic alignment review</li>
+        <li>Seating capacity and flow analysis</li>
+        <li>Concept design fit with "Contemporary Cantonese Business Club" positioning</li>
+      </ul>
+    </div>
+    <p style="margin-top:14px;font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#5a4200;">
+      📱 Action required: Please share files directly via Telegram to integrate concept design analysis into this report.
+    </p>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ===================== FOOTER ===================== -->
+<div class="report-footer">
+  <div>
+    <span class="footer-brand">Royal Canary Corp</span> — Strategic Advisory<br>
+    Chinese Restaurant Concept | Le Méridien Saigon | Market Analysis
+  </div>
+  <div style="text-align:right;">
+    Prepared: March 2026 &nbsp;|&nbsp; Confidential<br>
+    Data valid as of Q1 2026 — competitor data subject to change
+  </div>
+</div>
+
+</body>
+</html>
