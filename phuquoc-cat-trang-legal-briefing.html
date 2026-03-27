@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VDR Review — Công Ty TNHH Cát Trắng | Phú Quốc</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F4F6F9;color:#1a1a2e;font-size:14px;line-height:1.6}
+.topbar{background:#1B2A4A;color:white;padding:20px 48px}
+.topbar h1{font-size:17px;font-weight:700;letter-spacing:.5px}
+.topbar .sub{font-size:11px;opacity:.6;margin-top:4px}
+.container{max-width:1280px;margin:0 auto;padding:28px 48px 80px}
+.section{background:white;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px}
+.sec-hdr{background:#1B2A4A;color:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.sec-hdr h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.sec-body{padding:24px}
+.sec-body.collapsed{display:none}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{background:#eef1f7;color:#1B2A4A;font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;text-align:left;font-weight:700;border-bottom:2px solid #dde2ec}
+td{padding:8px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbfd}
+.ok{color:#1a7a3a;font-weight:700}
+.warn{color:#d97706;font-weight:700}
+.err{color:#c0392b;font-weight:700}
+.badge{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap}
+.b-ok{background:#d1fae5;color:#065f46}
+.b-warn{background:#fef3c7;color:#92400e}
+.b-err{background:#fee2e2;color:#991b1b}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sum-card{background:white;border-radius:8px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.07);text-align:center}
+.sum-num{font-size:28px;font-weight:700}
+.sum-num.g{color:#1a7a3a}.sum-num.a{color:#d97706}.sum-num.r{color:#c0392b}.sum-num.n{color:#1B2A4A}
+.sum-lbl{font-size:11px;color:#888;margin-top:4px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.info-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:14px}
+.info-card h4{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:700;margin-bottom:10px}
+.info-row{display:flex;gap:8px;margin-bottom:6px;font-size:12px}
+.info-label{color:#888;min-width:120px;flex-shrink:0;font-size:11px}
+.warn-box{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:14px 18px;font-size:12.5px;color:#92400e;margin-top:16px}
+.warn-box strong{color:#78350f}
+.err-box{background:#fff5f5;border:1px solid #c0392b;border-radius:6px;padding:14px 18px;font-size:12.5px;color:#991b1b;margin-top:8px}
+.err-box strong{color:#7f1d1d}
+.sow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sow-card{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.sow-hdr{padding:12px 16px;font-size:13px;font-weight:700;color:white}
+.sow-hdr.s1{background:#1B2A4A}
+.sow-hdr.s2{background:#1a5276}
+.sow-body{padding:16px;font-size:12.5px}
+.sow-body ol{padding-left:18px}
+.sow-body li{margin-bottom:8px;line-height:1.6}
+.deliverable{background:#f0fdf4;border-left:3px solid #1a7a3a;padding:8px 12px;margin-top:12px;font-size:12px;border-radius:0 4px 4px 0}
+.context-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ctx-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:6px;padding:14px}
+.ctx-card h4{font-size:11px;font-weight:700;color:#1B2A4A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.ctx-item{display:flex;gap:8px;margin-bottom:7px;font-size:12px}
+.ctx-dot{width:6px;height:6px;border-radius:50%;background:#1B2A4A;flex-shrink:0;margin-top:5px}
+.risk-ok{color:#1a7a3a}.risk-r{color:#c0392b}
+.timeline{border-left:2px solid #1B2A4A;padding-left:16px;margin:12px 0}
+.tl-item{position:relative;margin-bottom:12px;font-size:12px}
+.tl-item::before{content:'';position:absolute;left:-21px;top:4px;width:10px;height:10px;border-radius:50%;background:#1B2A4A;border:2px solid white;outline:1px solid #1B2A4A}
+.tl-item.done::before{background:#1a7a3a}
+.tl-item.pending::before{background:#d97706}
+.tl-item.err::before{background:#c0392b}
+.tl-year{font-weight:700;color:#1B2A4A}
+footer{text-align:center;padding:20px;color:#aaa;font-size:11px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>VIRTUAL DATA ROOM REVIEW — CÔNG TY TNHH CÁT TRẮNG</h1>
+  <div class="sub">Hồ Sơ Pháp Lý Dự Án Du Lịch Vũng Trâu Nằm, Xã Bãi Thơm, Phú Quốc &nbsp;|&nbsp; Tài liệu nội bộ · Tháng 3/2026 · Bảo mật</div>
+</div>
+<div class="container">
+
+<!-- SUMMARY CARDS -->
+<div class="summary-grid" style="margin-top:20px">
+  <div class="sum-card"><div class="sum-num n">34</div><div class="sum-lbl">Tổng tài liệu VDR</div></div>
+  <div class="sum-card"><div class="sum-num g">24</div><div class="sum-lbl">✅ Đầy đủ</div></div>
+  <div class="sum-card"><div class="sum-num a">8</div><div class="sum-lbl">⚠️ Cần xác minh</div></div>
+  <div class="sum-card"><div class="sum-num r">2</div><div class="sum-lbl">❌ Vấn đề nghiêm trọng</div></div>
+</div>
+
+<!-- SECTION 1 — VDR CHECKLIST -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>1 — Document Checklist (VDR Index)</h3><span>▲</span></div>
+  <div class="sec-body">
+
+    <p style="font-size:12px;color:#666;margin-bottom:16px">Bảng kiểm tra toàn bộ 34 tài liệu trong 6 thư mục của VDR. Dùng cho chuyên gia tư vấn pháp lý nắm tổng quan trước khi rà soát chi tiết.</p>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2A4A;margin-bottom:8px">Thư mục 1 — ĐKDN (Đăng Ký Doanh Nghiệp / Khiếu Nại)</p>
+    <table style="margin-bottom:16px">
+      <thead><tr><th>#</th><th>Tên tài liệu</th><th>Ngày</th><th>Loại</th><th>Cơ quan / Chủ thể</th><th>Tình trạng</th></tr></thead>
+      <tbody>
+        <tr><td>1.1</td><td>Đơn khiếu nại UBND Huyện PQ về thu hồi đất</td><td>17/05/2011</td><td>Đơn khiếu nại</td><td>Nguyễn Hoàng Yến → UBND Huyện PQ</td><td><span class="badge b-warn">⚠️ Chưa có phản hồi</span></td></tr>
+        <tr><td>1.2</td><td>Biên nhận đơn khiếu nại tại Tổ Tiếp Dân UBND Huyện PQ</td><td>07/06/2011</td><td>Biên nhận</td><td>UBND Huyện Phú Quốc</td><td><span class="badge b-ok">✅ Đầy đủ</span></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2A4A;margin-bottom:8px">Thư mục 2 — ĐẦU TƯ (Quy Hoạch & Bản Đồ)</p>
+    <table style="margin-bottom:16px">
+      <thead><tr><th>#</th><th>Tên tài liệu</th><th>Ngày</th><th>Loại</th><th>Cơ quan ban hành</th><th>Tình trạng</th></tr></thead>
+      <tbody>
+        <tr><td>2.1</td><td>Bản vẽ trích đo địa chính 1/5000 (khảo sát đất Cát Trắng, 182.504m²)</td><td>~2008</td><td>Bản đồ địa chính</td><td>Cty CP BĐS Kiên Giang</td><td><span class="badge b-warn">⚠️ Thiếu số hiệu QĐ</span></td></tr>
+        <tr><td>2.2</td><td>QĐ 1197/QĐ-TTg: QH chung xây dựng đảo PQ đến 2020</td><td>09/11/2005</td><td>QĐ Thủ tướng</td><td>Thủ tướng Chính phủ</td><td><span class="badge b-ok">✅ Đầy đủ</span></td></tr>
+        <tr><td>2.3</td><td>QĐ 90/QĐ-UBND KG: QH chi tiết 1/2000 KDL Vũng Trâu Nằm (370ha)</td><td>13/01/2010</td><td>QĐ UBND tỉnh</td><td>UBND tỉnh Kiên Giang</td><td><span class="badge b-ok">✅ Đầy đủ</span></td></tr>
+        <tr><td>2.4</td><td>QĐ 633/QĐ-TTg: Điều chỉnh QH chung PQ đến 2030</td><td>11/05/2010</td><td>QĐ Thủ tướng</td><td>Thủ tướng Chính phủ</td><td><span class="badge b-ok">✅ Đầy đủ</span></td></tr>
+        <tr><td>2.5</td><td>QĐ 3199/QĐ-UBND: Điều chỉnh QHPK xây dựng KDL & DC Bãi Thơm 1/2000</td><td>30/12/2020</td><td>QĐ UBND tỉnh</td><td>UBND tỉnh Kiên Giang</td><td><span class="badge b-ok">✅ Đầy đủ</span></td></tr>
+        <tr><td>2.6</td><td>QĐ 868/QĐ-TTg: Điều chỉnh cục bộ QH chung PQ đến 2030</td><td>17/06/2015</td><td>QĐ Thủ tướng</td><td>Thủ tướng Chính phủ</td><td><span class="badge b-ok">✅ Đầy đủ</span></td></tr>
+        <tr><td>2.7</td><td>Bản đồ điều chỉnh QH 2030 Phú Quốc (Dự thảo)</td><td>—</td><td>Bản đồ</td><td>—</td><td><span class="badge b-warn">⚠️ Dự thảo, chưa ký</span></td></tr>
+        <tr><td>2.8</td><td>Báo cáo điều chỉnh QHSDD Phú Quốc 2026–2030</td><td>2024–2025</td><td>Báo cáo</td><td>UBND tỉnh / Sở TNMT</td><td><span class="badge b-warn">⚠️ Cần xác nhận hiệu lực</span></td></tr>
+        <tr><td>2.9</td><td>QH03-SDD-BAI-THOM: Bản vẽ QH phân khu 1/2000 Bãi Thơm</td><td>2020</td><td>Bản vẽ QH</td><td>UBND tỉnh Kiên Giang</td><td><span class="badge b-ok">✅ Đầy đủ</span></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2A4A;margin-bottom:8px">Thư mục 3 — THỬA ĐẤT (GCN QSDĐ)</p>
+    <table style="margin-bottom:16px">
+      <thead><tr><th>#</th><th>Số GCN</th><th>Ngày cấp</th><th>Diện tích</th><th>Mục đích</th><th>Thời hạn</th><th>Tình trạng</th></tr></thead>
+      <tbody>
+        <tr><td>3.1</td><td>M986126 (BTH00055)</td><td>26/11/2002</td><td>6.858,70 m²</td><td>Đất ở 400m² + Cây CN 6.458,70m²</td><td>Lâu dài / 10.2043</td><td><span class="badge b-ok">✅ Đã CN Yến 2007</span></td></tr>
+        <tr><td>3.2</td><td>M961454 (PET000016)</td><td>25/09/2003</td><td>3.401 m²</td><td>Đất ở 400m² + Cây CN 3.001m²</td><td>Lâu dài / 10.2043</td><td><span class="badge b-ok">✅ Đã CN Yến 2007</span></td></tr>
+        <tr><td>3.3</td><td>Y845874 (QBT000012)</td><td>06/02/2004</td><td>14.545,30 m²</td><td>Cây công nghiệp</td><td>10.2043</td><td><span class="badge b-ok">✅ Đã CN Yến 2007</span></td></tr>
+        <tr><td>3.4</td><td>Y851730 (QBT000021)</td><td>05/05/2004</td><td>26.918 m²</td><td>Cây CN / nhà vườn</td><td>10.2043</td><td><span class="badge b-ok">✅ Đã CN Yến 2007</span></td></tr>
+        <tr><td>3.5</td><td>M961576 (BTH000177)</td><td>27/05/2004</td><td>4.235 m²</td><td>Đất ở 400m² + Cây CN 3.835m²</td><td>Lâu dài / 10.2043</td><td><span class="badge b-ok">✅ Đã CN Yến 2007</span></td></tr>
+        <tr><td>3.6</td><td>AB389466 (GCN874)</td><td>09/05/2005</td><td>7.950 m²</td><td>Cây lâu năm</td><td>10.2043</td><td><span class="badge b-ok">✅ Đã CN Yến 2007</span></td></tr>
+        <tr style="background:#fff5f5"><td>3.7</td><td>QĐ 1985/QĐ-UBND: <strong>Thu hồi đất</strong></td><td>25/02/2011</td><td>60.098,98 m²</td><td>—</td><td>—</td><td><span class="badge b-err">❌ BỊ THU HỒI</span></td></tr>
+        <tr><td>3.8</td><td>Thống kê diện tích đất chị Yến 2026</td><td>2026</td><td>63.908 m² tổng</td><td>—</td><td>—</td><td><span class="badge b-warn">⚠️ Cần đối chiếu</span></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2A4A;margin-bottom:8px">Thư mục 4 — ĐẤT ĐAI (Tờ Trình Xin Đầu Tư)</p>
+    <table style="margin-bottom:16px">
+      <thead><tr><th>#</th><th>Văn bản</th><th>Ngày</th><th>Nội dung</th><th>Kết quả</th></tr></thead>
+      <tbody>
+        <tr><td>4.1</td><td>Tờ trình 01/2008/TT-CTY (bản 1)</td><td>07/07/2008</td><td>Xin đầu tư KDL sinh thái 59.169m², 101 phòng, 100 tỷ VNĐ</td><td><span class="badge b-warn">⚠️ Chưa được chấp thuận</span></td></tr>
+        <tr><td>4.2</td><td>Tờ trình 01/2008/TT-CTY (bản 2)</td><td>07/07/2008</td><td>Bản gửi BQL KKT Phú Quốc</td><td><span class="badge b-warn">⚠️ Chưa được chấp thuận</span></td></tr>
+        <tr><td>4.3</td><td>Tờ trình 02/2010/TT-CTY</td><td>25/08/2010</td><td>Thay thế TT2008, bổ sung căn cứ QĐ 90/2010</td><td><span class="badge b-warn">⚠️ Chưa được chấp thuận</span></td></tr>
+        <tr><td>4.4</td><td>Công văn 01/2011/CTY</td><td>29/05/2011</td><td>Xin tham gia đầu tư KDL Vũng Trâu Nằm (sau khi đất bị thu hồi)</td><td><span class="badge b-warn">⚠️ Chưa được chấp thuận</span></td></tr>
+        <tr><td>4.5</td><td>Công văn 01/2016/CTY</td><td>07/09/2016</td><td>Tiếp tục xin chấp thuận chủ trương đầu tư</td><td><span class="badge b-warn">⚠️ Không có phản hồi</span></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2A4A;margin-bottom:8px">Thư mục 5 — KHIẾU NẠI &nbsp;|&nbsp; Thư mục 6 — QUY HOẠCH (Doanh Nghiệp)</p>
+    <table style="margin-bottom:0">
+      <thead><tr><th>#</th><th>Văn bản</th><th>Ngày</th><th>Nội dung</th><th>Tình trạng</th></tr></thead>
+      <tbody>
+        <tr><td>5.1</td><td>Giấy CN MST Cty Cát Trắng</td><td>07/11/2007</td><td>Mã số thuế</td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.1</td><td>Điều lệ Cty Cát Trắng</td><td>2007</td><td>Điều lệ thành lập</td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.2</td><td>GCN ĐKDN lần đầu (56.02.000710)</td><td>01/11/2007</td><td>Vốn 18 tỷ, chủ: Nguyễn Hoàng Yến 95%</td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.3</td><td>Hướng dẫn đăng ký doanh nghiệp</td><td>01/11/2007</td><td></td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.4</td><td>GCN mẫu dấu Cty Cát Trắng</td><td>05/11/2007</td><td></td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.5</td><td>Biên bản họp HĐTV 01/03/BB-CTY</td><td>28/03/2011</td><td>Thay địa chỉ → Tổ 1, ấp Suối Đá, xã Dương Tơ</td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.6</td><td>QĐ 01/03/QĐ-CTY thay đổi ĐKDN</td><td>28/03/2011</td><td>Thay đổi địa chỉ trụ sở</td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.7</td><td>Thông báo thay đổi ĐKDN</td><td>28/03/2011</td><td></td><td><span class="badge b-ok">✅</span></td></tr>
+        <tr><td>6.8</td><td>GCN ĐKDN thay đổi lần 1 (MSDN: 1700553629)</td><td>05/05/2011</td><td>Địa chỉ mới xác nhận, BQL KKT PQ cấp</td><td><span class="badge b-ok">✅</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box" style="margin-top:16px">
+      <strong>Tài liệu thiếu quan trọng cần yêu cầu bổ sung:</strong><br>
+      (1) Phản hồi/quyết định của UBND về các tờ trình 2008–2016 &nbsp;|&nbsp;
+      (2) Biên bản xác nhận bàn giao/thu hồi đất hoàn thành 2011 &nbsp;|&nbsp;
+      (3) Tình trạng GCN QSDĐ sau khi bị thu hồi (đã xóa/hủy chưa?) &nbsp;|&nbsp;
+      (4) Kết quả giải quyết đơn khiếu nại 2011
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 — HIỆN TRẠNG DỰ ÁN -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>2 — Tóm Tắt Hiện Trạng Dự Án</h3><span>▲</span></div>
+  <div class="sec-body">
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>Thông Tin Công Ty Cát Trắng</h4>
+        <div class="info-row"><div class="info-label">Tên đầy đủ</div><div>Công ty TNHH Cát Trắng (White Sand Co., Ltd)</div></div>
+        <div class="info-row"><div class="info-label">MSDN</div><div>1700553629 (gốc: 56.02.000710)</div></div>
+        <div class="info-row"><div class="info-label">Thành lập</div><div>01/11/2007 — Sở KH&ĐT Kiên Giang</div></div>
+        <div class="info-row"><div class="info-label">Vốn điều lệ</div><div>18.000.000.000 đồng (không thay đổi)</div></div>
+        <div class="info-row"><div class="info-label">Người đại diện PL</div><div>Nguyễn Hoàng Yến (95%) &nbsp;|&nbsp; Nguyễn Quý Định (5%)</div></div>
+        <div class="info-row"><div class="info-label">Địa chỉ hiện tại</div><div>Tổ 1, ấp Suối Đá, xã Dương Tơ, Phú Quốc, Kiên Giang (đổi 05/2011)</div></div>
+        <div class="info-row"><div class="info-label">Ngành nghề</div><div>Khách sạn (55101), Nhà hàng (56101), Du lịch (79110–79200)</div></div>
+      </div>
+      <div class="info-card">
+        <h4>Quỹ Đất — 6 GCN QSDĐ Tại Bãi Thơm</h4>
+        <table style="font-size:11.5px">
+          <thead><tr><th>GCN</th><th>Diện tích</th><th>Mục đích</th><th>Thời hạn</th></tr></thead>
+          <tbody>
+            <tr><td>M986126</td><td>6.858,70 m²</td><td>Đất ở + Cây CN</td><td>LĐ/10.2043</td></tr>
+            <tr><td>M961454</td><td>3.401 m²</td><td>Đất ở + Cây CN</td><td>LĐ/10.2043</td></tr>
+            <tr><td>Y845874</td><td>14.545,30 m²</td><td>Cây CN</td><td>10.2043</td></tr>
+            <tr><td>Y851730</td><td><strong>26.918 m²</strong></td><td>Cây CN/NV</td><td>10.2043</td></tr>
+            <tr><td>M961576</td><td>4.235 m²</td><td>Đất ở + Cây CN</td><td>LĐ/10.2043</td></tr>
+            <tr><td>AB389466</td><td>7.950 m²</td><td>Cây lâu năm</td><td>10.2043</td></tr>
+            <tr style="background:#f0fdf4;font-weight:700"><td>TỔNG</td><td>63.908 m²</td><td colspan="2">Tất cả tại Ấp Bãi Thơm, Xã Bãi Thơm</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="err-box">
+      <strong>🔴 VẤN ĐỀ NGHIÊM TRỌNG — THU HỒI ĐẤT 2011</strong><br>
+      Ngày 25/02/2011, UBND huyện Phú Quốc ban hành <strong>QĐ 1985/QĐ-UBND</strong> thu hồi <strong>60.098,98 m²</strong> (trong tổng 63.908 m²) của bà Nguyễn Hoàng Yến để thực hiện "Khu Du lịch Dân cư làng chài Vũng Trâu Nằm". Lý do: thực hiện QĐ 90/2010 quy hoạch khu vực, chủ đầu tư là <strong>Cty CP ĐTXD Dịch vụ Quý Hải</strong>.<br><br>
+      Bà Yến đã khiếu nại về chênh lệch <strong>3.809,02 m²</strong> vào 17/05/2011 và nộp hồ sơ tại Tổ Tiếp Dân 07/06/2011. <strong>Không có bằng chứng về kết quả giải quyết trong VDR này.</strong>
+    </div>
+
+    <div style="margin-top:20px">
+      <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2A4A;margin-bottom:12px">Lịch Sử Theo Đuổi Dự Án (2008–2016)</p>
+      <div class="timeline">
+        <div class="tl-item done"><span class="tl-year">2007</span> — Thành lập Cty Cát Trắng; Bà Yến gom mua 6 thửa đất tổng 63.908m² tại Bãi Thơm (tất cả chuyển nhượng 19/04/2007)</div>
+        <div class="tl-item pending"><span class="tl-year">07/2008</span> — Tờ trình 01/2008: Xin đầu tư KDL sinh thái 59.169m², 101 phòng, vốn 100 tỷ → <em>Không được chấp thuận</em></div>
+        <div class="tl-item done"><span class="tl-year">01/2010</span> — QĐ 90/QĐ-UBND phê duyệt QH chi tiết 1/2000 "Khu DL làng chài Vũng Trâu Nằm" 370ha, Quý Hải là chủ đầu tư</div>
+        <div class="tl-item pending"><span class="tl-year">08/2010</span> — Tờ trình 02/2010: Bổ sung căn cứ QĐ 90/2010, tái xin đầu tư → <em>Không được chấp thuận</em></div>
+        <div class="tl-item err"><span class="tl-year">02/2011</span> — QĐ 1985/QĐ-UBND: <strong>Thu hồi 60.098,98m²</strong> đất của bà Yến</div>
+        <div class="tl-item pending"><span class="tl-year">05–06/2011</span> — Bà Yến khiếu nại về 3.809,02m² chênh lệch → <em>Chưa có kết quả ghi nhận</em></div>
+        <div class="tl-item pending"><span class="tl-year">05/2011</span> — Công văn xin tham gia đầu tư vào dự án Vũng Trâu Nằm → <em>Không được chấp thuận</em></div>
+        <div class="tl-item pending"><span class="tl-year">09/2016</span> — Công văn lần 4 tiếp tục xin chấp thuận → <em>Không có phản hồi. Tài liệu mới nhất trong VDR.</em></div>
+        <div class="tl-item pending"><span class="tl-year">2026</span> — VDR được lập → Dự án vẫn chưa được triển khai sau 18 năm</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px">
+      <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1B2A4A;margin-bottom:10px">Tình Trạng Lớp Quy Hoạch Tại Khu Vực</p>
+      <table>
+        <thead><tr><th>Văn bản QH</th><th>Năm</th><th>Nội dung chính</th><th>Tình trạng</th></tr></thead>
+        <tbody>
+          <tr><td>QĐ 1197/QĐ-TTg</td><td>2005</td><td>QH chung xây dựng đảo PQ đến 2020</td><td>Đã hết hiệu lực (thay bởi QĐ633/2010)</td></tr>
+          <tr><td>QĐ 90/QĐ-UBND KG</td><td>2010</td><td>QH chi tiết 1/2000 KDL Vũng Trâu Nằm 370ha — Chủ đầu tư: Quý Hải</td><td><span class="warn">Cần xác minh hiệu lực sau các điều chỉnh</span></td></tr>
+          <tr><td>QĐ 633/QĐ-TTg</td><td>2010</td><td>Điều chỉnh QH chung PQ đến 2030</td><td>Đã có điều chỉnh cục bộ 2015 (QĐ868)</td></tr>
+          <tr><td>QĐ 868/QĐ-TTg</td><td>2015</td><td>Điều chỉnh cục bộ: chuyển casino khỏi Bãi Đá Chồng → Bãi Dài; Bãi Đá Chồng thành khu phức hợp nghỉ dưỡng 135ha</td><td>Còn hiệu lực</td></tr>
+          <tr><td>QĐ 3199/QĐ-UBND</td><td>2020</td><td>Điều chỉnh QHPK 1/2000 KDL & DC Bãi Thơm</td><td>Còn hiệu lực (văn bản mới nhất)</td></tr>
+          <tr><td>DCQH 2026–2030 (Dự thảo)</td><td>2024–2025</td><td>Báo cáo điều chỉnh QHSDD</td><td><span class="warn">Chưa ký — chưa có hiệu lực</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 — SOW -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>3 — Scope of Work Cho Tư Vấn Pháp Lý</h3><span>▲</span></div>
+  <div class="sec-body">
+    <p style="font-size:12px;color:#666;margin-bottom:16px">Hai hợp phần tư vấn cần thực hiện song song. Mỗi SOW có deliverable cụ thể.</p>
+    <div class="sow-grid">
+      <div class="sow-card">
+        <div class="sow-hdr s1">SOW 1 — Đánh Giá Pháp Lý Thu Hồi Đất & Hướng Giải Quyết</div>
+        <div class="sow-body">
+          <ol>
+            <li>Xác minh tính hợp pháp của <strong>QĐ 1985/QĐ-UBND ngày 25/02/2011</strong> thu hồi 60.098,98m² đất của bà Nguyễn Hoàng Yến — đặc biệt về quy trình thông báo, định giá bồi thường, GPMB theo Luật Đất đai 2003 + NĐ 181/2004, 84/2007, 69/2009</li>
+            <li>Tra cứu và xác minh tình trạng đơn khiếu nại 17/05/2011: đã có quyết định giải quyết chưa? Kết quả? Còn trong thời hiệu khiếu nại/khởi kiện theo Luật Đất đai 2024 không?</li>
+            <li>Xác định 3.809,02m² chênh lệch giữa GCN và QĐ thu hồi: hiện thuộc thửa nào, tình trạng GCN có còn hiệu lực không</li>
+            <li>Đánh giá khả năng yêu cầu bồi thường bổ sung hoặc phục hồi QSDĐ dựa trên giá thị trường hiện tại (1–5 triệu/m²) so với bồi thường 2011</li>
+            <li>Xác nhận GCN QSDĐ còn lại (nếu có) sau thu hồi — đã được chỉnh lý hồ sơ địa chính chưa?</li>
+          </ol>
+          <div class="deliverable"><strong>Deliverable:</strong> Ý kiến pháp lý thành văn + Khuyến nghị theo 3 kịch bản: (A) Đàm phán trực tiếp với UBND, (B) Khiếu nại hành chính, (C) Khởi kiện tòa án</div>
+        </div>
+      </div>
+      <div class="sow-card">
+        <div class="sow-hdr s2">SOW 2 — Đánh Giá QH Tổng Thể & Chiến Lược Phát Triển Đất</div>
+        <div class="sow-body">
+          <ol>
+            <li>Rà soát toàn bộ lớp quy hoạch: QĐ 90/2010 → QĐ 633/2010 → QĐ 868/2015 → QĐ 3199/2020 → DCQH 2025 — xác định văn bản nào còn hiệu lực, văn bản nào đã bị thay thế hoặc bổ sung</li>
+            <li>Xác định tình trạng pháp lý của chủ đầu tư Quý Hải: dự án 370ha có còn được giao triển khai không? Nếu không, chủ trương có thể được xin lại theo thủ tục nào?</li>
+            <li>Đánh giá 3 phương án tiếp cận: (A) M&A/mua lại pháp nhân Quý Hải để kế thừa dự án 370ha; (B) Phát triển độc lập trên đất hiện có + xin phép đầu tư mới; (C) Gom mua thêm đất lân cận và hợp nhất</li>
+            <li>Xác định hạn chế pháp lý do đất nằm trong <strong>vùng đệm Vườn Quốc gia Phú Quốc</strong> (QĐ 1197/QĐ-TTg 2005): mật độ xây dựng tối đa, chức năng được phép, thủ tục xin chuyển đổi mục đích (nếu có)</li>
+            <li>Lộ trình pháp lý để xin chủ trương đầu tư KDL theo Luật Đầu tư 2020 + Luật Đất đai 2024 + quy định đặc thù KKT Phú Quốc</li>
+          </ol>
+          <div class="deliverable"><strong>Deliverable:</strong> Báo cáo đánh giá pháp lý + Ma trận rủi ro (khả năng, tác động, biện pháp giảm thiểu) + Lộ trình phát triển theo 3 phương án với timeline ước tính</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 — CONTEXT BRIEFING -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>4 — Context Briefing Khu Vực</h3><span>▲</span></div>
+  <div class="sec-body">
+
+    <div class="context-grid" style="margin-bottom:16px">
+      <div class="ctx-card">
+        <h4>📍 Vị Trí & Zone Quy Hoạch</h4>
+        <div class="ctx-item"><div class="ctx-dot"></div><div>Xã Bãi Thơm — <strong>Đông Bắc đảo Phú Quốc</strong>, một trong 7 xã của TP Phú Quốc (thành phố từ 01/01/2021)</div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div>Khu vực kém phát triển nhất đảo — phần lớn đất nông nghiệp, rừng, vùng đệm VQG</div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div>Theo QH đến 2030: <strong>Vùng phát triển du lịch sinh thái</strong> — bờ biển phía Bắc (Bãi Thơm, Rạch Tràm, Rạch Vẹm)</div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div>Mục tiêu dài hạn 2030–2050: Trung tâm du lịch nghỉ dưỡng hàng đầu Đông Nam Á (theo định hướng QH đô thị)</div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div>Điều chỉnh 2021: Chuyển 143,5ha đất NN khu vực Bãi Thơm → <strong>đất làng nghề, giao thông, du lịch sinh thái</strong></div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div>Toàn bộ đất Cát Trắng: <strong>vùng đệm VQG Phú Quốc</strong> — hạn chế xây dựng theo QĐ 1197/QĐ-TTg 2005</div></div>
+      </div>
+      <div class="ctx-card">
+        <h4>🏗️ Dự Án Lân Cận</h4>
+        <table style="font-size:11.5px">
+          <thead><tr><th>Dự án</th><th>CĐT</th><th>Quy mô</th><th>Tình trạng</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Sân golf & KDL sinh thái Bãi Thơm</strong></td><td>Tập đoàn Rita Võ</td><td>110,7 ha</td><td>Phê duyệt 07/2022, đang thi công</td></tr>
+            <tr><td>Khu nghỉ dưỡng phức hợp</td><td>Liên quan Thaiholdings</td><td>~34.000 tỷ</td><td>Công bố 11/2025</td></tr>
+            <tr><td>KDL Bãi Dương Hòn Một</td><td>—</td><td>—</td><td>Tiếp giáp Đông Nam</td></tr>
+            <tr><td>Vườn Quốc gia Phú Quốc</td><td>Nhà nước</td><td>~37.430 ha</td><td>Ranh giới Tây + Bắc</td></tr>
+            <tr><td>Ritz-Carlton Reserve Hòn Thơm</td><td>Sun Group</td><td>—</td><td>Ký 2023, mở 2028–2029</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="context-grid">
+      <div class="ctx-card">
+        <h4>🚀 Hạ Tầng Kết Nối</h4>
+        <div class="ctx-item"><div class="ctx-dot"></div><div><strong>Sân bay quốc tế Phú Quốc:</strong> Mở rộng 22.000 tỷ (Sun Group, 2025–2030) — nâng công suất lên 10 triệu khách/năm</div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div><strong>Cảng hành khách quốc tế Dương Đông:</strong> Khai thác từ 2024 (180ha, 1.644 tỷ)</div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div><strong>Đường Bãi Thơm–Rạch Tràm:</strong> Tuyến đối ngoại 22m lộ giới trong QH — chưa hoàn thiện</div></div>
+        <div class="ctx-item"><div class="ctx-dot"></div><div>Khoảng cách từ Vũng Trâu Nằm → Sân bay: ~25km; → Dương Đông (trung tâm): ~22km</div></div>
+      </div>
+      <div class="ctx-card">
+        <h4>⚖️ Tiềm Năng & Rủi Ro</h4>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#1a7a3a"></div><div class="risk-ok"><strong>Tiềm năng:</strong> Bờ biển Đông Bắc nguyên sơ — lợi thế KDL sinh thái/boutique</div></div>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#1a7a3a"></div><div class="risk-ok">Kề sân golf Rita Võ 110ha đang phát triển — hưởng lợi hạ tầng</div></div>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#1a7a3a"></div><div class="risk-ok">Giá đất 1–5 triệu/m² vs trung tâm 30–80 triệu/m² — còn rất rẻ</div></div>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#1a7a3a"></div><div class="risk-ok">Định hướng du lịch sinh thái dài hạn — phù hợp eco-resort</div></div>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#c0392b"></div><div class="risk-r"><strong>Rủi ro:</strong> Toàn bộ đất trong vùng đệm VQG → hạn chế mật độ, mục đích</div></div>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#c0392b"></div><div class="risk-r">Thu hồi đất 2011 chưa giải quyết — pháp lý phức tạp</div></div>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#c0392b"></div><div class="risk-r">8 năm xin đầu tư không được chấp thuận — rủi ro quan hệ chính quyền</div></div>
+        <div class="ctx-item"><div class="ctx-dot" style="background:#c0392b"></div><div class="risk-r">Hạ tầng kết nối còn yếu — đường vào chưa hoàn thiện</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5 — LƯU Ý -->
+<div class="warn-box" style="margin:0 0 24px 0">
+  <strong>⚠️ Lưu Ý Quan Trọng</strong><br><br>
+  Tài liệu này được tổng hợp từ hồ sơ VDR do bên bán cung cấp và nguồn công khai. Cần tiến hành <strong>tra cứu độc lập</strong> tại:<br>
+  (1) Văn phòng Đăng ký Đất đai TP Phú Quốc — xác nhận tình trạng GCN QSDĐ hiện tại<br>
+  (2) UBND tỉnh Kiên Giang / Ban Quản lý KKT Phú Quốc — tình trạng quy hoạch và chủ trương đầu tư<br>
+  (3) Sở Tài nguyên và Môi trường tỉnh Kiên Giang — hồ sơ đất sau thu hồi<br>
+  (4) Tòa án nhân dân / UBND huyện Phú Quốc — tình trạng khiếu nại 2011<br><br>
+  <strong>Không đưa ra quyết định đầu tư trước khi hoàn thành due diligence pháp lý độc lập.</strong>
+</div>
+
+</div>
+<footer>Phú Quốc — Cát Trắng VDR Review · Nội Bộ · Bảo Mật · Tháng 3/2026 · Zera | RCC Strategic Intelligence</footer>
+
+<script>
+function toggle(h){const b=h.nextElementSibling,i=h.querySelector('span:last-child');b.classList.toggle('collapsed');i.textContent=b.classList.contains('collapsed')?'▼':'▲'}
+</script>
+</body>
+</html>
