@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Victoire — Dashboard v2 (Improved)</title>
+<title>La Victoire — Dashboard v2 (Improved · Light)</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
@@ -11,13 +11,13 @@
   --red: #C0180A;
   --gold: #C9A84C;
   --green: #1a7a3a;
-  --bg: #0a0f1e;
-  --card: #111827;
-  --card2: #1a2235;
-  --border: #1e2d4a;
-  --text: #e2e8f0;
+  --bg: #F0F4F9;
+  --card: #FFFFFF;
+  --card2: #F8FAFC;
+  --border: #DDE3EE;
+  --text: #1a2235;
   --muted: #64748b;
-  --accent: #3b82f6;
+  --accent: #2563eb;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; font-size: 13px; min-height: 100vh; }
@@ -32,10 +32,10 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
 /* Tabs */
-.tabs { display: flex; gap: 2px; padding: 12px 32px 0; background: #080d1a; border-bottom: 1px solid var(--border); }
+.tabs { display: flex; gap: 2px; padding: 12px 32px 0; background: #E8EEF6; border-bottom: 1px solid var(--border); }
 .tab { padding: 8px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; border-radius: 6px 6px 0 0; color: var(--muted); border: 1px solid transparent; border-bottom: none; transition: all .2s; }
-.tab.active { background: var(--card); color: white; border-color: var(--border); }
-.tab:hover:not(.active) { color: var(--text); }
+.tab.active { background: var(--card); color: var(--navy); border-color: var(--border); font-weight: 700; }
+.tab:hover:not(.active) { color: var(--text); background: rgba(0,31,107,0.05); }
 
 /* Container */
 .container { padding: 24px 32px; }
@@ -48,13 +48,13 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-
 .kpi-card.down::before { background: linear-gradient(90deg, var(--red), #f87171); }
 .kpi-card.neutral::before { background: linear-gradient(90deg, var(--gold), #fbbf24); }
 .kpi-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; }
-.kpi-val { font-size: 24px; font-weight: 700; color: white; line-height: 1; }
+.kpi-val { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1; }
 .kpi-val.small { font-size: 18px; }
 .kpi-sub { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
 .kpi-tgt { font-size: 10px; color: var(--muted); }
 .kpi-pct { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
-.pct-up { background: rgba(26,122,58,.2); color: #4ade80; }
-.pct-down { background: rgba(192,24,10,.2); color: #f87171; }
+.pct-up { background: rgba(26,122,58,.12); color: #15803d; }
+.pct-down { background: rgba(192,24,10,.12); color: #b91c1c; }
 .kpi-spark { position: absolute; bottom: 0; right: 0; opacity: .15; }
 
 /* Section header */
@@ -65,7 +65,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-
 /* Chart cards */
 .chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
 .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
-.chart-title { font-size: 11px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.chart-title { font-size: 11px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
 .chart-sub { font-size: 10px; color: var(--muted); margin-bottom: 16px; }
 .chart-wrap { position: relative; }
 
@@ -234,10 +234,10 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
 <!-- NET SALES TAB -->
 <div id="tab-net-sales" class="tab-panel">
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-num" style="color:#4ade80">$90,603</div><div class="stat-lbl">Last Day NS</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#4ade80">$1.42M</div><div class="stat-lbl">MTD NS</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#fbbf24">254.6%</div><div class="stat-lbl">vs MTD Target</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#94a3b8">$34,897</div><div class="stat-lbl">Daily Target</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#15803d">$90,603</div><div class="stat-lbl">Last Day NS</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#15803d">$1.42M</div><div class="stat-lbl">MTD NS</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#b45309">254.6%</div><div class="stat-lbl">vs MTD Target</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#64748b">$34,897</div><div class="stat-lbl">Daily Target</div></div>
   </div>
   <div class="chart-full">
     <div class="chart-title">Net Sales (USD) — Full March Detail</div>
@@ -254,10 +254,10 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
 <!-- TURNOVER TAB -->
 <div id="tab-turnover" class="tab-panel">
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-num" style="color:#4ade80">₫2.49M</div><div class="stat-lbl">Last Day Turn</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#fbbf24">₫35.0M</div><div class="stat-lbl">MTD Turn</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#fbbf24">98.3%</div><div class="stat-lbl">vs MTD Target</div></div>
-    <div class="stat-card"><div class="stat-num" style="color:#94a3b8">₫2.23M</div><div class="stat-lbl">Daily Target</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#15803d">₫2.49M</div><div class="stat-lbl">Last Day Turn</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#b45309">₫35.0M</div><div class="stat-lbl">MTD Turn</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#b45309">98.3%</div><div class="stat-lbl">vs MTD Target</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#64748b">₫2.23M</div><div class="stat-lbl">Daily Target</div></div>
   </div>
   <div class="chart-full">
     <div class="chart-title">Turnover (VND) — Full March</div>
@@ -271,17 +271,17 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
   <div class="insight-grid">
     <div class="insight-card">
       <h4 style="color:#4ade80">✅ Strengths</h4>
-      <div class="insight-item"><div class="insight-dot" style="background:#4ade80"></div>Net Sales MTD at 254.6% of target — significantly ahead</div>
-      <div class="insight-item"><div class="insight-dot" style="background:#4ade80"></div>Last 5 days all positive NS: consistent recovery trend</div>
-      <div class="insight-item"><div class="insight-dot" style="background:#4ade80"></div>25/03: $90,603 NS — best single day of month</div>
-      <div class="insight-item"><div class="insight-dot" style="background:#4ade80"></div>Full month NS target ($1.08M) already exceeded on day 16</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#15803d"></div>Net Sales MTD at 254.6% of target — significantly ahead</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#15803d"></div>Last 5 days all positive NS: consistent recovery trend</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#15803d"></div>25/03: $90,603 NS — best single day of month</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#15803d"></div>Full month NS target ($1.08M) already exceeded on day 16</div>
     </div>
     <div class="insight-card">
       <h4 style="color:#fbbf24">⚠️ Watch Points</h4>
-      <div class="insight-item"><div class="insight-dot" style="background:#fbbf24"></div>Turnover at 98.3% — slightly below MTD target (₫600K gap)</div>
-      <div class="insight-item"><div class="insight-dot" style="background:#fbbf24"></div>7 negative NS days in March — volatility remains high</div>
-      <div class="insight-item"><div class="insight-dot" style="background:#fbbf24"></div>Peak days (12, 22, 23, 24) drive disproportionate NS</div>
-      <div class="insight-item"><div class="insight-dot" style="background:#fbbf24"></div>6 remaining days must maintain ₫97K/day average to close Turnover gap</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#b45309"></div>Turnover at 98.3% — slightly below MTD target (₫600K gap)</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#b45309"></div>7 negative NS days in March — volatility remains high</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#b45309"></div>Peak days (12, 22, 23, 24) drive disproportionate NS</div>
+      <div class="insight-item"><div class="insight-dot" style="background:#b45309"></div>6 remaining days must maintain ₫97K/day average to close Turnover gap</div>
     </div>
   </div>
   <div class="chart-full">
@@ -304,9 +304,9 @@ const nsTgt=Array(31).fill(34896.88);
 const turnTgt=Array(31).fill(2226507.76);
 const labels=Array.from({length:31},(_,i)=>String(i+1));
 
-const grid={color:'rgba(255,255,255,0.04)'};
-const tick={color:'#475569',font:{size:10}};
-const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e2d4a',titleColor:'#e2e8f0',bodyColor:'#94a3b8',borderColor:'#2d3f5a',borderWidth:1}},scales:{x:{grid,ticks:tick},y:{grid,ticks:tick}}};
+const grid={color:'rgba(0,0,0,0.06)'};
+const tick={color:'#64748b',font:{size:10}};
+const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1B2A4A',titleColor:'#ffffff',bodyColor:'#cbd5e1',borderColor:'#2d4a7a',borderWidth:1}},scales:{x:{grid,ticks:tick},y:{grid,ticks:tick}}};
 
 // Chart 1 — Main NS + GC
 const c1=document.getElementById('chartMain').getContext('2d');
@@ -336,9 +336,9 @@ let sa=0,st=0;
 for(let i=0;i<25;i++){sa+=nsAct[i]; st+=nsTgt[i]; cumAct.push(+sa.toFixed(2)); cumTgt.push(+st.toFixed(2));}
 const cCum=document.getElementById('chartNSCum').getContext('2d');
 new Chart(cCum,{type:'line',data:{labels:labels.slice(0,25),datasets:[
-  {label:'Actual Cumulative',data:cumAct,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',fill:true,tension:.4,pointRadius:2},
+  {label:'Actual Cumulative',data:cumAct,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.08)',fill:true,tension:.4,pointRadius:2},
   {label:'Target Trajectory',data:cumTgt,borderColor:GOLD,borderDash:[5,5],pointRadius:0,tension:.4}
-]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#94a3b8',font:{size:10}}}},scales:{x:{grid,ticks:tick},y:{grid,ticks:{...tick,callback:v=>'$'+Math.round(v/1000)+'K'}}}}});
+]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:true,labels:{color:'#475569',font:{size:10}}}},scales:{x:{grid,ticks:tick},y:{grid,ticks:{...tick,callback:v=>'$'+Math.round(v/1000)+'K'}}}}});
 
 // Turnover tab chart
 const cT2=document.getElementById('chartTurn2').getContext('2d');
