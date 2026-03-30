@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Ruby — Deal Structure Proposal</title>
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #243760;
+    --navy-dark: #111c33;
+    --gold: #C9A84C;
+    --gold-light: #e0c278;
+    --gold-pale: #f5edd6;
+    --bg: #F4F6F9;
+    --white: #ffffff;
+    --text: #1a1a2e;
+    --text-muted: #5a6a8a;
+    --border: #dce3ee;
+    --red: #c0392b;
+    --orange: #e67e22;
+    --green: #27ae60;
+    --shadow: 0 2px 12px rgba(27,42,74,0.10);
+    --shadow-lg: 0 4px 24px rgba(27,42,74,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-light) 100%);
+    color: var(--white);
+    padding: 48px 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+  .doc-header::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.07);
+    pointer-events: none;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(201,168,76,0.18);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .header-badge::before { content: '🔒'; font-size: 10px; }
+
+  .doc-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--white);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .doc-title span { color: var(--gold); }
+
+  .doc-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.3px;
+    border-left: 3px solid var(--gold);
+    padding-left: 12px;
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+  }
+  .meta-item strong { color: rgba(255,255,255,0.85); }
+
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 48px;
+  }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: var(--white);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  .section-header:hover { background: #f8fafd; }
+  .section-header.open {
+    border-bottom-color: var(--gold);
+    background: #fdfaf4;
+  }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    background: var(--navy);
+    color: var(--gold);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.2px;
+  }
+  .section-title small {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 1px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .toggle-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    color: var(--navy);
+    font-size: 16px;
+    font-weight: 300;
+    flex-shrink: 0;
+  }
+  .section-header.open .toggle-icon {
+    background: var(--navy);
+    color: var(--gold);
+    border-color: var(--navy);
+    transform: rotate(180deg);
+  }
+
+  .section-body {
+    display: none;
+    padding: 24px 24px 28px;
+    animation: fadeIn 0.2s ease;
+  }
+  .section-body.open { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SUBSECTION ── */
+  .subsection {
+    margin-bottom: 28px;
+  }
+  .subsection:last-child { margin-bottom: 0; }
+
+  .subsection-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-title::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--gold);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── TABLES ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .data-table th {
+    background: var(--navy);
+    color: var(--gold-light);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .data-table th:first-child { border-radius: 6px 0 0 0; }
+  .data-table th:last-child { border-radius: 0 6px 0 0; }
+  .data-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: #fafbfd; }
+  .data-table tr:hover td { background: #f3f6fc; }
+
+  .data-table .highlight-row td {
+    background: #fdf8ec !important;
+    font-weight: 700;
+    color: var(--navy);
+    border-top: 2px solid var(--gold);
+  }
+  .data-table .total-row td {
+    background: var(--navy) !important;
+    color: var(--white) !important;
+    font-weight: 700;
+    border-top: 2px solid var(--gold);
+  }
+  .data-table .total-row td:first-child { border-radius: 0 0 0 6px; }
+  .data-table .total-row td:last-child { border-radius: 0 0 6px 0; }
+
+  .amount-col { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .negative { color: var(--red) !important; }
+  .positive { color: var(--green) !important; }
+
+  /* ── QUICK REFERENCE GRID ── */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .ref-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ref-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .ref-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .ref-item.accent {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+  .ref-item.accent .ref-label { color: rgba(255,255,255,0.55); }
+  .ref-item.accent .ref-value { color: var(--gold-light); }
+  .ref-item.gold-accent {
+    background: var(--gold-pale);
+    border-color: var(--gold);
+  }
+  .ref-item.gold-accent .ref-label { color: #8a6820; }
+  .ref-item.gold-accent .ref-value { color: #7a5f1a; }
+
+  /* ── RISK BADGES ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .badge-high { background: #fde8e8; color: #c0392b; border: 1px solid #f5c6c6; }
+  .badge-medium { background: #fef3e2; color: #b8600a; border: 1px solid #f5d999; }
+  .badge-low { background: #e6f9ef; color: #1a7a47; border: 1px solid #b2e8cc; }
+  .badge-neutral { background: #eef1f7; color: var(--navy); border: 1px solid var(--border); }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout.info { background: #eef4ff; border-left: 4px solid #4a90d9; color: #1a3a6a; }
+  .callout.warning { background: #fef6e8; border-left: 4px solid var(--gold); color: #7a5515; }
+  .callout.success { background: #e8f7ef; border-left: 4px solid var(--green); color: #1a5c38; }
+  .callout.critical { background: #fdeaea; border-left: 4px solid var(--red); color: #7a1a1a; }
+
+  /* ── BULLET LIST ── */
+  .styled-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+  .styled-list li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+  .styled-list li:last-child { border-bottom: none; }
+  .styled-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 4px;
+    color: var(--gold);
+    font-size: 11px;
+    top: 8px;
+  }
+  .styled-list li strong { color: var(--navy); }
+
+  .warranty-list {
+    counter-reset: warranty;
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+  .warranty-list li {
+    counter-increment: warranty;
+    padding: 10px 14px 10px 44px;
+    position: relative;
+    font-size: 13px;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+  }
+  .warranty-list li:nth-child(odd) { background: #fafbfd; }
+  .warranty-list li:last-child { border-bottom: none; }
+  .warranty-list li::before {
+    counter-increment: none;
+    content: counter(warranty);
+    position: absolute;
+    left: 14px;
+    top: 10px;
+    width: 22px; height: 22px;
+    background: var(--navy);
+    color: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .warranty-list li strong { color: var(--navy); }
+
+  /* ── TIMELINE ── */
+  .timeline-phase {
+    margin-bottom: 6px;
+    padding: 4px 10px;
+    background: var(--navy);
+    color: var(--gold-light);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* ── ECONOMICS SNAPSHOT ── */
+  .econ-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .econ-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .econ-card.primary {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+  .econ-card.accent-gold {
+    background: var(--gold-pale);
+    border-color: var(--gold);
+  }
+  .econ-num {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .econ-card.primary .econ-num { color: var(--gold-light); }
+  .econ-card.accent-gold .econ-num { color: #7a5515; }
+  .econ-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+  }
+  .econ-card.primary .econ-label { color: rgba(255,255,255,0.55); }
+  .econ-card.accent-gold .econ-label { color: #8a6820; }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    background: var(--navy-dark);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 20px 24px;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    margin-top: 32px;
+  }
+  .doc-footer span { color: var(--gold); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 20px 0;
+  }
+
+  /* ── NOTE TEXT ── */
+  .note-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 6px;
+    border-left: 3px solid var(--gold);
+    line-height: 1.6;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .doc-title { font-size: 22px; }
+    .doc-header { padding: 28px 20px 24px; }
+    .container { padding: 16px 12px 32px; }
+    .section-header { padding: 14px 16px; }
+    .section-body { padding: 16px 16px 20px; }
+    .ref-grid { grid-template-columns: 1fr; }
+    .econ-summary { grid-template-columns: 1fr 1fr; }
+    .data-table { font-size: 12px; }
+    .data-table th, .data-table td { padding: 8px 10px; }
+  }
+
+  @media print {
+    .section-body { display: block !important; }
+    .toggle-icon { display: none; }
+    .section-header { cursor: default; border-bottom: 2px solid var(--gold); }
+    body { background: white; }
+    .section-card { break-inside: avoid; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<div class="doc-header">
+  <div class="header-badge">Confidential &nbsp;·&nbsp; Internal Document</div>
+  <h1 class="doc-title"><span>PROJECT RUBY</span> — DEAL STRUCTURE PROPOSAL</h1>
+  <div class="doc-subtitle">
+    Acquisition of 100% Jen Tuan Chau Company Limited<br>
+    RCC Internal Working Document &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; March 2026
+  </div>
+  <div class="header-meta">
+    <div class="meta-item">📋 <strong>Version:</strong> Draft 1.0</div>
+    <div class="meta-item">📅 <strong>Date:</strong> March 2026</div>
+    <div class="meta-item">🏢 <strong>Prepared by:</strong> RCC Strategic Intelligence</div>
+    <div class="meta-item">🎯 <strong>Status:</strong> Internal Review</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CONTAINER ═══════════════════ -->
+<div class="container">
+
+  <!-- ─────── SECTION 1: TRANSACTION SUMMARY ─────── -->
+  <div class="section-card">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <div class="section-num">01</div>
+        <div class="section-title">
+          Transaction Summary
+          <small>Quick Reference — Key Deal Parameters</small>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="section-body open">
+      <div class="ref-grid">
+        <div class="ref-item">
+          <span class="ref-label">Target Company</span>
+          <span class="ref-value">Jen Tuan Chau Company Limited ("Jen TC")</span>
+        </div>
+        <div class="ref-item">
+          <span class="ref-label">Asset</span>
+          <span class="ref-value">Lam Ngoc Villa Area — 18 beach villas, 15,966 sqm, Tuan Chau Island, Quang Ninh</span>
+        </div>
+        <div class="ref-item">
+          <span class="ref-label">Project Status</span>
+          <span class="ref-value">Pre-operating (site cleared, no construction yet)</span>
+        </div>
+        <div class="ref-item">
+          <span class="ref-label">Sellers</span>
+          <span class="ref-value">Jen Capital Vietnam (51%, BVI) + Dao Ngoc Development Co. Ltd (49%, Vietnam)</span>
+        </div>
+        <div class="ref-item">
+          <span class="ref-label">Buyer</span>
+          <span class="ref-value">Royal Canary Corporation ("RCC") via SPV</span>
+        </div>
+        <div class="ref-item">
+          <span class="ref-label">Reported NAV</span>
+          <span class="ref-value">VND 132.9 billion</span>
+        </div>
+        <div class="ref-item gold-accent">
+          <span class="ref-label">EY-Adjusted NAV</span>
+          <span class="ref-value">~VND 99.2 billion (before showhouse impairment ~VND 29B)</span>
+        </div>
+        <div class="ref-item accent">
+          <span class="ref-label">Total Shareholder Loans</span>
+          <span class="ref-value">~VND 398.4 billion (due 7 Nov 2027)</span>
+        </div>
+        <div class="ref-item">
+          <span class="ref-label">Remaining Construction Capex</span>
+          <span class="ref-value">~VND 477 billion</span>
+        </div>
+        <div class="ref-item gold-accent">
+          <span class="ref-label">MBBank Committed Facility</span>
+          <span class="ref-value">VND 415 billion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── SECTION 2: PROPOSED DEAL STRUCTURE ─────── -->
+  <div class="section-card">
+    <div class="section-header open" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <div class="section-num">02</div>
+        <div class="section-title">
+          Proposed Deal Structure
+          <small>SPV · Purchase Price · Shareholder Loans · Holdbacks · Warranties</small>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="section-body open">
+
+      <!-- 2.1 Acquisition Vehicle -->
+      <div class="subsection">
+        <div class="subsection-title">2.1 &nbsp; Acquisition Vehicle</div>
+        <div class="callout info">
+          <span class="callout-icon">🏗️</span>
+          <div>RCC acquires 100% of Jen TC through a <strong>newly incorporated SPV</strong> (Vietnamese LLC).</div>
+        </div>
+        <ul class="styled-list">
+          <li><strong>Ring-fence liability</strong> from RCC parent entity</li>
+          <li><strong>Enable cleaner future capital raising</strong> or exit</li>
+          <li><strong>Simplify ownership</strong> structure for Marriott brand agreement purposes</li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 2.2 Purchase Price Framework -->
+      <div class="subsection">
+        <div class="subsection-title">2.2 &nbsp; Purchase Price Framework</div>
+        <div class="callout warning">
+          <span class="callout-icon">📐</span>
+          <div><strong>Base Purchase Price</strong> = EY Adjusted NAV + Negotiation Adjustments</div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th class="amount-col">Amount (VND B)</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Reported NAV (Feb 2026)</td>
+              <td class="amount-col">132.9</td>
+              <td>Per seller's accounts</td>
+            </tr>
+            <tr>
+              <td>Less: Non-operating advance (Dao Resort)</td>
+              <td class="amount-col negative">(1.9)</td>
+              <td>Not capitalizable</td>
+            </tr>
+            <tr>
+              <td>Less: Dao Ngoc payable revaluation</td>
+              <td class="amount-col negative">(15.6)</td>
+              <td>USD mark-to-market at VCB rate</td>
+            </tr>
+            <tr>
+              <td>Less: Under-accrued FCT</td>
+              <td class="amount-col negative">(9.3)</td>
+              <td>Quantified liability</td>
+            </tr>
+            <tr>
+              <td>Less: FCT penalties &amp; late payment interest</td>
+              <td class="amount-col negative">(6.2)</td>
+              <td>Compounding daily at 0.03%</td>
+            </tr>
+            <tr>
+              <td>Less: Reduction in creditable VAT</td>
+              <td class="amount-col negative">(0.8)</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Less: Showhouse impairment</td>
+              <td class="amount-col negative">(29.1)</td>
+              <td>Historical VND 47.8B vs market VND 18.7B</td>
+            </tr>
+            <tr class="highlight-row">
+              <td><strong>Adjusted NAV (Buyer's View)</strong></td>
+              <td class="amount-col"><strong>~70.0</strong></td>
+              <td>Floor for negotiation</td>
+            </tr>
+            <tr>
+              <td>Negotiation buffer (+)</td>
+              <td class="amount-col">TBD</td>
+              <td>Commercial value of brand, approvals, permit</td>
+            </tr>
+            <tr class="total-row">
+              <td><strong>Proposed Purchase Price Range</strong></td>
+              <td class="amount-col"><strong>80 – 100</strong></td>
+              <td>Subject to final negotiation</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note-text">
+          📌 Purchase price is for 100% equity of Jen TC. Separate consideration for shareholder loan treatment below.
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 2.3 Shareholder Loan Treatment -->
+      <div class="subsection">
+        <div class="subsection-title">2.3 &nbsp; Shareholder Loan Treatment <span style="color:var(--red);font-size:11px;font-weight:400;margin-left:6px;">(Critical)</span></div>
+        <div class="callout critical">
+          <span class="callout-icon">⚠️</span>
+          <div>This is the most complex part of the deal. Total loans outstanding ~<strong>VND 398 billion</strong> from two sellers.</div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Lender</th>
+              <th>Amount</th>
+              <th>Terms</th>
+              <th>Treatment Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Jen Capital (BVI)</strong> — Working capital loan</td>
+              <td class="amount-col">VND 148.4B<br><span style="font-size:11px;color:var(--text-muted)">(USD 5.7M)</span></td>
+              <td>Interest-free; due Nov 2027</td>
+              <td><strong>Option A:</strong> Novate to RCC SPV at USD/VND spot<br><strong>Option B:</strong> Sellers retain + repay from sale proceeds</td>
+            </tr>
+            <tr>
+              <td><strong>Jen Capital</strong> — 10% convertible loan</td>
+              <td class="amount-col">VND 8.2B<br><span style="font-size:11px;color:var(--text-muted)">(USD 0.3M)</span></td>
+              <td>10% p.a. compound quarterly; due Nov 2027; accrued interest VND 31.5B</td>
+              <td>Must be retired or renegotiated</td>
+            </tr>
+            <tr>
+              <td><strong>Dao Ngoc</strong> — Land acquisition loan</td>
+              <td class="amount-col">VND 137.2B</td>
+              <td>Interest-free; due Nov 2027</td>
+              <td><strong>Option A:</strong> Convert to equity credit in SPA<br><strong>Option B:</strong> Forgive as part of total consideration</td>
+            </tr>
+            <tr>
+              <td><strong>Dao Ngoc</strong> — Other payable</td>
+              <td class="amount-col">VND 42.0B</td>
+              <td>—</td>
+              <td>Fold into land acquisition consideration</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="subsection-title" style="margin-top:20px;">Recommended Approach</div>
+        <ul class="styled-list">
+          <li><strong>Jen Capital loans (USD-denominated):</strong> Sellers retire/repay from equity sale proceeds. RCC SPV takes a clean balance sheet. This reduces RCC's FX exposure.</li>
+          <li><strong>Dao Ngoc loan (VND 137.2B + VND 42B = VND 179.2B):</strong> Restructure as deferred payment or offset against land transfer obligations. Tie release to LURC transfer completion.</li>
+          <li><strong>Net economic effect:</strong> Total consideration for RCC = Purchase Price + assumption/retirement of Dao Ngoc obligations. Estimated all-in acquisition cost: <strong>VND 250–270 billion</strong> (equity + Dao Ngoc obligation settlement).</li>
+        </ul>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 2.4 Holdback & Escrow -->
+      <div class="subsection">
+        <div class="subsection-title">2.4 &nbsp; Holdback &amp; Escrow Mechanism</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Holdback Item</th>
+              <th class="amount-col">Amount (VND B)</th>
+              <th>Release Condition</th>
+              <th>Long-stop Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LURC transfer escrow</td>
+              <td class="amount-col">15.0</td>
+              <td>Both LURCs fully transferred to Jen TC, updated cadastral records</td>
+              <td>6 months post-closing</td>
+            </tr>
+            <tr>
+              <td>FCT liability escrow</td>
+              <td class="amount-col">15.5</td>
+              <td>Tax authority confirmation of FCT settlement OR no assessment issued within 3 years</td>
+              <td>3 years post-closing</td>
+            </tr>
+            <tr>
+              <td>T&amp;H Ha Long warranty</td>
+              <td class="amount-col">10.0</td>
+              <td>No adverse impact from T&amp;H enforcement proceedings on Jen TC's LURCs</td>
+              <td>2 years post-closing</td>
+            </tr>
+            <tr>
+              <td>Showhouse condition</td>
+              <td class="amount-col">5.0</td>
+              <td>Physical inspection confirms condition consistent with "saleable" as represented</td>
+              <td>30 days post-closing site visit</td>
+            </tr>
+            <tr class="total-row">
+              <td><strong>Total Holdback</strong></td>
+              <td class="amount-col"><strong>~45.5</strong></td>
+              <td colspan="2">—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout success">
+          <span class="callout-icon">🏛️</span>
+          <div><strong>Suggested escrow agent:</strong> Independent Vietnamese law firm or Big 4 trustee account.</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 2.5 Warranties -->
+      <div class="subsection">
+        <div class="subsection-title">2.5 &nbsp; Seller Warranties &amp; Indemnities</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Key warranties to require from both Jen Capital and Dao Ngoc:</div>
+        <ol class="warranty-list">
+          <li><strong>Title warranty:</strong> Sellers warrant full and unencumbered title to Jen TC shares</li>
+          <li><strong>LURC warranty:</strong> Dao Ngoc warrants completion of LURC transfer within 6 months; penalty = holdback forfeiture</li>
+          <li><strong>T&amp;H Ha Long warranty:</strong> No current claims, proceedings, or enforceable orders against Jen TC's specific LURCs or land rights; sellers indemnify RCC for any loss arising from T&amp;H Ha Long proceedings affecting Jen TC</li>
+          <li><strong>Tax warranty:</strong> All taxes up to closing date properly filed; FCT exposure indemnified by sellers up to EY's quantified VND 15.5B</li>
+          <li><strong>Social housing warranty:</strong> T&amp;H Ha Long (master developer) bears all social housing obligations; sellers to provide written confirmation from T&amp;H or indemnify RCC if obligation falls on Jen TC</li>
+          <li><strong>Funding warranty:</strong> No adverse change in MBBank facility terms; sellers to disclose any conditions precedent not yet satisfied</li>
+          <li><strong>No material adverse change:</strong> No new material contracts, encumbrances, or obligations created between signing and closing</li>
+        </ol>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────── SECTION 3: FINANCING PLAN ─────── -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <div class="section-num">03</div>
+        <div class="section-title">
+          Financing Plan
+          <small>Acquisition Funding · Construction Funding · Key Risks</small>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="section-body">
+
+      <!-- 3.1 Acquisition Funding -->
+      <div class="subsection">
+        <div class="subsection-title">3.1 &nbsp; Acquisition Funding</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th class="amount-col">Amount (VND B)</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RCC equity (acquisition price)</td>
+              <td class="amount-col">80 – 100</td>
+              <td>Purchase price for 100% shares</td>
+            </tr>
+            <tr>
+              <td>RCC equity (Dao Ngoc settlement)</td>
+              <td class="amount-col">~60 – 70</td>
+              <td>Settlement of Dao Ngoc land loans</td>
+            </tr>
+            <tr>
+              <td>Working capital reserve</td>
+              <td class="amount-col">20</td>
+              <td>For immediate post-closing obligations</td>
+            </tr>
+            <tr class="total-row">
+              <td><strong>Total equity required at closing</strong></td>
+              <td class="amount-col"><strong>~160 – 190</strong></td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 3.2 Construction Funding -->
+      <div class="subsection">
+        <div class="subsection-title">3.2 &nbsp; Construction Funding (Post-Closing)</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th class="amount-col">Amount (VND B)</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>MBBank committed facility</td>
+              <td class="amount-col">415</td>
+              <td>Requires final credit documentation; drawdown conditions TBC</td>
+            </tr>
+            <tr>
+              <td>Buyer deposits (5% of villa prices)</td>
+              <td class="amount-col">TBD</td>
+              <td>Available once statutory conditions met; est. VND 50–80B (18 villas × avg VND 60–80B)</td>
+            </tr>
+            <tr>
+              <td>RCC equity bridge (if needed)</td>
+              <td class="amount-col">~84</td>
+              <td>To cover funding gap if MBBank/deposits insufficient</td>
+            </tr>
+            <tr class="total-row">
+              <td><strong>Total construction funding</strong></td>
+              <td class="amount-col"><strong>~477</strong></td>
+              <td>Matches remaining capex requirement</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 3.3 Financing Risks -->
+      <div class="subsection">
+        <div class="subsection-title">3.3 &nbsp; Key Financing Risks</div>
+        <ul class="styled-list">
+          <li><strong>MBBank facility drawdown conditions</strong> are not fully specified in current commitment letter — require clarity before closing</li>
+          <li><strong>Buyer deposit availability</strong> depends on sales velocity; conservatively assume 12–18 months to collect meaningful deposit pool</li>
+          <li><strong>IRC expires Q2 2027</strong> — if construction delayed, RCC must obtain extension; risk of increased scrutiny given T&amp;H Ha Long situation</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─────── SECTION 4: TIMELINE & MILESTONES ─────── -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <div class="section-num">04</div>
+        <div class="section-title">
+          Timeline &amp; Milestones
+          <small>Pre-Signing → Signing → Closing → Construction → Opening</small>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Milestone</th>
+            <th>Target Date</th>
+            <th>Owner</th>
+            <th>Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="timeline-phase">Pre-Signing</span></td>
+            <td>EY TDD finalized (DRAFT → FINAL)</td>
+            <td>Apr 2026</td>
+            <td>EY</td>
+            <td><span class="badge badge-low">Low</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Pre-Signing</span></td>
+            <td>Legal DD on LURCs and T&amp;H Ha Long exposure</td>
+            <td>Apr 2026</td>
+            <td>Legal counsel</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Pre-Signing</span></td>
+            <td>Physical site visit + showhouse inspection</td>
+            <td>Apr 2026</td>
+            <td>RCC + CBRE</td>
+            <td><span class="badge badge-low">Low</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Pre-Signing</span></td>
+            <td>MBBank facility terms confirmed</td>
+            <td>Apr 2026</td>
+            <td>RCC/MBBank</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Pre-Signing</span></td>
+            <td>SPA negotiation completed</td>
+            <td>May 2026</td>
+            <td>RCC + sellers</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase" style="background:var(--gold);color:var(--navy)">Signing</span></td>
+            <td>SPA executed</td>
+            <td>May/Jun 2026</td>
+            <td>All parties</td>
+            <td><span class="badge badge-neutral">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Signing → Closing</span></td>
+            <td>LURC transfer application filed</td>
+            <td>Jun 2026</td>
+            <td>Dao Ngoc</td>
+            <td><span class="badge badge-high">High</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Signing → Closing</span></td>
+            <td>SPV incorporation (RCC buyer vehicle)</td>
+            <td>Jun 2026</td>
+            <td>RCC</td>
+            <td><span class="badge badge-low">Low</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Signing → Closing</span></td>
+            <td>Share transfer registration</td>
+            <td>Jun/Jul 2026</td>
+            <td>Lawyers</td>
+            <td><span class="badge badge-low">Low</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase" style="background:var(--gold);color:var(--navy)">Closing</span></td>
+            <td>RCC takes 100% ownership of Jen TC</td>
+            <td>Jul/Aug 2026</td>
+            <td>—</td>
+            <td><span class="badge badge-neutral">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Post-Closing</span></td>
+            <td>LURC transfer completion</td>
+            <td>Aug/Oct 2026</td>
+            <td>Dao Ngoc</td>
+            <td><span class="badge badge-high">High</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Post-Closing</span></td>
+            <td>Fire protection + basic design approvals</td>
+            <td>Q3/Q4 2026</td>
+            <td>Jen TC/RCC</td>
+            <td><span class="badge badge-high">High</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Post-Closing</span></td>
+            <td>18 individual LURC subdivision</td>
+            <td>Q4 2026</td>
+            <td>Jen TC</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Post-Closing</span></td>
+            <td>MBBank first drawdown</td>
+            <td>Q4 2026</td>
+            <td>Jen TC/RCC</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Construction</span></td>
+            <td>Groundbreaking</td>
+            <td>Q1 2027</td>
+            <td>Jen TC/contractor</td>
+            <td><span class="badge badge-high">High</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase">Construction</span></td>
+            <td>IRC deadline (construction completion)</td>
+            <td>Q2 2027</td>
+            <td>Jen TC</td>
+            <td><span class="badge badge-high">High — tight</span></td>
+          </tr>
+          <tr>
+            <td><span class="timeline-phase" style="background:#27ae60;color:white">Opening</span></td>
+            <td>Soft opening Lam Ngoc Villa</td>
+            <td>Q3/Q4 2027</td>
+            <td>Jen TC/operator</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─────── SECTION 5: OPEN ITEMS & NEXT STEPS ─────── -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <div class="section-num">05</div>
+        <div class="section-title">
+          Key Open Items &amp; Next Steps
+          <small>Action Tracker — Priority-Ordered</small>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Action</th>
+            <th>Owner</th>
+            <th>Priority</th>
+            <th>Deadline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">1</td>
+            <td>Finalize EY TDD report (DRAFT → FINAL)</td>
+            <td>EY</td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Apr 2026</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">2</td>
+            <td>Engage legal counsel for LURC and T&amp;H Ha Long legal DD</td>
+            <td>RCC</td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Immediate</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">3</td>
+            <td>Physical site visit to inspect showhouse condition</td>
+            <td>RCC + CBRE</td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Apr 2026</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">4</td>
+            <td>Obtain MBBank detailed facility term sheet (conditions, drawdown schedule)</td>
+            <td>RCC finance</td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Apr 2026</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">5</td>
+            <td>Request Dao Ngoc timeline commitment for LURC transfer</td>
+            <td>RCC legal</td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Apr 2026</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">6</td>
+            <td>Obtain written confirmation from T&amp;H Ha Long re: social housing</td>
+            <td>Sellers</td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Pre-signing</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">7</td>
+            <td>Determine operator/brand for Lam Ngoc Villa (affects project marketing)</td>
+            <td>RCC strategy</td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Q2 2026</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">8</td>
+            <td>Incorporate SPV (buyer vehicle)</td>
+            <td>RCC legal</td>
+            <td><span class="badge badge-low">🟢 Low</span></td>
+            <td>Pre-closing</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">9</td>
+            <td>Engage transaction tax advisor for FCT settlement strategy</td>
+            <td>RCC tax</td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Post-signing</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy)">10</td>
+            <td>Develop sales &amp; marketing plan for 18 villas</td>
+            <td>RCC sales</td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Q3 2026</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─────── SECTION 6: RISK MATRIX ─────── -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <div class="section-num">06</div>
+        <div class="section-title">
+          Risk Matrix
+          <small>Probability × Impact Assessment + Mitigations</small>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="section-body">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Risk</th>
+            <th>Probability</th>
+            <th>Impact</th>
+            <th>Overall</th>
+            <th>Mitigation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LURC not transferred in time</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-high">High</span></td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Holdback VND 15B; Dao Ngoc penalty clause</td>
+          </tr>
+          <tr>
+            <td>T&amp;H Ha Long proceedings affect Jen TC</td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td><span class="badge badge-high">High</span></td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Seller warranty + indemnity; legal DD confirms</td>
+          </tr>
+          <tr>
+            <td>MBBank facility insufficient/delayed</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-high">High</span></td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Confirm terms before signing; RCC equity bridge budgeted</td>
+          </tr>
+          <tr>
+            <td>IRC extension required (construction delay)</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Apply for extension early; T&amp;H Ha Long precedent</td>
+          </tr>
+          <tr>
+            <td>FCT assessment triggered</td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Escrow VND 15.5B; sellers indemnify</td>
+          </tr>
+          <tr>
+            <td>Sales velocity lower than projected</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-high">High</span></td>
+            <td><span class="badge badge-high">🔴 High</span></td>
+            <td>Conservative deposit assumptions; MBBank bridge</td>
+          </tr>
+          <tr>
+            <td>Showhouse requires major renovation</td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td><span class="badge badge-low">Low</span></td>
+            <td><span class="badge badge-low">🟢 Low</span></td>
+            <td>Site visit; VND 5B holdback</td>
+          </tr>
+          <tr>
+            <td>Design obsolescence (Studio MK27 designs 10+ years old)</td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td><span class="badge badge-medium">🟡 Medium</span></td>
+            <td>Budget for design refresh post-closing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─────── SECTION 7: DEAL ECONOMICS SNAPSHOT ─────── -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-title-wrap">
+        <div class="section-num">07</div>
+        <div class="section-title">
+          Deal Economics Snapshot
+          <small>All-in Cost · Net Equity · GDV · Gross Margin</small>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="econ-summary">
+        <div class="econ-card primary">
+          <div class="econ-num">~250–270B</div>
+          <div class="econ-label">Total Acquisition Cost (all-in)</div>
+        </div>
+        <div class="econ-card">
+          <div class="econ-num">~160–190B</div>
+          <div class="econ-label">Equity at Closing</div>
+        </div>
+        <div class="econ-card accent-gold">
+          <div class="econ-num">~230–280B</div>
+          <div class="econ-label">Net Equity (Total Project)</div>
+        </div>
+        <div class="econ-card">
+          <div class="econ-num">1,080–1,440B</div>
+          <div class="econ-label">Estimated GDV (18 Villas)</div>
+        </div>
+        <div class="econ-card primary">
+          <div class="econ-num">~800–1,000B+</div>
+          <div class="econ-label">Estimated Gross Margin</div>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="amount-col">VND Billion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td><strong>Total acquisition cost (all-in)</strong></td>
+            <td class="amount-col"><strong>~250 – 270</strong></td>
+          </tr>
+          <tr>
+            <td style="padding-left:28px">Purchase price (equity)</td>
+            <td class="amount-col">80 – 100</td>
+          </tr>
+          <tr>
+            <td style="padding-left:28px">Dao Ngoc loan settlement</td>
+            <td class="amount-col">~60 – 70</td>
+          </tr>
+          <tr>
+            <td style="padding-left:28px">Working capital at closing</td>
+            <td class="amount-col">20</td>
+          </tr>
+          <tr>
+            <td>Remaining construction capex</td>
+            <td class="amount-col">~477</td>
+          </tr>
+          <tr>
+            <td>MBBank facility</td>
+            <td class="amount-col negative">(415)</td>
+          </tr>
+          <tr>
+            <td>Buyer deposits (est.)</td>
+            <td class="amount-col negative">(50 – 80)</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>Net equity required (total project)</strong></td>
+            <td class="amount-col"><strong>~230 – 280</strong></td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Estimated GDV (18 villas × avg VND 60–80B)</td>
+            <td class="amount-col positive"><strong>1,080 – 1,440</strong></td>
+          </tr>
+          <tr class="highlight-row">
+            <td>Estimated gross margin (GDV – total cost)</td>
+            <td class="amount-col positive"><strong>~800 – 1,000+</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note-text">
+        📊 GDV estimate is illustrative. Subject to market study and operator brand selection. Tuan Chau premium villa comparable comps suggest avg pricing VND 60–100B/villa is achievable for branded product.
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<div class="doc-footer">
+  Project Ruby Deal Structure &nbsp;·&nbsp; Internal Working Document &nbsp;·&nbsp; <span>Confidential</span> &nbsp;·&nbsp; March 2026 &nbsp;·&nbsp; <span>Zera | RCC Strategic Intelligence</span>
+</div>
+
+<script>
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    if (isOpen) {
+      header.classList.remove('open');
+      body.classList.remove('open');
+    } else {
+      header.classList.add('open');
+      body.classList.add('open');
+    }
+  }
+</script>
+
+</body>
+</html>
