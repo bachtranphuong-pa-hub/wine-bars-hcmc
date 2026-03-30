@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant JV Shortlist — RCC Strategic Analysis</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F0F4F9;color:#1a2235;font-size:14px;line-height:1.6}
+.topbar{background:#1B2A4A;color:white;padding:20px 48px;border-bottom:3px solid #C9A84C}
+.topbar h1{font-size:17px;font-weight:700;letter-spacing:.5px}
+.topbar .sub{font-size:10px;opacity:.6;margin-top:4px}
+.container{max-width:1300px;margin:0 auto;padding:28px 48px 80px}
+.section{background:white;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;margin-bottom:20px}
+.sec-hdr{background:#1B2A4A;color:white;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.sec-hdr h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.sec-body{padding:24px}
+.sec-body.collapsed{display:none}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{background:#eef1f7;color:#1B2A4A;font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;text-align:left;font-weight:700;border-bottom:2px solid #dde2ec}
+td{padding:9px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbfd}
+.tag{padding:2px 9px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap}
+.tag-green{background:#d1fae5;color:#065f46}
+.tag-amber{background:#fef3c7;color:#92400e}
+.tag-red{background:#fee2e2;color:#991b1b}
+.tag-blue{background:#dbeafe;color:#1e40af}
+.tag-gray{background:#f3f4f6;color:#374151}
+.score-bar{display:flex;gap:3px;align-items:center}
+.score-dot{width:11px;height:11px;border-radius:50%}
+.dot-fill{background:#1B2A4A}
+.dot-empty{background:#e5e7eb}
+.chef-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.chef-card{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.chef-card-hdr{padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.chef-hdr-1{background:#1B2A4A;color:white}
+.chef-hdr-2{background:#1a5276;color:white}
+.chef-hdr-3{background:#145a32;color:white}
+.chef-hdr-4{background:#6d28d9;color:white}
+.chef-name{font-size:13px;font-weight:700}
+.chef-sub{font-size:10px;opacity:.7}
+.chef-body{padding:14px 16px;font-size:12px}
+.chef-row{display:flex;gap:8px;margin-bottom:6px}
+.chef-label{color:#888;font-size:10px;text-transform:uppercase;letter-spacing:.3px;min-width:110px;flex-shrink:0;padding-top:1px}
+.chef-val{color:#333}
+.timeline{border-left:2px solid #1B2A4A;padding-left:14px;margin:8px 0 0}
+.tl-item{position:relative;margin-bottom:8px;font-size:11.5px}
+.tl-item::before{content:'';position:absolute;left:-19px;top:4px;width:9px;height:9px;border-radius:50%;background:#1B2A4A;border:2px solid white;outline:1px solid #1B2A4A}
+.tl-item.green::before{background:#1a7a3a}
+.tl-item.amber::before{background:#d97706}
+.tl-item.red::before{background:#c0392b}
+.tl-year{font-weight:700;color:#1B2A4A}
+.matrix-table td:first-child{font-weight:600;color:#1B2A4A;background:#f8fafc}
+.rec-box{border-radius:8px;padding:20px 24px;margin-bottom:16px}
+.rec-box.green{background:linear-gradient(135deg,#064e3b,#065f46);color:white}
+.rec-box.amber{background:linear-gradient(135deg,#78350f,#92400e);color:white}
+.rec-box.red{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:white}
+.rec-box.blue{background:linear-gradient(135deg,#1e3a5f,#1e40af);color:white}
+.rec-box h4{font-size:13px;font-weight:700;margin-bottom:8px}
+.rec-box .rec-score{font-size:28px;font-weight:700;float:right;margin-top:-4px}
+.rec-box p{font-size:12px;line-height:1.7;opacity:.9}
+.rec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.warn-box{background:#fffbeb;border:1px solid #f59e0b;border-radius:6px;padding:14px;font-size:12px;color:#92400e;margin-top:12px}
+footer{text-align:center;padding:16px;color:#aaa;font-size:11px;border-top:1px solid #e5e7eb}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>FINE DINING JV SHORTLIST — RCC STRATEGIC ANALYSIS</h1>
+  <div class="sub">Vietnam Market Entry · 4 Candidates: etcha Bangkok · Cloudstreet Singapore · Meta Singapore · VEA Hong Kong · March 2026 · Confidential</div>
+</div>
+<div class="container">
+
+<!-- EXEC SUMMARY -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>Executive Summary</h3><span>▲</span></div>
+  <div class="sec-body">
+    <p style="font-size:13px;color:#374151;margin-bottom:16px">RCC is evaluating international fine dining brands for Vietnam JV. Four candidates were assessed across 8 dimensions: concept fit for Vietnam market, chef JV appetite, expansion history, pricing alignment, brand recognition, operational complexity, timeline to launch, and RCC asset leverage (Le Méridien Saigon).</p>
+    <div class="rec-grid">
+      <div class="rec-box green"><span class="rec-score">8.5/10</span><h4>🥇 VEA (Vicky Cheng) — RECOMMENDED PRIMARY</h4><p>Chinese×French concept is perfectly tuned for HCMC's UHNWI + expat market. Vicky Cheng is the most globally visible HK chef, operates two restaurants at different tiers (VEA + Wing), and has demonstrated collaborative spirit through international pop-ups. Vietnam represents a natural SEA expansion and strong narrative anchor for the brand.</p></div>
+      <div class="rec-box amber"><span class="rec-score">7.5/10</span><h4>🥈 Meta (Sun Kim) — RECOMMENDED SECONDARY</h4><p>Korean-French contemporary Asian is a genuine white space in Vietnam's fine dining market. Sun Kim recently relocated Meta to its "final address" — which may signal consolidation, but his 2024 2★ upgrade shows ambition. Lower operational complexity and very competitive pricing make this the most accessible JV structure.</p></div>
+      <div class="rec-box blue"><span class="rec-score">6/10</span><h4>🥉 Cloudstreet (Rishi Naleendra) — WATCH</h4><p>World-class brand, but Cloudstreet is deeply personal and autobiographical — Rishi has historically closed restaurants rather than expanded them. Sri Lankan-Australian concept has limited mainstream resonance for Vietnam UHNWI. More viable as a pop-up collaboration than full JV.</p></div>
+      <div class="rec-box red"><span class="rec-score">4/10</span><h4>⏳ etcha (Giacomo Primante) — TOO EARLY</h4><p>etcha only opened February 2025 and received Michelin in December 2025. At 30 years old and 1 year in operation, Giacomo is still building his reputation. A JV conversation today would be premature. Revisit in 2027 when the brand has matured. Strong candidate for the future.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- JV MATRIX -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>JV Feasibility Matrix — 8 Dimensions</h3><span>▲</span></div>
+  <div class="sec-body">
+    <table class="matrix-table">
+      <thead><tr><th>Dimension</th><th>VEA (Vicky Cheng)</th><th>Meta (Sun Kim)</th><th>Cloudstreet (Rishi)</th><th>etcha (Giacomo)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Vietnam market fit</td>
+          <td><span class="tag tag-green">✅ Excellent</span><br><small>Chinese×French = perfect for UHNWI HN/HCM + C-suite expats. Cantonese DNA resonates with Vietnamese UHNWI buyers.</small></td>
+          <td><span class="tag tag-green">✅ Strong</span><br><small>Korean-French = white space. Growing Korean cultural influence (K-pop, K-drama) gives brand tailwind.</small></td>
+          <td><span class="tag tag-amber">⚠️ Niche</span><br><small>Sri Lankan-Australian concept has limited mainstream appeal. Works as premium destination dining but narrow ICP.</small></td>
+          <td><span class="tag tag-amber">⚠️ Moderate</span><br><small>"Borderless" concept is versatile but no specific Vietnam narrative. Thai sourcing angle irrelevant in Vietnam context.</small></td>
+        </tr>
+        <tr>
+          <td>Chef JV appetite</td>
+          <td><span class="tag tag-green">✅ Open</span><br><small>Has done international collabs (Manila 2024, Macau, HK multi-venue). Two restaurants = proves multi-format appetite.</small></td>
+          <td><span class="tag tag-amber">⚠️ Unknown</span><br><small>Said Mohamed Sultan is his "final address" — may be consolidating. But 2★ in 2024 = renewed ambition. Needs direct conversation.</small></td>
+          <td><span class="tag tag-red">❌ Low</span><br><small>Historically closes concepts rather than expands them. Deeply personal brand = unlikely to license. Better as guest chef.</small></td>
+          <td><span class="tag tag-red">❌ Not ready</span><br><small>Too early. Giacomo needs 2–3 more years to consolidate etcha's position before considering expansion.</small></td>
+        </tr>
+        <tr>
+          <td>Expansion history</td>
+          <td><span class="tag tag-green">✅ Proven</span><br><small>VEA (2015) → Wing (2021, same building). International pop-ups: Manila 2024, Macau. Chefs' Choice Award winner 2025.</small></td>
+          <td><span class="tag tag-amber">⚠️ Limited</span><br><small>Single restaurant operator. 3 addresses in Singapore (Keong Saik → Keong Saik 2 → Mohamed Sultan). No international presence.</small></td>
+          <td><span class="tag tag-amber">⚠️ Cautious</span><br><small>Cheek by Jowl (2016, closed 2019) → Cloudstreet (2019) + Kotuwa + Fool. Closes rather than expands. Singapore-only.</small></td>
+          <td><span class="tag tag-red">❌ None</span><br><small>First restaurant, opened Feb 2025. Zero expansion track record. Giacomo's only prior experience was as employee, not owner.</small></td>
+        </tr>
+        <tr>
+          <td>Pricing for VN market</td>
+          <td><span class="tag tag-green">✅ Fits</span><br><small>HKD $1,880–2,280 (USD $241–292) → Vietnam equivalent ₫5.5–6.8M — competitive for 5★ fine dining HCMC. Strong UHNWI market.</small></td>
+          <td><span class="tag tag-green">✅ Best fit</span><br><small>SGD $328 (USD $243) → Vietnam ₫5.5M — most accessible tier. Wider target audience than VEA in Vietnam context.</small></td>
+          <td><span class="tag tag-amber">⚠️ Premium</span><br><small>SGD $398 (USD $295) → Vietnam ₫6.8M — feasible but at upper end. Needs strong brand pull to justify vs Vietnamese competitors.</small></td>
+          <td><span class="tag tag-green">✅ Fits</span><br><small>THB $4,750 (USD $135) → Vietnam ₫3.3M — actually underpriced for Vietnam UHNWI context. Could price up in VN.</small></td>
+        </tr>
+        <tr>
+          <td>Brand recognition in VN</td>
+          <td><span class="tag tag-green">✅ High</span><br><small>Vicky Cheng widely known among Vietnamese UHNWI (frequent HK travelers). Wing #3 Asia 50 Best = top-tier name recognition.</small></td>
+          <td><span class="tag tag-amber">⚠️ Medium</span><br><small>Known among Singapore dining community. Growing awareness among Vietnamese F&B professionals. Not yet household name.</small></td>
+          <td><span class="tag tag-amber">⚠️ Medium</span><br><small>Known in fine dining circles, less so mainstream Vietnam UHNWI. #74 Asia 50 Best a strong credential but less resonant in VN.</small></td>
+          <td><span class="tag tag-red">❌ Low</span><br><small>etcha is Bangkok-based, only 1 year old, limited Vietnam visibility. Brand building would need to precede JV launch.</small></td>
+        </tr>
+        <tr>
+          <td>Operational complexity</td>
+          <td><span class="tag tag-amber">⚠️ Medium-High</span><br><small>Vicky Cheng = chef-owner with 2 restaurants. JV requires dedicated chef team for VN location. Strong brand standards = compliance overhead.</small></td>
+          <td><span class="tag tag-green">✅ Lower</span><br><small>Single operator, smaller team. 8-course seasonal menu = manageable replication. Sun Kim personally flexible (Keong Saik → Mohamed Sultan move).</small></td>
+          <td><span class="tag tag-amber">⚠️ Medium</span><br><small>Highly personal concept — requires chef presence or very strong chef proxy. Wine program (Vinodhan) essential to experience = needs sommelier JV too.</small></td>
+          <td><span class="tag tag-red">❌ Unknown/High</span><br><small>etcha is hotel-embedded (Chatrium). Replicating in standalone context or different hotel = uncharted territory for Giacomo.</small></td>
+        </tr>
+        <tr>
+          <td>RCC asset leverage</td>
+          <td><span class="tag tag-green">✅ Best fit</span><br><small>Chinese×French at Le Méridien = perfect brand-hotel marriage. Marriott 5★ + Wing/VEA brand = credibility story that writes itself. Appeal to Chinese/HK business travelers staying at LMSG.</small></td>
+          <td><span class="tag tag-amber">⚠️ Good fit</span><br><small>Korean fine dining at Le Méridien = differentiated F&B story. Strong business dinner appeal. Less "hometown" resonance than VEA for Chinese guests.</small></td>
+          <td><span class="tag tag-amber">⚠️ Moderate fit</span><br><small>Sri Lankan-Australian at Marriott = unusual but distinctive. Could work as premium destination dining. Limited synergy with hotel's existing Chinese/corporate guest profile.</small></td>
+          <td><span class="tag tag-amber">⚠️ Moderate</span><br><small>"Borderless" concept fits cosmopolitan hotel. Italian chef using Thai ingredients in Vietnam = interesting story. But lacks strong brand pull for target guest.</small></td>
+        </tr>
+        <tr>
+          <td>Timeline to launch</td>
+          <td><span class="tag tag-amber">⚠️ 18–24 months</span><br><small>Negotiation → concept development → chef team placement → pre-opening = realistic 18–24 months from LOI. Vicky's schedule is full with Wing/VEA.</small></td>
+          <td><span class="tag tag-green">✅ 12–18 months</span><br><small>Simpler structure, less brand complexity. Sun Kim potentially more available for Vietnam conversations if approached directly.</small></td>
+          <td><span class="tag tag-red">❌ 24+ months</span><br><small>Even if willing (unlikely), Rishi's personal attachment means long negotiation. Cloudstreet expansion = low probability event.</small></td>
+          <td><span class="tag tag-red">❌ 36+ months</span><br><small>etcha needs 2026–2027 to consolidate. Vietnam JV conversation realistic only 2028 at earliest.</small></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPANSION HISTORIES -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>Chef Expansion Histories</h3><span>▲</span></div>
+  <div class="sec-body">
+    <div class="chef-grid">
+
+      <div class="chef-card">
+        <div class="chef-card-hdr chef-hdr-1">
+          <div><div class="chef-name">Vicky Cheng — VEA & Wing</div><div class="chef-sub">HK-born · Canadian-raised · #3 Asia 50 Best (Wing)</div></div>
+          <span style="background:rgba(255,255,255,.15);padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700">MULTI-VENUE ✅</span>
+        </div>
+        <div class="chef-body">
+          <div class="timeline">
+            <div class="tl-item green"><span class="tl-year">2011</span> — Returns to Hong Kong after NYC training (Restaurant Daniel / Daniel Boulud)</div>
+            <div class="tl-item green"><span class="tl-year">2015</span> — Founds VEA Restaurant & Lounge, Wellington St, Central HK</div>
+            <div class="tl-item green"><span class="tl-year">2016</span> — VEA receives first Michelin Star (Year 1)</div>
+            <div class="tl-item green"><span class="tl-year">2018</span> — International Chef Showcase: pop-up at Macau's City of Dreams</div>
+            <div class="tl-item green"><span class="tl-year">2020</span> — VEA peaks at #12 Asia's 50 Best Restaurants</div>
+            <div class="tl-item green"><span class="tl-year">2021</span> — Opens Wing (1F below VEA), exploring 8 regional Chinese cuisines</div>
+            <div class="tl-item green"><span class="tl-year">2024</span> — Pop-up collaboration with Chef Margarita Forés in Manila ("When Stars Align")</div>
+            <div class="tl-item green"><span class="tl-year">2024</span> — Wing: #20 World's 50 Best Restaurants · Tatler Best of Asia</div>
+            <div class="tl-item green"><span class="tl-year">2025</span> — Wing: #3 Asia's 50 Best · Chefs' Choice Award · Black Pearl Master Chef Award</div>
+          </div>
+          <div class="warn-box" style="margin-top:10px"><strong>JV Signal:</strong> Manila pop-up 2024 = first step outside HK. Wing's World 50 Best position creates strong appetite for brand extension. No public statements about expansion yet, but international collaborations increasing.</div>
+        </div>
+      </div>
+
+      <div class="chef-card">
+        <div class="chef-card-hdr chef-hdr-3">
+          <div><div class="chef-name">Sun Kim — Meta</div><div class="chef-sub">South Korean · Singapore-based · Michelin 2★</div></div>
+          <span style="background:rgba(255,255,255,.15);padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700">SINGLE VENUE ⚠️</span>
+        </div>
+        <div class="chef-body">
+          <div class="timeline">
+            <div class="tl-item amber"><span class="tl-year">~2012</span> — Trains at Tetsuya's, Sydney (3 years under Tetsuya Wakuda)</div>
+            <div class="tl-item green"><span class="tl-year">2014</span> — Moves to Singapore for Waku Ghin (Marina Bay Sands, Michelin 2★)</div>
+            <div class="tl-item green"><span class="tl-year">2015</span> — Opens Meta at 1 Keong Saik Road, Singapore (age 31)</div>
+            <div class="tl-item green"><span class="tl-year">2016</span> — Meta receives first Michelin Star (Year 1)</div>
+            <div class="tl-item amber"><span class="tl-year">2021</span> — American Express One To Watch Award (Asia's 50 Best)</div>
+            <div class="tl-item amber"><span class="tl-year">2023</span> — Relocates Meta to 9 Mohamed Sultan Road (declared "final address")</div>
+            <div class="tl-item green"><span class="tl-year">2024</span> — Meta upgraded to Michelin 2★ — renewed ambition signal</div>
+            <div class="tl-item amber"><span class="tl-year">2025</span> — Michelin 2★ maintained; no new restaurants announced</div>
+          </div>
+          <div class="warn-box" style="margin-top:10px"><strong>JV Signal:</strong> "Final address" comment in 2023 suggests consolidation mindset. However, 2★ upgrade may reignite expansion appetite. No track record of overseas expansion — Vietnam would be first. Approach with well-structured proposal emphasizing chef freedom and minimal operational burden.</div>
+        </div>
+      </div>
+
+      <div class="chef-card">
+        <div class="chef-card-hdr chef-hdr-2">
+          <div><div class="chef-name">Rishi Naleendra — Cloudstreet</div><div class="chef-sub">Sri Lankan · Singapore-based · Michelin 2★</div></div>
+          <span style="background:rgba(255,255,255,.15);padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700">CLOSES NOT EXPANDS ⚠️</span>
+        </div>
+        <div class="chef-body">
+          <div class="timeline">
+            <div class="tl-item amber"><span class="tl-year">~2014</span> — Works at Maca Restaurant Singapore (breakthrough)</div>
+            <div class="tl-item green"><span class="tl-year">2016</span> — Opens Cheek by Jowl, Singapore (Modern Australian)</div>
+            <div class="tl-item green"><span class="tl-year">2017</span> — Cheek by Jowl receives Michelin Star (Year 1)</div>
+            <div class="tl-item red"><span class="tl-year">2019 Feb</span> — Closes Cheek by Jowl after 3 years → replaced with casual Cheek Bistro</div>
+            <div class="tl-item green"><span class="tl-year">2019 Jul</span> — Opens Cloudstreet (fine dining, Amoy Street)</div>
+            <div class="tl-item green"><span class="tl-year">2020</span> — Opens Kotuwa (Sri Lankan cuisine)</div>
+            <div class="tl-item green"><span class="tl-year">2021</span> — Opens Fool Wine Bar · Cloudstreet receives Michelin 2★</div>
+            <div class="tl-item green"><span class="tl-year">2022</span> — Opens Station by Kotuwa</div>
+            <div class="tl-item amber"><span class="tl-year">2024</span> — Cloudstreet #74 Asia 50 Best; no overseas expansion announced</div>
+          </div>
+          <div class="warn-box" style="margin-top:10px"><strong>JV Signal:</strong> Rishi builds deeply personal concepts within Singapore — he closes and pivots rather than expanding overseas. Co-founded Cloudstreet with investor Gareth Burnett, which gives some corporate structure. More realistic as guest chef collaboration or co-branded pop-up than full JV.</div>
+        </div>
+      </div>
+
+      <div class="chef-card">
+        <div class="chef-card-hdr chef-hdr-4">
+          <div><div class="chef-name">Giacomo Primante — etcha</div><div class="chef-sub">Italian · Bangkok-based · Michelin 1★</div></div>
+          <span style="background:rgba(255,255,255,.15);padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700">TOO EARLY ❌</span>
+        </div>
+        <div class="chef-body">
+          <div class="timeline">
+            <div class="tl-item amber"><span class="tl-year">~2016–2022</span> — Training across Europe: Chesery (CH), DiverXO (ES), Kei Kobayashi (FR), Mirazur (FR)</div>
+            <div class="tl-item amber"><span class="tl-year">~2022–2023</span> — Benu, San Francisco (Chef Corey Lee, mentor)</div>
+            <div class="tl-item amber"><span class="tl-year">~2023</span> — Asia exploration journey; discovers Thailand</div>
+            <div class="tl-item green"><span class="tl-year">Feb 2025</span> — Opens etcha at Chatrium Grand Bangkok (first restaurant as chef-owner)</div>
+            <div class="tl-item green"><span class="tl-year">Dec 2025</span> — etcha receives Michelin 1★ (after only 8–9 months)</div>
+            <div class="tl-item amber"><span class="tl-year">2026</span> — Consolidating Bangkok reputation; no expansion plans publicly stated</div>
+          </div>
+          <div class="warn-box" style="margin-top:10px"><strong>JV Signal:</strong> Zero expansion track record — etcha is Giacomo's first restaurant and only 14 months old. A Vietnam JV conversation now would be extremely premature. Reconnect in 2027–2028 once etcha has 3+ years of operation. Strong candidate for the future if etcha maintains Michelin status.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ACTION PLAN -->
+<div class="section">
+  <div class="sec-hdr" onclick="toggle(this)"><h3>Recommended Action Plan — Vietnam JV</h3><span>▲</span></div>
+  <div class="sec-body">
+    <table>
+      <thead><tr><th>Priority</th><th>Chef / Brand</th><th>Next Step</th><th>Approach Via</th><th>Timeline</th><th>Structure</th></tr></thead>
+      <tbody>
+        <tr style="background:#f0fdf4">
+          <td><span class="tag tag-green">P1 — Immediate</span></td>
+          <td><strong>Vicky Cheng / VEA</strong></td>
+          <td>Initiate conversation via mutual Hong Kong F&B connection or direct outreach. Propose "VEA Vietnam" concept at Le Méridien Saigon — Chinese×French as flagship Chinese restaurant (replaces all-day dining or becomes dedicated outlet)</td>
+          <td>Direct to VEA (info@vea.hk) or via Asia's 50 Best / Tatler HK contacts</td>
+          <td>LOI: Q3 2026<br>Opening: Q1 2028</td>
+          <td>License + Management Agreement. Vicky provides brand, menu design, chef training. RCC provides venue + operations. Revenue share on F&B turnover.</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-amber">P2 — Parallel</span></td>
+          <td><strong>Sun Kim / Meta</strong></td>
+          <td>Approach Sun Kim for "Meta Vietnam" at RCC property. Frame as first overseas expansion — give him creative control and chef-in-residence model (4–6 visits/year). Emphasize minimal operational burden.</td>
+          <td>Direct to Meta (metarestaurant.sg) or via Singapore fine dining community</td>
+          <td>LOI: Q4 2026<br>Opening: Q2 2028</td>
+          <td>License + Chef-in-Residence model. Lighter structure than VEA — smaller team, tighter menu, but Sun Kim's brand attached.</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">P3 — Opportunistic</span></td>
+          <td><strong>Rishi Naleendra / Cloudstreet</strong></td>
+          <td>Do NOT approach for full JV. Invite for 2-day guest chef pop-up at Le Méridien Saigon in 2027. Use as brand-building event and relationship development ahead of potential future licensing discussion.</td>
+          <td>Direct to Cloudstreet (cloudstreet.com.sg)</td>
+          <td>Pop-up: Q2 2027<br>JV: assess 2028</td>
+          <td>Guest Chef Pop-up only for now. Full JV only if Rishi signals expansion appetite post-2027.</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-gray">P4 — Watch</span></td>
+          <td><strong>Giacomo Primante / etcha</strong></td>
+          <td>No action now. Monitor etcha's 2026–2027 trajectory. If Michelin star maintained and Giacomo signals expansion appetite, re-engage in 2027. Vietnam could be his first overseas location — compelling pitch.</td>
+          <td>Monitor + reconnect 2027</td>
+          <td>Revisit: 2027<br>JV if: 2028+</td>
+          <td>TBD — likely License + Chef-in-Residence model if pursued.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="warn-box">
+      <strong>⚠️ Key Risk:</strong> All four are chef-owner operators — the restaurant IS the chef. Any JV structure must prioritize chef creative freedom over revenue optimization. RCC's role: provide world-class venue, operations, and marketing. Chef's role: brand, menu, training, periodic presence. Do not over-engineer the commercial structure — these chefs are relationship-driven, not deal-driven.
+    </div>
+  </div>
+</div>
+
+</div>
+<footer>RCC Fine Dining JV Analysis · Confidential · March 2026 · Prepared by Zera | RCC Strategic Intelligence</footer>
+
+<script>
+function toggle(h){const b=h.nextElementSibling,i=h.querySelector('span:last-child');b.classList.toggle('collapsed');i.textContent=b.classList.contains('collapsed')?'▼':'▲'}
+</script>
+</body>
+</html>
