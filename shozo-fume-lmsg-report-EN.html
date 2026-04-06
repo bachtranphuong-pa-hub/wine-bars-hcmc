@@ -550,6 +550,72 @@
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .page { page-break-inside: avoid; }
   }
+
+  /* ═══ RESPONSIVE — Mobile Scaling ═══ */
+  @media screen and (max-width: 768px) {
+    body { font-size: 10pt; }
+    .cover { padding: 40px 24px; min-height: unset; height: auto; padding-bottom: 60px; }
+    .cover h1 { font-size: 22pt; }
+    .cover .subtitle { font-size: 10.5pt; }
+    .cover-meta { flex-direction: column; gap: 14px; }
+    .cover-logo { position: static; margin-top: 28px; font-size: 7pt; }
+    .page { padding: 28px 18px; min-height: unset; }
+    h2 { font-size: 16pt; }
+    h3 { font-size: 12pt; }
+    /* Multi-column → single column */
+    .info-grid, .two-col, .solution-cols, .concept-items,
+    .pl-grid, .criteria-grid, .membership-grid, .matrix-grid,
+    .reviews-grid, .problem-row, .concept-box .concept-items { 
+      grid-template-columns: 1fr !important;
+    }
+    /* Flex rows → column */
+    .stats-row, .cover-meta, .brand-row, .cta-steps {
+      flex-direction: column !important;
+    }
+    .brand-row { flex-wrap: wrap !important; flex-direction: row !important; }
+    /* Chef card stack */
+    .chef-card { flex-direction: column; padding: 22px 18px; }
+    .chef-avatar { width: 64px; height: 64px; font-size: 22pt; }
+    /* Tables: horizontal scroll */
+    .data-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+    .data-table td, .data-table th { white-space: normal; min-width: 120px; }
+    .data-table td:first-child { width: auto; }
+    /* Score */
+    .score-box .score-num { font-size: 40pt; }
+    .score-box { padding: 28px 20px; }
+    /* PL box */
+    .pl-box { padding: 22px 18px; }
+    /* CTA */
+    .cta-steps { flex-direction: column; align-items: center; gap: 12px; }
+    .cta-step { width: 100%; max-width: 280px; }
+    /* Quote */
+    .quote-box { font-size: 10.5pt; padding: 16px 16px; }
+    /* Footer */
+    .page-footer { flex-direction: column; gap: 4px; text-align: center; }
+    /* Timeline */
+    .tl-item { gap: 12px; }
+    .tl-dot { width: 30px; height: 30px; font-size: 9pt; }
+    /* Membership tiers */
+    .membership-grid { gap: 12px; }
+    /* Concept */
+    .concept-box { padding: 20px 16px; }
+    .solution-box { padding: 20px 16px; }
+    /* Problem row */
+    .problem-row { flex-direction: column !important; }
+    /* Criteria */
+    .criteria-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+  @media screen and (max-width: 480px) {
+    .cover h1 { font-size: 18pt; }
+    body { font-size: 9pt; }
+    .page { padding: 20px 14px; }
+    h2 { font-size: 14pt; }
+    h3 { font-size: 11.5pt; }
+    .score-box .score-num { font-size: 34pt; }
+    .criteria-grid { grid-template-columns: 1fr !important; }
+    .stat-card .stat-num { font-size: 17pt; }
+  }
+
 </style>
 </head>
 <body>
