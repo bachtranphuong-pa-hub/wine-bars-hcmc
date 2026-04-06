@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BARSON × Park90 — Strategic Analysis & Negotiation Playbook</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background:#f4f6fa; color:#1a1a2e; font-size:11pt; line-height:1.65; }
+  .container { max-width:940px; margin:0 auto; padding:28px 20px; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(140deg, #0a0014 0%, #1a0a2e 50%, #0d1b2a 100%);
+    border-radius:14px; padding:36px 40px; color:white; margin-bottom:22px; position:relative; overflow:hidden;
+  }
+  .header::after { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle,rgba(138,43,226,0.15) 0%,transparent 70%); border-radius:50%; }
+  .header .tag { font-size:8.5pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:10px; }
+  .header h1 { font-size:22pt; font-weight:700; line-height:1.2; margin-bottom:8px; }
+  .header h1 span { color:#8a2be2; }
+  .header .sub { font-size:10.5pt; color:rgba(255,255,255,0.55); }
+  .header .score-pill {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(200,160,80,0.4);
+    border-radius:20px; padding:6px 14px; margin-top:16px;
+    font-size:10pt; color:#c8a050;
+  }
+  .header .score-pill strong { font-size:15pt; color:#f9c74f; }
+
+  /* SECTIONS */
+  .section { background:white; border-radius:12px; padding:26px 28px; margin-bottom:18px; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+  .section-label { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#8a2be2; margin-bottom:5px; font-weight:700; }
+  h2 { font-size:16pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; }
+  h3 { font-size:12.5pt; font-weight:700; color:#0d1b2a; margin-bottom:12px; margin-top:20px; }
+  h3:first-of-type { margin-top:0; }
+  .divider { height:1px; background:linear-gradient(to right,#8a2be2,transparent); margin:18px 0; }
+
+  /* KPI ROW */
+  .kpi-row { display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+  .kpi { flex:1; min-width:130px; border-radius:10px; padding:16px 14px; border-left:4px solid; }
+  .kpi.p { background:#f8f5ff; border-color:#8a2be2; }
+  .kpi.g { background:#fdf8ef; border-color:#c8a050; }
+  .kpi.r { background:#fff5f5; border-color:#dc2626; }
+  .kpi.gr { background:#f0fdf4; border-color:#059669; }
+  .kpi.b { background:#eff6ff; border-color:#1e40af; }
+  .kv { font-size:17pt; font-weight:700; line-height:1; margin-bottom:4px; }
+  .kv.p { color:#8a2be2; } .kv.g { color:#c8a050; } .kv.r { color:#dc2626; } .kv.gr { color:#059669; } .kv.b { color:#1e40af; }
+  .kl { font-size:8.5pt; color:#666; text-transform:uppercase; letter-spacing:0.5px; line-height:1.3; }
+
+  /* TABLES */
+  .tbl-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:14px; border-radius:8px; }
+  table { width:100%; border-collapse:collapse; font-size:10.5pt; }
+  th { background:#1a0a2e; color:white; padding:10px 13px; text-align:left; font-size:8.5pt; letter-spacing:1px; text-transform:uppercase; font-weight:600; white-space:nowrap; }
+  th.r { text-align:right; }
+  td { padding:9px 13px; border-bottom:1px solid #f0ebff; color:#333; vertical-align:top; }
+  td.r { text-align:right; white-space:nowrap; }
+  tr:nth-child(even) td { background:#fafaf8; }
+  tr.hrow td { background:#0d1b2a !important; color:#c8a050; font-weight:700; font-size:10pt; padding:10px 13px; }
+  tr.tot td { background:#f5f0ff !important; font-weight:700; font-size:11pt; border-top:2px solid #8a2be2; }
+  tr.up td { background:#f0fdf4 !important; color:#059669; font-weight:700; }
+  tr.warn td { background:#fff8f0 !important; color:#c2410c; }
+
+  /* BADGES */
+  .b-tag { display:inline-block; padding:2px 9px; border-radius:10px; font-size:8.5pt; font-weight:700; white-space:nowrap; }
+  .b-tag.red { background:#fee2e2; color:#dc2626; }
+  .b-tag.grn { background:#d1fae5; color:#059669; }
+  .b-tag.yel { background:#fef3c7; color:#d97706; }
+  .b-tag.pur { background:#ede9fe; color:#8a2be2; }
+  .b-tag.blu { background:#dbeafe; color:#1e40af; }
+
+  /* PRO/CON GRID */
+  .pc-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+  .pc-box { border-radius:10px; padding:20px 20px; }
+  .pc-box.pro { background:#f0fdf4; border:1.5px solid #a7f3d0; }
+  .pc-box.con { background:#fff5f5; border:1.5px solid #fecaca; }
+  .pc-box h4 { font-size:9.5pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+  .pc-box.pro h4 { color:#059669; }
+  .pc-box.con h4 { color:#dc2626; }
+  .pc-box ul { list-style:none; padding:0; }
+  .pc-box ul li { padding:5px 0; font-size:10.5pt; display:flex; gap:8px; line-height:1.5; border-bottom:1px solid rgba(0,0,0,0.04); }
+  .pc-box ul li:last-child { border-bottom:none; }
+  .pc-box.pro ul li::before { content:'✓'; color:#059669; font-weight:700; flex-shrink:0; margin-top:1px; }
+  .pc-box.con ul li::before { content:'✗'; color:#dc2626; font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  /* RISK TABLE */
+  .risk-level { display:flex; align-items:center; gap:6px; }
+  .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .dot.r { background:#dc2626; }
+  .dot.y { background:#f59e0b; }
+  .dot.g { background:#059669; }
+
+  /* NEGOTIATION CARDS */
+  .neg-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; }
+  .neg-card { background:#fafaf8; border:1px solid #ede8df; border-radius:10px; padding:18px; }
+  .neg-card .nc-term { font-size:8.5pt; text-transform:uppercase; letter-spacing:1.5px; color:#8a2be2; font-weight:700; margin-bottom:6px; }
+  .neg-card .nc-current { font-size:10pt; color:#dc2626; margin-bottom:8px; padding:6px 8px; background:#fff5f5; border-radius:4px; }
+  .neg-card .nc-target { font-size:10pt; color:#059669; margin-bottom:8px; padding:6px 8px; background:#f0fdf4; border-radius:4px; }
+  .neg-card .nc-tactic { font-size:9.5pt; color:#555; line-height:1.55; }
+  .nc-label { font-weight:700; margin-right:4px; }
+
+  /* SCENARIO COMPARISON */
+  .sc-col-a { color:#6b7280; }
+  .sc-col-b { color:#d97706; }
+  .sc-col-c { color:#8a2be2; }
+  .sc-col-d { color:#059669; }
+
+  /* BOXES */
+  .note { background:#f5f0ff; border-left:4px solid #8a2be2; border-radius:0 8px 8px 0; padding:14px 16px; margin:14px 0; font-size:10pt; color:#444; line-height:1.6; }
+  .warn-box { background:#fff8f0; border-left:4px solid #f59e0b; border-radius:0 8px 8px 0; padding:14px 16px; margin:14px 0; font-size:10pt; color:#444; line-height:1.6; }
+  .ok-box { background:#f0fdf4; border-left:4px solid #059669; border-radius:0 8px 8px 0; padding:14px 16px; margin:14px 0; font-size:10pt; color:#333; line-height:1.6; }
+  .alert-box { background:#fff1f2; border:2px solid #fecaca; border-radius:10px; padding:18px 20px; margin:14px 0; }
+  .alert-box h4 { color:#dc2626; font-size:10pt; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+  .insight-box { background:linear-gradient(135deg,#fdf8ef,#fef9f3); border:2px solid #c8a050; border-radius:10px; padding:22px 24px; margin-top:18px; }
+  .insight-box h4 { color:#c8a050; font-size:9.5pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+  .insight-box ul { list-style:none; padding:0; }
+  .insight-box ul li { padding:6px 0; font-size:10.5pt; color:#333; display:flex; gap:8px; line-height:1.5; border-bottom:1px solid rgba(200,160,80,0.15); }
+  .insight-box ul li:last-child { border-bottom:none; }
+  .insight-box ul li::before { content:'→'; color:#c8a050; font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .col-box { background:#fafaf8; border:1px solid #ede8df; border-radius:10px; padding:18px; }
+  .col-box h4 { font-size:9pt; text-transform:uppercase; letter-spacing:1.5px; color:#8a2be2; margin-bottom:10px; }
+  .col-box ul { list-style:none; padding:0; }
+  .col-box ul li { padding:4px 0; font-size:10pt; display:flex; gap:7px; line-height:1.5; }
+  .col-box ul li::before { content:'·'; color:#8a2be2; font-weight:900; flex-shrink:0; }
+
+  /* PHASE TIMELINE */
+  .phase-row { display:flex; gap:0; margin-bottom:18px; overflow-x:auto; }
+  .phase { flex:1; min-width:140px; padding:16px 14px; text-align:center; position:relative; }
+  .phase::after { content:'›'; position:absolute; right:-6px; top:50%; transform:translateY(-50%); font-size:18pt; color:#c8a050; z-index:1; }
+  .phase:last-child::after { display:none; }
+  .phase.ph1 { background:#f5f0ff; border-radius:10px 0 0 10px; }
+  .phase.ph2 { background:#fdf8ef; }
+  .phase.ph3 { background:#f0fdf4; }
+  .phase.ph4 { background:#eff6ff; border-radius:0 10px 10px 0; }
+  .phase .ph-num { font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .phase.ph1 .ph-num { color:#8a2be2; }
+  .phase.ph2 .ph-num { color:#c8a050; }
+  .phase.ph3 .ph-num { color:#059669; }
+  .phase.ph4 .ph-num { color:#1e40af; }
+  .phase .ph-title { font-size:10.5pt; font-weight:700; color:#0d1b2a; margin-bottom:4px; }
+  .phase .ph-period { font-size:9pt; color:#888; }
+
+  .footer { text-align:center; font-size:8.5pt; color:#aaa; padding:16px 0; }
+
+  @media (max-width:640px) {
+    .container { padding:14px 12px; }
+    .header { padding:24px 20px; }
+    .header h1 { font-size:17pt; }
+    .section { padding:18px 16px; }
+    h2 { font-size:14pt; }
+    h3 { font-size:11.5pt; }
+    .kpi-row { flex-direction:column; gap:10px; }
+    .kpi { min-width:unset; }
+    .kv { font-size:16pt; }
+    .pc-grid, .neg-grid, .two-col { grid-template-columns:1fr; }
+    table { font-size:9.5pt; display:block; overflow-x:auto; white-space:nowrap; }
+    th, td { padding:8px 10px; }
+    .phase-row { flex-direction:column; gap:8px; }
+    .phase::after { display:none; }
+    .phase { border-radius:10px !important; min-width:unset; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="tag">RCC · Strategic Decision Brief · Board Confidential · April 2026</div>
+  <h1>BARSON × <span>Park90</span><br>Term Sheet — Strategic Analysis & Negotiation Playbook</h1>
+  <div class="sub">Based on: P90_Saigon_draft_terms_clean.docx · LMSG SharePoint Q1 2026 · Park90 Business Model Analysis</div>
+  <div class="score-pill">Deal Attractiveness Score: <strong>6.5 / 10</strong> — Conditional on Negotiation Outcomes</div>
+</div>
+
+<!-- ══ SECTION 1: EXECUTIVE SUMMARY ══ -->
+<div class="section">
+  <div class="section-label">Section 01</div>
+  <h2>Executive Summary</h2>
+
+  <div class="kpi-row">
+    <div class="kpi r">
+      <div class="kv r">VND 14–20B</div>
+      <div class="kl">Total Initial CAPEX (Bar Only)</div>
+    </div>
+    <div class="kpi g">
+      <div class="kv g">+69%</div>
+      <div class="kl">Revenue Uplift (Base Case Monthly)</div>
+    </div>
+    <div class="kpi r">
+      <div class="kv r">~5 yrs</div>
+      <div class="kl">Payback Period (Base Case)</div>
+    </div>
+    <div class="kpi gr">
+      <div class="kv gr">~21 mo</div>
+      <div class="kl">Payback (Optimistic Scenario)</div>
+    </div>
+    <div class="kpi p">
+      <div class="kv p">⚠ Venue</div>
+      <div class="kl">Park90 Prefers Non-Hotel — Key Risk</div>
+    </div>
+  </div>
+
+  <div class="alert-box">
+    <h4>⚠ Three Critical Issues That Must Be Resolved Before Proceeding</h4>
+    <table style="width:100%; font-size:10.5pt;">
+      <tr>
+        <td style="padding:6px 0; width:30px;"><span class="b-tag red">1</span></td>
+        <td style="padding:6px 8px;"><strong>Venue Conflict:</strong> Park90 explicitly prefers "independent shop-lot / private villa" — NOT a hotel lobby bar. If Park90 insists, this is NOT a BARSON play — it becomes a separate RCC standalone venue with entirely different economics.</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 0;"><span class="b-tag red">2</span></td>
+        <td style="padding:6px 8px;"><strong>CAPEX Scale:</strong> USD 550K+ (VND 14B+) is significantly higher than originally framed. This requires board-level approval and a dedicated funding plan — not a management-level decision.</td>
+      </tr>
+      <tr>
+        <td style="padding:6px 0;"><span class="b-tag red">3</span></td>
+        <td style="padding:6px 8px;"><strong>Le Cave Retail:</strong> An additional USD 500K inventory commitment for the retail arm. Must be explicitly deferred to Phase 2 — do not bundle into initial negotiations.</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ══ SECTION 2: PROS & CONS ══ -->
+<div class="section">
+  <div class="section-label">Section 02</div>
+  <h2>Pros & Cons — Full Analysis</h2>
+
+  <div class="pc-grid">
+    <div class="pc-box pro">
+      <h4>✅ Pros</h4>
+      <ul>
+        <li><strong>Proven model:</strong> Park90 operates in Regent SG, Conrad SG, InterContinental SG, St. Regis KL, Grand Mayfull Taipei, Setsu Niseko — track record across 5 markets</li>
+        <li><strong>Pricing moat:</strong> SEA aggregator wholesale → 50–70% markup vs. hotel standard 2–3×. Guest sees better prices, RCC keeps margin</li>
+        <li><strong>800+ label portfolio:</strong> DRC, Petrus, Screaming Eagle by the glass via Coravin — impossible for standalone bars to replicate</li>
+        <li><strong>Award-winning sommelier team:</strong> Mason Ng (Best Sommelier Asia-Oceania 2023), Celine Jung (Best Sommelier SG 2023) — instant credibility transfer</li>
+        <li><strong>Vietnam debut exclusivity:</strong> First Park90 in Vietnam = PR value, Marriott Bonvoy integration, media coverage</li>
+        <li><strong>Membership model mechanics:</strong> Prepaid float, annual renewal, behavioral lock-in — direct learning lab for RCC's private club ambition</li>
+        <li><strong>4× annual activations:</strong> Winemaker visits, MW masterclasses — drives repeat traffic and PR independently</li>
+        <li><strong>3-year term + renewal:</strong> Long enough to build membership base, short enough for RCC exit if underperforming</li>
+        <li><strong>Reciprocal benefits:</strong> BARSON members get access to Park90 SG/KL/Taipei — premium perk for Grand Cru tier</li>
+      </ul>
+    </div>
+    <div class="pc-box con">
+      <h4>✗ Cons & Concerns</h4>
+      <ul>
+        <li><strong>USD 250K setup fee is steep:</strong> Covers consultancy, design, training, launch PR — but non-refundable and upfront. High sunk cost if execution fails.</li>
+        <li><strong>USD 300–500K wine inventory:</strong> Working capital tied in illiquid asset (wine). Sell-through risk if membership ramp is slow.</li>
+        <li><strong>Venue conflict:</strong> Park90 wants privacy of shop-lot/villa. LMSG lobby bar is semi-public. This fundamentally changes the experience and member demographic.</li>
+        <li><strong>BARSON baseline is event-dependent:</strong> 30% of March revenue came from 3 event days. Organic floor is only ~39M/day. Park90 alone may not compensate for soft days.</li>
+        <li><strong>Vietnam wine market is small:</strong> Only 0.8% of national alcohol consumption. Wine culture still nascent outside expat/UHNWI segment.</li>
+        <li><strong>Import duty burden:</strong> Vietnam import tax + SCT adds 30–50% vs. Singapore. Competitive pricing advantage of Park90 is partially offset.</li>
+        <li><strong>Park90 controls 70% SKU:</strong> RCC limited in curating its own wine identity. Cross-promotion constraint.</li>
+        <li><strong>Certified sommelier scarcity:</strong> Vietnam has very few CMS/WSET L4 certified sommeliers. Quality staff will be hard and expensive to hire.</li>
+        <li><strong>Membership culture not established:</strong> Vietnam F&B membership is rare. Converting guests to prepaid members requires significant trust-building time (2–3 years per Park90 own analysis).</li>
+        <li><strong>Le Cave retail risk:</strong> Additional USD 500K capital for retail arm — separate bet on e-commerce wine retail in Vietnam, unproven market.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 3: RISK REGISTER ══ -->
+<div class="section">
+  <div class="section-label">Section 03</div>
+  <h2>Risk Register & Mitigation Strategies</h2>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="min-width:160px;">Risk</th>
+      <th style="min-width:80px; text-align:center;">Likelihood</th>
+      <th style="min-width:80px; text-align:center;">Impact</th>
+      <th style="min-width:200px;">Mitigation Strategy</th>
+      <th style="min-width:80px; text-align:center;">Owner</th>
+    </tr>
+    <tr>
+      <td><strong>Venue conflict — Park90 rejects LMSG</strong><br><span style="font-size:9pt;color:#888;">Park90 insists on standalone private venue, not hotel lobby</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot r"></div><span class="b-tag red">High</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot r"></div><span class="b-tag red">Critical</span></div></td>
+      <td>Clarify in first follow-up meeting. If Park90 won't flex → present LMSG Riverbank Place or explore a separate RCC shop-lot in D1/Thao Dien as alt venue.</td>
+      <td style="text-align:center;"><span class="b-tag pur">Bach</span></td>
+    </tr>
+    <tr>
+      <td><strong>Slow membership ramp</strong><br><span style="font-size:9pt;color:#888;">Vietnam wine culture not ready for prepaid annual membership</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot r"></div><span class="b-tag red">High</span></div></td>
+      <td>Launch with "Founding Member" incentive (50% off Year 1). Target corporate accounts first (law firms, PE funds, luxury brands) before individual. Leverage LMSG existing Marriott Bonvoy Ambassador/Titanium database.</td>
+      <td style="text-align:center;"><span class="b-tag pur">RCC Sales</span></td>
+    </tr>
+    <tr>
+      <td><strong>Wine inventory sell-through risk</strong><br><span style="font-size:9pt;color:#888;">USD 300–500K tied up; slow movement for rare/premium labels</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot r"></div><span class="b-tag red">High</span></div></td>
+      <td>Negotiate phased inventory: USD 150K opening stock → quarterly top-up based on actual sell-through. Avoid locking in ultra-premium labels until demand proven. Monthly review clause with Park90.</td>
+      <td style="text-align:center;"><span class="b-tag pur">Bach + P90</span></td>
+    </tr>
+    <tr>
+      <td><strong>Import duty compression</strong><br><span style="font-size:9pt;color:#888;">Vietnam tax + SCT erodes Park90's pricing advantage</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td>Park90 SG/France supply chain already optimizes landed cost. Model with 35% duty buffer in pricing. Focus on BTG (by-the-glass) experience where markup psychology is strongest. Coravin enables rare BTG without full bottle risk.</td>
+      <td style="text-align:center;"><span class="b-tag pur">CFO + P90</span></td>
+    </tr>
+    <tr>
+      <td><strong>Sommelier talent scarcity</strong><br><span style="font-size:9pt;color:#888;">Vietnam lacks CMS/WSET L3+ certified sommeliers</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot r"></div><span class="b-tag red">High</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td>Negotiate Park90 to include Head Sommelier secondment from SG for 6 months during launch. Simultaneously sponsor 2–3 Vietnamese staff for WSET L2/L3 in Year 1. Budget for expat sommelier package.</td>
+      <td style="text-align:center;"><span class="b-tag pur">HR + P90</span></td>
+    </tr>
+    <tr>
+      <td><strong>Key-person dependency</strong><br><span style="font-size:9pt;color:#888;">Park90 sommelier team is the brand; turnover destroys quality</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td>Require Park90 to guarantee minimum staffing levels in contract. Include service quality KPI clause — Park90 liable if standards drop. RCC to retain relationship with all staff independently.</td>
+      <td style="text-align:center;"><span class="b-tag pur">Bach + Legal</span></td>
+    </tr>
+    <tr>
+      <td><strong>BARSON baseline erosion</strong><br><span style="font-size:9pt;color:#888;">Park90 evening transformation disrupts existing hotel guests</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot g"></div><span class="b-tag grn">Low</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td>Maintain BARSON daytime menu/identity fully intact. Park90 branding only after 17:00. Dual-signage system. Hotel guests not required to engage with wine program — standard cocktail menu remains.</td>
+      <td style="text-align:center;"><span class="b-tag pur">Ops</span></td>
+    </tr>
+    <tr>
+      <td><strong>Regulatory / licensing</strong><br><span style="font-size:9pt;color:#888;">Wine import license, retail license, Decree 100 enforcement</span></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot y"></div><span class="b-tag yel">Medium</span></div></td>
+      <td style="text-align:center;"><div class="risk-level" style="justify-content:center;"><div class="dot r"></div><span class="b-tag red">High</span></div></td>
+      <td>Engage specialized F&B import lawyer in Q3 2026. LMSG already holds F&B license — leverage existing framework. Park90 to provide SOP from KL (similar regulatory environment). No retail before license confirmed.</td>
+      <td style="text-align:center;"><span class="b-tag pur">Legal + CFO</span></td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+<!-- ══ SECTION 4: NEGOTIATION PLAYBOOK ══ -->
+<div class="section">
+  <div class="section-label">Section 04</div>
+  <h2>Negotiation Playbook — Term by Term</h2>
+
+  <div class="neg-grid">
+
+    <div class="neg-card">
+      <div class="nc-term">🔴 Setup Fee — Top Priority</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> USD 250,000 one-off, upfront</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> USD 150,000 upfront + USD 100K deferred to Year 2 performance milestone (revenue > USD 1M/yr)</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> Frame as "Vietnam market pioneer risk premium" — Park90 needs RCC as much as RCC needs Park90 for Vietnam debut. Offer to accelerate opening (Nov 2026) in exchange for fee reduction. Anchor on KL/Taipei precedent — ask what setup fee was there.</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🔴 Wine Inventory Phasing</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> USD 300–500K upfront before opening, full payment or 30–60 day credit</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> USD 120–150K opening stock → quarterly replenishment based on sell-through. USD 300K total cap in Year 1.</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> Use Vietnam import logistics as justification — wine takes 8–12 weeks to clear customs. Cannot over-order without sell-through data. Request quarterly review clause to adjust SKU mix based on actual guest demand. Point to KL St. Regis opening model — presumably similar phased approach.</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🟡 Annual License — Ramp Protection</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> 2.5% GTO, minimum USD 30,000/yr (USD 2,500/mth)</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> 2.5% GTO, minimum USD 15,000/yr Year 1 + USD 20,000 Year 2 + USD 30,000 Year 3+</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> "Minimum applies below USD 100K/mth revenue — that takes 12–18 months to achieve in a new market." Graduated minimum protects both parties during ramp-up. Park90 still earns growing fees as revenue builds. Frame as aligned interest, not cost-cutting.</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🟡 SKU Control — RCC Identity</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> Park90 right to supply minimum 70% SKUs</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> Accept 70% Park90 — but RCC retains 100% pricing authority on the 30% independent SKUs. RCC's 30% to include: Vietnamese wine, local spirits, curated Asian labels — distinct identity.</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> Not about reducing Park90's share — about ensuring RCC has an independent narrative ("our curation" vs "Park90's curation"). Also enables RCC to develop its own wine buying relationships for future standalone ventures.</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🔴 Venue — Must Clarify First</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> "Preference for independent shop-lot / private villa for privacy of members and guests"</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> Either Park90 accepts LMSG lobby with dedicated private section — OR explore LMSG Riverbank Place / separate D1 shop-lot as venue alternative.</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> First, ASK — is this a hard requirement or soft preference? If soft: propose a dedicated private section of BARSON (semi-enclosed, separate entrance after 17:00, private signage). If hard: propose Riverbank Place (within LMSG complex, more private). Park90's KL location is St. Regis Drawing Room — semi-private, within hotel. Precedent supports hotel venues.</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🔴 Membership Ownership — Non-Negotiable</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> Not clearly defined — ambiguous</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> RCC owns 100% of: member data, CRM, renewal relationship, membership float (prepaid funds). Park90 has read-access for reciprocal benefits only.</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> This is a data and financial asset issue. Membership float = RCC working capital. If Park90 co-owns, they could theoretically claim on the float or member list if partnership ends. Must be explicit in agreement: "Member data is sole property of Licensee. Park90 may not contact members directly without Licensee consent."</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🟡 Vietnam Exclusivity</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> Not mentioned</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> RCC is exclusive Park90 licensee in Vietnam for 3 years. First right of refusal on any additional Vietnam outlet. Park90 cannot license to competitors.</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> This is high-value for RCC, low-cost for Park90 (they're new to VN anyway). Frame as "we're investing heavily in your Vietnam launch — we need protection." Offer to extend initial term to 5 years in exchange for exclusivity.</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🟡 Exit Protection for RCC</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> 3-year term, 6-month notice for renewal</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> Add: RCC right to terminate after Year 1 if revenue < threshold (e.g., &lt; VND 1.5B/mth for 3 consecutive months). Recovery of pro-rated setup fee if Park90 materially underperforms its obligations.</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> Not asking for general exit right — asking for <em>performance-based</em> exit triggered only if targets badly missed. This is fair and Park90 should accept if confident in model. Frame as "aligned incentive — you only want us if we're succeeding."</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🟢 Le Cave Retail — Defer Explicitly</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> Presented as parallel launch, same timeline</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> Exclude Le Cave from Phase 1 agreement entirely. Explicit language: "Le Cave de Park90 Vietnam to be separately negotiated no earlier than 18 months after Park90 @ Saigon opening."</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> Le Cave adds USD 500K inventory + USD 18K annual license + retail operations complexity. Cannot execute both simultaneously. Park90 may push back — frame as "focus on quality of launch, not quantity of venues." Offer La Cave as Year 2 milestone reward for beating Year 1 targets.</div>
+    </div>
+
+    <div class="neg-card">
+      <div class="nc-term">🟢 Opening Timeline — Prefer Feb 2027</div>
+      <div class="nc-current"><span class="nc-label">Draft:</span> Either End-Nov 2026 or End-Feb 2027</div>
+      <div class="nc-target"><span class="nc-label">Target:</span> End-Feb 2027 (post-CNY). Use the extra time productively.</div>
+      <div class="nc-tactic"><strong>Tactic:</strong> Feb 2027 gives: (1) time to import first wine shipment properly, (2) negotiate/finalize venue, (3) hire + train sommelier team, (4) build pre-launch membership waitlist. Nov 2026 is only 7 months away — too tight given CAPEX negotiation and import logistics. Post-CNY also means domestic UHNWI are back from holiday, higher opening-night attendance.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ SECTION 5: SCENARIO DECISION MATRIX ══ -->
+<div class="section">
+  <div class="section-label">Section 05</div>
+  <h2>Decision Scenarios — What Happens in Each Path</h2>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="min-width:140px;">Scenario</th>
+      <th style="min-width:120px;">Venue</th>
+      <th style="min-width:120px;">Setup Fee</th>
+      <th style="min-width:120px;">Inventory</th>
+      <th style="min-width:120px;">Annual Rev (Base)</th>
+      <th style="min-width:100px;">Payback</th>
+      <th style="min-width:80px;">Verdict</th>
+    </tr>
+    <tr>
+      <td><strong>A — Ideal Negotiated</strong></td>
+      <td>LMSG BARSON (hotel lobby accepted)</td>
+      <td class="sc-col-c">USD 150K upfront + 100K deferred</td>
+      <td class="sc-col-c">Phase in USD 150K → 300K</td>
+      <td>~23.7B VND</td>
+      <td class="sc-col-c"><strong>~2.5 yrs</strong></td>
+      <td><span class="b-tag grn">✅ Do It</span></td>
+    </tr>
+    <tr>
+      <td><strong>B — Draft Terms, LMSG</strong></td>
+      <td>LMSG BARSON</td>
+      <td class="sc-col-b">USD 250K full upfront</td>
+      <td class="sc-col-b">USD 300K upfront</td>
+      <td>~23.7B VND</td>
+      <td class="sc-col-b">~5 yrs</td>
+      <td><span class="b-tag yel">⚡ Negotiate</span></td>
+    </tr>
+    <tr>
+      <td><strong>C — Standalone Venue</strong></td>
+      <td>New shop-lot D1/Thao Dien (separate RCC cost)</td>
+      <td class="sc-col-b">USD 250K + venue fit-out</td>
+      <td class="sc-col-b">USD 300–500K</td>
+      <td>Potentially higher (Thao Dien foot traffic)</td>
+      <td class="sc-col-b">6–8 yrs</td>
+      <td><span class="b-tag yel">⚡ Only if Park90 insists</span></td>
+    </tr>
+    <tr>
+      <td><strong>D — Walk Away</strong></td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>BARSON stays at ~14B/yr</td>
+      <td>—</td>
+      <td><span class="b-tag red">❌ Only if no negotiation progress</span></td>
+    </tr>
+    <tr>
+      <td><strong>E — Bar Only, No Le Cave</strong></td>
+      <td>LMSG (negotiated)</td>
+      <td class="sc-col-c">USD 150K negotiated</td>
+      <td class="sc-col-c">Bar only: USD 150K phase</td>
+      <td>~23.7B VND</td>
+      <td class="sc-col-c"><strong>~2 yrs</strong></td>
+      <td><span class="b-tag grn">✅ Recommended</span></td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="ok-box">
+    <strong>Recommended Path: Scenario E</strong> — Bar only, negotiated terms. Focus 100% on making Park90 @ BARSON succeed before any retail expansion. Simplest execution, fastest payback, lowest risk.
+  </div>
+</div>
+
+<!-- ══ SECTION 6: IMPLEMENTATION PHASES ══ -->
+<div class="section">
+  <div class="section-label">Section 06</div>
+  <h2>Recommended Implementation Phases</h2>
+
+  <div class="phase-row">
+    <div class="phase ph1">
+      <div class="ph-num">Phase 1</div>
+      <div class="ph-title">Negotiate & Validate</div>
+      <div class="ph-period">Apr – Jun 2026</div>
+    </div>
+    <div class="phase ph2">
+      <div class="ph-num">Phase 2</div>
+      <div class="ph-title">Setup & Import</div>
+      <div class="ph-period">Jul – Oct 2026</div>
+    </div>
+    <div class="phase ph3">
+      <div class="ph-num">Phase 3</div>
+      <div class="ph-title">Soft Launch</div>
+      <div class="ph-period">Nov 2026 – Jan 2027</div>
+    </div>
+    <div class="phase ph4">
+      <div class="ph-num">Phase 4</div>
+      <div class="ph-title">Full Operations</div>
+      <div class="ph-period">Feb 2027+</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="col-box">
+      <h4>Phase 1 Actions (Apr–Jun)</h4>
+      <ul>
+        <li>Clarify venue question with Park90 — hard or soft requirement?</li>
+        <li>Counter-propose on setup fee and inventory phasing</li>
+        <li>Request KL/Taipei opening data for benchmarking</li>
+        <li>Legal review of draft term sheet (VN law)</li>
+        <li>Board approval for CAPEX budget (VND 10–15B range)</li>
+        <li>Begin sommelier market scan — identify candidates</li>
+        <li>Defer Le Cave explicitly in negotiations</li>
+      </ul>
+    </div>
+    <div class="col-box">
+      <h4>Phase 2 Actions (Jul–Oct)</h4>
+      <ul>
+        <li>Sign final agreement</li>
+        <li>BARSON minor fit-out (private section, display)</li>
+        <li>Apply for wine import/retail license</li>
+        <li>First wine shipment ordered (USD 150K, 8–12wk lead)</li>
+        <li>Hire Head Sommelier (expat or sponsored local)</li>
+        <li>Build CRM and membership platform</li>
+        <li>Pre-sell Founding Member packages (target: 30 sign-ups)</li>
+      </ul>
+    </div>
+    <div class="col-box">
+      <h4>Phase 3 Actions (Nov–Jan)</h4>
+      <ul>
+        <li>Invitation-only soft launch: LMSG VIPs + Bonvoy Platinum/Titanium</li>
+        <li>Target 50 Founding Members before public opening</li>
+        <li>Media coverage: Park90 Vietnam debut (Vietcetera, Epicure Vietnam)</li>
+        <li>First winemaker dinner activation</li>
+        <li>Staff calibration — adjust wine list based on early demand</li>
+      </ul>
+    </div>
+    <div class="col-box">
+      <h4>Phase 4 KPIs (Feb 2027+)</h4>
+      <ul>
+        <li>Revenue target: VND 1.8–2.2B/mth by Month 6</li>
+        <li>Membership target: 100 members by Month 6, 200 by Month 12</li>
+        <li>Bev % target: 60%+ of total revenue</li>
+        <li>NPS target: >70 (wine experience)</li>
+        <li>Year 1 review: go/no-go Le Cave, renewal terms</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SECTION 7: FINAL RECOMMENDATION ══ -->
+<div class="section">
+  <div class="section-label">Section 07</div>
+  <h2>Final Recommendation for Anh Quang</h2>
+
+  <div class="insight-box">
+    <h4>🎯 Strategic Recommendation — 5 Points</h4>
+    <ul>
+      <li><strong>This is a GO — conditional.</strong> Park90's model is proven, the market gap is real, and the strategic learning value for RCC's private club ambition is significant. But it must be done on negotiated terms, not draft terms.</li>
+      <li><strong>Venue question first, everything else second.</strong> Before spending any more time on financials, send one email to Park90: "We're interested in LMSG lobby bar format (dedicated section, private after 17:00). Is this compatible with your requirements?" Their answer determines the entire deal structure.</li>
+      <li><strong>Negotiate setup fee from USD 250K to USD 150K + USD 100K deferred.</strong> This is the single biggest lever. Reduces Year 1 CAPEX from VND 14B to ~VND 9B — changes payback from 5 years to ~2.5 years. Park90 should accept given they need a Vietnam anchor partner.</li>
+      <li><strong>Phase wine inventory: USD 150K at opening, quarterly replenishment.</strong> This is about cash flow management, not commitment. Park90 still gets their sales — RCC just doesn't over-commit to illiquid stock before demand is proven.</li>
+      <li><strong>Defer Le Cave explicitly. This is non-negotiable for Phase 1.</strong> Retail wine e-commerce in Vietnam is a separate, complex business that requires separate licensing, separate management, and separate capital. Bundling it with the bar launch is a recipe for execution failure. Park90 should understand — quality of launch matters more than speed of expansion.</li>
+    </ul>
+  </div>
+
+  <div class="tbl-wrap" style="margin-top:16px;">
+  <table>
+    <tr>
+      <th style="min-width:160px;">Decision Point</th>
+      <th style="min-width:100px; text-align:center;">Timeline</th>
+      <th style="min-width:200px;">Expected Outcome</th>
+    </tr>
+    <tr>
+      <td>Venue flexibility confirmed by Park90</td>
+      <td style="text-align:center;"><span class="b-tag pur">Apr 2026</span></td>
+      <td>Go/no-go on LMSG structure. If no → scope standalone venue.</td>
+    </tr>
+    <tr>
+      <td>Setup fee negotiated ≤ USD 175K</td>
+      <td style="text-align:center;"><span class="b-tag pur">May 2026</span></td>
+      <td>Proceed to board approval with improved economics.</td>
+    </tr>
+    <tr>
+      <td>Board approval — CAPEX VND 10–12B</td>
+      <td style="text-align:center;"><span class="b-tag pur">May 2026</span></td>
+      <td>Green light to sign term sheet and begin Phase 2.</td>
+    </tr>
+    <tr>
+      <td>Term sheet signed — Bar only, no Le Cave</td>
+      <td style="text-align:center;"><span class="b-tag grn">Jun 2026</span></td>
+      <td>Project officially launched. Phase 2 begins.</td>
+    </tr>
+    <tr>
+      <td>Soft launch — Founding Members</td>
+      <td style="text-align:center;"><span class="b-tag grn">Nov 2026</span></td>
+      <td>50 founding members, media coverage, operational calibration.</td>
+    </tr>
+    <tr>
+      <td>Full public opening</td>
+      <td style="text-align:center;"><span class="b-tag grn">Feb 2027</span></td>
+      <td>Post-CNY launch. Peak season timing. Full marketing push.</td>
+    </tr>
+    <tr>
+      <td>Year 1 review — Le Cave decision</td>
+      <td style="text-align:center;"><span class="b-tag blu">Feb 2028</span></td>
+      <td>If Bar Year 1 hits ≥VND 20B revenue → proceed Le Cave negotiations.</td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+<div class="footer">
+  BARSON × Park90 — Strategic Analysis & Negotiation Playbook · April 2026 · RCC Board Confidential<br>
+  Sources: P90_Saigon_draft_terms_clean.docx · LMSG SharePoint Q1 2026 · Park90 Business Model Analysis (kisu-io)
+</div>
+</div>
+</body>
+</html>
