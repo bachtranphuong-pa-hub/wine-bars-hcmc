@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BARSON × Park90 — Term Sheet Analysis & Revenue Model</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background:#f4f6fa; color:#1a1a2e; font-size:11pt; line-height:1.6; }
+  .container { max-width: 920px; margin: 0 auto; padding: 28px 20px; }
+
+  .header { background: linear-gradient(135deg, #1a0a2e, #0d1b2a); border-radius: 14px; padding: 32px 36px; color: white; margin-bottom: 22px; }
+  .header .tag { font-size: 8.5pt; letter-spacing: 3px; text-transform: uppercase; color: #c8a050; margin-bottom: 10px; }
+  .header h1 { font-size: 21pt; font-weight: 700; margin-bottom: 6px; line-height: 1.2; }
+  .header h1 span { color: #8a2be2; }
+  .header .sub { font-size: 10.5pt; color: rgba(255,255,255,0.6); }
+
+  .section { background: white; border-radius: 12px; padding: 26px 28px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .section-title { font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #8a2be2; margin-bottom: 4px; }
+  h2 { font-size: 16pt; font-weight: 700; color: #0d1b2a; margin-bottom: 16px; }
+  h3 { font-size: 12.5pt; font-weight: 600; color: #0d1b2a; margin-bottom: 10px; margin-top: 18px; }
+
+  /* KPI */
+  .kpi-row { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 130px; background: #f8f5ff; border-radius: 10px; padding: 16px 14px; border-left: 4px solid #8a2be2; }
+  .kpi.gold { border-left-color: #c8a050; background: #fdf8ef; }
+  .kpi.red { border-left-color: #dc2626; background: #fff5f5; }
+  .kpi.green { border-left-color: #059669; background: #f0fdf4; }
+  .kpi.blue { border-left-color: #1e40af; background: #eff6ff; }
+  .kpi-val { font-size: 17pt; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .kpi-val.purple { color: #8a2be2; }
+  .kpi-val.gold { color: #c8a050; }
+  .kpi-val.red { color: #dc2626; }
+  .kpi-val.green { color: #059669; }
+  .kpi-val.blue { color: #1e40af; }
+  .kpi-label { font-size: 8.5pt; color: #666; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3; }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 10.5pt; white-space: nowrap; }
+  th { background: #1a0a2e; color: white; padding: 10px 13px; text-align: right; font-size: 8.5pt; letter-spacing: 1px; text-transform: uppercase; }
+  th:first-child { text-align: left; border-radius: 6px 0 0 0; }
+  th:last-child { border-radius: 0 6px 0 0; }
+  td { padding: 9px 13px; border-bottom: 1px solid #f0ebff; text-align: right; color: #333; }
+  td:first-child { text-align: left; font-weight: 600; color: #0d1b2a; white-space: normal; min-width: 160px; }
+  tr:nth-child(even) td { background: #fafaf8; }
+  tr.total-row td { background: #f5f0ff !important; font-weight: 700; font-size: 11pt; border-top: 2px solid #8a2be2; }
+  tr.uplift-row td { background: #f0fdf4 !important; color: #059669; font-weight: 700; }
+  tr.risk-row td { background: #fff8f0 !important; color: #c2410c; }
+  tr.head-row td { background: #0d1b2a; color: #c8a050; font-weight: 700; font-size: 10pt; padding: 11px 13px; }
+  .purple { color: #8a2be2; font-weight: 700; }
+  .gold-t { color: #c8a050; font-weight: 700; }
+  .green-t { color: #059669; font-weight: 700; }
+  .red-t { color: #dc2626; }
+  .gray-t { color: #888; }
+
+  /* NOTE / INSIGHT */
+  .note { background: #f5f0ff; border-left: 4px solid #8a2be2; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 14px; font-size: 10pt; color: #444; line-height: 1.6; }
+  .warning { background: #fff8f0; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 14px; font-size: 10pt; color: #444; line-height: 1.6; }
+  .success { background: #f0fdf4; border-left: 4px solid #059669; border-radius: 0 8px 8px 0; padding: 14px 16px; margin-top: 14px; font-size: 10pt; color: #333; line-height: 1.6; }
+  .insight-box { background: linear-gradient(135deg, #fdf8ef, #fef9f3); border: 2px solid #c8a050; border-radius: 10px; padding: 20px 22px; margin-top: 16px; }
+  .insight-box h4 { color: #c8a050; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+  .insight-box ul { padding: 0; list-style: none; }
+  .insight-box ul li { padding: 5px 0; font-size: 10.5pt; color: #333; display: flex; gap: 8px; line-height: 1.5; }
+  .insight-box ul li::before { content: '→'; color: #c8a050; font-weight: 700; flex-shrink: 0; }
+
+  .divider { height: 1px; background: linear-gradient(to right, #8a2be2, transparent); margin: 18px 0; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 8.5pt; font-weight: 700; }
+  .badge.red { background: #fee2e2; color: #dc2626; }
+  .badge.green { background: #d1fae5; color: #059669; }
+  .badge.yellow { background: #fef3c7; color: #d97706; }
+  .badge.purple { background: #ede9fe; color: #8a2be2; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .col-box { background: #fafaf8; border: 1px solid #ede8df; border-radius: 10px; padding: 18px; }
+  .col-box h4 { font-size: 9.5pt; text-transform: uppercase; letter-spacing: 1.5px; color: #8a2be2; margin-bottom: 10px; }
+  .col-box ul { list-style: none; padding: 0; }
+  .col-box ul li { padding: 4px 0; font-size: 10pt; display: flex; gap: 7px; }
+  .col-box ul li::before { content: '·'; color: #8a2be2; font-weight: 900; flex-shrink: 0; }
+
+  .footer { text-align: center; font-size: 8.5pt; color: #aaa; padding: 16px 0; }
+
+  @media (max-width: 640px) {
+    .container { padding: 14px 12px; }
+    .header { padding: 22px 18px; }
+    .header h1 { font-size: 17pt; }
+    .section { padding: 18px 14px; }
+    h2 { font-size: 14pt; }
+    h3 { font-size: 11.5pt; }
+    .kpi-row { flex-direction: column; gap: 10px; }
+    .kpi { min-width: unset; }
+    .kpi-val { font-size: 15pt; }
+    .two-col { grid-template-columns: 1fr; }
+    table { font-size: 9pt; }
+    th, td { padding: 8px 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="tag">RCC · Le Méridien Saigon · Term Sheet Analysis · April 2026</div>
+  <h1>BARSON × <span>Park90</span><br>Term Sheet Analysis & Updated Revenue Model</h1>
+  <div class="sub">Data: P90_Saigon_draft_terms_clean.docx + LMSG SharePoint Daily Reports (Jan–Mar 2026)</div>
+</div>
+
+<!-- SECTION 1: TERM SHEET SUMMARY -->
+<div class="section">
+  <div class="section-title">Section 01</div>
+  <h2>Term Sheet — Key Commercial Terms</h2>
+
+  <div class="two-col">
+    <div class="col-box">
+      <h4>Park90 @ Saigon (Wine Bar)</h4>
+      <ul>
+        <li>One-off setup fee: <strong>USD 250,000</strong></li>
+        <li>Annual license: <strong>2.5% GTO</strong>, min USD 30K/yr</li>
+        <li>Park90 supplies min <strong>70% of wine SKUs</strong></li>
+        <li>Target: 300–500 SKUs, 1,500–2,500 bottles</li>
+        <li>Inventory value: up to <strong>USD 300–500K</strong></li>
+        <li>BTG selection: 10–15 references</li>
+        <li>Term: <strong>3 years</strong> + annual renewal option</li>
+        <li>Venue: Prefer independent shop-lot/villa</li>
+        <li>Opening: End-Nov 2026 or End-Feb 2027</li>
+      </ul>
+    </div>
+    <div class="col-box">
+      <h4>Le Cave de Park90 (Retail/E-commerce)</h4>
+      <ul>
+        <li>Annual license: <strong>2.5% GTO</strong>, min USD 18K/yr</li>
+        <li>Park90 supplies min <strong>70% of wine SKUs</strong></li>
+        <li>Target: 800–1,000 SKUs, 4,000–6,000 bottles</li>
+        <li>Inventory: up to <strong>USD 500K</strong></li>
+        <li>Glassware & accessories also for sale</li>
+        <li>Online e-commerce + physical retail</li>
+        <li>Off-premise member wine purchases</li>
+        <li>Opening: End-Nov 2026 or End-Feb 2027</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="text-align:left;">Term</th>
+      <th>Park90 Bar</th>
+      <th>Le Cave Retail</th>
+      <th>Assessment</th>
+    </tr>
+    <tr>
+      <td>Setup / Entry Fee</td>
+      <td><span class="red-t">USD 250,000</span></td>
+      <td><span class="gray-t">Included?</span></td>
+      <td><span class="badge red">High</span></td>
+    </tr>
+    <tr>
+      <td>Annual License</td>
+      <td>2.5% GTO, min $30K</td>
+      <td>2.5% GTO, min $18K</td>
+      <td><span class="badge yellow">Market Rate</span></td>
+    </tr>
+    <tr>
+      <td>SKU Control (Park90)</td>
+      <td>Min 70%</td>
+      <td>Min 70%</td>
+      <td><span class="badge yellow">Negotiate ↓</span></td>
+    </tr>
+    <tr>
+      <td>Wine Inventory Capital</td>
+      <td>USD 300–500K</td>
+      <td>USD 500K</td>
+      <td><span class="badge red">High CAPEX</span></td>
+    </tr>
+    <tr>
+      <td>Wine supply basis</td>
+      <td>Ex-France / Ex-SG</td>
+      <td>Ex-France / Ex-SG</td>
+      <td><span class="badge yellow">Import duty risk</span></td>
+    </tr>
+    <tr>
+      <td>Payment terms (wine)</td>
+      <td>Full payment or 30–60 day credit</td>
+      <td>Full payment or 30–60 day credit</td>
+      <td><span class="badge green">Acceptable</span></td>
+    </tr>
+    <tr>
+      <td>Contract term</td>
+      <td>3 years + renewal</td>
+      <td>3 years + renewal</td>
+      <td><span class="badge green">Standard</span></td>
+    </tr>
+    <tr>
+      <td>Venue preference</td>
+      <td>Independent shop-lot/villa</td>
+      <td>N/A</td>
+      <td><span class="badge red">⚠ Not LMSG</span></td>
+    </tr>
+    <tr>
+      <td>Activations/year</td>
+      <td>Min 4× (winemaker, MW class)</td>
+      <td>Min 4×</td>
+      <td><span class="badge green">Strong</span></td>
+    </tr>
+    <tr>
+      <td>Training</td>
+      <td>Head sommelier selection + quarterly video</td>
+      <td>Quarterly video</td>
+      <td><span class="badge green">Good</span></td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+<!-- SECTION 2: CAPEX REALITY CHECK -->
+<div class="section">
+  <div class="section-title">Section 02</div>
+  <h2>Capital Requirements — Reality Check</h2>
+
+  <div class="kpi-row">
+    <div class="kpi red">
+      <div class="kpi-val red">6.38B</div>
+      <div class="kpi-label">Setup License Fee VND (USD 250K)</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-val red">7.65B+</div>
+      <div class="kpi-label">Wine Inventory VND (USD 300K min)</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-val gold">14–19B</div>
+      <div class="kpi-label">Total Initial Capital VND (Bar only)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val purple">64M</div>
+      <div class="kpi-label">Monthly License Fee VND (at minimum)</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="text-align:left;">Cost Item</th>
+      <th>USD</th>
+      <th>VND (@ 25,500)</th>
+      <th>Timing</th>
+    </tr>
+    <tr class="head-row">
+      <td colspan="4">PARK90 @ SAIGON — Wine Bar</td>
+    </tr>
+    <tr>
+      <td>Setup License Fee (one-off)</td>
+      <td class="red-t">250,000</td>
+      <td class="red-t">6.38B</td>
+      <td>Upfront</td>
+    </tr>
+    <tr>
+      <td>Wine Inventory (initial, low)</td>
+      <td class="red-t">300,000</td>
+      <td class="red-t">7.65B</td>
+      <td>Before opening</td>
+    </tr>
+    <tr>
+      <td>Wine Inventory (initial, high)</td>
+      <td class="red-t">500,000</td>
+      <td class="red-t">12.75B</td>
+      <td>Before opening</td>
+    </tr>
+    <tr>
+      <td>Fit-out / minor refurb (est.)</td>
+      <td>~50,000</td>
+      <td>~1.28B</td>
+      <td>Before opening</td>
+    </tr>
+    <tr class="total-row">
+      <td>Total Bar CAPEX (low)</td>
+      <td>~600,000</td>
+      <td>~15.3B</td>
+      <td></td>
+    </tr>
+    <tr class="total-row">
+      <td>Total Bar CAPEX (high)</td>
+      <td>~800,000</td>
+      <td>~20.4B</td>
+      <td></td>
+    </tr>
+    <tr class="head-row">
+      <td colspan="4">LE CAVE de PARK90 — Retail (Add-on)</td>
+    </tr>
+    <tr>
+      <td>Wine Inventory (retail)</td>
+      <td class="red-t">500,000</td>
+      <td class="red-t">12.75B</td>
+      <td>Before opening</td>
+    </tr>
+    <tr>
+      <td>Annual license min (retail)</td>
+      <td>18,000/yr</td>
+      <td>459M/yr</td>
+      <td>Monthly</td>
+    </tr>
+    <tr class="head-row">
+      <td colspan="4">ONGOING — Annual License (Bar)</td>
+    </tr>
+    <tr>
+      <td>License floor (at min $30K/yr)</td>
+      <td>30,000/yr</td>
+      <td>765M/yr = 64M/mth</td>
+      <td>Monthly</td>
+    </tr>
+    <tr>
+      <td>License at 2.0B/mth revenue</td>
+      <td>~23,500/mth</td>
+      <td>600M/yr = 50M/mth</td>
+      <td>→ Min applies</td>
+    </tr>
+    <tr>
+      <td>License breakeven (% > min)</td>
+      <td colspan="2">Revenue > USD 100K/mth = VND <strong>2.55B/mth</strong></td>
+      <td>High bar</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="warning">
+    <strong>⚠ Key Discovery:</strong> Setup fee USD 250,000 = VND 6.38B là con số lớn hơn nhiều so với estimate ban đầu của em. Cộng với wine inventory USD 300–500K = total initial CAPEX <strong>VND 14–20B</strong>. Đây cần phải là item board-level decision, không phải management-level call. Payback period dài hơn đáng kể so với estimate trước.
+  </div>
+
+  <div class="warning" style="margin-top:10px;">
+    <strong>⚠ Venue preference conflict:</strong> Park90 explicitly prefers <em>"independent shop-lot / private villa for privacy of members and guests"</em> — không phải lobby bar khách sạn. Đây là signal quan trọng: Park90 có thể KHÔNG muốn vào BARSON/LMSG. Anh cần clarify với Park90 xem họ có flexible về venue không, hay LMSG cần pitch riêng.
+  </div>
+</div>
+
+<!-- SECTION 3: UPDATED REVENUE MODEL -->
+<div class="section">
+  <div class="section-title">Section 03</div>
+  <h2>Updated Revenue & Payback Model (Actual Data)</h2>
+
+  <p style="color:#555; font-size:10.5pt; margin-bottom:16px; line-height:1.6;">
+    Dựa trên <strong>BARSON actual March 2026</strong> (1.754B, avg 56.6M/ngày) và term sheet thực tế. Organic baseline (excl. event outliers): ~1.17B/mth.
+  </p>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="text-align:left; min-width:170px;">Metric</th>
+      <th>BARSON Hiện Tại</th>
+      <th class="purple">Conservative</th>
+      <th class="purple">Base Case</th>
+      <th class="purple">Optimistic</th>
+    </tr>
+    <tr class="head-row">
+      <td colspan="5">MONTHLY REVENUE (VND)</td>
+    </tr>
+    <tr>
+      <td>Baseline (lobby bar organic)</td>
+      <td>~1,170M</td>
+      <td>1,120M</td>
+      <td>1,170M</td>
+      <td>1,250M</td>
+    </tr>
+    <tr>
+      <td>Group events (variable)</td>
+      <td>~350M*</td>
+      <td>250M</td>
+      <td>350M</td>
+      <td>450M</td>
+    </tr>
+    <tr>
+      <td>Park90 evening wine sales</td>
+      <td>—</td>
+      <td>350M</td>
+      <td>550M</td>
+      <td>850M</td>
+    </tr>
+    <tr>
+      <td>Membership fees (monthly)</td>
+      <td>—</td>
+      <td>25M</td>
+      <td>55M</td>
+      <td>100M</td>
+    </tr>
+    <tr>
+      <td>Wine events / masterclasses</td>
+      <td>—</td>
+      <td>40M</td>
+      <td>80M</td>
+      <td>150M</td>
+    </tr>
+    <tr class="total-row">
+      <td>TOTAL MONTHLY</td>
+      <td>~1,520M</td>
+      <td class="purple">1,785M</td>
+      <td class="purple">2,205M</td>
+      <td class="purple">2,800M</td>
+    </tr>
+    <tr class="uplift-row">
+      <td>↑ Monthly Incremental vs. Baseline</td>
+      <td>—</td>
+      <td>+265M (+17%)</td>
+      <td>+685M (+45%)</td>
+      <td>+1,280M (+84%)</td>
+    </tr>
+    <tr class="head-row">
+      <td colspan="5">COSTS — Park90 (Monthly)</td>
+    </tr>
+    <tr>
+      <td>License fee (2.5% GTO, min $2,500)</td>
+      <td>—</td>
+      <td>64M (min)</td>
+      <td>64M (min)</td>
+      <td>70M</td>
+    </tr>
+    <tr>
+      <td>Park90 staff supplement (est.)</td>
+      <td>—</td>
+      <td>80M</td>
+      <td>100M</td>
+      <td>120M</td>
+    </tr>
+    <tr>
+      <td>Wine COGS (~35% of wine rev)</td>
+      <td>—</td>
+      <td>145M</td>
+      <td>225M</td>
+      <td>350M</td>
+    </tr>
+    <tr>
+      <td>Marketing / events</td>
+      <td>—</td>
+      <td>40M</td>
+      <td>60M</td>
+      <td>80M</td>
+    </tr>
+    <tr class="total-row">
+      <td>TOTAL Park90 Monthly Cost</td>
+      <td>—</td>
+      <td class="red-t">329M</td>
+      <td class="red-t">449M</td>
+      <td class="red-t">620M</td>
+    </tr>
+    <tr class="uplift-row">
+      <td>Net Incremental Contribution</td>
+      <td>—</td>
+      <td class="green-t">−64M</td>
+      <td class="green-t">+236M</td>
+      <td class="green-t">+660M</td>
+    </tr>
+    <tr class="head-row">
+      <td colspan="5">PAYBACK — CAPEX USD 550K avg = VND ~14B</td>
+    </tr>
+    <tr class="risk-row">
+      <td>Conservative payback period</td>
+      <td>—</td>
+      <td colspan="3">Net contribution negative → not viable at low volumes</td>
+    </tr>
+    <tr>
+      <td>Base case payback</td>
+      <td>—</td>
+      <td>—</td>
+      <td><strong>~5 years</strong> (14B ÷ 236M/mth × adj.)</td>
+      <td>—</td>
+    </tr>
+    <tr class="uplift-row">
+      <td>Optimistic payback</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td><strong>~21 months</strong> (14B ÷ 660M/mth)</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="warning">
+    <strong>Revised Assessment:</strong> Với setup fee thực USD 250K + wine inventory USD 300K, <strong>conservative scenario là không viable</strong> (net contribution âm hoặc gần 0). Base case payback ~5 năm là dài — cần revenue ramp nhanh lên optimistic territory mới attractive. Đây là risk anh cần đặt lên bàn với anh Quang.
+  </div>
+</div>
+
+<!-- SECTION 4: NEGOTIATION PRIORITIES -->
+<div class="section">
+  <div class="section-title">Section 04</div>
+  <h2>Negotiation Priorities — What RCC Must Push For</h2>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="text-align:left;">Term</th>
+      <th style="text-align:left;">Park90 Draft</th>
+      <th style="text-align:left;">RCC Target</th>
+      <th>Priority</th>
+    </tr>
+    <tr>
+      <td>Setup Fee</td>
+      <td class="red-t">USD 250,000</td>
+      <td>Negotiate to USD 150–180K, or defer 50% to Year 1 revenue share</td>
+      <td><span class="badge red">Critical</span></td>
+    </tr>
+    <tr>
+      <td>Wine Inventory</td>
+      <td class="red-t">USD 300–500K upfront</td>
+      <td>Phase in: USD 150K opening → top up quarterly based on sell-through</td>
+      <td><span class="badge red">Critical</span></td>
+    </tr>
+    <tr>
+      <td>Annual License</td>
+      <td>2.5% GTO, min $30K</td>
+      <td>Accept %, but negotiate min down to $15–20K for first 2 years (ramp period)</td>
+      <td><span class="badge yellow">High</span></td>
+    </tr>
+    <tr>
+      <td>SKU Control</td>
+      <td>70% Park90</td>
+      <td>Accept 70% BUT RCC prices the 30% independently (local wine, spirits)</td>
+      <td><span class="badge yellow">High</span></td>
+    </tr>
+    <tr>
+      <td>Venue Requirement</td>
+      <td class="red-t">"Shop-lot / villa" (NOT hotel)</td>
+      <td>Clarify: is Park90 flexible for LMSG lobby bar? If not → explore separate venue</td>
+      <td><span class="badge red">Must Clarify</span></td>
+    </tr>
+    <tr>
+      <td>Membership Ownership</td>
+      <td>Not stated clearly</td>
+      <td>RCC owns 100% member data, renewal relationship, float. Non-negotiable.</td>
+      <td><span class="badge red">Critical</span></td>
+    </tr>
+    <tr>
+      <td>Vietnam Exclusivity</td>
+      <td>Not stated</td>
+      <td>LMSG = exclusive Park90 Vietnam; first right of refusal on any second VN outlet</td>
+      <td><span class="badge yellow">High</span></td>
+    </tr>
+    <tr>
+      <td>Exit Clause</td>
+      <td>3yr + renewal 6-month notice</td>
+      <td>Add: RCC right to exit after Year 1 if revenue < threshold (protect downside)</td>
+      <td><span class="badge yellow">High</span></td>
+    </tr>
+    <tr>
+      <td>Le Cave Retail (add-on)</td>
+      <td>Separate USD 500K inventory</td>
+      <td>Defer Le Cave — Phase 1 = Bar only. Le Cave only if Bar Year 1 proven.</td>
+      <td><span class="badge purple">Recommend Defer</span></td>
+    </tr>
+    <tr>
+      <td>Opening Target</td>
+      <td>Nov 2026 or Feb 2027</td>
+      <td>Feb 2027 safer — more time to negotiate, fit-out, import wine</td>
+      <td><span class="badge green">Acceptable</span></td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="insight-box" style="margin-top:16px;">
+    <h4>🎯 Bottom Line for Anh Quang</h4>
+    <ul>
+      <li><strong>The opportunity is real</strong> — Park90 model is proven in SG, KL, Taipei, Niseko. Being first in Vietnam is a genuine differentiator.</li>
+      <li><strong>The price is steep</strong> — USD 250K setup + USD 300–500K inventory = VND 14–20B upfront. This is NOT a low-risk/low-capex play as previously framed.</li>
+      <li><strong>Venue conflict is the wildcard</strong> — Park90 explicitly wants a private shop-lot/villa, not a hotel lobby. Either Park90 is flexible (clarify NOW), or this becomes a standalone venue decision with different economics.</li>
+      <li><strong>Recommendation:</strong> If Park90 is flexible on venue → negotiate hard on setup fee and inventory phasing → proceed with Bar only (defer Le Cave). If Park90 insists on standalone → present as a separate RCC F&B venture, not a BARSON add-on.</li>
+      <li><strong>Le Cave defer:</strong> USD 500K additional inventory for retail is a separate, sizeable bet. Recommend Phase 2 only after Bar proven in Year 1.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  BARSON × Park90 — Term Sheet Analysis · Le Méridien Saigon · April 2026 · RCC Internal — Confidential<br>
+  Sources: P90_Saigon_draft_terms_clean.docx + LMSG SharePoint Daily Reports Jan–Mar 2026 (via Zera/RCC AI)
+</div>
+</div>
+</body>
+</html>
