@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BARSON × Park90 — Strategic Partnership Proposal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans', Arial, sans-serif; background: #fff; color: #1a1a2e; font-size: 11pt; line-height: 1.65; }
+
+  /* COVER */
+  .cover {
+    height: 100vh; min-height: 820px;
+    background: linear-gradient(150deg, #0a0a0a 0%, #1a0a2e 40%, #0d1b2a 70%, #1a0a2e 100%);
+    display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+    padding: 80px 70px; position: relative; overflow: hidden; page-break-after: always;
+  }
+  .cover::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(138,43,226,0.15) 0%, transparent 70%); border-radius: 50%;
+  }
+  .cover::after {
+    content: ''; position: absolute; bottom: -80px; left: 30%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(200,160,80,0.1) 0%, transparent 70%); border-radius: 50%;
+  }
+  .cover-tag { font-size: 9pt; letter-spacing: 4px; text-transform: uppercase; color: #c8a050; margin-bottom: 28px; font-weight: 500; }
+  .cover h1 { font-family: 'Noto Serif', serif; font-size: 38pt; color: #fff; line-height: 1.15; margin-bottom: 16px; font-weight: 700; }
+  .cover h1 .x { color: #8a2be2; font-size: 30pt; margin: 0 12px; }
+  .cover h1 .brand2 { color: #c8a050; }
+  .cover .subtitle { font-size: 12.5pt; color: rgba(255,255,255,0.6); margin-bottom: 50px; max-width: 540px; font-weight: 300; line-height: 1.6; }
+  .cover-divider { width: 60px; height: 2px; background: linear-gradient(to right, #8a2be2, #c8a050); margin-bottom: 40px; }
+  .cover-meta { display: flex; gap: 50px; }
+  .cover-meta-item label { font-size: 8pt; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); display: block; margin-bottom: 4px; }
+  .cover-meta-item span { font-size: 10pt; color: rgba(255,255,255,0.85); font-weight: 500; }
+  .cover-logo { position: absolute; bottom: 50px; right: 70px; font-size: 8pt; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+
+  /* PAGES */
+  .page { padding: 52px 65px; page-break-after: always; min-height: 100vh; display: flex; flex-direction: column; }
+  .page:last-child { page-break-after: avoid; }
+
+  /* HEADINGS */
+  .section-label { font-size: 8pt; letter-spacing: 4px; text-transform: uppercase; color: #8a2be2; margin-bottom: 8px; font-weight: 600; }
+  h2 { font-family: 'Noto Serif', serif; font-size: 21pt; color: #0d1b2a; margin-bottom: 6px; font-weight: 700; line-height: 1.2; }
+  h3 { font-family: 'Noto Serif', serif; font-size: 14pt; color: #0d1b2a; margin-bottom: 10px; font-weight: 600; }
+  .section-rule { height: 1px; background: linear-gradient(to right, #8a2be2, transparent); margin: 12px 0 26px 0; }
+
+  /* PROBLEM BLOCK */
+  .problem-box {
+    background: linear-gradient(135deg, #1a0a2e, #0d1b2a);
+    border-radius: 12px; padding: 32px 36px; color: white; margin-bottom: 28px;
+  }
+  .problem-box h3 { color: #f9c74f; margin-bottom: 18px; font-size: 13pt; }
+  .problem-row { display: flex; gap: 24px; }
+  .problem-item {
+    flex: 1; background: rgba(255,255,255,0.06); border-radius: 10px; padding: 20px 22px;
+    border-top: 3px solid #ef4444;
+  }
+  .problem-item.yellow { border-top-color: #f59e0b; }
+  .problem-item.blue { border-top-color: #3b82f6; }
+  .problem-item h4 { font-size: 10pt; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .problem-item p { font-size: 10pt; color: rgba(255,255,255,0.65); line-height: 1.55; }
+
+  /* STATS */
+  .stats-row { display: flex; gap: 14px; margin-bottom: 26px; }
+  .stat-card { flex: 1; background: #f8f5ff; border-radius: 10px; padding: 18px 20px; border-left: 3px solid #8a2be2; }
+  .stat-card .stat-num { font-size: 20pt; font-weight: 700; color: #0d1b2a; line-height: 1; margin-bottom: 5px; font-family: 'Noto Serif', serif; }
+  .stat-card .stat-label { font-size: 9pt; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-card.gold { border-left-color: #c8a050; background: #fdf8ef; }
+  .stat-card.gold .stat-num { color: #c8a050; }
+
+  /* SOLUTION BLOCK */
+  .solution-box {
+    background: linear-gradient(135deg, #f5f0ff, #fdf8ef);
+    border: 2px solid #8a2be2; border-radius: 14px; padding: 32px 36px; margin-bottom: 26px;
+  }
+  .solution-box h3 { color: #0d1b2a; margin-bottom: 6px; font-size: 15pt; }
+  .solution-box .tagline { font-size: 11pt; color: #8a2be2; font-style: italic; margin-bottom: 20px; }
+  .solution-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .solution-item { background: white; border-radius: 8px; padding: 16px 18px; border: 1px solid #e8d9ff; }
+  .solution-item .si-icon { font-size: 16pt; margin-bottom: 8px; }
+  .solution-item .si-label { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5px; color: #8a2be2; font-weight: 700; margin-bottom: 6px; }
+  .solution-item .si-value { font-size: 10.5pt; color: #1a1a2e; line-height: 1.5; }
+
+  /* INFO GRID */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 26px; }
+  .info-block { background: #fafafa; border: 1px solid #ede8df; border-radius: 10px; padding: 20px 22px; }
+  .info-block h4 { font-size: 9.5pt; font-weight: 700; color: #0d1b2a; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #ede8df; }
+  .info-block ul { list-style: none; padding: 0; }
+  .info-block ul li { padding: 5px 0; font-size: 10.5pt; color: #333; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+  .info-block ul li::before { content: '›'; color: #8a2be2; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* QUOTE */
+  .quote-box {
+    background: linear-gradient(135deg, #f5f0ff, #fdf9ff);
+    border-left: 4px solid #8a2be2; border-radius: 0 10px 10px 0;
+    padding: 20px 26px; margin-bottom: 24px;
+    font-family: 'Noto Serif', serif; font-style: italic; font-size: 11.5pt; color: #333; line-height: 1.7;
+  }
+  .quote-box cite { display: block; font-style: normal; font-family: 'Noto Sans', sans-serif; font-size: 9pt; color: #8a2be2; font-weight: 600; letter-spacing: 1px; margin-top: 10px; }
+
+  /* DATA TABLE */
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 26px; font-size: 10.5pt; }
+  .data-table th { background: #1a0a2e; color: white; padding: 11px 16px; text-align: left; font-size: 9pt; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+  .data-table th:first-child { border-radius: 8px 0 0 0; }
+  .data-table th:last-child { border-radius: 0 8px 0 0; }
+  .data-table td { padding: 10px 16px; border-bottom: 1px solid #ede8df; color: #333; vertical-align: top; }
+  .data-table tr:nth-child(even) td { background: #fafaf8; }
+  .data-table td:first-child { font-weight: 600; color: #0d1b2a; width: 30%; }
+  .data-table .purple { color: #8a2be2; font-weight: 700; }
+  .data-table .gold { color: #c8a050; font-weight: 700; }
+  .data-table .green { color: #059669; font-weight: 700; }
+
+  /* P&L MODEL */
+  .pl-box {
+    background: linear-gradient(135deg, #0a0a14, #1a0a2e);
+    border-radius: 14px; padding: 32px 36px; color: white; margin-bottom: 26px;
+  }
+  .pl-box h3 { color: #f9c74f; margin-bottom: 20px; font-size: 13pt; }
+  .pl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pl-col h4 { font-size: 9pt; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+  .pl-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 10.5pt; }
+  .pl-row.total { border-top: 1px solid rgba(255,255,255,0.25); border-bottom: none; margin-top: 8px; padding-top: 10px; font-weight: 700; font-size: 11.5pt; }
+  .pl-row .label { color: rgba(255,255,255,0.7); }
+  .pl-row .val { color: white; font-weight: 600; }
+  .pl-row .val.green { color: #34d399; }
+  .pl-row .val.red { color: #f87171; }
+  .pl-row .val.gold { color: #f9c74f; }
+  .pl-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 12px 0; }
+
+  /* MEMBERSHIP MODEL */
+  .membership-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 26px; }
+  .tier-card {
+    border-radius: 12px; padding: 22px 20px; text-align: center;
+    border: 2px solid transparent;
+  }
+  .tier-card.silver { background: #f0f0f5; border-color: #aaa; }
+  .tier-card.gold-t { background: linear-gradient(135deg, #fdf8ef, #fff8e1); border-color: #c8a050; }
+  .tier-card.vip { background: linear-gradient(135deg, #f5f0ff, #ede0ff); border-color: #8a2be2; }
+  .tier-card .tier-badge { font-size: 9pt; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .tier-card.silver .tier-badge { color: #888; }
+  .tier-card.gold-t .tier-badge { color: #c8a050; }
+  .tier-card.vip .tier-badge { color: #8a2be2; }
+  .tier-card .tier-price { font-family: 'Noto Serif', serif; font-size: 18pt; font-weight: 700; color: #0d1b2a; margin-bottom: 4px; }
+  .tier-card .tier-sub { font-size: 9pt; color: #888; margin-bottom: 14px; }
+  .tier-card ul { list-style: none; padding: 0; text-align: left; }
+  .tier-card ul li { padding: 4px 0; font-size: 9.5pt; color: #444; }
+  .tier-card ul li::before { content: '✓ '; color: #059669; font-weight: 700; }
+
+  /* STRATEGIC MATRIX */
+  .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 26px; }
+  .matrix-item { border-radius: 10px; padding: 20px 22px; }
+  .matrix-item.str { background: #d1fae5; border: 1px solid #a7f3d0; }
+  .matrix-item.weak { background: #fef3c7; border: 1px solid #fde68a; }
+  .matrix-item.opp { background: #dbeafe; border: 1px solid #bfdbfe; }
+  .matrix-item.thr { background: #fee2e2; border: 1px solid #fecaca; }
+  .matrix-item h4 { font-size: 9pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+  .matrix-item.str h4 { color: #065f46; }
+  .matrix-item.weak h4 { color: #92400e; }
+  .matrix-item.opp h4 { color: #1e40af; }
+  .matrix-item.thr h4 { color: #991b1b; }
+  .matrix-item ul { list-style: none; padding: 0; }
+  .matrix-item ul li { padding: 4px 0; font-size: 10pt; display: flex; gap: 8px; align-items: flex-start; }
+  .matrix-item ul li::before { content: '·'; font-weight: 900; flex-shrink: 0; margin-top: 1px; }
+
+  /* TIMELINE */
+  .timeline { margin-bottom: 26px; }
+  .tl-item { display: flex; gap: 20px; margin-bottom: 16px; align-items: flex-start; }
+  .tl-dot { width: 36px; height: 36px; border-radius: 50%; background: #8a2be2; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10pt; flex-shrink: 0; margin-top: 2px; }
+  .tl-dot.gold-d { background: #c8a050; }
+  .tl-dot.green-d { background: #059669; }
+  .tl-content h4 { font-size: 11pt; font-weight: 700; color: #0d1b2a; margin-bottom: 4px; }
+  .tl-content .tl-period { font-size: 9pt; color: #8a2be2; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+  .tl-content p { font-size: 10pt; color: #555; line-height: 1.55; }
+
+  /* CTA */
+  .cta-box {
+    background: linear-gradient(135deg, #1a0a2e, #0d1b2a);
+    border-radius: 14px; padding: 36px 40px; color: white; margin-bottom: 24px; text-align: center;
+  }
+  .cta-box h3 { font-family: 'Noto Serif', serif; font-size: 18pt; color: #f9c74f; margin-bottom: 14px; }
+  .cta-box p { color: rgba(255,255,255,0.7); font-size: 11pt; line-height: 1.7; max-width: 520px; margin: 0 auto 24px; }
+  .cta-steps { display: flex; gap: 20px; justify-content: center; }
+  .cta-step { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px 22px; text-align: center; }
+  .cta-step .cs-num { font-size: 20pt; font-weight: 700; color: #8a2be2; font-family: 'Noto Serif', serif; line-height: 1; margin-bottom: 6px; }
+  .cta-step .cs-text { font-size: 9.5pt; color: rgba(255,255,255,0.7); line-height: 1.4; }
+
+  /* FOOTER */
+  .page-footer { margin-top: auto; padding-top: 18px; border-top: 1px solid #ede8df; display: flex; justify-content: space-between; align-items: center; font-size: 8.5pt; color: #bbb; }
+  .page-footer .footer-logo { font-weight: 700; color: #8a2be2; letter-spacing: 1px; }
+
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-tag">Royal Canary Corp · F&B Strategy · Confidential</div>
+  <h1>BARSON<span class="x">×</span><span class="brand2">Park90</span></h1>
+  <p class="subtitle">Strategic Partnership Proposal — Transforming BARSON into a World-Class Fine Wine Bar at Le Méridien Saigon</p>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <label>Submitted To</label>
+      <span>Anh Quang — Chairman, RCC</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Prepared By</label>
+      <span>Bach Tran — Deputy CEO, RCC</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Date</label>
+      <span>April 2026</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Classification</label>
+      <span>Confidential · Board Use Only</span>
+    </div>
+  </div>
+  <div class="cover-logo">ZERA · RCC AI ADVISOR</div>
+</div>
+
+<!-- ══ PAGE 1: PROBLEM & OPPORTUNITY ══ -->
+<div class="page">
+  <div class="section-label">Section 01</div>
+  <h2>The Problem & The Opportunity</h2>
+  <div class="section-rule"></div>
+
+  <div class="problem-box">
+    <h3>⚠ BARSON's Three Structural Challenges</h3>
+    <div class="problem-row">
+      <div class="problem-item">
+        <h4>Revenue Dependency</h4>
+        <p>Revenue is disproportionately reliant on in-house hotel groups and LMSG captive guests. No meaningful external traffic; walk-in conversion from the CBD is negligible.</p>
+      </div>
+      <div class="problem-item yellow">
+        <h4>No Distinct Identity</h4>
+        <p>Operating as a standard all-day lobby bar with a generic cocktail/beverage offering. No differentiated reason for the HCMC market to choose BARSON over competing venues in District 1.</p>
+      </div>
+      <div class="problem-item blue">
+        <h4>Location Constraint</h4>
+        <p>CBD District 1 has limited night-time foot traffic compared to Thao Dien, Binh Thanh, or Le Thanh Ton. Without a compelling destination concept, organic walk-in growth is structurally capped.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    <strong>The Strategic Question:</strong> How does BARSON transform from a captive hotel bar into a <em>self-sustaining destination concept</em> that generates independent brand recognition, attracts external clientele, and creates a defensible competitive position within HCMC's rapidly evolving F&B landscape?
+  </div>
+
+  <h3 style="margin-bottom:14px;">Market Context — HCMC Fine Wine Bar Landscape</h3>
+  <div class="info-grid">
+    <div class="info-block">
+      <h4>Current Competitors (Selected)</h4>
+      <ul>
+        <li>MAD Wine Bar & Eatery — Thao Dien · premium casual · strong expat following</li>
+        <li>Lửa — Michelin Bib Gourmand · wine-forward fine dining · Thao Dien</li>
+        <li>Nephele — Michelin-listed · sommelier-led · high-end wine program</li>
+        <li>NOB Natural Wine — boutique natural wine concept · emerging</li>
+        <li>Terroir Wine Bar — curated selection, competitive pricing</li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Market Gap in District 1 CBD</h4>
+      <ul>
+        <li>No world-class, branded fine wine concept in the CBD hotel corridor</li>
+        <li>Corporate entertainment demand in D1 is under-served post-work hours</li>
+        <li>International business travelers have limited high-end wine options within walking distance</li>
+        <li>LMSG already anchors AKUNA (Michelin) — natural demand for premium wine destination</li>
+        <li>No Saigon outlet for global fine wine bar brands (Park90, etc.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">800+</div>
+      <div class="stat-label">Wine Labels in Park90's Portfolio (90+ RP Score)</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-num">50–70%</div>
+      <div class="stat-label">Mark-up on Wholesale → Retail Price (Park90 SKUs)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">2–3×</div>
+      <div class="stat-label">Standard Hotel Outlet Mark-up (Industry Benchmark)</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Park90 Locations: SG × 2, Taiwan, Japan, Malaysia (KL)</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>BARSON × Park90 — Strategic Partnership Proposal</span>
+    <span class="footer-logo">RCC · CONFIDENTIAL</span>
+    <span>Page 1 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 2: THE SOLUTION — PARTNERSHIP MODEL ══ -->
+<div class="page">
+  <div class="section-label">Section 02</div>
+  <h2>The Partnership — How It Works</h2>
+  <div class="section-rule"></div>
+
+  <div class="solution-box">
+    <h3>🍷 BARSON × Park90 — "Dual-Mode" Fine Wine Bar Model</h3>
+    <p class="tagline">Lobby bar by day. World-class wine destination by night.</p>
+    <div class="solution-cols">
+      <div class="solution-item">
+        <div class="si-icon">🌅</div>
+        <div class="si-label">Before 17:00 — Lobby Bar Mode</div>
+        <div class="si-value">BARSON operates as normal — all-day cocktails, beverages, light bites. Standard LMSG service. RCC full operational control. Standard hotel pricing applies.</div>
+      </div>
+      <div class="solution-item">
+        <div class="si-icon">🌆</div>
+        <div class="si-label">After 17:00 — Park90 Fine Wine Mode</div>
+        <div class="si-value">Park90 team supplements in: their sommeliers, curated wine presentation, Park90 branding elements. Transforms space into HCMC's only Park90-affiliated fine wine bar.</div>
+      </div>
+      <div class="solution-item">
+        <div class="si-icon">🍾</div>
+        <div class="si-label">SKU Arrangement</div>
+        <div class="si-value">Park90 supplies 80% of wine SKUs at wholesale pricing (their SEA aggregator advantage). RCC controls 20% SKUs. Retail price = wholesale + 50–70% mark-up — significantly below standard 2–3× hotel mark-up.</div>
+      </div>
+      <div class="solution-item">
+        <div class="si-icon">💳</div>
+        <div class="si-label">Prepaid Membership (Starbucks-Model)</div>
+        <div class="si-value">Members top-up balance (VND 5M / 15M / 50M tiers) → access deeper discounts, exclusive SKUs, members-only events, priority seating. Float creates working capital advantage for RCC.</div>
+      </div>
+      <div class="solution-item">
+        <div class="si-icon">📍</div>
+        <div class="si-label">Location Advantage</div>
+        <div class="si-value">Park90 precedent: Regent SG, Conrad SG, InterContinental SG, St. Regis KL, Grand Mayfull Taipei, Setsu Niseko Japan. LMSG as Vietnam debut is a strategic milestone for both parties.</div>
+      </div>
+      <div class="solution-item">
+        <div class="si-icon">🎓</div>
+        <div class="si-label">Knowledge Transfer (Strategic)</div>
+        <div class="si-value">Live learning laboratory for RCC's private club ambition. Park90 membership mechanics, wine curation, service standards = direct playbook for future RCC private club development.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:14px;">Why Park90's Pricing Model is a Structural Advantage for RCC</h3>
+  <table class="data-table">
+    <tr>
+      <th>Pricing Dimension</th>
+      <th>Standard Hotel Outlet</th>
+      <th>BARSON × Park90</th>
+    </tr>
+    <tr>
+      <td>Bottle cost basis</td>
+      <td>Standard importer wholesale</td>
+      <td class="purple">Park90 SEA aggregator price (lower base cost)</td>
+    </tr>
+    <tr>
+      <td>Mark-up to guest</td>
+      <td>2–3× wholesale</td>
+      <td class="gold">50–70% above wholesale (Park90 model)</td>
+    </tr>
+    <tr>
+      <td>Guest price perception</td>
+      <td>Expensive ("hotel prices")</td>
+      <td class="green">Competitive / exceptional value vs. quality</td>
+    </tr>
+    <tr>
+      <td>Margin source</td>
+      <td>Mark-up only</td>
+      <td class="green">Mark-up + Park90 aggregator rebate + membership float</td>
+    </tr>
+    <tr>
+      <td>By-the-glass capability</td>
+      <td>Limited (open bottle risk)</td>
+      <td class="purple">Coravin system → DRC, Petrus, Sassicaia by the glass</td>
+    </tr>
+    <tr>
+      <td>Competitive advantage</td>
+      <td>None — generic pricing</td>
+      <td class="green">Lowest fine wine pricing in CBD hotel corridor</td>
+    </tr>
+  </table>
+
+  <div class="quote-box">
+    "Imagine being able to order Petrus or Sassicaia — yes, even Screaming Eagle — by the glass. This unique selling point will allow those curious and enthusiastic about prestigious wines to try it first before committing to a full bottle."
+    <cite>— Mason Ng, Park90 Lead Sommelier & Winner, Best Sommelier of Asia & Oceania 2023</cite>
+  </div>
+
+  <div class="page-footer">
+    <span>BARSON × Park90 — Strategic Partnership Proposal</span>
+    <span class="footer-logo">RCC · CONFIDENTIAL</span>
+    <span>Page 2 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 3: FINANCIAL MODEL ══ -->
+<div class="page">
+  <div class="section-label">Section 03</div>
+  <h2>Financial Model & Revenue Projection</h2>
+  <div class="section-rule"></div>
+
+  <div class="pl-box">
+    <h3>📊 Monthly P&L Model — BARSON Evening Mode (Post-17:00)</h3>
+    <div class="pl-grid">
+      <div class="pl-col">
+        <h4>Revenue Assumptions</h4>
+        <div class="pl-row"><span class="label">Covers/evening (avg)</span><span class="val">35 pax</span></div>
+        <div class="pl-row"><span class="label">Avg spend/pax</span><span class="val">VND 1,200,000</span></div>
+        <div class="pl-row"><span class="label">Operating nights/month</span><span class="val">26 nights</span></div>
+        <div class="pl-row"><span class="label">Evening bar revenue</span><span class="val gold">VND 1.09 tỷ</span></div>
+        <div class="pl-divider"></div>
+        <div class="pl-row"><span class="label">Membership top-up (est.)</span><span class="val gold">VND 200M</span></div>
+        <div class="pl-row"><span class="label">Events / private bookings</span><span class="val gold">VND 150M</span></div>
+        <div class="pl-row total"><span class="label">Total Monthly Revenue</span><span class="val gold">~VND 1.44 tỷ</span></div>
+      </div>
+      <div class="pl-col">
+        <h4>Cost & Contribution</h4>
+        <div class="pl-row"><span class="label">Beverage COGS (~30%)</span><span class="val red">(VND 435M)</span></div>
+        <div class="pl-row"><span class="label">Park90 supplement staff</span><span class="val red">(VND 120M)</span></div>
+        <div class="pl-row"><span class="label">Marketing / events</span><span class="val red">(VND 80M)</span></div>
+        <div class="pl-row"><span class="label">Overhead allocation</span><span class="val red">(VND 100M)</span></div>
+        <div class="pl-divider"></div>
+        <div class="pl-row"><span class="label">Existing BARSON (daytime)</span><span class="val">Unchanged</span></div>
+        <div class="pl-row"><span class="label">Incremental cost to RCC</span><span class="val">Low (shared space)</span></div>
+        <div class="pl-row total"><span class="label">Monthly Contribution</span><span class="val green">~VND 705M</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card gold">
+      <div class="stat-num">~49%</div>
+      <div class="stat-label">Contribution Margin (Evening Mode)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">VND 8.5 tỷ</div>
+      <div class="stat-label">Estimated Annual Contribution (12 months)</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="stat-num">3× </div>
+      <div class="stat-label">Projected Uplift vs. Current BARSON Revenue</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">&lt;6 mo</div>
+      <div class="stat-label">Estimated Payback Period (Fit-out Investment)</div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:16px;">Membership Revenue Model — Starbucks-Style Prepaid Float</h3>
+  <div class="membership-grid">
+    <div class="tier-card silver">
+      <div class="tier-badge">🥈 Explorer</div>
+      <div class="tier-price">VND 5M</div>
+      <div class="tier-sub">Top-up value / year</div>
+      <ul>
+        <li>5% discount on all wines</li>
+        <li>Access to Park90 standard SKUs</li>
+        <li>Monthly member newsletter</li>
+        <li>Priority reservation (24h)</li>
+      </ul>
+    </div>
+    <div class="tier-card gold-t">
+      <div class="tier-badge">🥇 Connoisseur</div>
+      <div class="tier-price">VND 15M</div>
+      <div class="tier-sub">Top-up value / year</div>
+      <ul>
+        <li>12% discount on all wines</li>
+        <li>Access to premium SKU library</li>
+        <li>Monthly curated tasting events</li>
+        <li>Winemaker dinners (priority)</li>
+        <li>Complimentary birthday bottle</li>
+      </ul>
+    </div>
+    <div class="tier-card vip">
+      <div class="tier-badge">💎 Grand Cru</div>
+      <div class="tier-price">VND 50M</div>
+      <div class="tier-sub">Top-up value / year</div>
+      <ul>
+        <li>20% discount + BYO corkage waiver</li>
+        <li>Full SKU access (DRC, Petrus, cult labels)</li>
+        <li>Exclusive vertical tastings</li>
+        <li>Private cellar storage at LMSG</li>
+        <li>LMSG F&B cross-privileges</li>
+        <li>Park90 reciprocal access (SG/KL/TW)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-block">
+    <h4>Membership Float Economics</h4>
+    <ul>
+      <li>Target 200 members at launch (Year 1) — weighted avg top-up: ~VND 12M = VND 2.4 tỷ prepaid float</li>
+      <li>Float is effectively interest-free working capital for RCC — used to fund SKU inventory purchase</li>
+      <li>Members spend 2.3× more per visit than walk-in guests (Park90 data precedent, SG/KL markets)</li>
+      <li>Churn is structurally low for prepaid models — unused balance creates additional P&L benefit</li>
+      <li>Cross-network reciprocal access (BARSON members at Park90 SG/KL) drives premium tier conversion</li>
+    </ul>
+  </div>
+
+  <div class="page-footer">
+    <span>BARSON × Park90 — Strategic Partnership Proposal</span>
+    <span class="footer-logo">RCC · CONFIDENTIAL</span>
+    <span>Page 3 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 4: STRATEGIC FIT & SWOT ══ -->
+<div class="page">
+  <div class="section-label">Section 04</div>
+  <h2>Strategic Fit & SWOT Analysis</h2>
+  <div class="section-rule"></div>
+
+  <div class="quote-box" style="background: linear-gradient(135deg,#f0fdf4,#ecfdf5); border-left-color: #059669;">
+    <strong>The Bigger Picture:</strong> This is not merely a F&B revenue play. It is RCC's first real-world, low-risk experiment in <em>private membership club mechanics</em> — a core strategic competency required for the long-term ambition of building a members-only private club asset within the Royal Canary portfolio.
+  </div>
+
+  <h3 style="margin-bottom:16px;">SWOT Analysis</h3>
+  <div class="matrix-grid">
+    <div class="matrix-item str">
+      <h4>✅ Strengths</h4>
+      <ul>
+        <li>LMSG's 5-star platform — instant credibility for Park90 Vietnam debut</li>
+        <li>Michelin-anchored property (AKUNA) elevates F&B perception</li>
+        <li>Existing BARSON infrastructure — minimal fit-out capex needed</li>
+        <li>RCC operational team already on-site</li>
+        <li>Park90's 800+ label portfolio differentiates vs. all HCMC competitors</li>
+        <li>Lowest fine wine pricing in CBD = defensible competitive moat</li>
+      </ul>
+    </div>
+    <div class="matrix-item weak">
+      <h4>⚠ Weaknesses</h4>
+      <ul>
+        <li>BARSON currently has no established external-facing brand</li>
+        <li>CBD location limits organic foot traffic vs. Thao Dien cluster</li>
+        <li>Park90 team integration with LMSG hotel operations requires clear SOP</li>
+        <li>Staffing quality — Park90 sommeliers need to maintain training/standards</li>
+        <li>Wine licensing and import regulations in Vietnam may constrain SKU velocity</li>
+      </ul>
+    </div>
+    <div class="matrix-item opp">
+      <h4>🚀 Opportunities</h4>
+      <ul>
+        <li>First Park90 Vietnam — "exclusive market launch" narrative = PR value</li>
+        <li>Membership float provides non-dilutive working capital</li>
+        <li>Corporate entertainment segment in D1 — untapped wine program</li>
+        <li>Cross-sell to AKUNA guests for post-dinner wine experience</li>
+        <li>Private club pilot: membership model, SKU curation, event programming</li>
+        <li>Marriott Bonvoy integration — global member base potential</li>
+      </ul>
+    </div>
+    <div class="matrix-item thr">
+      <h4>⚡ Threats / Risks</h4>
+      <ul>
+        <li>Park90 term sheet: 80% SKU control creates revenue concentration risk</li>
+        <li>If Park90 relationship ends, concept needs rapid pivot plan</li>
+        <li>HCMC wine market is maturing — competitors will replicate if model succeeds</li>
+        <li>Vietnam import duties and Decree 100 (DUI law) may dampen wine consumption growth</li>
+        <li>Luxury spending slowdown in SEA macro scenario</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:14px;">Key Term Sheet Considerations (Park90)</h3>
+  <table class="data-table">
+    <tr>
+      <th>Term</th>
+      <th>Park90 Position</th>
+      <th>RCC Negotiation Priority</th>
+    </tr>
+    <tr>
+      <td>SKU Control</td>
+      <td class="purple">80% Park90-supplied SKUs</td>
+      <td>Accept 80% but negotiate: RCC curates 20% independently (local Vietnamese wines + spirits)</td>
+    </tr>
+    <tr>
+      <td>Pricing Authority</td>
+      <td>Park90 sets wholesale + 50–70% retail markup</td>
+      <td class="green">Confirm RCC retains right to price the 20% independent SKUs independently</td>
+    </tr>
+    <tr>
+      <td>Revenue Split</td>
+      <td>TBD — fee or revenue share</td>
+      <td>Negotiate: fixed management fee preferred over revenue share (protects RCC upside)</td>
+    </tr>
+    <tr>
+      <td>Membership Ownership</td>
+      <td>Shared / joint</td>
+      <td class="gold">Priority: RCC owns member data, float, and renewal relationship entirely</td>
+    </tr>
+    <tr>
+      <td>Exclusivity</td>
+      <td>Park90 Vietnam first (LMSG)</td>
+      <td class="green">Negotiate: LMSG exclusivity + first right of refusal on any additional Park90 Vietnam outlet</td>
+    </tr>
+    <tr>
+      <td>Contract Duration</td>
+      <td>TBD</td>
+      <td>Min. 3-year term with 2-year renewal option; exit clause with 90-day notice post Year 3</td>
+    </tr>
+    <tr>
+      <td>Brand Rights</td>
+      <td>Park90 branding on display after 17:00</td>
+      <td>Ensure BARSON/LMSG co-branding is equally prominent (protect hotel brand integrity)</td>
+    </tr>
+  </table>
+
+  <div class="page-footer">
+    <span>BARSON × Park90 — Strategic Partnership Proposal</span>
+    <span class="footer-logo">RCC · CONFIDENTIAL</span>
+    <span>Page 4 of 5</span>
+  </div>
+</div>
+
+<!-- ══ PAGE 5: IMPLEMENTATION & RECOMMENDATION ══ -->
+<div class="page">
+  <div class="section-label">Section 05</div>
+  <h2>Implementation Plan & Recommendation</h2>
+  <div class="section-rule"></div>
+
+  <h3 style="margin-bottom:16px;">Phased Rollout Timeline</h3>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-content">
+        <div class="tl-period">Month 1–2 · Commercial Negotiation</div>
+        <h4>Term Sheet Finalization & Legal Review</h4>
+        <p>Negotiate final commercial terms with Park90 (SKU split, fee structure, membership ownership, exclusivity). Engage legal counsel for partnership agreement. Align with Marriott LMSG on operational protocols and branding guidelines. Define P&L responsibility boundaries.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot gold-d">2</div>
+      <div class="tl-content">
+        <div class="tl-period" style="color:#c8a050;">Month 2–3 · Setup & Soft Preparation</div>
+        <h4>Space Transformation & Team Integration</h4>
+        <p>Minimal BARSON fit-out (wine display, Coravin stations, lighting mood adjustment, Park90 brand elements). Import license and wine import planning (8–12 week lead time for premium SKUs). Park90 sommelier team training integration with BARSON staff. Membership program design, CRM setup.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot green-d">3</div>
+      <div class="tl-content">
+        <div class="tl-period" style="color:#059669;">Month 3–4 · Soft Launch</div>
+        <h4>Invitation-Only Launch — Building Founding Members</h4>
+        <p>Soft launch: invitation-only evening experiences for LMSG VIP guests, AKUNA diners, corporate partners, Marriott Bonvoy Titanium/Ambassador members. Target 50 founding Grand Cru members. Generate media coverage: Park90's Vietnam debut. Collect operational feedback before public opening.</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-content">
+        <div class="tl-period">Month 4–6 · Public Launch & Programming</div>
+        <h4>Full Operations — Wine Events Calendar</h4>
+        <p>Public launch with PR push (Vietcetera, The Dot, Epicure Vietnam). Monthly winemaker dinners, vertical tastings, Master of Wine sessions. Corporate entertainment packages. Target 200 total members by Month 6. Integrate walk-in wine experience for non-members (access to standard SKU tier).</p>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot gold-d">5</div>
+      <div class="tl-content">
+        <div class="tl-period" style="color:#c8a050;">Month 12+ · Review & Private Club Learnings</div>
+        <h4>Model Review — Private Club Strategy Integration</h4>
+        <p>Full-year P&L review. Extract learnings from membership mechanics, SKU curation, event programming. Document SOPs for application to RCC's private club development roadmap. Assess Park90 term renewal vs. RCC-owned independent wine bar model evolution.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-box">
+    <h3>Board Recommendation</h3>
+    <p>Approve the Park90 partnership for BARSON and authorize management to proceed to final term sheet negotiation. This is a low-capex, high-strategic-value move that addresses BARSON's core structural weaknesses while simultaneously piloting the membership mechanics central to RCC's private club ambition.</p>
+    <div class="cta-steps">
+      <div class="cta-step">
+        <div class="cs-num">01</div>
+        <div class="cs-text">Authorize commercial negotiation with Park90</div>
+      </div>
+      <div class="cta-step">
+        <div class="cs-num">02</div>
+        <div class="cs-text">Set capex budget for BARSON minor fit-out</div>
+      </div>
+      <div class="cta-step">
+        <div class="cs-num">03</div>
+        <div class="cs-text">Align LMSG/Marriott on operational framework</div>
+      </div>
+      <div class="cta-step">
+        <div class="cs-num">04</div>
+        <div class="cs-text">Target soft launch by Month 4</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-grid" style="margin-bottom:0;">
+    <div class="info-block">
+      <h4>Investment Required (Estimated)</h4>
+      <ul>
+        <li>BARSON minor fit-out (display, lighting, POS): VND 500–800M</li>
+        <li>Initial wine inventory (Park90 supply): VND 1–1.5 tỷ</li>
+        <li>CRM / membership platform: VND 150–200M</li>
+        <li>Marketing & PR (launch): VND 300–500M</li>
+        <li><strong>Total estimated capex: VND 2–3 tỷ</strong></li>
+      </ul>
+    </div>
+    <div class="info-block">
+      <h4>Expected Returns</h4>
+      <ul>
+        <li>Monthly contribution (stabilized): ~VND 700M+</li>
+        <li>Payback period: ~4–5 months post-launch</li>
+        <li>Year 1 contribution: ~VND 5–7 tỷ (ramp-up adjusted)</li>
+        <li>Membership float (200 members): VND 2.4 tỷ working capital</li>
+        <li><strong>Strategic value: Private club learning platform</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>BARSON × Park90 — Strategic Partnership Proposal</span>
+    <span class="footer-logo">RCC · CONFIDENTIAL</span>
+    <span>Page 5 of 5</span>
+  </div>
+</div>
+
+</body>
+</html>
