@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BARSON × Park90 — Revised Term Proposal</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f6fa; color:#1a1a2e; font-size:11pt; line-height:1.65; }
+  .container { max-width:960px; margin:0 auto; padding:28px 20px; }
+
+  .header {
+    background:linear-gradient(140deg,#0a0014 0%,#1a0a2e 50%,#0d1b2a 100%);
+    border-radius:14px; padding:36px 40px; color:white; margin-bottom:22px; position:relative; overflow:hidden;
+  }
+  .header::after { content:''; position:absolute; top:-60px; right:-60px; width:300px; height:300px; background:radial-gradient(circle,rgba(138,43,226,0.15) 0%,transparent 70%); border-radius:50%; }
+  .header .tag { font-size:8.5pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:10px; }
+  .header h1 { font-size:22pt; font-weight:700; line-height:1.2; margin-bottom:8px; }
+  .header h1 span { color:#8a2be2; }
+  .header .sub { font-size:10.5pt; color:rgba(255,255,255,0.55); margin-bottom:16px; }
+  .header .pill-row { display:flex; gap:10px; flex-wrap:wrap; }
+  .header .pill {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(200,160,80,0.4);
+    border-radius:20px; padding:5px 14px; font-size:10pt; color:#c8a050;
+  }
+  .header .pill strong { color:#f9c74f; }
+  .header .pill.grn { border-color:rgba(16,185,129,0.4); color:#6ee7b7; }
+  .header .pill.grn strong { color:#34d399; }
+
+  .section { background:white; border-radius:12px; padding:26px 28px; margin-bottom:18px; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+  .section-label { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#8a2be2; margin-bottom:5px; font-weight:700; }
+  h2 { font-size:16pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; }
+  h3 { font-size:12.5pt; font-weight:700; color:#0d1b2a; margin-bottom:12px; margin-top:20px; }
+  h3:first-of-type { margin-top:0; }
+  .divider { height:1px; background:linear-gradient(to right,#8a2be2,transparent); margin:18px 0; }
+  p.body { font-size:10.5pt; color:#444; line-height:1.7; margin-bottom:14px; }
+
+  /* KPI */
+  .kpi-row { display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+  .kpi { flex:1; min-width:130px; border-radius:10px; padding:16px 14px; border-left:4px solid; }
+  .kpi.p { background:#f8f5ff; border-color:#8a2be2; }
+  .kpi.g { background:#fdf8ef; border-color:#c8a050; }
+  .kpi.r { background:#fff5f5; border-color:#dc2626; }
+  .kpi.gr { background:#f0fdf4; border-color:#059669; }
+  .kpi.b { background:#eff6ff; border-color:#1e40af; }
+  .kv { font-size:17pt; font-weight:700; line-height:1; margin-bottom:5px; }
+  .kv.p { color:#8a2be2; } .kv.g { color:#c8a050; } .kv.r { color:#dc2626; }
+  .kv.gr { color:#059669; } .kv.b { color:#1e40af; }
+  .kl { font-size:8.5pt; color:#666; text-transform:uppercase; letter-spacing:0.5px; line-height:1.3; }
+
+  /* TABLES */
+  .tbl-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:14px; border-radius:8px; }
+  table { width:100%; border-collapse:collapse; font-size:10.5pt; }
+  th { background:#1a0a2e; color:white; padding:10px 14px; text-align:left; font-size:8.5pt; letter-spacing:1px; text-transform:uppercase; font-weight:600; white-space:nowrap; }
+  td { padding:9px 14px; border-bottom:1px solid #f0ebff; color:#333; vertical-align:top; }
+  tr:nth-child(even) td { background:#fafaf8; }
+  tr.hrow td { background:#0d1b2a !important; color:#c8a050; font-weight:700; font-size:10pt; padding:10px 14px; }
+  tr.tot td { background:#f5f0ff !important; font-weight:700; font-size:11pt; border-top:2px solid #8a2be2; }
+  tr.up td { background:#f0fdf4 !important; color:#059669; font-weight:700; }
+  tr.old-row td { background:#fff5f5 !important; color:#9ca3af; text-decoration:line-through; }
+  tr.new-row td { background:#f0fdf4 !important; color:#059669; font-weight:600; }
+  .str { color:#dc2626; font-weight:600; }
+  .go { color:#059669; font-weight:700; }
+  .pu { color:#8a2be2; font-weight:700; }
+  .gd { color:#c8a050; font-weight:700; }
+
+  /* BADGES */
+  .b-tag { display:inline-block; padding:2px 9px; border-radius:10px; font-size:8.5pt; font-weight:700; white-space:nowrap; }
+  .b-tag.red { background:#fee2e2; color:#dc2626; }
+  .b-tag.grn { background:#d1fae5; color:#059669; }
+  .b-tag.yel { background:#fef3c7; color:#d97706; }
+  .b-tag.pur { background:#ede9fe; color:#8a2be2; }
+  .b-tag.blu { background:#dbeafe; color:#1e40af; }
+  .b-tag.new { background:#d1fae5; color:#059669; border:1px solid #6ee7b7; }
+
+  /* BEFORE/AFTER */
+  .ba-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+  .ba-box { border-radius:10px; padding:20px 20px; }
+  .ba-box.before { background:#fff5f5; border:1.5px solid #fecaca; }
+  .ba-box.after { background:#f0fdf4; border:1.5px solid #a7f3d0; }
+  .ba-box h4 { font-size:9.5pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+  .ba-box.before h4 { color:#dc2626; }
+  .ba-box.after h4 { color:#059669; }
+  .ba-box ul { list-style:none; padding:0; }
+  .ba-box ul li { padding:5px 0; font-size:10.5pt; display:flex; gap:8px; line-height:1.5; border-bottom:1px solid rgba(0,0,0,0.05); }
+  .ba-box ul li:last-child { border-bottom:none; }
+  .ba-box.before ul li::before { content:'✗'; color:#dc2626; font-weight:700; flex-shrink:0; margin-top:1px; }
+  .ba-box.after ul li::before { content:'✓'; color:#059669; font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  /* MILESTONE TIMELINE */
+  .ms-list { list-style:none; padding:0; margin:0; }
+  .ms-item { display:flex; gap:16px; margin-bottom:16px; align-items:flex-start; }
+  .ms-dot { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:10pt; flex-shrink:0; margin-top:2px; }
+  .ms-dot.m1 { background:linear-gradient(135deg,#1a0a2e,#0d1b2a); color:white; }
+  .ms-dot.m2 { background:linear-gradient(135deg,#c8a050,#f59e0b); color:white; }
+  .ms-dot.m3 { background:linear-gradient(135deg,#8a2be2,#a855f7); color:white; }
+  .ms-dot.m4 { background:linear-gradient(135deg,#059669,#10b981); color:white; }
+  .ms-content h4 { font-size:11pt; font-weight:700; color:#0d1b2a; margin-bottom:4px; }
+  .ms-content .ms-when { font-size:9pt; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .ms-dot.m1 + .ms-content .ms-when { color:#1a0a2e; }
+  .ms-dot.m2 + .ms-content .ms-when { color:#c8a050; }
+  .ms-dot.m3 + .ms-content .ms-when { color:#8a2be2; }
+  .ms-dot.m4 + .ms-content .ms-when { color:#059669; }
+  .ms-content .ms-fee { font-size:13pt; font-weight:700; color:#dc2626; margin-bottom:4px; }
+  .ms-content .ms-trigger { font-size:10pt; color:#555; line-height:1.55; }
+  .ms-connector { width:2px; height:20px; background:linear-gradient(to bottom,#8a2be2,#c8a050); margin-left:19px; margin-bottom:0; }
+
+  /* CONSIGNMENT */
+  .consign-box {
+    background:linear-gradient(135deg,#f0fdf4,#ecfdf5); border:2px solid #059669;
+    border-radius:12px; padding:22px 24px; margin-bottom:16px;
+  }
+  .consign-box h3 { color:#059669; font-size:13pt; margin-bottom:14px; }
+  .consign-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  .consign-item { background:white; border-radius:8px; padding:14px; border:1px solid #a7f3d0; }
+  .consign-item .ci-l { font-size:8.5pt; text-transform:uppercase; letter-spacing:1.5px; color:#059669; font-weight:700; margin-bottom:6px; }
+  .consign-item .ci-v { font-size:11pt; font-weight:700; color:#0d1b2a; line-height:1.4; }
+
+  /* SKIN-IN-GAME */
+  .skin-box {
+    background:linear-gradient(135deg,#fdf8ef,#fef9f3); border:2px solid #c8a050;
+    border-radius:12px; padding:22px 24px; margin:16px 0;
+  }
+  .skin-box h4 { color:#c8a050; font-size:10pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+  .skin-box ul { list-style:none; padding:0; }
+  .skin-box ul li { padding:6px 0; font-size:10.5pt; color:#333; display:flex; gap:8px; line-height:1.5; border-bottom:1px solid rgba(200,160,80,0.15); }
+  .skin-box ul li:last-child { border-bottom:none; }
+  .skin-box ul li::before { content:'→'; color:#c8a050; font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  /* COMPARISON */
+  .comp-highlight { background:#f5f0ff; border:2px solid #8a2be2; border-radius:10px; padding:14px 16px; margin:10px 0; }
+  .comp-highlight .ch-label { font-size:8.5pt; text-transform:uppercase; letter-spacing:1.5px; color:#8a2be2; font-weight:700; margin-bottom:6px; }
+  .comp-highlight .ch-val { font-size:14pt; font-weight:700; color:#0d1b2a; }
+  .comp-highlight .ch-sub { font-size:9.5pt; color:#666; margin-top:3px; }
+  .comp-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:16px 0; }
+  .comp-card { border-radius:10px; padding:18px; text-align:center; }
+  .comp-card.old { background:#fff5f5; border:1.5px solid #fecaca; }
+  .comp-card.new-p { background:#fdf8ef; border:1.5px solid #f59e0b; }
+  .comp-card.new-o { background:#f0fdf4; border:1.5px solid #a7f3d0; }
+  .comp-card h4 { font-size:9pt; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+  .comp-card.old h4 { color:#dc2626; }
+  .comp-card.new-p h4 { color:#c8a050; }
+  .comp-card.new-o h4 { color:#059669; }
+  .comp-card .cc-val { font-size:16pt; font-weight:700; line-height:1; margin-bottom:6px; }
+  .comp-card.old .cc-val { color:#dc2626; }
+  .comp-card.new-p .cc-val { color:#c8a050; }
+  .comp-card.new-o .cc-val { color:#059669; }
+  .comp-card .cc-sub { font-size:9.5pt; color:#555; line-height:1.4; }
+
+  /* BOXES */
+  .note { background:#f5f0ff; border-left:4px solid #8a2be2; border-radius:0 8px 8px 0; padding:14px 16px; margin:14px 0; font-size:10pt; color:#444; line-height:1.6; }
+  .warn { background:#fff8f0; border-left:4px solid #f59e0b; border-radius:0 8px 8px 0; padding:14px 16px; margin:14px 0; font-size:10pt; color:#444; line-height:1.6; }
+  .ok { background:#f0fdf4; border-left:4px solid #059669; border-radius:0 8px 8px 0; padding:14px 16px; margin:14px 0; font-size:10pt; color:#333; line-height:1.6; }
+  .insight-box { background:linear-gradient(135deg,#fdf8ef,#fef9f3); border:2px solid #c8a050; border-radius:10px; padding:22px 24px; margin-top:18px; }
+  .insight-box h4 { color:#c8a050; font-size:9.5pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+  .insight-box ul { list-style:none; padding:0; }
+  .insight-box ul li { padding:6px 0; font-size:10.5pt; color:#333; display:flex; gap:8px; line-height:1.5; border-bottom:1px solid rgba(200,160,80,0.15); }
+  .insight-box ul li:last-child { border-bottom:none; }
+  .insight-box ul li::before { content:'→'; color:#c8a050; font-weight:700; flex-shrink:0; margin-top:1px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .col-box { background:#fafaf8; border:1px solid #ede8df; border-radius:10px; padding:18px; }
+  .col-box h4 { font-size:9pt; text-transform:uppercase; letter-spacing:1.5px; color:#8a2be2; margin-bottom:10px; }
+  .col-box ul { list-style:none; padding:0; }
+  .col-box ul li { padding:4px 0; font-size:10pt; display:flex; gap:7px; line-height:1.5; }
+  .col-box ul li::before { content:'·'; color:#8a2be2; font-weight:900; flex-shrink:0; }
+
+  .footer { text-align:center; font-size:8.5pt; color:#aaa; padding:16px 0; }
+
+  @media (max-width:640px) {
+    .container { padding:14px 12px; }
+    .header { padding:24px 18px; }
+    .header h1 { font-size:17pt; }
+    .section { padding:18px 16px; }
+    h2 { font-size:14pt; }
+    h3 { font-size:11.5pt; }
+    .kpi-row { flex-direction:column; gap:10px; }
+    .kpi { min-width:unset; }
+    .kv { font-size:16pt; }
+    .ba-grid, .two-col { grid-template-columns:1fr; }
+    .consign-grid, .comp-row { grid-template-columns:1fr; }
+    table { font-size:9.5pt; display:block; overflow-x:auto; white-space:nowrap; }
+    th, td { padding:8px 10px; }
+    .header .pill-row { flex-direction:column; gap:8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="tag">RCC · Revised Negotiation Brief · Board Confidential · April 2026</div>
+  <h1>BARSON × <span>Park90</span> — Revised Proposal</h1>
+  <div class="sub">Updated with: ✅ Venue confirmed (LMSG accepted) · 🆕 Consignment inventory model · 🆕 Milestone-based setup fee</div>
+  <div class="pill-row">
+    <div class="pill grn">Venue: <strong>CONFIRMED ✅</strong></div>
+    <div class="pill">Deal Score (Revised): <strong>8.0 / 10</strong></div>
+    <div class="pill">CAPEX Revised: <strong>VND 6.4–8.2B</strong> (↓ from 14–20B)</div>
+    <div class="pill grn">Payback: <strong>~14–18 months</strong> (↓ from ~5 yrs)</div>
+  </div>
+</div>
+
+<!-- ══ SECTION 1: WHAT CHANGED ══ -->
+<div class="section">
+  <div class="section-label">Section 01</div>
+  <h2>What Changed — New Negotiation Positions</h2>
+
+  <div class="ba-grid">
+    <div class="ba-box before">
+      <h4>✗ Original Draft Terms</h4>
+      <ul>
+        <li>Setup fee: USD 250,000 full upfront — immediate cash out</li>
+        <li>Wine inventory: USD 300–500K, full payment before pick-up</li>
+        <li>Total Day-1 CAPEX: VND 14–20B</li>
+        <li>Payback base case: ~5 years</li>
+        <li>Venue: Uncertain — "prefer shop-lot/villa"</li>
+        <li>RCC bears 100% inventory risk and obsolescence</li>
+        <li>Park90 has no financial stake in Vietnam success</li>
+        <li>Deal score: 6.5/10</li>
+      </ul>
+    </div>
+    <div class="ba-box after">
+      <h4>✓ Revised Proposal (Updated)</h4>
+      <ul>
+        <li>Setup fee: Staged across 4 milestones — cashflow-friendly</li>
+        <li>Wine inventory: 40–50% consignment (Park90 "skin in game") + RCC purchases remainder</li>
+        <li>Total Day-1 CAPEX: VND 6.4–8.2B <strong>(-55% reduction)</strong></li>
+        <li>Payback revised: ~14–18 months (base case)</li>
+        <li>Venue: <strong>CONFIRMED — LMSG BARSON accepted</strong></li>
+        <li>Consignment = Park90 aligned incentive to drive sell-through</li>
+        <li>Park90 financially exposed to Vietnam performance</li>
+        <li>Deal score: 8.0/10</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="ok">
+    <strong>Venue Confirmed:</strong> Park90 has agreed to use BARSON at LMSG. This resolves the single largest structural risk. The analysis now proceeds on the assumption of LMSG as the operating venue — shared infrastructure, existing F&B license, Marriott Bonvoy guest flow, and AKUNA halo effect all remain in play.
+  </div>
+</div>
+
+<!-- ══ SECTION 2: SETUP FEE — MILESTONE STAGING ══ -->
+<div class="section">
+  <div class="section-label">Section 02</div>
+  <h2>Setup Fee — Proposed Milestone Staging</h2>
+
+  <p class="body">Thay vì trả USD 250,000 upfront (VND 6.38B), đề xuất split thành 4 milestones gắn với event thực tế. Park90 vẫn nhận đủ USD 250K — nhưng RCC không bị "cash choke" ngay từ đầu. Mỗi tranche được trigger bởi một deliverable cụ thể từ Park90, tạo accountability hai chiều.</p>
+
+  <ul class="ms-list">
+    <div class="ms-item">
+      <div class="ms-dot m1">M1</div>
+      <div class="ms-content">
+        <div class="ms-when">Milestone 1 — Signing</div>
+        <h4>Agreement Execution</h4>
+        <div class="ms-fee">USD 60,000 — VND 1.53B</div>
+        <div class="ms-trigger">
+          Trigger: Both parties sign the operating license agreement.<br>
+          <strong>Park90 delivers:</strong> Brand guidelines, SOP documentation, wine menu framework, Head Sommelier selection shortlist (3 candidates).
+        </div>
+      </div>
+    </div>
+    <div class="ms-connector"></div>
+    <div class="ms-item">
+      <div class="ms-dot m2">M2</div>
+      <div class="ms-content">
+        <div class="ms-when">Milestone 2 — Pre-Opening (60 days before launch)</div>
+        <h4>Operational Readiness</h4>
+        <div class="ms-fee">USD 65,000 — VND 1.66B</div>
+        <div class="ms-trigger">
+          Trigger: First wine shipment cleared customs and in LMSG cellar.<br>
+          <strong>Park90 delivers:</strong> Head Sommelier confirmed and onboarded, staff training completed, Park90 sub-site live, launch EDM/media plan submitted to RCC.
+        </div>
+      </div>
+    </div>
+    <div class="ms-connector"></div>
+    <div class="ms-item">
+      <div class="ms-dot m3">M3</div>
+      <div class="ms-content">
+        <div class="ms-when">Milestone 3 — 6 Months Post-Opening</div>
+        <h4>First Operational Review</h4>
+        <div class="ms-fee">USD 75,000 — VND 1.91B</div>
+        <div class="ms-trigger">
+          Trigger: Outlet operational for 6 consecutive months with full Park90 wine program active.<br>
+          <strong>Condition:</strong> Minimum 2 activations completed (winemaker visit or MW masterclass). 50+ active members enrolled. Monthly revenue ≥ VND 1.2B for at least 2 of 6 months.
+        </div>
+      </div>
+    </div>
+    <div class="ms-connector"></div>
+    <div class="ms-item">
+      <div class="ms-dot m4">M4</div>
+      <div class="ms-content">
+        <div class="ms-when">Milestone 4 — Year 1 Completion</div>
+        <h4>Annual Performance Confirmed</h4>
+        <div class="ms-fee">USD 50,000 — VND 1.28B</div>
+        <div class="ms-trigger">
+          Trigger: 12-month anniversary of public opening.<br>
+          <strong>Condition:</strong> Year 1 total revenue ≥ VND 18B AND ≥ 4 activations completed AND ≥ 100 active members. If conditions not met → tranche M4 reduces to USD 25,000.
+        </div>
+      </div>
+    </div>
+  </ul>
+
+  <div class="tbl-wrap" style="margin-top:16px;">
+  <table>
+    <tr>
+      <th>Milestone</th>
+      <th>USD</th>
+      <th>VND (~25,500)</th>
+      <th>% of Total</th>
+      <th>Timing</th>
+      <th>Park90 Must Deliver</th>
+    </tr>
+    <tr>
+      <td><strong>M1 — Signing</strong></td>
+      <td>60,000</td>
+      <td>1.53B</td>
+      <td>24%</td>
+      <td>Day 0</td>
+      <td>Brand guide, SOP, sommelier shortlist</td>
+    </tr>
+    <tr>
+      <td><strong>M2 — Pre-Opening</strong></td>
+      <td>65,000</td>
+      <td>1.66B</td>
+      <td>26%</td>
+      <td>T-60 days</td>
+      <td>Wine in cellar, sommelier onboard, EDM ready</td>
+    </tr>
+    <tr>
+      <td><strong>M3 — 6 Months Live</strong></td>
+      <td>75,000</td>
+      <td>1.91B</td>
+      <td>30%</td>
+      <td>Month 6</td>
+      <td>2 activations, 50+ members, 2× months ≥1.2B rev</td>
+    </tr>
+    <tr>
+      <td><strong>M4 — Year 1</strong></td>
+      <td>50,000</td>
+      <td>1.28B</td>
+      <td>20%</td>
+      <td>Month 12</td>
+      <td>Year 1 ≥18B, 4 activations, 100+ members</td>
+    </tr>
+    <tr class="tot">
+      <td>Total Setup Fee</td>
+      <td>250,000</td>
+      <td>6.38B</td>
+      <td>100%</td>
+      <td>Over ~14 months</td>
+      <td>Full program delivery</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="note">
+    <strong>Why Park90 should accept:</strong> Total fee unchanged at USD 250K. Park90 earns each tranche by delivering specific obligations — aligned incentive, not a penalty. The milestone structure also protects Park90: RCC cannot claim non-performance if Park90 hasn't been paid. <strong>Frame this as "mutual accountability framework,"</strong> not a discount request.
+  </div>
+</div>
+
+<!-- ══ SECTION 3: CONSIGNMENT INVENTORY MODEL ══ -->
+<div class="section">
+  <div class="section-label">Section 03</div>
+  <h2>Wine Inventory — Consignment "Skin in the Game" Model</h2>
+
+  <p class="body">Thay vì RCC mua toàn bộ USD 300–500K wine inventory upfront, đề xuất <strong>split thành 2 tiers:</strong> một phần Park90 cung cấp dạng consignment (bán mới thu tiền), phần còn lại RCC mua outright. Đây là "skin in the game" từ Park90 — nếu wine không bán được, họ chịu một phần rủi ro.</p>
+
+  <div class="consign-box">
+    <h3>🍾 Proposed Inventory Structure</h3>
+    <div class="consign-grid">
+      <div class="consign-item">
+        <div class="ci-l">Tier A — Consignment (Park90)</div>
+        <div class="ci-v">40–50% of SKUs<br>~USD 120–150K value<br>Rare/premium labels (DRC, Petrus, Sassicaia, cult Napa)</div>
+      </div>
+      <div class="consign-item">
+        <div class="ci-l">Tier B — RCC Purchase (Outright)</div>
+        <div class="ci-v">50–60% of SKUs<br>~USD 150–180K value<br>Entry-premium, BTG wines, high-velocity labels</div>
+      </div>
+      <div class="consign-item">
+        <div class="ci-l">Total Opening Stock</div>
+        <div class="ci-v">~300 SKUs, ~1,500 bottles<br>USD 270–330K total value<br>RCC cash outlay: USD 150–180K only</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="skin-box">
+    <h4>🎯 Why "Skin in the Game" Works for Both Parties</h4>
+    <ul>
+      <li><strong>For RCC:</strong> Reduces Day-1 cash outlay from USD 300–500K to USD 150–180K. Rare wines (consignment) are highest risk for slow movement — Park90 absorbs this.</li>
+      <li><strong>For Park90:</strong> Consignment labels are their prestige titles — they want them on the list. A Park90 Vietnam without DRC or Petrus is not Park90. Consigning these ensures RCC can list them without capital risk.</li>
+      <li><strong>Aligned incentive:</strong> Park90 only gets paid on consignment wines when RCC sells them. They're incentivized to drive activations, member events, and wine education to increase sell-through.</li>
+      <li><strong>Market validation:</strong> If premium consignment wines don't sell in 6 months, Park90 takes them back — RCC avoids dead inventory. This is fair market discovery at Park90's risk.</li>
+      <li><strong>Precedent:</strong> Consignment wine arrangements are standard in high-end on-trade globally. Park90 already does this with partner restaurants in SG (allocated bottles for member events).</li>
+    </ul>
+  </div>
+
+  <h3>Consignment Terms to Negotiate</h3>
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th>Term</th>
+      <th>Proposed (RCC Position)</th>
+      <th>Rationale</th>
+    </tr>
+    <tr>
+      <td><strong>Consignment %</strong></td>
+      <td class="go">40–50% of opening SKUs by value</td>
+      <td>Covers rare/allocated labels where demand is unproven in VN</td>
+    </tr>
+    <tr>
+      <td><strong>Payment trigger</strong></td>
+      <td class="go">Pay Park90 within 30 days of each bottle sold</td>
+      <td>Standard consignment practice; protects RCC cashflow</td>
+    </tr>
+    <tr>
+      <td><strong>Consignment period</strong></td>
+      <td class="go">12 months; unsold stock returned at 0 cost to RCC</td>
+      <td>Limits obsolescence risk; gives full season to test demand</td>
+    </tr>
+    <tr>
+      <td><strong>Consignment labels</strong></td>
+      <td>Burgundy Grand Cru, Bordeaux 1er Cru, cult Napa, rare Champagne</td>
+      <td>High prestige, low velocity — Park90's specialty, RCC's risk items</td>
+    </tr>
+    <tr>
+      <td><strong>Consignment pricing</strong></td>
+      <td>Park90 provides wholesale price; RCC adds 60–70% retail markup</td>
+      <td>Maintains Park90's pricing model, Park90 earns on sale not holding</td>
+    </tr>
+    <tr>
+      <td><strong>Insurance</strong></td>
+      <td>RCC insures consignment stock at LMSG cellar</td>
+      <td>Standard cellar insurance — LMSG likely already covers F&B inventory</td>
+    </tr>
+    <tr>
+      <td><strong>Replenishment</strong></td>
+      <td>Quarterly — based on sell-through data; RCC converts fast movers to outright purchase</td>
+      <td>Best sellers become purchased stock; slow movers stay consignment or exit</td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+<!-- ══ SECTION 4: REVISED CAPEX & CASHFLOW ══ -->
+<div class="section">
+  <div class="section-label">Section 04</div>
+  <h2>Revised CAPEX & Cashflow Model</h2>
+
+  <div class="comp-row">
+    <div class="comp-card old">
+      <h4>❌ Original Draft</h4>
+      <div class="cc-val">VND 14–20B</div>
+      <div class="cc-sub">Setup USD 250K upfront + inventory USD 300–500K full purchase + fit-out</div>
+    </div>
+    <div class="comp-card new-p">
+      <h4>⚡ Base Negotiated</h4>
+      <div class="cc-val">VND 8.2B</div>
+      <div class="cc-sub">Setup M1+M2 only at signing/opening + RCC purchase USD 180K + fit-out</div>
+    </div>
+    <div class="comp-card new-o">
+      <h4>✅ Revised Proposal</h4>
+      <div class="cc-val">VND 6.4B</div>
+      <div class="cc-sub">Setup M1+M2 (USD 125K) + RCC purchase USD 150K + fit-out (~VND 1B)</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="min-width:180px;">Cost Item</th>
+      <th>Original Draft</th>
+      <th>Revised Proposal</th>
+      <th>Saving</th>
+      <th>When</th>
+    </tr>
+    <tr class="hrow">
+      <td colspan="5">SETUP FEE — Staged</td>
+    </tr>
+    <tr>
+      <td>M1 — Signing</td>
+      <td class="str">USD 250K lump sum</td>
+      <td class="go">USD 60K only</td>
+      <td class="go">−USD 190K deferred</td>
+      <td>Day 0</td>
+    </tr>
+    <tr>
+      <td>M2 — Pre-opening</td>
+      <td>—</td>
+      <td class="go">USD 65K</td>
+      <td>—</td>
+      <td>T−60 days</td>
+    </tr>
+    <tr>
+      <td>M3 — Month 6</td>
+      <td>—</td>
+      <td>USD 75K (conditional)</td>
+      <td>—</td>
+      <td>Month 6</td>
+    </tr>
+    <tr>
+      <td>M4 — Month 12</td>
+      <td>—</td>
+      <td>USD 50K (conditional)</td>
+      <td>—</td>
+      <td>Month 12</td>
+    </tr>
+    <tr class="hrow">
+      <td colspan="5">WINE INVENTORY</td>
+    </tr>
+    <tr>
+      <td>RCC Outright Purchase</td>
+      <td class="str">USD 300–500K upfront</td>
+      <td class="go">USD 150–180K phased</td>
+      <td class="go">−USD 150–320K</td>
+      <td>T−60 days</td>
+    </tr>
+    <tr>
+      <td>Park90 Consignment (at RCC)</td>
+      <td>—</td>
+      <td class="go">USD 120–150K (pay on sale)</td>
+      <td class="go">Cash-neutral until sold</td>
+      <td>On sale only</td>
+    </tr>
+    <tr class="hrow">
+      <td colspan="5">OTHER COSTS</td>
+    </tr>
+    <tr>
+      <td>BARSON fit-out (display, cellar)</td>
+      <td>~USD 50K est.</td>
+      <td>~USD 40K (optimize scope)</td>
+      <td>−USD 10K</td>
+      <td>T−90 days</td>
+    </tr>
+    <tr>
+      <td>CRM / membership platform</td>
+      <td>~USD 8K</td>
+      <td>~USD 6K</td>
+      <td>−USD 2K</td>
+      <td>T−60 days</td>
+    </tr>
+    <tr class="tot">
+      <td>TOTAL Day-1 CAPEX</td>
+      <td class="str">VND 14–20B</td>
+      <td class="go">VND 6.4–8.2B</td>
+      <td class="go">↓ 55–60%</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Peak CAPEX exposure (Month 12)</td>
+      <td class="str">VND 14–20B (all upfront)</td>
+      <td class="go">VND 12.2B (spread over 14 months)</td>
+      <td>Better cashflow profile</td>
+      <td></td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="note">
+    <strong>Critical distinction:</strong> Consignment inventory (USD 120–150K) is NOT a cost — it's inventory RCC holds but pays for only when sold. The true cash-at-risk at Day 1 is: M1 fee (USD 60K) + RCC purchase inventory (USD 150K) + fit-out (USD 40K) = <strong>USD 250K = VND ~6.4B</strong>. Compared to the original VND 14–20B, this is a 55% reduction in cash-at-risk at launch.
+  </div>
+</div>
+
+<!-- ══ SECTION 5: REVISED PAYBACK MODEL ══ -->
+<div class="section">
+  <div class="section-label">Section 05</div>
+  <h2>Revised Revenue & Payback Model</h2>
+
+  <div class="kpi-row">
+    <div class="kpi gr">
+      <div class="kv gr">VND 6.4B</div>
+      <div class="kl">Day-1 Cash-at-Risk (revised)</div>
+    </div>
+    <div class="kpi g">
+      <div class="kv g">~14–18 mo</div>
+      <div class="kl">Payback — Base Case (revised)</div>
+    </div>
+    <div class="kpi b">
+      <div class="kv b">~8–10 mo</div>
+      <div class="kl">Payback — Optimistic</div>
+    </div>
+    <div class="kpi p">
+      <div class="kv p">+69%</div>
+      <div class="kl">Revenue Uplift (unchanged)</div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="min-width:180px;">Metric</th>
+      <th style="color:#9ca3af;">Original (Draft)</th>
+      <th style="color:#d97706;">Conservative</th>
+      <th style="color:#8a2be2;">Base Case</th>
+      <th style="color:#059669;">Optimistic</th>
+    </tr>
+    <tr class="hrow">
+      <td colspan="5">REVENUE — Monthly (VND)</td>
+    </tr>
+    <tr>
+      <td>BARSON baseline organic</td>
+      <td>1,170M</td>
+      <td>1,120M</td>
+      <td>1,170M</td>
+      <td>1,250M</td>
+    </tr>
+    <tr>
+      <td>Group events</td>
+      <td>350M</td>
+      <td>250M</td>
+      <td>350M</td>
+      <td>450M</td>
+    </tr>
+    <tr>
+      <td>Park90 wine evening sales</td>
+      <td>—</td>
+      <td>350M</td>
+      <td>550M</td>
+      <td>850M</td>
+    </tr>
+    <tr>
+      <td>Membership fees (monthly)</td>
+      <td>—</td>
+      <td>25M</td>
+      <td>55M</td>
+      <td>100M</td>
+    </tr>
+    <tr>
+      <td>Wine events / activations</td>
+      <td>—</td>
+      <td>40M</td>
+      <td>80M</td>
+      <td>150M</td>
+    </tr>
+    <tr class="tot">
+      <td>Total Monthly Revenue</td>
+      <td>~1,520M</td>
+      <td style="color:#d97706;font-weight:700;">1,785M</td>
+      <td style="color:#8a2be2;font-weight:700;">2,205M</td>
+      <td style="color:#059669;font-weight:700;">2,800M</td>
+    </tr>
+    <tr class="hrow">
+      <td colspan="5">COSTS — Park90 Monthly (VND)</td>
+    </tr>
+    <tr>
+      <td>License fee (2.5% GTO, min USD 2,500/mth)</td>
+      <td>—</td>
+      <td>64M (min)</td>
+      <td>64M (min)</td>
+      <td>70M</td>
+    </tr>
+    <tr>
+      <td>Park90 supplement staff</td>
+      <td>—</td>
+      <td>80M</td>
+      <td>100M</td>
+      <td>120M</td>
+    </tr>
+    <tr>
+      <td>Wine COGS (~35% wine rev)</td>
+      <td>—</td>
+      <td>145M</td>
+      <td>225M</td>
+      <td>350M</td>
+    </tr>
+    <tr>
+      <td>Consignment payment (30-day lag)</td>
+      <td>—</td>
+      <td>40M</td>
+      <td>80M</td>
+      <td>130M</td>
+    </tr>
+    <tr>
+      <td>Marketing / events</td>
+      <td>—</td>
+      <td>40M</td>
+      <td>60M</td>
+      <td>80M</td>
+    </tr>
+    <tr class="tot">
+      <td>Total Park90 Monthly Cost</td>
+      <td>—</td>
+      <td style="color:#dc2626;font-weight:700;">369M</td>
+      <td style="color:#dc2626;font-weight:700;">529M</td>
+      <td style="color:#dc2626;font-weight:700;">750M</td>
+    </tr>
+    <tr class="up">
+      <td>Net Monthly Contribution (incremental)</td>
+      <td>—</td>
+      <td style="color:#d97706;font-weight:700;">+246M</td>
+      <td style="color:#8a2be2;font-weight:700;">+536M</td>
+      <td style="color:#059669;font-weight:700;">+930M</td>
+    </tr>
+    <tr class="hrow">
+      <td colspan="5">PAYBACK — Against Revised Day-1 CAPEX (VND 6.4B)</td>
+    </tr>
+    <tr>
+      <td>Payback period</td>
+      <td class="str">~5 years (draft)</td>
+      <td style="color:#d97706;font-weight:700;">~26 months</td>
+      <td style="color:#8a2be2;font-weight:700;">~12–14 months</td>
+      <td style="color:#059669;font-weight:700;">~7–8 months</td>
+    </tr>
+    <tr>
+      <td>Annual contribution (Year 1, ramp adj.)</td>
+      <td>—</td>
+      <td>~2.0B</td>
+      <td>~4.5B</td>
+      <td>~8.4B</td>
+    </tr>
+    <tr>
+      <td>Membership float (200 members Year 1)</td>
+      <td>—</td>
+      <td>+1.2B</td>
+      <td>+2.4B</td>
+      <td>+4.0B</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="warn">
+    <strong>Conservative caveat:</strong> Even conservative scenario (+246M/mth) now shows positive contribution — payback ~26 months vs. the original "near-zero or negative." The consignment model and milestone fee staging together remove the scenario where RCC is in a loss position. Minimum viable scenario is now cash-flow positive from Month 1 of operations.
+  </div>
+</div>
+
+<!-- ══ SECTION 6: FULL NEGOTIATION PACKAGE ══ -->
+<div class="section">
+  <div class="section-label">Section 06</div>
+  <h2>Complete Negotiation Package — Final Ask List</h2>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="min-width:150px;">Term</th>
+      <th style="min-width:160px;">Park90 Draft</th>
+      <th style="min-width:200px;">RCC Counter-Proposal</th>
+      <th style="min-width:80px;">Priority</th>
+      <th>Rationale</th>
+    </tr>
+    <tr>
+      <td><strong>Setup Fee</strong></td>
+      <td class="str">USD 250K upfront</td>
+      <td class="go">4 milestones × deliverable triggers (M1: $60K, M2: $65K, M3: $75K, M4: $50K)</td>
+      <td><span class="b-tag red">Critical</span></td>
+      <td>Same total, better cashflow. Mutual accountability.</td>
+    </tr>
+    <tr>
+      <td><strong>Wine Inventory</strong></td>
+      <td class="str">Full purchase USD 300–500K</td>
+      <td class="go">50% consignment (rare labels, pay on sale) + 50% RCC purchase phased quarterly</td>
+      <td><span class="b-tag red">Critical</span></td>
+      <td>Skin in game for Park90. RCC cash-at-risk halved.</td>
+    </tr>
+    <tr>
+      <td><strong>Venue</strong></td>
+      <td>Preferred shop-lot/villa</td>
+      <td class="go"><strong>CONFIRMED: LMSG BARSON ✅</strong></td>
+      <td><span class="b-tag grn">Resolved</span></td>
+      <td>Park90 accepted LMSG.</td>
+    </tr>
+    <tr>
+      <td><strong>Annual License Min</strong></td>
+      <td class="str">USD 30K/yr from Day 1</td>
+      <td class="go">Graduated: USD 15K Yr1 → USD 20K Yr2 → USD 30K Yr3+</td>
+      <td><span class="b-tag yel">High</span></td>
+      <td>Ramp-up protection. Park90 earns full rate once proven.</td>
+    </tr>
+    <tr>
+      <td><strong>SKU Control</strong></td>
+      <td>70% Park90</td>
+      <td class="go">Accept 70%, but RCC prices own 30% independently (VN/Asian labels)</td>
+      <td><span class="b-tag yel">High</span></td>
+      <td>RCC builds own curation identity and buying relationships.</td>
+    </tr>
+    <tr>
+      <td><strong>Membership Data</strong></td>
+      <td>Not defined</td>
+      <td class="go">100% owned by RCC. Park90 read-access for reciprocal benefits only.</td>
+      <td><span class="b-tag red">Critical</span></td>
+      <td>Membership float is RCC working capital. Data is RCC asset.</td>
+    </tr>
+    <tr>
+      <td><strong>Vietnam Exclusivity</strong></td>
+      <td>Not stated</td>
+      <td class="go">Exclusive VN licensee for 3 years. ROFR on any 2nd VN outlet.</td>
+      <td><span class="b-tag yel">High</span></td>
+      <td>RCC bears Vietnam pioneer risk — deserves protection.</td>
+    </tr>
+    <tr>
+      <td><strong>Exit Clause</strong></td>
+      <td>6-month notice for renewal</td>
+      <td class="go">Add: performance exit right after Yr1 if revenue &lt;1.5B/mth for 3 consecutive months</td>
+      <td><span class="b-tag yel">High</span></td>
+      <td>Downside protection without jeopardizing 3yr commitment.</td>
+    </tr>
+    <tr>
+      <td><strong>Consignment Review</strong></td>
+      <td>N/A (new term)</td>
+      <td class="go">Monthly sell-through report. Fast movers convert to outright at 90-day mark.</td>
+      <td><span class="b-tag yel">High</span></td>
+      <td>Keeps inventory lean. Rewards high-velocity SKUs with purchase commitment.</td>
+    </tr>
+    <tr>
+      <td><strong>Le Cave Retail</strong></td>
+      <td>Parallel launch proposed</td>
+      <td class="go">Explicit deferral: earliest 18 months post Bar opening. Separate negotiation.</td>
+      <td><span class="b-tag red">Non-negotiable</span></td>
+      <td>Cannot execute two concepts simultaneously. Retail is a different business.</td>
+    </tr>
+    <tr>
+      <td><strong>Opening Date</strong></td>
+      <td>Nov 2026 or Feb 2027</td>
+      <td class="go">Feb 2027 preferred — time for proper setup, import, pre-sell memberships</td>
+      <td><span class="b-tag grn">Acceptable</span></td>
+      <td>Post-CNY peak season. Quality over speed.</td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+<!-- ══ SECTION 7: DEAL ECONOMICS SUMMARY ══ -->
+<div class="section">
+  <div class="section-label">Section 07</div>
+  <h2>Revised Deal Economics — Before vs. After</h2>
+
+  <div class="tbl-wrap">
+  <table>
+    <tr>
+      <th style="min-width:180px;">Metric</th>
+      <th>Original Draft Terms</th>
+      <th>Revised Proposal</th>
+      <th>Change</th>
+    </tr>
+    <tr>
+      <td>Day-1 Cash-at-Risk</td>
+      <td class="str">VND 14–20B</td>
+      <td class="go"><strong>VND 6.4B</strong></td>
+      <td class="go"><strong>↓ −55%</strong></td>
+    </tr>
+    <tr>
+      <td>Peak CAPEX (Month 12)</td>
+      <td class="str">VND 14–20B (same)</td>
+      <td class="go">VND 12.2B (spread over time)</td>
+      <td class="go">Better cashflow profile</td>
+    </tr>
+    <tr>
+      <td>Park90 financial stake in VN</td>
+      <td class="str">None — full fee upfront</td>
+      <td class="go">USD 120–150K consignment at risk</td>
+      <td class="go">↑ Aligned incentive</td>
+    </tr>
+    <tr>
+      <td>Conservative payback</td>
+      <td class="str">Near-zero / negative</td>
+      <td class="go">~26 months (cash-positive)</td>
+      <td class="go"><strong>Viable at all scenarios</strong></td>
+    </tr>
+    <tr>
+      <td>Base case payback</td>
+      <td class="str">~5 years</td>
+      <td class="go"><strong>~14 months</strong></td>
+      <td class="go"><strong>↓ −72%</strong></td>
+    </tr>
+    <tr>
+      <td>Optimistic payback</td>
+      <td>~21 months</td>
+      <td class="go"><strong>~7–8 months</strong></td>
+      <td class="go">↓ −65%</td>
+    </tr>
+    <tr>
+      <td>Inventory obsolescence risk</td>
+      <td class="str">100% on RCC</td>
+      <td class="go">Shared: rare wines on Park90</td>
+      <td class="go">Risk transfer achieved</td>
+    </tr>
+    <tr>
+      <td>Accountability structure</td>
+      <td class="str">One-sided (RCC pays, Park90 delivers "best efforts")</td>
+      <td class="go">Bilateral — each milestone tied to Park90 deliverables</td>
+      <td class="go">Contractual protection</td>
+    </tr>
+    <tr class="tot">
+      <td>Overall Deal Score</td>
+      <td>6.5 / 10</td>
+      <td><strong>8.0 / 10</strong></td>
+      <td class="go"><strong>↑ +1.5 pts</strong></td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="insight-box">
+    <h4>🎯 Final Recommendation — Go Ahead</h4>
+    <ul>
+      <li><strong>With the revised structure, this deal is now a clear GO.</strong> Day-1 risk is VND 6.4B — manageable at management level without special board CAPEX approval. Payback 14 months (base case) is strong for an F&B transformation of this scale.</li>
+      <li><strong>Consignment framing is the most powerful lever.</strong> Not only does it reduce RCC's cash outlay — it changes the negotiation dynamic. You're asking Park90 to "put their skin in the game" on their own product. Hard to reject without signaling low confidence in their own wine list.</li>
+      <li><strong>Milestone fee staging creates mutual accountability.</strong> Park90 gets paid in full — but only when they deliver. This is the single most important structural change to protect RCC from a Park90 that collects the setup fee and then underperforms on support.</li>
+      <li><strong>The conservative scenario is now viable.</strong> Even at low volumes, RCC is cash-positive from Month 1. This removes the "bet-the-farm" risk profile of the original draft terms.</li>
+      <li><strong>Defer Le Cave firmly.</strong> Do not let Park90 re-bundle Le Cave into this negotiation. Keep it separate. One deal at a time.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  BARSON × Park90 — Revised Negotiation Proposal · April 2026 · RCC Board Confidential<br>
+  Sources: P90_Saigon_draft_terms_clean.docx · LMSG SharePoint Q1 2026 · Park90 Business Model Analysis (kisu-io)
+</div>
+</div>
+</body>
+</html>
