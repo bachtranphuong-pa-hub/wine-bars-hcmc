@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask Early, Not Last — A Problem-Solving Brief</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Georgia,sans-serif; background:#f7f8fc; color:#1a1a2e; font-size:12pt; line-height:1.75; }
+  .page { max-width:780px; margin:0 auto; padding:40px 24px 60px; }
+
+  /* HEADER */
+  .cover {
+    background:linear-gradient(140deg,#0d1b2a,#1a2744);
+    border-radius:16px; padding:48px 44px; color:white; margin-bottom:36px;
+    position:relative; overflow:hidden;
+  }
+  .cover::before {
+    content:''; position:absolute; top:-60px; right:-60px;
+    width:280px; height:280px;
+    background:radial-gradient(circle,rgba(200,160,80,0.18) 0%,transparent 70%);
+    border-radius:50%;
+  }
+  .cover .eyebrow { font-size:9pt; letter-spacing:4px; text-transform:uppercase; color:#c8a050; margin-bottom:14px; font-weight:700; }
+  .cover h1 { font-size:28pt; font-weight:700; line-height:1.15; margin-bottom:14px; }
+  .cover h1 em { color:#c8a050; font-style:normal; }
+  .cover .deck { font-size:12.5pt; color:rgba(255,255,255,0.65); max-width:520px; line-height:1.65; }
+
+  /* BODY SECTIONS */
+  .section { margin-bottom:36px; }
+  h2 { font-size:17pt; font-weight:700; color:#0d1b2a; margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+  h2 .icon { font-size:20pt; }
+  p { margin-bottom:14px; color:#333; }
+  p strong { color:#0d1b2a; }
+
+  /* QUOTE / PULL */
+  .pull {
+    background:linear-gradient(135deg,#fdf8ef,#fef9f3);
+    border-left:5px solid #c8a050; border-radius:0 12px 12px 0;
+    padding:18px 24px; margin:20px 0;
+    font-size:13pt; font-style:italic; color:#444; line-height:1.7;
+  }
+  .pull cite { display:block; font-style:normal; font-size:10pt; color:#c8a050; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase; }
+
+  /* METAPHOR BOX */
+  .metaphor {
+    background:#f0fdf4; border:2px solid #86efac; border-radius:12px;
+    padding:22px 26px; margin:22px 0;
+  }
+  .metaphor .m-tag { font-size:8.5pt; text-transform:uppercase; letter-spacing:2px; font-weight:700; color:#15803d; margin-bottom:8px; }
+  .metaphor p { color:#166534; margin-bottom:0; }
+
+  /* CONTRAST TABLE */
+  .contrast { display:grid; grid-template-columns:1fr 1fr; gap:0; margin:22px 0; border-radius:12px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); }
+  .col-late { background:#fff5f5; padding:22px 22px; border-right:1px solid #fecaca; }
+  .col-early { background:#f0fdf4; padding:22px 22px; }
+  .col-late h3 { color:#dc2626; font-size:11pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+  .col-early h3 { color:#15803d; font-size:11pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
+  .col-late ul, .col-early ul { list-style:none; padding:0; }
+  .col-late ul li, .col-early ul li { padding:6px 0; font-size:10.5pt; display:flex; gap:8px; border-bottom:1px solid rgba(0,0,0,0.05); line-height:1.5; }
+  .col-late ul li:last-child, .col-early ul li:last-child { border-bottom:none; }
+  .col-late ul li::before { content:'✗'; color:#dc2626; font-weight:700; flex-shrink:0; }
+  .col-early ul li::before { content:'✓'; color:#15803d; font-weight:700; flex-shrink:0; }
+
+  /* TIMELINE */
+  .timeline { margin:24px 0; }
+  .tl-row { display:flex; align-items:flex-start; gap:16px; margin-bottom:18px; }
+  .tl-dot { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13pt; flex-shrink:0; margin-top:2px; }
+  .tl-content h4 { font-size:11.5pt; font-weight:700; color:#0d1b2a; margin-bottom:4px; }
+  .tl-content .tl-sub { font-size:10pt; color:#666; line-height:1.55; }
+  .tl-connector { width:2px; height:16px; background:#e5e7eb; margin-left:17px; margin-bottom:0; }
+
+  /* KEY TAKEAWAYS */
+  .takeaways { background:#0d1b2a; border-radius:14px; padding:28px 32px; margin-top:32px; color:white; }
+  .takeaways h2 { color:#c8a050; font-size:15pt; margin-bottom:16px; }
+  .takeaways ol { padding-left:20px; }
+  .takeaways ol li { padding:7px 0; font-size:11pt; color:rgba(255,255,255,0.85); line-height:1.6; border-bottom:1px solid rgba(255,255,255,0.08); }
+  .takeaways ol li:last-child { border-bottom:none; }
+  .takeaways ol li strong { color:#c8a050; }
+
+  .footer { text-align:center; font-size:9pt; color:#aaa; padding:24px 0 0; }
+
+  @media (max-width:600px) {
+    .cover { padding:32px 22px; }
+    .cover h1 { font-size:22pt; }
+    .contrast { grid-template-columns:1fr; }
+    .col-late { border-right:none; border-bottom:1px solid #fecaca; }
+    .page { padding:24px 14px 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="eyebrow">Problem-Solving · Leadership Brief</div>
+  <h1>Ask <em>Early</em>,<br>Not Last</h1>
+  <p class="deck">Why anticipating problems and seeking support before the deadline — not at it — is the single most underrated skill in any team or project.</p>
+</div>
+
+<!-- SECTION 1: THE CORE IDEA -->
+<div class="section">
+  <h2><span class="icon">💡</span> The Core Idea</h2>
+  <p>Most people ask for help when they're already in trouble. They wait until the deadline is 24 hours away, the report is due tomorrow, or the client is already frustrated before raising their hand. This feels responsible — <strong>why ask for support if you're not sure you'll need it?</strong></p>
+  <p>But this thinking has it exactly backwards. The moment you realize a problem <em>might</em> be coming is precisely when asking for support costs the least and buys the most.</p>
+
+  <div class="pull">
+    "The best time to fix a roof is when the sun is shining."
+    <cite>— John F. Kennedy</cite>
+  </div>
+
+  <p>Waiting until it's raining to fix the roof doesn't make you more responsible — it makes the repair harder, more expensive, and more disruptive for everyone who lives in the house.</p>
+</div>
+
+<!-- METAPHOR 1 -->
+<div class="metaphor">
+  <div class="m-tag">🚢 Metaphor — The Ship's Navigator</div>
+  <p>A ship's navigator doesn't wait to see the iceberg before changing course. They study the charts, read the currents, and adjust the heading <em>miles before any visible danger</em>. By the time the iceberg is visible, you've already run out of room to turn. The Titanic didn't sink because icebergs are inevitable — it sank because the course correction came too late.</p>
+</div>
+
+<!-- SECTION 2: WHY WE WAIT -->
+<div class="section">
+  <h2><span class="icon">🧠</span> Why We Wait — And Why It's a Trap</h2>
+  <p>There are three common reasons people delay asking for support:</p>
+
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-dot" style="background:#fee2e2;">😬</div>
+      <div class="tl-content">
+        <h4>"I don't want to look incompetent."</h4>
+        <div class="tl-sub">Asking for help early feels like admitting weakness. But it's actually the opposite — it takes experience and self-awareness to recognize a problem before it becomes a crisis. Juniors hide problems. Seniors surface them.</div>
+      </div>
+    </div>
+    <div class="tl-connector"></div>
+    <div class="tl-row">
+      <div class="tl-dot" style="background:#fef3c7;">🤞</div>
+      <div class="tl-content">
+        <h4>"Maybe it'll sort itself out."</h4>
+        <div class="tl-sub">Occasionally it does. More often, a small problem left alone becomes a big one. The vendor who's slow to respond becomes the vendor who delivers three days late. The data gap you noticed last week becomes the error in next week's board report.</div>
+      </div>
+    </div>
+    <div class="tl-connector"></div>
+    <div class="tl-row">
+      <div class="tl-dot" style="background:#dbeafe;">⏰</div>
+      <div class="tl-content">
+        <h4>"I'll handle it when I get to it."</h4>
+        <div class="tl-sub">This works fine for small, isolated tasks. It fails badly when you depend on others — because other people need <em>lead time</em> to help you. Asking someone for support with 4 hours to spare gives them almost nothing to work with. Asking 4 days in advance gives them options.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: EARLY VS LATE -->
+<div class="section">
+  <h2><span class="icon">⚖️</span> Early Signal vs. Last-Minute SOS</h2>
+  <p>The difference between asking early and asking late is not just timing — it changes the entire nature of the support that's possible.</p>
+
+  <div class="contrast">
+    <div class="col-late">
+      <h3>🔴 Last-Minute Ask</h3>
+      <ul>
+        <li>Fewer options available — the best solutions are already off the table</li>
+        <li>People drop what they're doing to help you — creates collateral disruption</li>
+        <li>Pressure leads to rushed decisions and new mistakes</li>
+        <li>No time to validate — you ship what you have, not what you need</li>
+        <li>Erodes trust — others wonder why they weren't told sooner</li>
+        <li>Recovery costs more in time, money, and goodwill</li>
+      </ul>
+    </div>
+    <div class="col-early">
+      <h3>🟢 Early Signal</h3>
+      <ul>
+        <li>More options available — pivot, escalate, or find alternatives with room to spare</li>
+        <li>Support can be planned around — no one has to drop everything</li>
+        <li>Calm problem-solving yields better outcomes</li>
+        <li>Time to test and validate before it matters</li>
+        <li>Builds trust — you're seen as organized and communicative</li>
+        <li>Prevention is always cheaper than recovery</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- METAPHOR 2 -->
+<div class="metaphor">
+  <div class="m-tag">🏥 Metaphor — Preventive Medicine</div>
+  <p>In healthcare, we know that a regular check-up costs a fraction of emergency surgery. The patient who tells their doctor "I've been feeling a little off lately" in March has options. The patient who collapses in December has far fewer. Organizations work exactly the same way. A small flag raised early is a conversation. The same flag raised too late is a crisis.</p>
+</div>
+
+<!-- SECTION 4: THE PRACTICAL RULE -->
+<div class="section">
+  <h2><span class="icon">📐</span> A Simple Rule to Follow</h2>
+  <p>When you notice something that <em>might</em> become a problem — ask yourself:</p>
+
+  <div class="pull" style="font-size:12pt;">
+    <strong style="font-style:normal; color:#0d1b2a;">"If this gets worse, will I wish I had said something today?"</strong><br><br>
+    If the answer is yes — say something today.
+  </div>
+
+  <p>You don't need to have a solution. You don't need to be certain there's a problem. The early signal doesn't have to be an alarm — it can simply be: <strong>"Hey, I'm watching this. Wanted to flag it in case we need to plan around it."</strong></p>
+  <p>That single sentence, sent a week before it matters, is worth more than a detailed status update sent the night before a deadline.</p>
+</div>
+
+<!-- SECTION 5: IN A TEAM CONTEXT -->
+<div class="section">
+  <h2><span class="icon">🤝</span> In a Team Context</h2>
+  <p>When you ask for support late, you don't just affect yourself — you compress the options for everyone around you. Your manager can't escalate to their manager. The vendor can't get a delivery date moved. The creative team can't iterate. The finance team can't adjust the forecast.</p>
+  <p>Early signaling is, at its core, a form of <strong>respect for other people's time and capacity</strong>. It says: "I trust you enough to tell you before I'm certain, and I respect you enough to give you room to help."</p>
+
+  <div class="metaphor" style="background:#eff6ff; border-color:#93c5fd;">
+    <div class="m-tag" style="color:#1d4ed8;">🏗 Metaphor — The Construction Site</div>
+    <p style="color:#1e3a5f;">A contractor who notices the foundation looks slightly off doesn't wait until the building is three floors up to say something. They flag it on day two — when fixing it takes an afternoon, not three months and a demolition crew. The skill isn't knowing how to fix foundations. The skill is recognizing early that something needs to be looked at.</p>
+  </div>
+</div>
+
+<!-- TAKEAWAYS -->
+<div class="takeaways">
+  <h2>Key Takeaways</h2>
+  <ol>
+    <li><strong>Early signals preserve options.</strong> The earlier you raise a problem, the more ways it can be solved — and the less it costs everyone.</li>
+    <li><strong>Asking early is a sign of seniority, not weakness.</strong> It takes experience to see a problem before it's obvious. Honor that instinct.</li>
+    <li><strong>You don't need certainty to flag something.</strong> "I'm watching this" is a complete and valuable communication.</li>
+    <li><strong>Late asks create collateral damage.</strong> Your deadline pressure becomes everyone else's emergency. Early asks create collaboration.</li>
+    <li><strong>Prevention is always cheaper than recovery.</strong> In time, money, trust, and goodwill — always.</li>
+  </ol>
+</div>
+
+<div class="footer">
+  Problem-Solving Brief · Prepared by Zera · Royal Canary Corp · April 2026
+</div>
+
+</div>
+</body>
+</html>
