@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LMSG F&B Brand Scoring Framework</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f6fa; color:#1a1a2e; font-size:11pt; line-height:1.6; }
+  .container { max-width:1100px; margin:0 auto; padding:28px 20px; }
+
+  /* HEADER */
+  .header {
+    background:linear-gradient(140deg,#0d1b2a 0%,#1a1a2e 50%,#16213e 100%);
+    border-radius:14px; padding:32px 40px; color:white; margin-bottom:22px;
+  }
+  .header .tag { font-size:8.5pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:10px; }
+  .header h1 { font-size:22pt; font-weight:700; line-height:1.2; margin-bottom:8px; }
+  .header h1 em { color:#c8a050; font-style:normal; }
+  .header .sub { font-size:10.5pt; color:rgba(255,255,255,0.55); }
+  .header .meta-row { display:flex; gap:28px; margin-top:16px; flex-wrap:wrap; }
+  .header .meta-item label { font-size:8pt; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.35); display:block; margin-bottom:3px; }
+  .header .meta-item span { font-size:10pt; color:rgba(255,255,255,0.85); font-weight:500; }
+
+  /* SECTION */
+  .section { background:white; border-radius:12px; padding:24px 28px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .section-label { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:5px; font-weight:700; }
+  h2 { font-size:16pt; font-weight:700; color:#0d1b2a; margin-bottom:14px; }
+  h3 { font-size:12pt; font-weight:700; color:#0d1b2a; margin-bottom:10px; margin-top:18px; }
+  h3:first-of-type { margin-top:0; }
+  p.body { font-size:10.5pt; color:#555; line-height:1.7; margin-bottom:12px; }
+
+  /* BRAND PROFILE CARDS */
+  .brand-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+  .brand-card { border-radius:11px; padding:18px 16px; border:2px solid; }
+  .brand-card.hakkasan { background:#fff8f0; border-color:#c2410c; }
+  .brand-card.ling { background:#fff0f8; border-color:#9333ea; }
+  .brand-card.dishoom { background:#f0f9ff; border-color:#0284c7; }
+  .brand-card.babbard { background:#f0fdf4; border-color:#16a34a; }
+  .brand-card h4 { font-size:11pt; font-weight:700; margin-bottom:4px; }
+  .brand-card.hakkasan h4 { color:#c2410c; }
+  .brand-card.ling h4 { color:#9333ea; }
+  .brand-card.dishoom h4 { color:#0284c7; }
+  .brand-card.babbard h4 { color:#16a34a; }
+  .brand-card .bc-tag { font-size:8pt; text-transform:uppercase; letter-spacing:1px; font-weight:700; margin-bottom:10px; }
+  .brand-card.hakkasan .bc-tag { color:#ea580c; }
+  .brand-card.ling .bc-tag { color:#7c3aed; }
+  .brand-card.dishoom .bc-tag { color:#0369a1; }
+  .brand-card.babbard .bc-tag { color:#15803d; }
+  .brand-card ul { list-style:none; padding:0; }
+  .brand-card ul li { font-size:9.5pt; color:#333; padding:3px 0; display:flex; gap:6px; line-height:1.4; }
+  .brand-card ul li::before { content:'·'; font-weight:900; flex-shrink:0; }
+  .brand-card.hakkasan ul li::before { color:#c2410c; }
+  .brand-card.ling ul li::before { color:#9333ea; }
+  .brand-card.dishoom ul li::before { color:#0284c7; }
+  .brand-card.babbard ul li::before { color:#16a34a; }
+
+  /* SCORING FRAMEWORK */
+  .criteria-list { margin-bottom:18px; }
+  .crit-item { display:flex; gap:14px; padding:10px 0; border-bottom:1px solid #f0f0f0; align-items:flex-start; }
+  .crit-item:last-child { border-bottom:none; }
+  .crit-num { width:28px; height:28px; border-radius:50%; background:#0d1b2a; color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:9pt; flex-shrink:0; margin-top:1px; }
+  .crit-content h4 { font-size:11pt; font-weight:700; color:#0d1b2a; margin-bottom:3px; }
+  .crit-content .crit-weight { font-size:8.5pt; font-weight:700; color:#c8a050; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .crit-content p { font-size:10pt; color:#555; line-height:1.55; }
+  .crit-content .score-guide { display:flex; gap:10px; margin-top:6px; flex-wrap:wrap; }
+  .sg { font-size:9pt; padding:2px 8px; border-radius:10px; }
+  .sg.s1 { background:#fee2e2; color:#dc2626; }
+  .sg.s2 { background:#fef3c7; color:#d97706; }
+  .sg.s3 { background:#dbeafe; color:#1d4ed8; }
+  .sg.s4 { background:#d1fae5; color:#059669; }
+  .sg.s5 { background:#ede9fe; color:#6d28d9; }
+
+  /* MAIN SCORING TABLE */
+  .tbl-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:10px; margin-bottom:16px; }
+  table.score-table { width:100%; border-collapse:collapse; font-size:10pt; min-width:900px; }
+  table.score-table th { background:#0d1b2a; color:white; padding:11px 14px; text-align:center; font-size:8.5pt; letter-spacing:1px; text-transform:uppercase; font-weight:600; white-space:nowrap; }
+  table.score-table th.th-crit { text-align:left; min-width:180px; }
+  table.score-table th.th-wt { background:#1a2a3a; min-width:60px; }
+  table.score-table th.hakkasan-h { background:#c2410c; min-width:110px; }
+  table.score-table th.ling-h { background:#7c3aed; min-width:110px; }
+  table.score-table th.dishoom-h { background:#0369a1; min-width:110px; }
+  table.score-table th.babbard-h { background:#15803d; min-width:110px; }
+  table.score-table td { padding:10px 14px; border-bottom:1px solid #f0ebff; vertical-align:top; }
+  table.score-table tr:nth-child(even) td { background:#fafaf8; }
+  table.score-table td.td-crit { font-weight:600; color:#0d1b2a; font-size:10.5pt; }
+  table.score-table td.td-crit .crit-sub { font-size:9pt; color:#888; font-weight:400; margin-top:2px; }
+  table.score-table td.td-wt { text-align:center; font-weight:700; color:#c8a050; }
+  /* Score cells */
+  table.score-table td.score-cell { text-align:center; padding:8px 10px; }
+  .score-pill { display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .score-box { width:42px; height:42px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16pt; font-weight:700; margin:0 auto; }
+  .score-box.blank { background:#f3f4f6; color:#d1d5db; font-size:12pt; }
+  .score-note { font-size:8pt; color:#888; font-style:italic; text-align:center; line-height:1.3; max-width:90px; }
+  /* Pre-filled scores */
+  .sc1 { background:#fee2e2; color:#dc2626; }
+  .sc2 { background:#fef3c7; color:#b45309; }
+  .sc3 { background:#dbeafe; color:#1d4ed8; }
+  .sc4 { background:#d1fae5; color:#059669; }
+  .sc5 { background:#ede9fe; color:#6d28d9; }
+  /* Total rows */
+  table.score-table tr.group-head td { background:#f8f5ff; font-weight:700; font-size:9.5pt; letter-spacing:1px; text-transform:uppercase; color:#8b5cf6; padding:8px 14px; }
+  table.score-table tr.subtotal td { background:#f0fdf4; font-weight:700; font-size:10.5pt; border-top:2px solid #a7f3d0; }
+  table.score-table tr.total-row td { background:#0d1b2a !important; color:white; font-weight:700; font-size:11.5pt; }
+  table.score-table tr.total-row td.hakkasan-val { color:#ff8c50; }
+  table.score-table tr.total-row td.ling-val { color:#c4b5fd; }
+  table.score-table tr.total-row td.dishoom-val { color:#7dd3fc; }
+  table.score-table tr.total-row td.babbard-val { color:#86efac; }
+
+  /* NATIONALITY TABLE */
+  table.nat-table { width:100%; border-collapse:collapse; font-size:10.5pt; }
+  table.nat-table th { background:#1a1a2e; color:white; padding:9px 13px; text-align:left; font-size:8.5pt; letter-spacing:1px; text-transform:uppercase; }
+  table.nat-table th.r { text-align:center; }
+  table.nat-table td { padding:9px 13px; border-bottom:1px solid #f0ebff; }
+  table.nat-table tr:nth-child(even) td { background:#fafaf8; }
+  table.nat-table td.nat { font-weight:700; }
+  table.nat-table td.r { text-align:center; }
+  .compat { font-size:9pt; font-weight:700; padding:2px 8px; border-radius:10px; }
+  .compat.high { background:#d1fae5; color:#059669; }
+  .compat.med { background:#fef3c7; color:#d97706; }
+  .compat.low { background:#fee2e2; color:#dc2626; }
+  .compat.na { background:#f3f4f6; color:#9ca3af; }
+
+  /* INSTRUCTIONS */
+  .instr-box { background:#f0f9ff; border:2px solid #bfdbfe; border-radius:10px; padding:18px 20px; margin-bottom:18px; }
+  .instr-box h4 { color:#1d4ed8; font-size:10pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+  .instr-box ol { padding-left:18px; }
+  .instr-box ol li { padding:4px 0; font-size:10.5pt; color:#333; line-height:1.5; }
+  .instr-box ol li strong { color:#1d4ed8; }
+
+  .note { background:#f5f0ff; border-left:4px solid #8b5cf6; border-radius:0 8px 8px 0; padding:12px 16px; margin:12px 0; font-size:10pt; color:#444; line-height:1.6; }
+  .footer { text-align:center; font-size:8.5pt; color:#aaa; padding:14px 0; }
+
+  @media (max-width:640px) {
+    .container { padding:14px 12px; }
+    .header { padding:22px 18px; }
+    .header h1 { font-size:17pt; }
+    .section { padding:18px 16px; }
+    .brand-cards { grid-template-columns:1fr 1fr; }
+    table.nat-table { display:block; overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="tag">Le Méridien Saigon · F&B Strategy · Internal Working Document</div>
+  <h1>F&B Brand Scoring Framework<br><em>Restaurant Partnership Shortlist Evaluation</em></h1>
+  <div class="sub">To be completed by LMSG Hotel Team — evaluating brand compatibility with hotel guest profile and F&B strategy</div>
+  <div class="meta-row">
+    <div class="meta-item"><label>Property</label><span>Le Méridien Saigon (LMSG)</span></div>
+    <div class="meta-item"><label>Shortlisted Brands</label><span>Hakkasan · Ling Ling · Dishoom · House of Babbard</span></div>
+    <div class="meta-item"><label>Prepared by</label><span>RCC — April 2026</span></div>
+    <div class="meta-item"><label>Version</label><span>v1.0 — For Hotel Team Input</span></div>
+  </div>
+</div>
+
+<!-- SECTION 0: HOW TO USE -->
+<div class="section">
+  <div class="section-label">Instructions</div>
+  <h2>How to Complete This Scoring Table</h2>
+
+  <div class="instr-box">
+    <h4>📋 Step-by-Step Guide for LMSG Team</h4>
+    <ol>
+      <li><strong>Review each brand profile</strong> in Section 1 to understand each concept's cuisine, positioning, and guest appeal.</li>
+      <li><strong>Complete the Guest Nationality Compatibility table</strong> (Section 2) based on your actual guest mix data — indicate whether each brand resonates with your top nationality groups.</li>
+      <li><strong>Score each criterion</strong> in Section 3 using the 1–5 scale below. Pre-filled scores (in color) are RCC's initial assessment — hotel team should confirm or override with actual knowledge.</li>
+      <li><strong>Add notes</strong> in the "Comments" column for any score that needs justification or where local knowledge overrides the initial assessment.</li>
+      <li><strong>Weighted totals</strong> will calculate automatically — the highest-scoring brand is the recommended anchor concept.</li>
+    </ol>
+  </div>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:4px;">
+    <span class="sg s1">1 — Poor Fit</span>
+    <span class="sg s2">2 — Weak Fit</span>
+    <span class="sg s3">3 — Moderate Fit</span>
+    <span class="sg s4">4 — Strong Fit</span>
+    <span class="sg s5">5 — Exceptional Fit</span>
+  </div>
+</div>
+
+<!-- SECTION 1: BRAND PROFILES -->
+<div class="section">
+  <div class="section-label">Section 01</div>
+  <h2>Brand Profiles — At a Glance</h2>
+
+  <div class="brand-cards">
+    <div class="brand-card hakkasan">
+      <h4>🔴 Hakkasan</h4>
+      <div class="bc-tag">Cantonese Fine Dining</div>
+      <ul>
+        <li>Founded London 2001 — Michelin-starred legacy</li>
+        <li>Modern Cantonese: dim sum, Peking duck, luxury seafood</li>
+        <li>Dark, opulent interiors — exclusive nightlife DNA</li>
+        <li>Locations: London, Dubai, Miami, Shanghai, Abu Dhabi</li>
+        <li>Owner: Mohari/Tao Group (2025)</li>
+        <li>Price: $$$$  | Occasion: Special dining</li>
+        <li>Guest appeal: Chinese diaspora, luxury travelers, celebratory groups</li>
+      </ul>
+    </div>
+    <div class="brand-card ling">
+      <h4>🟣 Ling Ling</h4>
+      <div class="bc-tag">Asian Infusion · Social Bar</div>
+      <ul>
+        <li>Hakkasan Group sub-brand — izakaya-meets-Cantonese</li>
+        <li>Craft cocktails + small plates (Cantonese + Pan-Asian)</li>
+        <li>Party-forward: evolves from dining to drinking to dancing</li>
+        <li>Locations: Dubai (Atlantis), Mexico City, Oslo, Marrakesh</li>
+        <li>Design: Parisian (Gilles & Boissier) — always with view/rooftop</li>
+        <li>Price: $$$  | Occasion: Social, celebration, nightlife</li>
+        <li>Guest appeal: Young affluent, international travelers, scene-setters</li>
+      </ul>
+    </div>
+    <div class="brand-card dishoom">
+      <h4>🔵 Dishoom</h4>
+      <div class="bc-tag">Bombay Comfort Food · All-Day</div>
+      <ul>
+        <li>Founded London 2010 — cult following, £300M valuation</li>
+        <li>Bombay Irani café concept: breakfast, lunch, dinner, late drinks</li>
+        <li>Menu: naan rolls, biryani, kebabs, masala chai, cocktails</li>
+        <li>Locations: UK only (11 sites) — LVMH-backed for US expansion 2026</li>
+        <li>Heritage storytelling — nostalgic, immersive design</li>
+        <li>Price: $$$  | Occasion: Casual premium, all-day, groups</li>
+        <li>Guest appeal: British travelers, South Asian diaspora, food tourists</li>
+      </ul>
+    </div>
+    <div class="brand-card babbard">
+      <h4>🟢 House of Babbard</h4>
+      <div class="bc-tag">British Heritage · Modern</div>
+      <ul>
+        <li>British-inspired concept with contemporary F&B positioning</li>
+        <li>Seasonal British cuisine: elevated pub classics + fine dining elements</li>
+        <li>Strong bar and spirits program — whisky, gin focus</li>
+        <li>Boutique presence — select luxury hotel partnerships</li>
+        <li>Design: traditional British clubhouse aesthetic</li>
+        <li>Price: $$$–$$$$  | Occasion: Business dining, hotel lounge, groups</li>
+        <li>Guest appeal: British travelers, corporate, heritage-seekers</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: NATIONALITY COMPATIBILITY -->
+<div class="section">
+  <div class="section-label">Section 02 — Hotel Team to Complete</div>
+  <h2>Guest Nationality Compatibility Matrix</h2>
+
+  <p class="body">Based on LMSG's actual guest nationality mix (from PMS/revenue data), please rate how well each brand concept resonates with each nationality group. This directly informs cuisine selection — a brand strong in Chinese cuisine may not resonate with Indian or European-majority groups.</p>
+
+  <div class="tbl-wrap">
+  <table class="nat-table">
+    <tr>
+      <th style="min-width:160px;">Nationality Group</th>
+      <th class="r" style="min-width:80px;">Est. % Mix*</th>
+      <th class="r" style="min-width:100px;">Hakkasan<br><span style="font-size:8pt;font-weight:400;">Cantonese</span></th>
+      <th class="r" style="min-width:100px;">Ling Ling<br><span style="font-size:8pt;font-weight:400;">Asian Fusion</span></th>
+      <th class="r" style="min-width:100px;">Dishoom<br><span style="font-size:8pt;font-weight:400;">Bombay</span></th>
+      <th class="r" style="min-width:110px;">House of Babbard<br><span style="font-size:8pt;font-weight:400;">British</span></th>
+      <th style="min-width:160px;">Notes (Hotel Team)</th>
+    </tr>
+    <tr>
+      <td class="nat">🇨🇳 Chinese (Mainland + HK/TW)</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇰🇷 Korean</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇯🇵 Japanese</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇸🇬 Singaporean / Southeast Asian</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇮🇳 Indian</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇬🇧 British / Irish</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇺🇸 American</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇪🇺 European (excl. UK)</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇦🇺 Australian / NZ</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat med">Medium</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr>
+      <td class="nat">🇻🇳 Vietnamese (domestic)</td>
+      <td class="r"><em>[___]%</em></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat high">High ✓</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td class="r"><span class="compat low">Low</span></td>
+      <td><em>Enter comments...</em></td>
+    </tr>
+    <tr style="background:#f8f5ff;">
+      <td class="nat" style="color:#8b5cf6;"><strong>WEIGHTED COMPAT. SCORE*</strong></td>
+      <td class="r"><strong>100%</strong></td>
+      <td class="r"><strong>[Auto]</strong></td>
+      <td class="r"><strong>[Auto]</strong></td>
+      <td class="r"><strong>[Auto]</strong></td>
+      <td class="r"><strong>[Auto]</strong></td>
+      <td><em>*Fill % mix column to compute</em></td>
+    </tr>
+  </table>
+  </div>
+  <div class="note">*Fill in the "Est. % Mix" column with LMSG's actual nationality breakdown from PMS data. Weighted compatibility will determine which brand naturally serves the largest portion of your guest base.</div>
+</div>
+
+<!-- SECTION 3: MAIN SCORING TABLE -->
+<div class="section">
+  <div class="section-label">Section 03 — Hotel Team to Score</div>
+  <h2>Brand Fit Scoring Table (1–5 Scale)</h2>
+  <p class="body">Pre-filled scores (colored) represent RCC's initial assessment based on public brand data and industry benchmarks. <strong>Hotel team should review and override</strong> any score with local/operational knowledge. Add rationale in comments. Final weighted score drives the recommendation.</p>
+
+  <div class="tbl-wrap">
+  <table class="score-table">
+    <tr>
+      <th class="th-crit" rowspan="2">Criteria</th>
+      <th class="th-wt" rowspan="2">Weight</th>
+      <th colspan="2" class="hakkasan-h">🔴 Hakkasan</th>
+      <th colspan="2" class="ling-h">🟣 Ling Ling</th>
+      <th colspan="2" class="dishoom-h">🔵 Dishoom</th>
+      <th colspan="2" class="babbard-h">🟢 House of Babbard</th>
+    </tr>
+    <tr>
+      <th class="hakkasan-h" style="background:#b83208;">Score (1–5)</th>
+      <th class="hakkasan-h" style="background:#b83208; min-width:120px;">Comments</th>
+      <th class="ling-h" style="background:#6d28d9;">Score (1–5)</th>
+      <th class="ling-h" style="background:#6d28d9; min-width:120px;">Comments</th>
+      <th class="dishoom-h" style="background:#0258a8;">Score (1–5)</th>
+      <th class="dishoom-h" style="background:#0258a8; min-width:120px;">Comments</th>
+      <th class="babbard-h" style="background:#116930;">Score (1–5)</th>
+      <th class="babbard-h" style="background:#116930; min-width:120px;">Comments</th>
+    </tr>
+
+    <!-- GROUP A: GUEST & MARKET FIT -->
+    <tr class="group-head">
+      <td colspan="10">A. GUEST & MARKET FIT (40% Total Weight)</td>
+    </tr>
+    <tr>
+      <td class="td-crit">A1. Nationality Group Alignment
+        <div class="crit-sub">How well does cuisine resonate with LMSG's top 3 nationality segments?</div>
+      </td>
+      <td class="td-wt">15%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Strong for Chinese/Asian segments</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;">Override if needed...</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Broad Asian + intl. appeal</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;">Override if needed...</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc2">2</div><div class="score-note">Niche — requires British/Indian guest base</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;">Override if needed...</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc2">2</div><div class="score-note">Niche — requires British corporate base</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;">Override if needed...</td>
+    </tr>
+    <tr>
+      <td class="td-crit">A2. Occasion Type Match
+        <div class="crit-sub">Does the concept serve LMSG's primary dining occasions? (business dinner, group lunch, hotel dining, celebratory)</div>
+      </td>
+      <td class="td-wt">10%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Strong for special/celebratory occasions</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Social/nightlife; weaker for business dining</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">All-day dining — highest versatility</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Business dining OK; celebratory limited</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+    <tr>
+      <td class="td-crit">A3. Group Dining Suitability
+        <div class="crit-sub">Can the concept accommodate LMSG's large group bookings (15–100 pax)? Menu format, private rooms, noise level.</div>
+      </td>
+      <td class="td-wt">15%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc5">5</div><div class="score-note">Dim sum & shared format — ideal for groups</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Small plates = good group format</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Sharing plates, robust capacity</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Moderate — not built for large groups</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+
+    <!-- GROUP B: BRAND FIT -->
+    <tr class="group-head">
+      <td colspan="10">B. BRAND & POSITIONING FIT (30% Total Weight)</td>
+    </tr>
+    <tr>
+      <td class="td-crit">B1. Le Méridien Brand Alignment
+        <div class="crit-sub">Does the brand ethos match LM's "Unlock the Destination" creative, cosmopolitan identity?</div>
+      </td>
+      <td class="td-wt">10%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Luxury, design-forward — strong brand match</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc5">5</div><div class="score-note">Social, creative, cosmopolitan — perfect LM DNA</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Narrative-rich but British-centric</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Heritage-focused; less cosmopolitan feel</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+    <tr>
+      <td class="td-crit">B2. Global Brand Recognition
+        <div class="crit-sub">Will international guests already know this brand? (brand recall, desirability, social media presence)</div>
+      </td>
+      <td class="td-wt">10%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc5">5</div><div class="score-note">Michelin legacy, global media presence</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Strong in luxury travel circles, Dubai/Mexico</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Cult UK brand — very high with British segment</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc2">2</div><div class="score-note">Limited global footprint — less recognized</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+    <tr>
+      <td class="td-crit">B3. Vietnam Market White Space
+        <div class="crit-sub">Is this cuisine/brand type already oversaturated in HCMC? Does it fill a gap?</div>
+      </td>
+      <td class="td-wt">10%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Chinese fine dining competitive (Crystal Jade, etc.)</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Asian fusion social bar — limited competition</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc5">5</div><div class="score-note">Bombay comfort food — zero competition in VN</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">British concept rare in VN market</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+
+    <!-- GROUP C: OPERATIONAL FIT -->
+    <tr class="group-head">
+      <td colspan="10">C. OPERATIONAL & COMMERCIAL FIT (20% Total Weight)</td>
+    </tr>
+    <tr>
+      <td class="td-crit">C1. Revenue Potential
+        <div class="crit-sub">Revenue ceiling per year given LMSG space, covers, and average spend. Estimated RevPASH vs. investment.</div>
+      </td>
+      <td class="td-wt">10%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc5">5</div><div class="score-note">Highest ASP — $80–150/pax dinner</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">$60–120/pax + bar upsell</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">$40–80/pax — high volume model</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">$50–90/pax — moderate ceiling</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+    <tr>
+      <td class="td-crit">C2. Operational Complexity
+        <div class="crit-sub">Kitchen equipment, staffing specialist needs, supply chain for imported ingredients, training requirements.</div>
+      </td>
+      <td class="td-wt">10%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">High complexity — specialist dim sum team needed</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Simpler than Hakkasan — small plates, bar focus</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">UK-only currently — VN ops model TBD</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Moderate complexity, adaptable kitchen</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+
+    <!-- GROUP D: STRATEGIC VALUE -->
+    <tr class="group-head">
+      <td colspan="10">D. STRATEGIC & PARTNERSHIP VALUE (10% Total Weight)</td>
+    </tr>
+    <tr>
+      <td class="td-crit">D1. Asia Expansion Readiness
+        <div class="crit-sub">Is the brand actively seeking Asia/SEA partners? Likelihood of partnership, timeline, and operator motivation.</div>
+      </td>
+      <td class="td-wt">5%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Active SEA expansion (Jakarta, Dubai)</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Asia pipeline active — Atlantis model proven</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">US expansion first — Asia TBD post 2027</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Boutique pace — hotel-by-hotel</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+    <tr>
+      <td class="td-crit">D2. Marriott Integration Potential
+        <div class="crit-sub">Can the brand leverage Marriott Bonvoy database, corporate accounts, and cross-sell to hotel guests via app/booking?</div>
+      </td>
+      <td class="td-wt">5%</td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc4">4</div><div class="score-note">Premium dining — Bonvoy cross-sell natural</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc5">5</div><div class="score-note">Social/late night — complements hotel program</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">All-day — breakfast/lunch crossover possible</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+      <td class="score-cell"><div class="score-pill"><div class="score-box sc3">3</div><div class="score-note">Limited Bonvoy synergy currently</div></div></td>
+      <td style="font-size:9pt;color:#888;font-style:italic;"></td>
+    </tr>
+
+    <!-- TOTALS -->
+    <tr class="subtotal">
+      <td class="td-crit">RCC INITIAL SCORE (Unweighted Avg)</td>
+      <td class="td-wt">—</td>
+      <td colspan="2" style="text-align:center; color:#c2410c; font-size:13pt;">4.1 / 5</td>
+      <td colspan="2" style="text-align:center; color:#7c3aed; font-size:13pt;">4.1 / 5</td>
+      <td colspan="2" style="text-align:center; color:#0369a1; font-size:13pt;">3.5 / 5</td>
+      <td colspan="2" style="text-align:center; color:#15803d; font-size:13pt;">2.9 / 5</td>
+    </tr>
+    <tr class="total-row">
+      <td colspan="2" style="color:#c8a050; font-size:11pt; letter-spacing:1px; text-transform:uppercase;">WEIGHTED TOTAL (Hotel Team to finalize)</td>
+      <td colspan="2" class="hakkasan-val" style="text-align:center; font-size:18pt;">[___]</td>
+      <td colspan="2" class="ling-val" style="text-align:center; font-size:18pt;">[___]</td>
+      <td colspan="2" class="dishoom-val" style="text-align:center; font-size:18pt;">[___]</td>
+      <td colspan="2" class="babbard-val" style="text-align:center; font-size:18pt;">[___]</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="note">
+    <strong>Weighted Total formula:</strong> Multiply each score × weight, sum all rows. Maximum possible = 5.00. Scores above 4.0 = strong recommend; 3.0–3.9 = conditional; below 3.0 = not recommended without significant local adjustments.
+  </div>
+</div>
+
+<!-- SECTION 4: HOTEL TEAM RECOMMENDATION -->
+<div class="section">
+  <div class="section-label">Section 04 — Hotel Team to Complete</div>
+  <h2>LMSG Team's Recommendation</h2>
+
+  <div style="background:#f8f5ff; border-radius:10px; padding:20px 22px;">
+    <table style="width:100%; font-size:11pt; border-collapse:collapse;">
+      <tr>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; font-weight:700; color:#0d1b2a; width:220px;">Primary Recommended Brand:</td>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; color:#888; font-style:italic;">[ Enter brand name ]</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; font-weight:700; color:#0d1b2a;">Rationale:</td>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; color:#888; font-style:italic;">[ Key reasons based on scoring and local knowledge ]</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; font-weight:700; color:#0d1b2a;">Alternative / Runner-up:</td>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; color:#888; font-style:italic;">[ If primary not feasible ]</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; font-weight:700; color:#0d1b2a;">Key Conditions / Concerns:</td>
+        <td style="padding:10px 0; border-bottom:1px solid #ede8df; color:#888; font-style:italic;">[ Any operational, financial, or brand-related conditions ]</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0; font-weight:700; color:#0d1b2a;">Preferred Decision Timeline:</td>
+        <td style="padding:10px 0; color:#888; font-style:italic;">[ Month / Quarter ]</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  LMSG F&B Brand Scoring Framework · Le Méridien Saigon × RCC · April 2026 · Working Document — Not for External Distribution
+</div>
+</div>
+</body>
+</html>
