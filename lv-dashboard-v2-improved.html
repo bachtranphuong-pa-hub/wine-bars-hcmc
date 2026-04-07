@@ -114,7 +114,7 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
 <div class="header">
   <div class="header-left">
     <h1>LA VICTOIRE &nbsp;·&nbsp; PERFORMANCE DASHBOARD</h1>
-    <div class="sub">March 2026 &nbsp;|&nbsp; Data as of 29/03 · 29 days actual &nbsp;|&nbsp; Le Méridien Saigon</div>
+    <div class="sub">April 2026 &nbsp;|&nbsp; Data as of 05/04 · 5 days actual &nbsp;|&nbsp; Le Méridien Saigon</div>
   </div>
   <div class="header-right">
     <div class="date-badge">Last updated: 26/03/2026 07:15</div>
@@ -136,7 +136,7 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
   <!-- KPI Cards -->
   <div class="kpi-grid">
     <div class="kpi-card up">
-      <div class="kpi-label">Net Sales · Daily (29/03)</div>
+      <div class="kpi-label">Net Sales · Daily (05/04)</div>
       <div class="kpi-val">$90,603</div>
       <div class="kpi-sub">
         <span class="kpi-tgt">Target $34,897</span>
@@ -144,7 +144,7 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
       </div>
     </div>
     <div class="kpi-card up">
-      <div class="kpi-label">Net Sales · MTD (29 days)</div>
+      <div class="kpi-label">Net Sales · MTD (5 days)</div>
       <div class="kpi-val">$1.42M</div>
       <div class="kpi-sub">
         <span class="kpi-tgt">Target $558K</span>
@@ -170,7 +170,7 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
       <div class="kpi-sub"><span class="kpi-tgt">01/01 → 29/03 · 88 days</span></div>
     </div>
     <div class="kpi-card up">
-      <div class="kpi-label">Turnover · Daily (29/03)</div>
+      <div class="kpi-label">Turnover · Daily (05/04)</div>
       <div class="kpi-val small">$2,489,421</div>
       <div class="kpi-sub">
         <span class="kpi-tgt">Target $2,226,508</span>
@@ -190,12 +190,12 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
     <div class="kpi-card neutral">
       <div class="kpi-label">Days remaining in March</div>
       <div class="kpi-val">6</div>
-      <div class="kpi-sub"><span class="kpi-tgt">29/31 days tracked</span></div>
+      <div class="kpi-sub"><span class="kpi-tgt">5/30 days tracked</span></div>
     </div>
   </div>
 
   <!-- Progress gauges -->
-  <div class="sec-hdr"><div class="sec-title">MTD Progress vs Target</div><div class="sec-badge">As of 29/03 · 29 days</div></div>
+  <div class="sec-hdr"><div class="sec-title">MTD Progress vs Target</div><div class="sec-badge">As of 05/04 · 5 days</div></div>
   <div class="gauge-grid">
     <div class="gauge-card">
       <div class="gauge-label">Net Sales (USD)</div>
@@ -228,7 +228,7 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
 
   <!-- Main chart -->
   <div class="chart-full">
-    <div class="chart-title">Net Sales (USD) — Daily vs Target · March 2026</div>
+    <div class="chart-title">Net Sales (USD) — Daily vs Target · April 2026</div>
     <div class="chart-sub">Bars = daily actual · Line = guest count (right axis) · Red dashed = daily target</div>
     <div class="chart-wrap" style="height:260px">
       <canvas id="chartMain"></canvas>
@@ -237,7 +237,7 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
 
   <!-- Turnover chart -->
   <div class="chart-full">
-    <div class="chart-title">Turnover (VND) — Daily · March 2026</div>
+    <div class="chart-title">Turnover (VND) — Daily · April 2026</div>
     <div class="chart-sub">Bars = daily actual (navy positive, red negative) · Dashed = daily target</div>
     <div class="chart-wrap" style="height:220px">
       <canvas id="chartTurn"></canvas>
@@ -308,15 +308,15 @@ footer { text-align: center; padding: 16px; color: var(--muted); font-size: 10px
 
 </div><!-- /container -->
 
-<footer>La Victoire · Le Méridien Saigon · Dashboard v2 (Improved) · Data: SharePoint RCC · March 2026 · Zera RCC</footer>
+<footer>La Victoire · Le Méridien Saigon · Dashboard v2 (Improved) · Data: SharePoint RCC · April 2026 · Zera RCC</footer>
 
 <script>
 const NAVY='#001F6B', RED='#C0180A', GOLD='rgba(201,168,76,0.8)', GREEN='#1a7a3a';
-const nsAct=[-39263.51, 139050.87, 48416.19, -13263.04, 66912.14, -22704.73, 197096.9, 126398.61, 52876.82, -11597.24, 60559.73, 191933.24, -14091.99, 45947.31, -80656.0, -18950.52, 113835.18, 31597.94, -24254.82, 37293.06, -7923.31, 96881.21, 112088.51, 10265.58, 90603.48, 91449.97, -43882.2, -56800.88, 101614.35, 0.0, 0.0];
-const turnAct=[2067120.71, 1967056.09, 2208332.87, 1011264.84, 2464048.77, 3519295.37, 2865916.8, 1825839.62, 1206054.22, 854836.01, 1635225.53, 3725364.65, 2224887.35, 1796984.3, 1200218.69, 1102337.64, 1626753.58, 955375.68, 1058012.67, 975111.45, 2595389.93, 2935968.71, 2994372.96, 3352414.16, 2489421.43, 2749741.44, 1562189.32, 1011404.86, 1959711.23, 0.0, 0.0];
-const gcAct=[134, 104, 106, 92, 98, 115, 115, 112, 101, 99, 99, 110, 106, 142, 93, 90, 84, 81, 94, 94, 142, 114, 88, 91, 94, 93, 97, 104, 128, 0, 0];
-const nsTgt=Array(31).fill(34896.88194222427);
-const turnTgt=Array(31).fill(2226507.758216914);
+const nsAct=[22834.96, -69509.15, -25045.26, 112232.06, 165602.36, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+const turnAct=[1893183.41, 2802130.14, 2378986.86, 1660538.14, 2904061.48, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+const gcAct=[77, 82, 106, 115, 104, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+const nsTgt=Array(30).fill(34188.84467363174);
+const turnTgt=Array(30).fill(2300724.683490811);
 const labels=Array.from({length:31},(_,i)=>String(i+1));
 
 const grid={color:'rgba(0,0,0,0.06)'};
