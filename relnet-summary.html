@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relnet — Project Summary & Source Architecture</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:11pt; line-height:1.65; }
+  .page { max-width:900px; margin:0 auto; padding:32px 20px 60px; }
+
+  .header {
+    background:linear-gradient(140deg,#0f0f23,#1a1a3e,#0d1b2a);
+    border-radius:16px; padding:36px 40px; color:white; margin-bottom:24px; position:relative; overflow:hidden;
+  }
+  .header::before { content:''; position:absolute; top:-40px; right:-40px; width:250px; height:250px; background:radial-gradient(circle,rgba(99,102,241,0.2) 0%,transparent 70%); border-radius:50%; }
+  .header .tag { font-size:8.5pt; letter-spacing:3px; text-transform:uppercase; color:#818cf8; margin-bottom:10px; font-weight:700; }
+  .header h1 { font-size:26pt; font-weight:700; margin-bottom:8px; }
+  .header h1 em { color:#818cf8; font-style:normal; }
+  .header .sub { font-size:11pt; color:rgba(255,255,255,0.55); margin-bottom:20px; }
+  .header .meta { display:flex; gap:20px; flex-wrap:wrap; }
+  .header .meta span { background:rgba(255,255,255,0.1); padding:5px 14px; border-radius:20px; font-size:9pt; color:rgba(255,255,255,0.8); }
+
+  .card { background:white; border-radius:12px; padding:24px 28px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .card-label { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#6366f1; margin-bottom:6px; font-weight:700; }
+  h2 { font-size:15pt; font-weight:700; color:#0d1b2a; margin-bottom:14px; }
+  h3 { font-size:12pt; font-weight:700; color:#1a1a2e; margin-bottom:10px; margin-top:18px; }
+  h3:first-of-type { margin-top:0; }
+  p { color:#444; font-size:10.5pt; margin-bottom:10px; }
+
+  /* STACK GRID */
+  .stack-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:0; }
+  .stack-item { background:#f5f5ff; border:1.5px solid #e0e0ff; border-radius:10px; padding:14px; }
+  .stack-item .si-icon { font-size:18pt; margin-bottom:6px; }
+  .stack-item .si-name { font-size:10.5pt; font-weight:700; color:#1a1a2e; }
+  .stack-item .si-role { font-size:9pt; color:#666; margin-top:3px; }
+
+  /* FEATURES */
+  .feature-list { list-style:none; padding:0; }
+  .feature-list li { padding:8px 0; display:flex; gap:10px; border-bottom:1px solid #f0f0f0; font-size:10.5pt; }
+  .feature-list li:last-child { border-bottom:none; }
+  .feature-list li::before { content:'◆'; color:#6366f1; font-size:7pt; flex-shrink:0; margin-top:4px; }
+
+  /* COMPONENT TREE */
+  .comp-tree { font-family:monospace; font-size:10pt; background:#f8f8ff; border:1.5px solid #e0e0ff; border-radius:10px; padding:18px 20px; line-height:1.9; color:#333; overflow-x:auto; }
+  .comp-tree .dir { color:#6366f1; font-weight:700; }
+  .comp-tree .file { color:#333; }
+  .comp-tree .comment { color:#999; font-style:italic; }
+
+  /* CODE BLOCK */
+  pre { background:#0f0f23; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; font-size:9.5pt; line-height:1.7; margin:10px 0; }
+  pre .kw { color:#818cf8; }
+  pre .str { color:#34d399; }
+  pre .cm { color:#64748b; font-style:italic; }
+  pre .fn { color:#fbbf24; }
+  pre .ty { color:#60a5fa; }
+  pre .op { color:#f472b6; }
+
+  /* DATA MODEL */
+  .schema { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .schema-box { background:#f8f8ff; border:1.5px solid #e0e0ff; border-radius:10px; padding:16px; }
+  .schema-box h4 { font-size:10pt; text-transform:uppercase; letter-spacing:1.5px; color:#6366f1; font-weight:700; margin-bottom:10px; }
+  .schema-box table { width:100%; font-size:9.5pt; border-collapse:collapse; }
+  .schema-box td { padding:4px 6px; border-bottom:1px solid #f0f0f0; }
+  .schema-box td:first-child { font-weight:700; color:#1a1a2e; width:35%; }
+  .schema-box td:nth-child(2) { color:#6366f1; font-family:monospace; font-size:9pt; }
+  .schema-box td:nth-child(3) { color:#888; font-size:9pt; }
+
+  /* PHASES */
+  .phases { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .phase { border-radius:10px; padding:16px; }
+  .phase.p1 { background:#f0fdf4; border:1.5px solid #86efac; }
+  .phase.p2 { background:#eff6ff; border:1.5px solid #93c5fd; }
+  .phase.p3 { background:#fdf4ff; border:1.5px solid #e879f9; opacity:0.7; }
+  .phase.p4 { background:#fff7ed; border:1.5px solid #fdba74; opacity:0.7; }
+  .phase h4 { font-size:9.5pt; text-transform:uppercase; letter-spacing:1px; font-weight:700; margin-bottom:8px; }
+  .phase.p1 h4 { color:#15803d; }
+  .phase.p2 h4 { color:#1d4ed8; }
+  .phase.p3 h4 { color:#a21caf; }
+  .phase.p4 h4 { color:#c2410c; }
+  .phase ul { list-style:none; padding:0; }
+  .phase ul li { font-size:9.5pt; padding:3px 0; display:flex; gap:6px; }
+  .phase ul li::before { content:'·'; font-weight:900; flex-shrink:0; }
+  .phase.p1 ul li::before { color:#15803d; }
+  .phase.p2 ul li::before { color:#1d4ed8; }
+  .phase.p3 ul li::before { color:#a21caf; }
+  .phase.p4 ul li::before { color:#c2410c; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:8px; font-size:8pt; font-weight:700; margin-left:6px; }
+  .badge.done { background:#d1fae5; color:#059669; }
+  .badge.wip { background:#dbeafe; color:#1d4ed8; }
+  .badge.todo { background:#f3f4f6; color:#9ca3af; }
+
+  .footer { text-align:center; font-size:8.5pt; color:#aaa; padding:14px 0; }
+
+  @media (max-width:600px) {
+    .stack-grid { grid-template-columns:1fr 1fr; }
+    .schema { grid-template-columns:1fr; }
+    .phases { grid-template-columns:1fr; }
+    .header { padding:24px 18px; }
+    .header h1 { font-size:20pt; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="tag">Personal Project · Knowledge Graph · Relationship Network</div>
+  <h1><em>Relnet</em> — Project Summary</h1>
+  <div class="sub">A personal relationship network visualiser — who knows whom, how strong, and why it matters.</div>
+  <div class="meta">
+    <span>📅 Initiated: March 2026</span>
+    <span>🔧 Status: Architecture complete, MVP in progress</span>
+    <span>🧑‍💻 Owner: Bach Tran</span>
+    <span>🗂 Repo: bachtranphuong / relnet</span>
+  </div>
+</div>
+
+<!-- WHAT IS IT -->
+<div class="card">
+  <div class="card-label">Overview</div>
+  <h2>What is Relnet?</h2>
+  <p>Relnet is a <strong>personal relationship intelligence tool</strong> — a knowledge graph that maps your contacts as nodes and the relationships between them as edges. Think of it as a private CRM meets LinkedIn graph, but fully under your control, running locally, with no data leaving your device.</p>
+  <p>The core insight: most people have hundreds of contacts but no visual map of <em>how those people connect to each other</em>. Relnet makes those invisible connections visible — revealing clusters, brokers, and relationship gaps that are hard to see in a flat contact list.</p>
+
+  <h3>Core Use Cases</h3>
+  <ul class="feature-list">
+    <li><strong>Network mapping</strong> — visualize who knows whom, relationship strength, and cluster affiliations</li>
+    <li><strong>Introduction planning</strong> — find the shortest path between you and a target person via mutual connections</li>
+    <li><strong>Contact enrichment</strong> — tag contacts by industry, location, relationship type, and social handles</li>
+    <li><strong>Photo-based recognition</strong> — import photos, detect faces, and auto-infer co-occurrence relationships from who appears together</li>
+    <li><strong>Relationship health</strong> — track last interaction and relationship strength decay over time</li>
+  </ul>
+</div>
+
+<!-- TECH STACK -->
+<div class="card">
+  <div class="card-label">Architecture</div>
+  <h2>Tech Stack</h2>
+  <div class="stack-grid">
+    <div class="stack-item"><div class="si-icon">⚛️</div><div class="si-name">React 18</div><div class="si-role">UI components, state management</div></div>
+    <div class="stack-item"><div class="si-icon">📊</div><div class="si-name">D3.js v7</div><div class="si-role">Force-directed graph rendering</div></div>
+    <div class="stack-item"><div class="si-icon">🗃️</div><div class="si-name">SQLite (sql.js)</div><div class="si-role">Local data storage, in-browser</div></div>
+    <div class="stack-item"><div class="si-icon">👤</div><div class="si-name">face-api.js</div><div class="si-role">Browser-side face detection & matching</div></div>
+    <div class="stack-item"><div class="si-icon">⚡</div><div class="si-name">Vite</div><div class="si-role">Build tooling, dev server</div></div>
+    <div class="stack-item"><div class="si-icon">🖥️</div><div class="si-name">Electron (Phase 2)</div><div class="si-role">Mac/Windows desktop packaging</div></div>
+  </div>
+  <p style="margin-top:14px; font-size:10pt; color:#666;">Web version (Phase 1) runs entirely in-browser. Data stored in localStorage + IndexedDB. No server required. Phase 2 wraps in Electron for native file system access and better photo import performance.</p>
+</div>
+
+<!-- FILE STRUCTURE -->
+<div class="card">
+  <div class="card-label">Source Code Architecture</div>
+  <h2>Project Structure</h2>
+  <div class="comp-tree">
+<span class="dir">relnet/</span>
+├── <span class="dir">src/</span>
+│   ├── <span class="dir">components/</span>
+│   │   ├── <span class="file">Graph.jsx</span>           <span class="comment">// D3 force-directed graph canvas</span>
+│   │   ├── <span class="file">Sidebar.jsx</span>         <span class="comment">// Filter panel: tags, clusters, search</span>
+│   │   ├── <span class="file">ContactPanel.jsx</span>    <span class="comment">// Node detail drawer — edit contact info</span>
+│   │   ├── <span class="file">ImportWizard.jsx</span>    <span class="comment">// CSV / vCard / Facebook JSON import flow</span>
+│   │   ├── <span class="file">FaceTagging.jsx</span>     <span class="comment">// Photo upload → face detection → tag contact</span>
+│   │   ├── <span class="file">EdgeEditor.jsx</span>      <span class="comment">// Draw / edit relationship between two nodes</span>
+│   │   └── <span class="file">Toolbar.jsx</span>         <span class="comment">// Top bar: zoom, layout, export controls</span>
+│   ├── <span class="dir">services/</span>
+│   │   ├── <span class="file">db.js</span>               <span class="comment">// sql.js wrapper — CRUD for contacts + edges</span>
+│   │   ├── <span class="file">faceRecognition.js</span>  <span class="comment">// face-api.js init, detect, match, cluster</span>
+│   │   ├── <span class="file">importer.js</span>         <span class="comment">// Parse CSV, vCard, Facebook JSON to contact objects</span>
+│   │   └── <span class="file">graphLayout.js</span>      <span class="comment">// D3 simulation config, cluster grouping</span>
+│   ├── <span class="dir">hooks/</span>
+│   │   ├── <span class="file">useGraph.js</span>         <span class="comment">// Graph state — nodes, edges, selection</span>
+│   │   ├── <span class="file">useContacts.js</span>      <span class="comment">// Contact CRUD, filter, search</span>
+│   │   └── <span class="file">useFaceMatch.js</span>     <span class="comment">// Face recognition state machine</span>
+│   ├── <span class="file">App.jsx</span>                 <span class="comment">// Root — layout, router</span>
+│   └── <span class="file">main.jsx</span>                <span class="comment">// Entry point</span>
+├── <span class="dir">public/</span>
+│   └── <span class="dir">models/</span>                 <span class="comment">// face-api.js model weights (ssd, landmark, recognition)</span>
+├── <span class="file">package.json</span>
+├── <span class="file">vite.config.js</span>
+└── <span class="file">README.md</span>
+  </div>
+</div>
+
+<!-- DATA MODEL -->
+<div class="card">
+  <div class="card-label">Data Model</div>
+  <h2>Schema Design</h2>
+  <div class="schema">
+    <div class="schema-box">
+      <h4>contacts</h4>
+      <table>
+        <tr><td>id</td><td>TEXT PK</td><td>uuid</td></tr>
+        <tr><td>name</td><td>TEXT</td><td>full name</td></tr>
+        <tr><td>photo_url</td><td>TEXT</td><td>base64 or path</td></tr>
+        <tr><td>face_descriptor</td><td>BLOB</td><td>128-float vector</td></tr>
+        <tr><td>tags</td><td>JSON</td><td>["VC","HCMC"]</td></tr>
+        <tr><td>social</td><td>JSON</td><td>{fb, ig, li}</td></tr>
+        <tr><td>notes</td><td>TEXT</td><td>free text</td></tr>
+        <tr><td>last_seen</td><td>DATE</td><td>last interaction</td></tr>
+        <tr><td>created_at</td><td>DATE</td><td></td></tr>
+      </table>
+    </div>
+    <div class="schema-box">
+      <h4>edges (relationships)</h4>
+      <table>
+        <tr><td>id</td><td>TEXT PK</td><td>uuid</td></tr>
+        <tr><td>source_id</td><td>TEXT FK</td><td>→ contacts</td></tr>
+        <tr><td>target_id</td><td>TEXT FK</td><td>→ contacts</td></tr>
+        <tr><td>type</td><td>TEXT</td><td>friend/colleague/family/deal</td></tr>
+        <tr><td>strength</td><td>INT 1-5</td><td>relationship weight</td></tr>
+        <tr><td>notes</td><td>TEXT</td><td>context</td></tr>
+        <tr><td>created_at</td><td>DATE</td><td></td></tr>
+      </table>
+      <h4 style="margin-top:14px;">photo_cooccurrences</h4>
+      <table>
+        <tr><td>photo_id</td><td>TEXT</td><td>source photo</td></tr>
+        <tr><td>contact_a</td><td>TEXT FK</td><td>→ contacts</td></tr>
+        <tr><td>contact_b</td><td>TEXT FK</td><td>→ contacts</td></tr>
+        <tr><td>count</td><td>INT</td><td>times seen together</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- KEY ALGORITHMS -->
+<div class="card">
+  <div class="card-label">Core Logic</div>
+  <h2>Key Algorithms</h2>
+
+  <h3>1. Force-Directed Graph Layout (D3)</h3>
+<pre><span class="cm">// graphLayout.js — D3 simulation config</span>
+<span class="kw">const</span> <span class="fn">createSimulation</span> = (nodes, edges) =&gt; {
+  <span class="kw">return</span> d3.<span class="fn">forceSimulation</span>(nodes)
+    .<span class="fn">force</span>(<span class="str">'link'</span>, d3.<span class="fn">forceLink</span>(edges)
+      .<span class="fn">id</span>(d =&gt; d.id)
+      .<span class="fn">distance</span>(d =&gt; <span class="op">120</span> / d.strength)   <span class="cm">// stronger = closer</span>
+    )
+    .<span class="fn">force</span>(<span class="str">'charge'</span>, d3.<span class="fn">forceManyBody</span>().<span class="fn">strength</span>(<span class="op">-400</span>))
+    .<span class="fn">force</span>(<span class="str">'cluster'</span>, <span class="fn">forceCluster</span>())    <span class="cm">// pull same-tag nodes together</span>
+    .<span class="fn">force</span>(<span class="str">'center'</span>, d3.<span class="fn">forceCenter</span>(<span class="op">0</span>, <span class="op">0</span>));
+};
+
+<span class="cm">// Custom cluster force — pulls nodes with matching tags toward centroid</span>
+<span class="kw">function</span> <span class="fn">forceCluster</span>() {
+  <span class="kw">return</span> (alpha) =&gt; {
+    nodes.<span class="fn">forEach</span>(node =&gt; {
+      <span class="kw">const</span> centroid = clusterCentroids[node.primaryTag];
+      <span class="kw">if</span> (centroid) {
+        node.vx += (centroid.x - node.x) * <span class="op">0.05</span> * alpha;
+        node.vy += (centroid.y - node.y) * <span class="op">0.05</span> * alpha;
+      }
+    });
+  };
+}</pre>
+
+  <h3>2. Face Co-occurrence → Infer Relationships</h3>
+<pre><span class="cm">// faceRecognition.js — after batch photo import</span>
+<span class="kw">async function</span> <span class="fn">inferRelationshipsFromPhotos</span>(photos) {
+  <span class="kw">const</span> coOccurrences = {};
+
+  <span class="kw">for</span> (<span class="kw">const</span> photo <span class="kw">of</span> photos) {
+    <span class="kw">const</span> detections = <span class="kw">await</span> <span class="fn">detectAllFaces</span>(photo);
+    <span class="kw">const</span> matched = detections.<span class="fn">map</span>(<span class="fn">matchToContact</span>);
+
+    <span class="cm">// Every pair in this photo = co-occurrence event</span>
+    <span class="kw">for</span> (<span class="kw">let</span> i = <span class="op">0</span>; i &lt; matched.length; i++) {
+      <span class="kw">for</span> (<span class="kw">let</span> j = i + <span class="op">1</span>; j &lt; matched.length; j++) {
+        <span class="kw">const</span> key = <span class="fn">pairKey</span>(matched[i].id, matched[j].id);
+        coOccurrences[key] = (coOccurrences[key] || <span class="op">0</span>) + <span class="op">1</span>;
+      }
+    }
+  }
+
+  <span class="cm">// Convert counts → edge strength (1-5 scale, log-normalized)</span>
+  <span class="kw">return</span> Object.<span class="fn">entries</span>(coOccurrences).<span class="fn">map</span>(([key, count]) =&gt; ({
+    ...parsePairKey(key),
+    strength: <span class="ty">Math</span>.<span class="fn">min</span>(<span class="op">5</span>, <span class="ty">Math</span>.<span class="fn">ceil</span>(<span class="ty">Math</span>.<span class="fn">log2</span>(count + <span class="op">1</span>))),
+    type: <span class="str">'inferred'</span>,
+    source: <span class="str">'photo_cooccurrence'</span>
+  }));
+}</pre>
+</div>
+
+<!-- PHASES -->
+<div class="card">
+  <div class="card-label">Roadmap</div>
+  <h2>Build Phases</h2>
+  <div class="phases">
+    <div class="phase p1">
+      <h4>Phase 1 — Web MVP <span class="badge done">In Progress</span></h4>
+      <ul>
+        <li>D3 force graph — add/edit nodes & edges manually</li>
+        <li>Contact fields: name, tags, social links, notes</li>
+        <li>Filter sidebar by tag/cluster</li>
+        <li>localStorage persistence</li>
+        <li>CSV import (basic)</li>
+        <li>Export graph as PNG / JSON</li>
+      </ul>
+    </div>
+    <div class="phase p2">
+      <h4>Phase 2 — Import & Enrichment <span class="badge wip">Next</span></h4>
+      <ul>
+        <li>vCard import (.vcf files)</li>
+        <li>Facebook data export JSON parser</li>
+        <li>Photo upload + face detection</li>
+        <li>Co-occurrence inference → auto edges</li>
+        <li>Relationship strength decay model</li>
+        <li>SQLite persistence (sql.js)</li>
+      </ul>
+    </div>
+    <div class="phase p3">
+      <h4>Phase 3 — Intelligence <span class="badge todo">Planned</span></h4>
+      <ul>
+        <li>Shortest path finder (A → B via mutual)</li>
+        <li>Network centrality scores</li>
+        <li>Cluster auto-labelling</li>
+        <li>Relationship health alerts</li>
+        <li>Notes timeline per contact</li>
+      </ul>
+    </div>
+    <div class="phase p4">
+      <h4>Phase 4 — Desktop App <span class="badge todo">Future</span></h4>
+      <ul>
+        <li>Electron wrapper (Mac + Windows)</li>
+        <li>Native file system access</li>
+        <li>iCloud / Google Drive sync</li>
+        <li>Batch photo folder import</li>
+        <li>Offline-first, zero-cloud architecture</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Relnet · Project Summary · Bach Tran × Zera · April 2026 · Private Project</div>
+</div>
+</body>
+</html>
