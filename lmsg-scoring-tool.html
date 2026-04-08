@@ -60,6 +60,8 @@
   .brand-tab[data-brand="barbaard"].active { background:#15803d; color:white; }
   .brand-tab[data-brand="madison"] { background:#fdf8ef; color:#b45309; }
   .brand-tab[data-brand="madison"].active { background:#b45309; color:white; }
+  .brand-tab[data-brand="park90"] { background:#fff1f1; color:#7f1d1d; }
+  .brand-tab[data-brand="park90"].active { background:#7f1d1d; color:white; }
 
   /* SCORING PANELS */
   .scoring-wrap { background:white; border-radius:0 12px 12px 12px; padding:24px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
@@ -146,6 +148,14 @@
   .fill-dishoom { background:linear-gradient(to right,#1d4ed8,#3b82f6); }
   .fill-barbaard { background:linear-gradient(to right,#15803d,#22c55e); }
   .fill-madison { background:linear-gradient(to right,#b45309,#f59e0b); }
+  .fill-park90 { background:linear-gradient(to right,#7f1d1d,#dc2626); }
+
+  /* ZERA SCORE BADGE */
+  .zera-badge-row { display:flex; align-items:center; gap:6px; margin-bottom:4px; font-size:8.5pt; color:#888; }
+  .zera-badge { background:#1a1a2e; color:#c8a050; border-radius:6px; padding:2px 8px; font-size:8pt; font-weight:700; letter-spacing:0.5px; }
+  .bsd-dual { display:flex; flex-direction:column; gap:4px; }
+  .bsd-dual-row { display:flex; align-items:baseline; gap:4px; }
+  .bsd-dual-label { font-size:7.5pt; text-transform:uppercase; letter-spacing:1px; color:#aaa; width:32px; }
 
   /* ACTIONS */
   .action-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
@@ -258,6 +268,7 @@
     <span class="prog-brand prog-empty" id="prog-dishoom">🔵 Dishoom — 0/9</span>
     <span class="prog-brand prog-empty" id="prog-barbaard">🟢 Barbaard — 0/9</span>
     <span class="prog-brand prog-empty" id="prog-madison">⭐ Madison — 0/9</span>
+    <span class="prog-brand prog-empty" id="prog-park90">🍷 Park90 — 0/9</span>
   </div>
 </div>
 
@@ -268,6 +279,7 @@
   <div class="brand-tab" data-brand="dishoom">🔵 Dishoom</div>
   <div class="brand-tab" data-brand="barbaard">🟢 Barbaard</div>
   <div class="brand-tab" data-brand="madison">⭐ Madison House</div>
+  <div class="brand-tab" data-brand="park90">🍷 Park90</div>
 </div>
 
 <div class="scoring-wrap">
@@ -356,36 +368,60 @@
     </div>
     <div id="criteria-madison"></div>
   </div>
+
+  <!-- PARK90 -->
+  <div class="brand-panel" id="panel-park90">
+    <div class="brand-header">
+      <div class="brand-title">
+        <h3 style="color:#7f1d1d;">🍷 Park90 — Vietnam Premium Wine Bar</h3>
+        <span class="btype" style="background:#fee2e2; color:#7f1d1d;">Wine Bar · Beverage-First · Social · Active LMSG Partner</span>
+        <p style="font-size:9.5pt; color:#666; margin-top:8px; max-width:580px;">Vietnam's rising premium wine bar operator — active BARSON partnership at LMSG (term sheet in negotiation). Curated wine list with 70% SKU control, tasting events, bottle locker membership, light bites. Q1 2026 revenue ~1.1–1.75B VND/month. Simplest and fastest to deploy of all 6 brands — no complex kitchen, no international negotiation.</p>
+      </div>
+      <div class="brand-score-display">
+        <div class="bsd-label">Your Score</div>
+        <div class="bsd-score" id="total-park90" style="color:#7f1d1d;">—</div>
+        <div class="bsd-max">/ 5.00</div>
+        <div style="margin-top:6px; font-size:8.5pt; color:#7f1d1d; font-weight:700;">Zera: <span id="zera-total-park90">4.00</span></div>
+      </div>
+    </div>
+    <div id="criteria-park90"></div>
+  </div>
 </div>
 
 <!-- SUMMARY -->
 <div class="summary-section">
   <h2>📊 Live Score Summary</h2>
+  <div style="font-size:9pt; color:#888; margin-bottom:12px;">🎯 Zera Score = RCC initial analysis · Your Score = Hotel team override · Both shown per brand</div>
   <div class="summary-bars" id="summary-bars">
     <div class="summary-bar-row">
       <div class="sb-label" style="color:#c2410c;">🔴 Hakkasan</div>
-      <div class="sb-track"><div class="sb-fill fill-hakkasan" id="bar-hakkasan" style="width:0%"><span id="bar-txt-hakkasan"></span></div></div>
+      <div class="sb-track"><div class="sb-fill fill-hakkasan" id="bar-hakkasan" style="width:68%"><span id="bar-txt-hakkasan">Z:3.4</span></div></div>
       <div class="sb-score" style="color:#c2410c;" id="score-hakkasan">—</div>
     </div>
     <div class="summary-bar-row">
       <div class="sb-label" style="color:#7c3aed;">🟣 Ling Ling</div>
-      <div class="sb-track"><div class="sb-fill fill-ling" id="bar-ling" style="width:0%"><span id="bar-txt-ling"></span></div></div>
+      <div class="sb-track"><div class="sb-fill fill-ling" id="bar-ling" style="width:74%"><span id="bar-txt-ling">Z:3.7</span></div></div>
       <div class="sb-score" style="color:#7c3aed;" id="score-ling">—</div>
     </div>
     <div class="summary-bar-row">
       <div class="sb-label" style="color:#1d4ed8;">🔵 Dishoom</div>
-      <div class="sb-track"><div class="sb-fill fill-dishoom" id="bar-dishoom" style="width:0%"><span id="bar-txt-dishoom"></span></div></div>
+      <div class="sb-track"><div class="sb-fill fill-dishoom" id="bar-dishoom" style="width:58%"><span id="bar-txt-dishoom">Z:2.9</span></div></div>
       <div class="sb-score" style="color:#1d4ed8;" id="score-dishoom">—</div>
     </div>
     <div class="summary-bar-row">
       <div class="sb-label" style="color:#15803d;">🟢 Barbaard</div>
-      <div class="sb-track"><div class="sb-fill fill-barbaard" id="bar-barbaard" style="width:0%"><span id="bar-txt-barbaard"></span></div></div>
+      <div class="sb-track"><div class="sb-fill fill-barbaard" id="bar-barbaard" style="width:80%"><span id="bar-txt-barbaard">Z:4.0</span></div></div>
       <div class="sb-score" style="color:#15803d;" id="score-barbaard">—</div>
     </div>
     <div class="summary-bar-row">
       <div class="sb-label" style="color:#b45309;">⭐ Madison</div>
-      <div class="sb-track"><div class="sb-fill fill-madison" id="bar-madison" style="width:0%"><span id="bar-txt-madison"></span></div></div>
+      <div class="sb-track"><div class="sb-fill fill-madison" id="bar-madison" style="width:82%"><span id="bar-txt-madison">Z:4.1</span></div></div>
       <div class="sb-score" style="color:#b45309;" id="score-madison">—</div>
+    </div>
+    <div class="summary-bar-row">
+      <div class="sb-label" style="color:#7f1d1d;">🍷 Park90</div>
+      <div class="sb-track"><div class="sb-fill fill-park90" id="bar-park90" style="width:80%"><span id="bar-txt-park90">Z:4.0</span></div></div>
+      <div class="sb-score" style="color:#7f1d1d;" id="score-park90">—</div>
     </div>
   </div>
 </div>
@@ -527,8 +563,26 @@ const CRITERIA = [
   }
 ];
 
-const BRANDS = ['hakkasan','ling','dishoom','barbaard','madison'];
-const BRAND_NAMES = { hakkasan:'Hakkasan', ling:'Ling Ling', dishoom:'Dishoom', barbaard:'Barbaard', madison:'Madison House' };
+const BRANDS = ['hakkasan','ling','dishoom','barbaard','madison','park90'];
+const BRAND_NAMES = { hakkasan:'Hakkasan', ling:'Ling Ling', dishoom:'Dishoom', barbaard:'Barbaard', madison:'Madison House', park90:'Park90' };
+
+// Zera's pre-analysis scores for all 6 brands
+const ZERA_SCORES = {
+  hakkasan: {a1:5,a2:4,b1:4,b2:4,b3:1,c1:2,c2:2,c3:3,d1:4,d2:3},
+  ling:     {a1:4,a2:5,b1:4,b2:5,b3:2,c1:3,c2:2,c3:4,d1:4,d2:4},
+  dishoom:  {a1:4,a2:3,b1:2,b2:3,b3:1,c1:1,c2:2,c3:5,d1:2,d2:4},
+  barbaard: {a1:1,a2:4,b1:4,b2:5,b3:4,c1:4,c2:3,c3:5,d1:5,d2:5},
+  madison:  {a1:3,a2:4,b1:5,b2:4,b3:5,c1:5,c2:5,c3:5,d1:4,d2:2},
+  park90:   {a1:3,a2:5,b1:4,b2:5,b3:2,c1:3,c2:4,c3:4,d1:5,d2:5},
+};
+
+function calcZeraWeighted(brand) {
+  const zs = ZERA_SCORES[brand];
+  if (!zs) return null;
+  let total = 0;
+  CRITERIA.forEach(c => { if (zs[c.id] !== undefined) total += zs[c.id] * c.weight; });
+  return total.toFixed(2);
+}
 const SCORE_LABELS = ['','Poor Fit','Weak Fit','Moderate Fit','Strong Fit','Exceptional Fit'];
 const SCORE_CLASSES = ['','sl1','sl2','sl3','sl4','sl5'];
 
@@ -565,6 +619,10 @@ function buildCriteria() {
           </div>
           <div class="crit-input">
             <div class="crit-weight">Weight: ${Math.round(crit.weight*100)}%</div>
+            <div class="zera-badge-row">
+              <span style="color:#888;font-size:8pt;">Zera:</span>
+              <span class="zera-badge">Z:${ZERA_SCORES[brand]?.[crit.id] ?? '—'}</span>
+            </div>
             <div class="star-row" id="stars-${brand}-${crit.id}">
               ${[1,2,3,4,5].map(n => `<div class="star s${n}" data-brand="${brand}" data-crit="${crit.id}" data-val="${n}" onclick="setScore('${brand}','${crit.id}',${n})">${n}</div>`).join('')}
             </div>
@@ -611,22 +669,36 @@ function calcWeighted(brand) {
   return (total / wTotal).toFixed(2);
 }
 
+const BRAND_EMOJIS = { hakkasan:'🔴', ling:'🟣', dishoom:'🔵', barbaard:'🟢', madison:'⭐', park90:'🍷' };
+
 function updateTotals() {
   BRANDS.forEach(brand => {
     const ws = calcWeighted(brand);
+    const zs = calcZeraWeighted(brand);
     const el = document.getElementById(`total-${brand}`);
     const bar = document.getElementById(`bar-${brand}`);
     const barTxt = document.getElementById(`bar-txt-${brand}`);
     const scoreEl = document.getElementById(`score-${brand}`);
+    const zeraEl = document.getElementById(`zera-total-${brand}`);
+    if (zeraEl && zs) zeraEl.textContent = zs;
     if (ws !== null) {
       el.textContent = ws;
       const pct = (parseFloat(ws) / 5 * 100).toFixed(0);
       bar.style.width = pct + '%';
-      barTxt.textContent = ws;
+      barTxt.textContent = `You:${ws}`;
       scoreEl.textContent = ws;
     } else {
-      el.textContent = '—'; bar.style.width = '0%';
-      barTxt.textContent = ''; scoreEl.textContent = '—';
+      // Show Zera score on bar if user hasn't scored yet
+      el.textContent = '—';
+      if (zs) {
+        const pct = (parseFloat(zs) / 5 * 100).toFixed(0);
+        bar.style.width = pct + '%';
+        if (barTxt) barTxt.textContent = `Z:${zs}`;
+      } else {
+        if (bar) bar.style.width = '0%';
+        if (barTxt) barTxt.textContent = '';
+      }
+      if (scoreEl) scoreEl.textContent = zs ? `(Z:${zs})` : '—';
     }
   });
 }
@@ -636,8 +708,10 @@ function updateProgress() {
     const filled = CRITERIA.filter(c => scores[brand][c.id] !== undefined).length;
     const total = CRITERIA.length;
     const el = document.getElementById(`prog-${brand}`);
+    if (!el) return;
     const name = BRAND_NAMES[brand];
-    el.textContent = `${name === 'Ling Ling' ? '🟣' : name === 'Dishoom' ? '🔵' : name === 'Barbaard' ? '🟢' : name === 'Madison House' ? '⭐' : '🔴'} ${name} — ${filled}/${total}`;
+    const emoji = BRAND_EMOJIS[brand] || '•';
+    el.textContent = `${emoji} ${name} — ${filled}/${total}`;
     el.className = 'prog-brand ' + (filled === total ? 'prog-done' : filled > 0 ? 'prog-partial' : 'prog-empty');
   });
 }
@@ -677,7 +751,7 @@ function saveAll() {
     weighted: {}
   };
   BRANDS.forEach(b => { data.weighted[b] = calcWeighted(b); });
-  localStorage.setItem('lmsg-scoring-v1', JSON.stringify(data));
+  localStorage.setItem('lmsg-scoring-v2', JSON.stringify(data));
   const st = document.getElementById('save-status');
   st.classList.add('show');
   setTimeout(() => st.classList.remove('show'), 2000);
@@ -690,7 +764,7 @@ function autoSave() {
 }
 
 function loadSaved() {
-  const raw = localStorage.getItem('lmsg-scoring-v1') || localStorage.getItem('lmsg-scoring-draft');
+  const raw = localStorage.getItem('lmsg-scoring-v2') || localStorage.getItem('lmsg-scoring-draft');
   if (!raw) return;
   try {
     const data = JSON.parse(raw);
@@ -738,7 +812,7 @@ function resetAll() {
   document.querySelectorAll('.score-label').forEach(l => { l.textContent = ''; l.className = 'score-label'; });
   document.querySelectorAll('.crit-comment').forEach(t => t.value = '');
   ['scorer-name','scorer-role','scorer-date','nat1','nat2'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  localStorage.removeItem('lmsg-scoring-v1');
+  localStorage.removeItem('lmsg-scoring-v2');
   localStorage.removeItem('lmsg-scoring-draft');
   updateTotals(); updateProgress();
 }
@@ -747,7 +821,9 @@ function resetAll() {
 function exportJSON() {
   gatherComments();
   const data = {
-    meta: { tool: 'LMSG Brand Ecosystem Scoring', version: '1.0', generated: new Date().toISOString() },
+    meta: { tool: 'LMSG Brand Ecosystem Scoring', version: '2.0', brands: 6, generated: new Date().toISOString() },
+    zera_scores: ZERA_SCORES,
+    zera_weighted: Object.fromEntries(BRANDS.map(b => [b, calcZeraWeighted(b)])),
     scorer: {
       name: document.getElementById('scorer-name').value || '(not provided)',
       role: document.getElementById('scorer-role').value || '(not provided)',
