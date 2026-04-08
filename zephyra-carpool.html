@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zephyra Car Pool</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0f;--surface:#13131f;--surface2:#1c1c2e;--surface3:#242438;
+  --border:#2a2a45;--accent:#c8a050;--accent2:#e8c070;
+  --text:#e8e8f0;--muted:#7070a0;--green:#34d399;--red:#f87171;--blue:#60a5fa;--purple:#a78bfa;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:11pt;}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50;}
+.nav-logo{font-size:16pt;font-weight:800;color:var(--accent);letter-spacing:-0.5px;}
+.nav-logo span{color:var(--muted);font-weight:400;font-size:9pt;margin-left:6px;}
+.nav-tabs{display:flex;gap:4px;margin-left:auto;}
+.nav-tab{padding:7px 16px;border-radius:8px;font-size:10pt;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.15s;border:1px solid transparent;}
+.nav-tab.active{background:var(--accent);color:#0a0a0f;border-color:var(--accent);}
+.nav-tab:hover:not(.active){background:var(--surface2);color:var(--text);}
+
+/* PAGES */
+.page{display:none;padding:24px 20px;max-width:1000px;margin:0 auto;}
+.page.active{display:block;}
+
+/* SECTION HEADER */
+.sec-hd{margin-bottom:20px;}
+.sec-hd .tag{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px;}
+.sec-hd h2{font-size:18pt;font-weight:700;}
+.sec-hd p{font-size:10pt;color:var(--muted);margin-top:4px;}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:16px;}
+.card-title{font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:14px;}
+
+/* POOL SUMMARY CARD */
+.pool-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.ps-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+.ps-num{font-size:20pt;font-weight:700;color:var(--accent);line-height:1;}
+.ps-label{font-size:8.5pt;color:var(--muted);margin-top:4px;}
+
+/* CAR GRID */
+.car-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.car-card{background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:18px;transition:border-color 0.2s;}
+.car-card:hover{border-color:var(--accent);}
+.car-card .cc-name{font-size:13pt;font-weight:700;margin-bottom:3px;}
+.car-card .cc-year{font-size:9pt;color:var(--muted);margin-bottom:12px;}
+.car-card .cc-rate{font-size:19pt;font-weight:700;color:var(--accent);margin-bottom:3px;}
+.car-card .cc-rate-label{font-size:8.5pt;color:var(--muted);}
+.car-card .cc-avail{display:inline-block;padding:3px 10px;border-radius:8px;font-size:8.5pt;font-weight:700;margin-top:8px;}
+.avail-yes{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.3);}
+.avail-no{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.3);}
+.car-emoji{font-size:28pt;margin-bottom:8px;}
+
+/* FORM ELEMENTS */
+.form-group{margin-bottom:14px;}
+.form-label{font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;display:block;margin-bottom:5px;}
+.form-input{width:100%;padding:9px 12px;background:var(--surface3);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:10.5pt;outline:none;font-family:inherit;transition:border-color 0.15s;}
+.form-input:focus{border-color:var(--accent);}
+.form-input::placeholder{color:var(--muted);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+
+/* BUTTONS */
+.btn{padding:9px 18px;border-radius:9px;font-size:10pt;font-weight:700;cursor:pointer;border:none;transition:all 0.15s;font-family:inherit;}
+.btn-gold{background:var(--accent);color:#0a0a0f;}.btn-gold:hover{background:var(--accent2);}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1.5px solid var(--border);}.btn-ghost:hover{background:var(--surface3);}
+.btn-danger{background:#7f1d1d;color:#fca5a5;border:1px solid #991b1b;}.btn-danger:hover{background:#991b1b;}
+.btn-sm{padding:5px 12px;font-size:9pt;}
+.btn-xs{padding:3px 9px;font-size:8.5pt;}
+
+/* DEPRECIATION CALC BOX */
+.dep-box{background:rgba(200,160,80,0.08);border:1px solid rgba(200,160,80,0.25);border-radius:10px;padding:14px;margin-top:10px;}
+.dep-box .dep-result{font-size:11pt;font-weight:700;color:var(--accent);margin-top:8px;}
+.dep-hint{font-size:9pt;color:var(--muted);margin-top:4px;}
+
+/* CALENDAR */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cal-month{font-size:14pt;font-weight:700;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day-hd{text-align:center;font-size:8pt;font-weight:700;color:var(--muted);padding:6px 0;text-transform:uppercase;}
+.cal-day{min-height:64px;border-radius:8px;padding:6px;cursor:pointer;border:1.5px solid transparent;transition:all 0.12s;background:var(--surface2);position:relative;}
+.cal-day:hover:not(.cal-empty):not(.cal-past){border-color:var(--accent);background:var(--surface3);}
+.cal-day.cal-empty{background:transparent;cursor:default;}
+.cal-day.cal-past{opacity:0.35;cursor:default;}
+.cal-day.cal-today{border-color:var(--accent);background:rgba(200,160,80,0.08);}
+.cal-day .day-num{font-size:9.5pt;font-weight:700;margin-bottom:3px;}
+.cal-day.cal-today .day-num{color:var(--accent);}
+.booking-chip{font-size:7pt;padding:2px 5px;border-radius:4px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.chip-bach{background:rgba(96,165,250,0.25);color:var(--blue);border:1px solid rgba(96,165,250,0.3);}
+.chip-cuong{background:rgba(167,139,250,0.25);color:var(--purple);border:1px solid rgba(167,139,250,0.3);}
+
+/* BOOKING MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;width:420px;max-width:94vw;max-height:90vh;overflow-y:auto;}
+.modal h3{font-size:14pt;font-weight:700;margin-bottom:16px;}
+.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
+
+/* LEDGER TABLE */
+.ledger-table{width:100%;border-collapse:collapse;font-size:10pt;}
+.ledger-table th{background:var(--surface2);padding:10px 12px;text-align:left;font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--border);}
+.ledger-table td{padding:9px 12px;border-bottom:1px solid var(--border);}
+.ledger-table tr:last-child td{border-bottom:none;}
+.ledger-table tr:hover td{background:var(--surface2);}
+.td-car{font-weight:700;}
+.td-user{font-size:9pt;}
+.td-amount{font-weight:700;text-align:right;}
+.td-amount.debit{color:var(--red);}
+.td-amount.credit{color:var(--green);}
+
+/* SUMMARY BAR */
+.summary-bar{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:16px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.sb-item{flex:1;min-width:120px;}
+.sb-label{font-size:8pt;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;font-weight:700;}
+.sb-val{font-size:15pt;font-weight:700;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1c1c2e;border:1px solid var(--accent);border-radius:10px;padding:10px 20px;font-size:10pt;font-weight:600;color:var(--accent);display:none;z-index:500;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+.toast.show{display:block;}
+
+/* CAR SELECTOR */
+.car-selector{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.cs-pill{padding:7px 14px;border-radius:10px;background:var(--surface2);border:1.5px solid var(--border);cursor:pointer;font-size:10pt;font-weight:600;transition:all 0.15s;}
+.cs-pill.active{background:rgba(200,160,80,0.15);border-color:var(--accent);color:var(--accent);}
+.cs-pill:hover:not(.active){border-color:var(--muted);}
+
+/* MONTH SELECTOR */
+.month-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.ms-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;}
+.ms-card h4{font-size:9.5pt;font-weight:700;margin-bottom:10px;}
+.ms-row{display:flex;justify-content:space-between;padding:4px 0;font-size:10pt;border-bottom:1px solid var(--border);}
+.ms-row:last-child{border-bottom:none;}
+.ms-total{font-weight:700;font-size:11pt;color:var(--accent);}
+
+/* USER BADGE */
+.user-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:8px;font-size:9pt;font-weight:700;}
+.ub-bach{background:rgba(96,165,250,0.15);color:var(--blue);}
+.ub-cuong{background:rgba(167,139,250,0.15);color:var(--purple);}
+
+@media(max-width:600px){
+  .car-grid{grid-template-columns:1fr;}
+  .form-row,.form-row-3{grid-template-columns:1fr;}
+  .pool-summary{grid-template-columns:1fr 1fr;}
+  .month-summary-grid{grid-template-columns:1fr;}
+  .nav-tabs{gap:2px;}.nav-tab{padding:6px 10px;font-size:9pt;}
+  .cal-day{min-height:48px;padding:4px;}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-logo">🚗 Zephyra <span>Car Pool</span></div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('fleet')">🚗 Fleet</div>
+    <div class="nav-tab" onclick="showPage('book')">📅 Booking</div>
+    <div class="nav-tab" onclick="showPage('ledger')">💰 Ledger</div>
+    <div class="nav-tab" onclick="showPage('settings')">⚙️ Settings</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- PAGE: FLEET -->
+<div class="page active" id="page-fleet">
+  <div class="sec-hd">
+    <div class="tag">Zephyra Car Pool</div>
+    <h2>Fleet Overview</h2>
+    <p>4 xe · Deposit anh Bach: <strong id="deposit-display" style="color:var(--accent);">550,000,000 ₫</strong></p>
+  </div>
+
+  <div class="pool-summary">
+    <div class="ps-item"><div class="ps-num" id="ps-cars">4</div><div class="ps-label">Xe trong pool</div></div>
+    <div class="ps-item"><div class="ps-num" id="ps-balance" style="color:var(--green);">550M</div><div class="ps-label">Số dư deposit</div></div>
+    <div class="ps-item"><div class="ps-num" id="ps-month-spend">0</div><div class="ps-label">Chi tháng này (₫)</div></div>
+  </div>
+
+  <div class="car-grid" id="car-grid"></div>
+</div>
+
+<!-- PAGE: BOOKING -->
+<div class="page" id="page-book">
+  <div class="sec-hd">
+    <div class="tag">Booking Calendar</div>
+    <h2>Book a Car</h2>
+    <p>Click vào ngày để đặt xe. Drag không cần — chọn ngày bắt đầu & kết thúc trong form.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Filter xe</div>
+    <div class="car-selector" id="cal-car-filter"></div>
+  </div>
+
+  <div class="card">
+    <div class="cal-header">
+      <button class="btn btn-ghost btn-sm" onclick="prevMonth()">‹ Trước</button>
+      <div class="cal-month" id="cal-month-label"></div>
+      <button class="btn btn-ghost btn-sm" onclick="nextMonth()">Tiếp ›</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title">Quick Book</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Người đặt</label>
+        <select class="form-input" id="qb-user">
+          <option value="bach">🔵 Anh Bach</option>
+          <option value="cuong">🟣 Anh Cường</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Xe</label>
+        <select class="form-input" id="qb-car"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Từ ngày</label>
+        <input type="date" class="form-input" id="qb-from" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Đến ngày</label>
+        <input type="date" class="form-input" id="qb-to" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Ghi chú (tuỳ chọn)</label>
+      <input type="text" class="form-input" id="qb-note" placeholder="Đi đâu, dịp gì..." />
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="btn btn-gold" onclick="quickBook()">✅ Xác nhận đặt xe</button>
+      <div id="qb-cost" style="font-size:10.5pt;color:var(--accent);font-weight:700;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: LEDGER -->
+<div class="page" id="page-ledger">
+  <div class="sec-hd">
+    <div class="tag">Ledger</div>
+    <h2>Sao kê & Tổng hợp tháng</h2>
+  </div>
+
+  <div class="summary-bar">
+    <div class="sb-item">
+      <div class="sb-label">Deposit ban đầu</div>
+      <div class="sb-val" style="color:var(--green);" id="led-deposit">550,000,000 ₫</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-label">Tổng đã dùng</div>
+      <div class="sb-val" style="color:var(--red);" id="led-total-used">0 ₫</div>
+    </div>
+    <div class="sb-item">
+      <div class="sb-label">Số dư còn lại</div>
+      <div class="sb-val" style="color:var(--accent);" id="led-balance">550,000,000 ₫</div>
+    </div>
+  </div>
+
+  <!-- Month filter -->
+  <div class="card" style="margin-bottom:14px;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div>
+        <label class="form-label" style="margin-bottom:4px;">Lọc theo tháng</label>
+        <select class="form-input" id="led-month-filter" style="width:auto;" onchange="renderLedger()">
+          <option value="all">Tất cả</option>
+        </select>
+      </div>
+      <div style="margin-left:auto;">
+        <button class="btn btn-gold btn-sm" onclick="consolidateMonth()">📊 Tổng kết tháng này</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Month breakdown -->
+  <div class="month-summary-grid" id="month-summary-grid" style="display:none;"></div>
+
+  <div class="card">
+    <div class="card-title">Chi tiết booking</div>
+    <div style="overflow-x:auto;">
+      <table class="ledger-table">
+        <thead>
+          <tr>
+            <th>Ngày</th>
+            <th>Người dùng</th>
+            <th>Xe</th>
+            <th>Số ngày</th>
+            <th>Daily Rate</th>
+            <th class="td-amount">Thành tiền</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="ledger-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: SETTINGS -->
+<div class="page" id="page-settings">
+  <div class="sec-hd">
+    <div class="tag">Settings</div>
+    <h2>Cài đặt Fleet & Deposit</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💰 Deposit anh Bach</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Số tiền deposit (VND)</label>
+        <input type="number" class="form-input" id="set-deposit" value="550000000" step="1000000" />
+      </div>
+    </div>
+    <button class="btn btn-gold btn-sm" onclick="saveDeposit()">Lưu</button>
+  </div>
+
+  <div id="car-settings-list"></div>
+
+  <div class="card" style="border:1.5px dashed var(--accent);">
+    <div class="card-title">➕ Thêm xe mới</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Tên xe *</label>
+        <input type="text" class="form-input" id="new-name" placeholder="BMW M6" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Năm sản xuất</label>
+        <input type="number" class="form-input" id="new-year" placeholder="2018" />
+      </div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label class="form-label">Giá trị xe (VND)</label>
+        <input type="number" class="form-input" id="new-value" placeholder="2500000000" step="10000000" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Depreciation %/năm</label>
+        <input type="number" class="form-input" id="new-dep" placeholder="15" step="0.5" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Daily Rate (VND) — override</label>
+        <input type="number" class="form-input" id="new-rate" placeholder="Auto từ depreciation" step="50000" />
+      </div>
+    </div>
+    <div class="dep-box" id="new-dep-preview" style="display:none;">
+      <div style="font-size:9.5pt;color:var(--muted);">Depreciation estimate:</div>
+      <div class="dep-result" id="new-dep-result"></div>
+      <div class="dep-hint">= Giá trị × Dep%/năm ÷ 365 ngày</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button class="btn btn-gold" onclick="addCar()">➕ Thêm xe</button>
+      <button class="btn btn-ghost" onclick="clearNewCar()">Clear</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING DETAIL MODAL -->
+<div class="modal-overlay" id="modal-booking">
+  <div class="modal">
+    <h3 id="modal-title">📅 Chi tiết Booking</h3>
+    <div id="modal-content"></div>
+    <div class="modal-actions">
+      <button class="btn btn-danger btn-sm" id="modal-delete-btn" onclick="deleteBookingModal()">🗑 Huỷ booking</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const DEFAULT_CARS = [
+  { id:'c1', name:'Porsche Cayenne', year:2015, emoji:'🏔', value:1800000000, dep:15, rate:0, color:'#f59e0b' },
+  { id:'c2', name:'BMW Z4',          year:2018, emoji:'🏎', value:1200000000, dep:18, rate:0, color:'#60a5fa' },
+  { id:'c3', name:'BMW M6',          year:2016, emoji:'💙', value:1600000000, dep:15, rate:0, color:'#8b5cf6' },
+  { id:'c4', name:'BMW 420i',        year:2019, emoji:'⚡', value:900000000,  dep:18, rate:0, color:'#34d399' },
+];
+
+let state = { cars: [], bookings: [], deposit: 550000000, filterCar: 'all' };
+let calYear, calMonth, modalBookingId = null;
+
+const fmt = n => new Intl.NumberFormat('vi-VN').format(Math.round(n));
+const fmtM = n => n >= 1e9 ? (n/1e9).toFixed(2)+'B' : n >= 1e6 ? Math.round(n/1e6)+'M' : fmt(n);
+const uuid = () => crypto.randomUUID();
+const today = new Date();
+
+// ═══════════════════════════════════════
+// DAILY RATE CALC
+// ═══════════════════════════════════════
+function calcRate(car) {
+  if (car.rate > 0) return car.rate;
+  if (car.value > 0 && car.dep > 0) return Math.round(car.value * (car.dep / 100) / 365);
+  return 0;
+}
+
+// ═══════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════
+function save() { localStorage.setItem('zephyra-v1', JSON.stringify(state)); }
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem('zephyra-v1') || '{}');
+    if (d.cars && d.cars.length) state.cars = d.cars;
+    else state.cars = DEFAULT_CARS;
+    state.bookings = d.bookings || [];
+    state.deposit = d.deposit ?? 550000000;
+  } catch(e) { state.cars = DEFAULT_CARS; }
+}
+
+// ═══════════════════════════════════════
+// PAGE NAV
+// ═══════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'book') renderCalendar();
+  if (id === 'ledger') { renderLedger(); populateMonthFilter(); }
+  if (id === 'settings') renderSettings();
+  if (id === 'fleet') renderFleet();
+}
+
+// ═══════════════════════════════════════
+// FLEET PAGE
+// ═══════════════════════════════════════
+function renderFleet() {
+  const grid = document.getElementById('car-grid');
+  grid.innerHTML = state.cars.map(car => {
+    const rate = calcRate(car);
+    const todayBookings = state.bookings.filter(b => {
+      const from = new Date(b.from), to = new Date(b.to);
+      const now = new Date(); now.setHours(0,0,0,0);
+      return b.carId === car.id && from <= now && to >= now;
+    });
+    const avail = todayBookings.length === 0;
+    return `<div class="car-card">
+      <div class="car-emoji">${car.emoji}</div>
+      <div class="cc-name">${car.name}</div>
+      <div class="cc-year">${car.year}</div>
+      <div class="cc-rate">${fmtM(rate)} ₫</div>
+      <div class="cc-rate-label">/ ngày${car.rate > 0 ? ' (custom)' : car.dep > 0 ? ` (auto dep ${car.dep}%/yr)` : ''}</div>
+      ${car.value > 0 ? `<div style="font-size:9pt;color:var(--muted);margin-top:4px;">Giá trị: ${fmtM(car.value)} ₫</div>` : ''}
+      <div class="cc-avail ${avail ? 'avail-yes' : 'avail-no'}">${avail ? '✅ Sẵn sàng' : '🚫 Đang dùng hôm nay'}</div>
+    </div>`;
+  }).join('');
+
+  // update pool summary
+  const totalSpent = state.bookings.reduce((sum, b) => {
+    const car = state.cars.find(c => c.id === b.carId);
+    if (!car) return sum;
+    return sum + b.days * calcRate(car);
+  }, 0);
+  const balance = state.deposit - totalSpent;
+
+  document.getElementById('deposit-display').textContent = fmtM(state.deposit) + ' ₫';
+  document.getElementById('ps-balance').textContent = fmtM(balance);
+  document.getElementById('ps-balance').style.color = balance < 50000000 ? 'var(--red)' : 'var(--green)';
+
+  // month spend
+  const nm = today.getMonth(), ny = today.getFullYear();
+  const monthSpent = state.bookings.filter(b => {
+    const d = new Date(b.from);
+    return d.getMonth() === nm && d.getFullYear() === ny;
+  }).reduce((sum, b) => {
+    const car = state.cars.find(c => c.id === b.carId);
+    return sum + (car ? b.days * calcRate(car) : 0);
+  }, 0);
+  document.getElementById('ps-month-spend').textContent = fmtM(monthSpent);
+}
+
+// ═══════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════
+function initCal() {
+  calYear = today.getFullYear();
+  calMonth = today.getMonth();
+}
+
+function prevMonth() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
+function nextMonth() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
+
+function renderCalendar() {
+  const monthNames = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+  document.getElementById('cal-month-label').textContent = `${monthNames[calMonth]} ${calYear}`;
+
+  // Filter
+  const filterEl = document.getElementById('cal-car-filter');
+  filterEl.innerHTML = `<div class="cs-pill ${state.filterCar==='all'?'active':''}" onclick="setCarFilter('all')">Tất cả xe</div>` +
+    state.cars.map(c => `<div class="cs-pill ${state.filterCar===c.id?'active':''}" onclick="setCarFilter('${c.id}')">${c.emoji} ${c.name}</div>`).join('');
+
+  // Quick book car select
+  const qbCar = document.getElementById('qb-car');
+  qbCar.innerHTML = state.cars.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
+
+  const grid = document.getElementById('cal-grid');
+  const dayHds = ['CN','T2','T3','T4','T5','T6','T7'].map(d => `<div class="cal-day-hd">${d}</div>`).join('');
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  let html = dayHds;
+  for (let i = 0; i < firstDay; i++) html += '<div class="cal-day cal-empty"></div>';
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear();
+    const isPast = new Date(dateStr) < new Date(today.toDateString());
+
+    // Bookings on this day
+    const dayBookings = state.bookings.filter(b => {
+      if (state.filterCar !== 'all' && b.carId !== state.filterCar) return false;
+      return dateStr >= b.from && dateStr <= b.to;
+    });
+
+    const chips = dayBookings.map(b => {
+      const car = state.cars.find(c => c.id === b.carId);
+      const cls = b.user === 'bach' ? 'chip-bach' : 'chip-cuong';
+      const name = b.user === 'bach' ? 'Bach' : 'Cường';
+      return `<div class="booking-chip ${cls}" onclick="event.stopPropagation();showBookingDetail('${b.id}')">${car?.emoji||''} ${name}</div>`;
+    }).join('');
+
+    html += `<div class="cal-day ${isToday?'cal-today':''} ${isPast?'cal-past':''}" onclick="!${isPast}&&clickDay('${dateStr}')">
+      <div class="day-num">${d}</div>${chips}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function setCarFilter(id) { state.filterCar = id; renderCalendar(); }
+
+function clickDay(dateStr) {
+  document.getElementById('qb-from').value = dateStr;
+  document.getElementById('qb-to').value = dateStr;
+  updateQbCost();
+  document.getElementById('qb-from').focus();
+}
+
+function updateQbCost() {
+  const from = document.getElementById('qb-from').value;
+  const to = document.getElementById('qb-to').value;
+  const carId = document.getElementById('qb-car').value;
+  if (!from || !to || !carId) return;
+  const days = Math.max(1, Math.round((new Date(to) - new Date(from)) / 86400000) + 1);
+  const car = state.cars.find(c => c.id === carId);
+  if (!car) return;
+  const rate = calcRate(car);
+  document.getElementById('qb-cost').textContent = `${days} ngày × ${fmt(rate)} ₫ = ${fmt(days * rate)} ₫`;
+}
+
+['qb-from','qb-to','qb-car'].forEach(id => {
+  document.getElementById(id)?.addEventListener('change', updateQbCost);
+});
+
+function quickBook() {
+  const user = document.getElementById('qb-user').value;
+  const carId = document.getElementById('qb-car').value;
+  const from = document.getElementById('qb-from').value;
+  const to = document.getElementById('qb-to').value;
+  const note = document.getElementById('qb-note').value.trim();
+  if (!from || !to || !carId) return showToast('⚠️ Điền đầy đủ thông tin');
+  if (from > to) return showToast('⚠️ Ngày về phải sau ngày đi');
+  const days = Math.round((new Date(to) - new Date(from)) / 86400000) + 1;
+  const car = state.cars.find(c => c.id === carId);
+  const rate = calcRate(car);
+
+  // Check conflicts
+  const conflict = state.bookings.find(b => b.carId === carId && !(to < b.from || from > b.to));
+  if (conflict) return showToast('❌ Xe đã có booking trong khoảng này!');
+
+  state.bookings.push({ id: uuid(), user, carId, from, to, days, rate, note, createdAt: new Date().toISOString() });
+  save();
+  renderCalendar();
+  renderLedger();
+  updateFleetSummary();
+  showToast(`✅ Đã book ${car.emoji} ${car.name} · ${days} ngày · ${fmt(days*rate)} ₫`);
+  document.getElementById('qb-from').value = '';
+  document.getElementById('qb-to').value = '';
+  document.getElementById('qb-note').value = '';
+  document.getElementById('qb-cost').textContent = '';
+}
+
+// ═══════════════════════════════════════
+// BOOKING DETAIL MODAL
+// ═══════════════════════════════════════
+function showBookingDetail(bookingId) {
+  const b = state.bookings.find(x => x.id === bookingId);
+  if (!b) return;
+  const car = state.cars.find(c => c.id === b.carId);
+  modalBookingId = bookingId;
+  document.getElementById('modal-title').textContent = `${car?.emoji||'🚗'} ${car?.name||'Xe'} — Chi tiết`;
+  document.getElementById('modal-content').innerHTML = `
+    <div style="display:grid;gap:10px;">
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+        <div style="font-size:9pt;color:var(--muted);margin-bottom:4px;">NGƯỜI DÙNG</div>
+        <span class="user-badge ${b.user==='bach'?'ub-bach':'ub-cuong'}">${b.user==='bach'?'🔵 Anh Bach':'🟣 Anh Cường'}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+          <div style="font-size:9pt;color:var(--muted);margin-bottom:2px;">TỪ NGÀY</div>
+          <div style="font-weight:700;">${b.from}</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+          <div style="font-size:9pt;color:var(--muted);margin-bottom:2px;">ĐẾN NGÀY</div>
+          <div style="font-weight:700;">${b.to}</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+        <div style="font-size:9pt;color:var(--muted);margin-bottom:4px;">CHI PHÍ</div>
+        <div style="font-size:16pt;font-weight:700;color:var(--accent);">${fmt(b.days * calcRate(car||{}))} ₫</div>
+        <div style="font-size:9pt;color:var(--muted);">${b.days} ngày × ${fmt(calcRate(car||{}))} ₫/ngày</div>
+      </div>
+      ${b.note ? `<div style="background:var(--surface2);border-radius:8px;padding:12px;"><div style="font-size:9pt;color:var(--muted);margin-bottom:2px;">GHI CHÚ</div><div>${b.note}</div></div>` : ''}
+    </div>`;
+  document.getElementById('modal-booking').classList.add('show');
+}
+
+function deleteBookingModal() {
+  if (!modalBookingId) return;
+  if (!confirm('Huỷ booking này?')) return;
+  state.bookings = state.bookings.filter(b => b.id !== modalBookingId);
+  save(); renderCalendar(); renderLedger(); updateFleetSummary();
+  closeModal(); showToast('🗑 Đã huỷ booking');
+}
+
+function closeModal() { document.getElementById('modal-booking').classList.remove('show'); }
+document.getElementById('modal-booking').addEventListener('click', e => { if (e.target.id === 'modal-booking') closeModal(); });
+
+// ═══════════════════════════════════════
+// LEDGER
+// ═══════════════════════════════════════
+function populateMonthFilter() {
+  const sel = document.getElementById('led-month-filter');
+  const months = [...new Set(state.bookings.map(b => b.from.slice(0,7)))].sort().reverse();
+  const cur = sel.value;
+  sel.innerHTML = '<option value="all">Tất cả</option>' + months.map(m => `<option value="${m}" ${m===cur?'selected':''}>${m}</option>`).join('');
+}
+
+function renderLedger() {
+  const filter = document.getElementById('led-month-filter')?.value || 'all';
+  let bookings = [...state.bookings].sort((a,b) => b.from.localeCompare(a.from));
+  if (filter !== 'all') bookings = bookings.filter(b => b.from.startsWith(filter));
+
+  const totalUsed = state.bookings.reduce((sum, b) => {
+    const car = state.cars.find(c => c.id === b.carId);
+    return sum + (car ? b.days * calcRate(car) : 0);
+  }, 0);
+  const balance = state.deposit - totalUsed;
+
+  document.getElementById('led-deposit').textContent = fmt(state.deposit) + ' ₫';
+  document.getElementById('led-total-used').textContent = fmt(totalUsed) + ' ₫';
+  document.getElementById('led-balance').textContent = fmt(balance) + ' ₫';
+  document.getElementById('led-balance').style.color = balance < 50000000 ? 'var(--red)' : 'var(--accent)';
+
+  const tbody = document.getElementById('ledger-body');
+  if (bookings.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Chưa có booking</td></tr>';
+    return;
+  }
+  tbody.innerHTML = bookings.map(b => {
+    const car = state.cars.find(c => c.id === b.carId);
+    const rate = car ? calcRate(car) : 0;
+    const total = b.days * rate;
+    const userBadge = b.user === 'bach'
+      ? '<span class="user-badge ub-bach">🔵 Bach</span>'
+      : '<span class="user-badge ub-cuong">🟣 Cường</span>';
+    return `<tr>
+      <td>${b.from}${b.from !== b.to ? ' → ' + b.to : ''}</td>
+      <td>${userBadge}</td>
+      <td class="td-car">${car?.emoji||''} ${car?.name||'?'}</td>
+      <td style="text-align:center;">${b.days}</td>
+      <td>${fmt(rate)} ₫</td>
+      <td class="td-amount debit">−${fmt(total)} ₫</td>
+      <td><button class="btn btn-ghost btn-xs" onclick="showBookingDetail('${b.id}')">Chi tiết</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function consolidateMonth() {
+  const nm = today.getMonth(), ny = today.getFullYear();
+  const monthLabel = `${ny}-${String(nm+1).padStart(2,'0')}`;
+  const bMonthly = state.bookings.filter(b => b.from.startsWith(monthLabel));
+
+  if (bMonthly.length === 0) { showToast('Chưa có booking tháng này'); return; }
+
+  const byUser = { bach: 0, cuong: 0 };
+  const byCar = {};
+  bMonthly.forEach(b => {
+    const car = state.cars.find(c => c.id === b.carId);
+    const cost = b.days * (car ? calcRate(car) : 0);
+    byUser[b.user] = (byUser[b.user] || 0) + cost;
+    const cname = car?.name || '?';
+    byCar[cname] = (byCar[cname] || 0) + cost;
+  });
+
+  const grid = document.getElementById('month-summary-grid');
+  grid.style.display = 'grid';
+  grid.innerHTML = `
+    <div class="ms-card">
+      <h4>👥 Theo người dùng — ${monthLabel}</h4>
+      ${Object.entries(byUser).filter(([,v])=>v>0).map(([u,v])=>`
+        <div class="ms-row"><span>${u==='bach'?'🔵 Anh Bach':'🟣 Anh Cường'}</span><span class="ms-total">${fmt(v)} ₫</span></div>
+      `).join('')}
+      <div class="ms-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--accent);"><span><strong>Tổng tháng</strong></span><span class="ms-total">${fmt(Object.values(byUser).reduce((a,b)=>a+b,0))} ₫</span></div>
+    </div>
+    <div class="ms-card">
+      <h4>🚗 Theo xe — ${monthLabel}</h4>
+      ${Object.entries(byCar).map(([name,v])=>`
+        <div class="ms-row"><span>${name}</span><span class="ms-total">${fmt(v)} ₫</span></div>
+      `).join('')}
+    </div>`;
+  showToast(`📊 Tổng kết ${monthLabel}: ${fmt(bMonthly.reduce((s,b)=>{const c=state.cars.find(x=>x.id===b.carId);return s+b.days*calcRate(c||{});},0))} ₫`);
+}
+
+// ═══════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════
+function saveDeposit() {
+  state.deposit = parseInt(document.getElementById('set-deposit').value) || 550000000;
+  save(); updateFleetSummary();
+  showToast('✅ Đã lưu deposit: ' + fmtM(state.deposit) + ' ₫');
+}
+
+function renderSettings() {
+  const list = document.getElementById('car-settings-list');
+  list.innerHTML = state.cars.map((car, idx) => `
+    <div class="card" style="border-left:3px solid ${car.color};">
+      <div class="card-title">${car.emoji} ${car.name} ${car.year}</div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label class="form-label">Giá trị xe (VND)</label>
+          <input type="number" class="form-input" id="s-val-${idx}" value="${car.value||''}" step="10000000"
+            oninput="updateDepPreview(${idx})" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Depreciation %/năm</label>
+          <input type="number" class="form-input" id="s-dep-${idx}" value="${car.dep||''}" step="0.5"
+            oninput="updateDepPreview(${idx})" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Daily Rate — override (0 = auto)</label>
+          <input type="number" class="form-input" id="s-rate-${idx}" value="${car.rate||''}" step="50000"
+            oninput="updateDepPreview(${idx})" />
+        </div>
+      </div>
+      <div class="dep-box">
+        <div style="font-size:9pt;color:var(--muted);">Daily rate hiện tại:</div>
+        <div class="dep-result" id="dep-preview-${idx}">${fmt(calcRate(car))} ₫/ngày</div>
+        <div class="dep-hint">Override > 0 → dùng override. Override = 0 → tính từ depreciation.</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <button class="btn btn-gold btn-sm" onclick="saveCar(${idx})">💾 Lưu</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCar('${car.id}')">🗑 Xoá xe</button>
+      </div>
+    </div>`).join('');
+}
+
+function updateDepPreview(idx) {
+  const val = parseFloat(document.getElementById(`s-val-${idx}`)?.value) || 0;
+  const dep = parseFloat(document.getElementById(`s-dep-${idx}`)?.value) || 0;
+  const rate = parseFloat(document.getElementById(`s-rate-${idx}`)?.value) || 0;
+  const computed = rate > 0 ? rate : (val > 0 && dep > 0 ? Math.round(val * dep/100 / 365) : 0);
+  const el = document.getElementById(`dep-preview-${idx}`);
+  if (el) el.textContent = fmt(computed) + ' ₫/ngày' + (rate > 0 ? ' (custom)' : ' (auto dep)');
+}
+
+function saveCar(idx) {
+  const car = state.cars[idx];
+  car.value = parseFloat(document.getElementById(`s-val-${idx}`)?.value) || 0;
+  car.dep = parseFloat(document.getElementById(`s-dep-${idx}`)?.value) || 0;
+  car.rate = parseFloat(document.getElementById(`s-rate-${idx}`)?.value) || 0;
+  save(); renderFleet();
+  showToast(`✅ Đã lưu ${car.name}: ${fmt(calcRate(car))} ₫/ngày`);
+}
+
+function deleteCar(id) {
+  if (!confirm('Xoá xe này khỏi fleet?')) return;
+  state.cars = state.cars.filter(c => c.id !== id);
+  save(); renderSettings(); renderFleet();
+  showToast('🗑 Đã xoá xe');
+}
+
+// ─── New car depreciation preview ───
+['new-value','new-dep','new-rate'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', () => {
+    const val = parseFloat(document.getElementById('new-value').value) || 0;
+    const dep = parseFloat(document.getElementById('new-dep').value) || 0;
+    const rate = parseFloat(document.getElementById('new-rate').value) || 0;
+    const computed = rate > 0 ? rate : (val > 0 && dep > 0 ? Math.round(val * dep/100/365) : 0);
+    const box = document.getElementById('new-dep-preview');
+    const res = document.getElementById('new-dep-result');
+    if (computed > 0) {
+      box.style.display = 'block';
+      res.textContent = fmt(computed) + ' ₫/ngày' + (rate > 0 ? ' (custom)' : ' (auto từ depreciation)');
+    } else { box.style.display = 'none'; }
+  });
+});
+
+function addCar() {
+  const name = document.getElementById('new-name').value.trim();
+  if (!name) return showToast('⚠️ Nhập tên xe');
+  const EMOJIS = ['🚗','🏎','🚙','⚡','💎','🏆','🔥'];
+  const COLORS = ['#f59e0b','#60a5fa','#8b5cf6','#34d399','#f472b6','#fb923c','#22d3ee'];
+  const idx = state.cars.length % EMOJIS.length;
+  state.cars.push({
+    id: uuid(),
+    name,
+    year: parseInt(document.getElementById('new-year').value) || new Date().getFullYear(),
+    emoji: EMOJIS[idx],
+    color: COLORS[idx],
+    value: parseFloat(document.getElementById('new-value').value) || 0,
+    dep: parseFloat(document.getElementById('new-dep').value) || 0,
+    rate: parseFloat(document.getElementById('new-rate').value) || 0,
+  });
+  save(); clearNewCar(); renderSettings(); renderFleet();
+  showToast('✅ Đã thêm xe: ' + name);
+}
+
+function clearNewCar() {
+  ['new-name','new-year','new-value','new-dep','new-rate'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('new-dep-preview').style.display = 'none';
+}
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function updateFleetSummary() { if (document.getElementById('page-fleet').classList.contains('active')) renderFleet(); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+load();
+initCal();
+// Set today as default dates
+const td = today.toISOString().split('T')[0];
+document.getElementById('qb-from').value = td;
+document.getElementById('qb-to').value = td;
+renderFleet();
+</script>
+</body>
+</html>
