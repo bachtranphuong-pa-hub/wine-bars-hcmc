@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Prj_TC Deal Summary</title>
+<style>
+  body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1a1a1a; max-width: 800px; margin: 32px auto; padding: 0 20px; background: #fff; }
+  h2 { font-size: 13pt; color: #1a3a5c; border-bottom: 2px solid #1a3a5c; padding-bottom: 6px; margin-top: 24px; margin-bottom: 12px; }
+  .section { margin-bottom: 20px; }
+
+  /* GIÁ BLOCK */
+  .price-block { font-family: Consolas, 'Courier New', monospace; font-size: 10.5pt; background: #f7f9fc; border: 1px solid #d0dce8; border-radius: 4px; padding: 14px 18px; line-height: 2; }
+  .price-row { display: flex; justify-content: space-between; }
+  .price-row.total { font-weight: bold; border-top: 1px solid #1a3a5c; margin-top: 4px; padding-top: 6px; color: #1a3a5c; }
+  .note-small { font-size: 9.5pt; color: #666; margin-top: 8px; font-style: italic; font-family: Calibri, Arial, sans-serif; }
+
+  /* RISK TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 10.5pt; }
+  th { background: #1a3a5c; color: white; padding: 9px 12px; text-align: left; font-weight: 600; }
+  td { padding: 9px 12px; vertical-align: top; border-bottom: 1px solid #e5eaf0; }
+  tr:nth-child(even) td { background: #f7f9fc; }
+  tr:hover td { background: #eef3f9; }
+  .prob { font-weight: 700; white-space: nowrap; }
+  .prob-cao { color: #c0392b; }
+  .prob-tb { color: #d35400; }
+  .prob-thap { color: #27ae60; }
+  .prob-sure { color: #2471a3; }
+  .cp-badge { display: inline-block; background: #fde8e8; color: #c0392b; font-size: 8.5pt; font-weight: 700; padding: 1px 7px; border-radius: 3px; margin-left: 4px; white-space: nowrap; }
+
+  /* UPSIDE */
+  .upside-list { margin: 0; padding-left: 18px; line-height: 1.9; }
+  .upside-list li { color: #1a5c3a; }
+
+  /* FOOTER */
+  .footer { font-size: 9pt; color: #999; margin-top: 28px; padding-top: 10px; border-top: 1px solid #e5eaf0; }
+</style>
+</head>
+<body>
+
+<h1 style="font-size:15pt; color:#1a3a5c; margin-bottom:4px;">[Prj_TC] Lam Ngọc Villas — Deal Summary</h1>
+<p style="color:#666; font-size:10pt; margin-top:0;">Báo cáo anh Quang · 08/04/2026</p>
+
+<!-- DỰ ÁN -->
+<div class="section">
+  <h2>DỰ ÁN</h2>
+  <p>Mua lại <strong>100% vốn góp</strong> Công ty Jen Tuần Châu (18 biệt thự biển, 15,966 m², Tuần Châu – Hạ Long) từ Jen Capital Vietnam (51%) + Đảo Ngọc (49%) thông qua <strong>NewCo mới thành lập</strong>. Trạng thái T2/2026: 1 nhà mẫu hoàn thiện, còn lại sẵn sàng khởi công. Closing dự kiến <strong>Q3/2026</strong>, thanh toán 3 đợt qua escrow.</p>
+</div>
+
+<!-- GIÁ -->
+<div class="section">
+  <h2>GIÁ ĐÀM PHÁN</h2>
+  <div class="price-block">
+    <div class="price-row"><span>Giá chào ban đầu</span><span>786 tỷ &nbsp;/&nbsp; $30.0M</span></div>
+    <div class="price-row"><span>− Điều chỉnh pháp lý <em style="font-size:9pt;color:#888;">(đàm phán, chưa chắc chắn)</em></span><span style="color:#c0392b;">−103.3 tỷ &nbsp;/&nbsp; −$3.94M</span></div>
+    <div class="price-row"><span>− Điều chỉnh tài chính &amp; thuế <em style="font-size:9pt;color:#888;">(EY xác nhận, cứng)</em></span><span style="color:#c0392b;">−18.3 tỷ &nbsp;/&nbsp; −$0.70M</span></div>
+    <div class="price-row total"><span>Giá đề xuất</span><span>664.4 tỷ &nbsp;/&nbsp; $25.5M</span></div>
+  </div>
+  <p class="note-small">Tỷ giá áp dụng: 26,200 VNĐ/USD</p>
+</div>
+
+<!-- RISK TABLE -->
+<div class="section">
+  <h2>RỦI RO · XÁC SUẤT · GIẢI PHÁP</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:38%;">Vấn đề</th>
+        <th style="width:12%;">Xác suất</th>
+        <th style="width:50%;">Giải pháp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GCN QSDĐ sai lệch 138 m² → có thể phát sinh tiền sử dụng đất bổ sung</td>
+        <td><span class="prob prob-cao">CAO</span></td>
+        <td>Bên Bán cập nhật + chuyển tên sang Jen Tuần Châu trước Closing <span class="cp-badge">CP bắt buộc</span></td>
+      </tr>
+      <tr>
+        <td>Chưa có Thông báo khởi công trước 1/1/2026 → nguy cơ mất điều kiện miễn GPXD (LXD 2025)</td>
+        <td><span class="prob prob-cao">CAO</span></td>
+        <td>Bên Bán xin xác nhận Sở XD. Nếu không được: RCC tự làm, khấu trừ ~1–2 tỷ vào giá <span class="cp-badge">CP bắt buộc</span></td>
+      </tr>
+      <tr>
+        <td>Hạ tầng dùng chung 17,311 m² thuộc T&amp;H → bàn giao phụ thuộc tiến độ T&amp;H</td>
+        <td><span class="prob prob-cao">CAO</span></td>
+        <td>Ký thỏa thuận kế thừa + biểu phí vận hành với T&amp;H Hạ Long trước Closing <span class="cp-badge">CP bắt buộc</span></td>
+      </tr>
+      <tr>
+        <td>PCCC hạ tầng dùng chung chưa được nghiệm thu</td>
+        <td><span class="prob prob-cao">CAO</span><br><span style="font-size:9pt;color:#888;">(ảnh hưởng TB)</span></td>
+        <td>Bên Bán hoàn tất nghiệm thu PCCC trước Closing <span class="cp-badge">CP bắt buộc</span></td>
+      </tr>
+      <tr>
+        <td>Giao dịch góp vốn QSDĐ từ cá nhân ông Đào Anh Tuấn (2007–2011) → có thể không đúng luật</td>
+        <td><span class="prob prob-thap">THẤP</span></td>
+        <td>Ký ủy quyền + cam kết phối hợp từ ông Tuấn và T&amp;H, đưa điều khoản vào SPA</td>
+      </tr>
+      <tr>
+        <td>FCT lãi vay Jen Capital ~9.4 tỷ</td>
+        <td><span class="prob prob-tb">TB</span></td>
+        <td>Khấu trừ tại DICA khi giải tỏa escrow cho Jen Capital</td>
+      </tr>
+      <tr>
+        <td>Lỗ lũy kế −113.4 tỷ (going concern note từ Mazars)</td>
+        <td><span class="prob prob-sure">CHẮC CHẮN</span></td>
+        <td>Tự giải quyết: chuyển đổi 367 tỷ nợ cổ đông → vốn điều lệ trước Closing</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- UPSIDE -->
+<div class="section">
+  <h2>ĐIỂM TÍCH CỰC</h2>
+  <ul class="upside-list">
+    <li>50% dự án đã đầu tư (471/952 tỷ) — đất + nhà mẫu + thiết kế hoàn chỉnh</li>
+    <li>Lỗ thuế TNDN 27.4 tỷ + VAT đầu vào 6.2 tỷ → tài sản thuế dùng được khi bán hàng</li>
+    <li>Tuân thủ thuế đầy đủ FY17–FY25 (EY xác nhận)</li>
+    <li>Cam kết hợp đồng còn lại ~23.8 tỷ (Studio MK27, Campana, WT Partnership) — không có phạt chấm dứt</li>
+  </ul>
+</div>
+
+<div class="footer">
+  Tư vấn độc lập: FIIVN (pháp lý) &nbsp;·&nbsp; EY (tài chính &amp; thuế) &nbsp;·&nbsp; CBRE (định giá 31/12/2025)<br>
+  Prj_TC Deal Memo v1.1 &nbsp;·&nbsp; 08/04/2026 &nbsp;·&nbsp; Chi tiết present trực tiếp anh Quang
+</div>
+
+</body>
+</html>
