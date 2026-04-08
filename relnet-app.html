@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relnet — Relationship Network</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --bg:#0f0f23; --surface:#1a1a3e; --surface2:#252550;
+    --border:#2a2a5a; --accent:#818cf8; --accent2:#6366f1;
+    --gold:#c8a050; --text:#e2e8f0; --muted:#94a3b8;
+    --green:#34d399; --red:#f87171; --yellow:#fbbf24;
+  }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:var(--bg); color:var(--text); height:100vh; display:flex; flex-direction:column; overflow:hidden; font-size:11pt; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background:var(--surface); border-bottom:1px solid var(--border);
+    padding:10px 16px; display:flex; align-items:center; gap:12px; flex-shrink:0; z-index:10;
+  }
+  .logo { font-size:15pt; font-weight:800; color:var(--accent); letter-spacing:-0.5px; }
+  .logo span { color:var(--muted); font-weight:400; font-size:9pt; margin-left:6px; }
+  .topbar-actions { display:flex; gap:8px; margin-left:auto; }
+  .btn { padding:7px 14px; border-radius:8px; font-size:9.5pt; font-weight:600; cursor:pointer; border:none; transition:all 0.15s; }
+  .btn-primary { background:var(--accent2); color:white; }
+  .btn-primary:hover { background:#4f46e5; }
+  .btn-ghost { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+  .btn-ghost:hover { background:var(--border); }
+  .btn-danger { background:#7f1d1d; color:#fca5a5; border:1px solid #991b1b; }
+  .btn-danger:hover { background:#991b1b; }
+  .btn-sm { padding:5px 10px; font-size:9pt; }
+  .btn-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14pt; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { display:flex; flex:1; overflow:hidden; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width:270px; flex-shrink:0; background:var(--surface);
+    border-right:1px solid var(--border); display:flex; flex-direction:column;
+    overflow:hidden; transition:width 0.2s;
+  }
+  .sidebar.collapsed { width:0; }
+  .sidebar-inner { flex:1; overflow-y:auto; padding:14px; }
+  .sidebar-section { margin-bottom:20px; }
+  .sidebar-section h4 { font-size:8.5pt; text-transform:uppercase; letter-spacing:2px; color:var(--muted); font-weight:700; margin-bottom:10px; }
+  .search-box { width:100%; padding:8px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:10pt; outline:none; }
+  .search-box:focus { border-color:var(--accent); }
+  .search-box::placeholder { color:var(--muted); }
+  .stat-row { display:flex; gap:8px; }
+  .stat-item { flex:1; background:var(--surface2); border-radius:8px; padding:10px; text-align:center; border:1px solid var(--border); }
+  .stat-num { font-size:18pt; font-weight:700; color:var(--accent); line-height:1; }
+  .stat-label { font-size:8pt; color:var(--muted); margin-top:2px; }
+
+  /* TAG FILTERS */
+  .tag-filter { display:flex; flex-wrap:wrap; gap:6px; }
+  .tag-pill {
+    padding:4px 10px; border-radius:12px; font-size:9pt; font-weight:600; cursor:pointer;
+    border:1.5px solid transparent; transition:all 0.15s; user-select:none;
+  }
+  .tag-pill.active { border-color:currentColor; }
+
+  /* CONTACT LIST */
+  .contact-list { list-style:none; }
+  .contact-item {
+    padding:8px 10px; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:8px;
+    transition:background 0.12s; margin-bottom:4px;
+  }
+  .contact-item:hover { background:var(--surface2); }
+  .contact-item.selected { background:rgba(99,102,241,0.2); border:1px solid var(--accent); }
+  .ci-avatar { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10pt; font-weight:700; flex-shrink:0; }
+  .ci-name { font-size:10pt; font-weight:600; }
+  .ci-tags { font-size:8.5pt; color:var(--muted); }
+
+  /* ── GRAPH AREA ── */
+  .graph-wrap { flex:1; position:relative; overflow:hidden; }
+  #graph-svg { width:100%; height:100%; cursor:grab; }
+  #graph-svg:active { cursor:grabbing; }
+
+  /* GRAPH ELEMENTS */
+  .node-group { cursor:pointer; }
+  .node-circle { stroke-width:2.5; transition:r 0.2s; }
+  .node-label { font-size:10px; fill:white; text-anchor:middle; pointer-events:none; font-family:'Segoe UI',Arial,sans-serif; font-weight:600; }
+  .node-label-name { font-size:9px; fill:#94a3b8; text-anchor:middle; pointer-events:none; }
+  .link { stroke-opacity:0.5; fill:none; }
+  .link.strength-1 { stroke-opacity:0.2; stroke-dasharray:4,4; }
+  .link.strength-2 { stroke-opacity:0.3; }
+  .link.strength-3 { stroke-opacity:0.45; }
+  .link.strength-4 { stroke-opacity:0.6; }
+  .link.strength-5 { stroke-opacity:0.8; }
+
+  /* ── PANELS (right) ── */
+  .panel {
+    width:290px; flex-shrink:0; background:var(--surface);
+    border-left:1px solid var(--border); display:flex; flex-direction:column;
+    transform:translateX(290px); transition:transform 0.2s;
+  }
+  .panel.open { transform:translateX(0); }
+  .panel-header { padding:14px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+  .panel-header h3 { font-size:12pt; font-weight:700; flex:1; }
+  .panel-body { flex:1; overflow-y:auto; padding:16px; }
+  .form-group { margin-bottom:14px; }
+  .form-label { font-size:8.5pt; text-transform:uppercase; letter-spacing:1px; color:var(--muted); display:block; margin-bottom:5px; font-weight:700; }
+  .form-input {
+    width:100%; padding:8px 12px; background:var(--surface2); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-size:10.5pt; outline:none; font-family:inherit;
+  }
+  .form-input:focus { border-color:var(--accent); }
+  .form-input::placeholder { color:var(--muted); }
+  select.form-input { cursor:pointer; }
+  .tag-input-row { display:flex; gap:6px; }
+  .tag-input-row input { flex:1; }
+  .node-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
+  .node-tag { padding:3px 9px; border-radius:10px; font-size:9pt; font-weight:600; display:flex; align-items:center; gap:4px; }
+  .node-tag .rm { cursor:pointer; opacity:0.6; }
+  .node-tag .rm:hover { opacity:1; }
+
+  /* EDGE LIST IN PANEL */
+  .edge-list { list-style:none; }
+  .edge-item { padding:8px 10px; background:var(--surface2); border-radius:8px; margin-bottom:6px; border:1px solid var(--border); }
+  .edge-target { font-weight:600; font-size:10.5pt; }
+  .edge-meta { font-size:9pt; color:var(--muted); }
+  .strength-dots { display:inline-flex; gap:2px; }
+  .sdot { width:8px; height:8px; border-radius:50%; }
+
+  /* TOOLTIP */
+  .tooltip {
+    position:fixed; background:#1e1e4e; border:1px solid var(--border);
+    border-radius:8px; padding:10px 14px; pointer-events:none; font-size:9.5pt;
+    box-shadow:0 4px 20px rgba(0,0,0,0.5); z-index:100; max-width:200px;
+    opacity:0; transition:opacity 0.15s;
+  }
+  .tooltip.show { opacity:1; }
+  .tooltip .tt-name { font-weight:700; color:var(--text); margin-bottom:4px; }
+  .tooltip .tt-meta { color:var(--muted); font-size:9pt; }
+
+  /* MODALS */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; align-items:center; justify-content:center; }
+  .modal-overlay.show { display:flex; }
+  .modal { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px; width:420px; max-width:90vw; }
+  .modal h3 { font-size:14pt; font-weight:700; margin-bottom:16px; }
+  .modal-actions { display:flex; gap:8px; margin-top:16px; justify-content:flex-end; }
+
+  /* ZOOM CONTROLS */
+  .zoom-controls { position:absolute; bottom:16px; right:16px; display:flex; flex-direction:column; gap:4px; }
+
+  /* EDGE DRAW MODE indicator */
+  .edge-mode-indicator {
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    background:rgba(251,191,36,0.15); border:1px solid var(--yellow);
+    border-radius:20px; padding:6px 16px; font-size:9.5pt; color:var(--yellow);
+    display:none;
+  }
+  .edge-mode-indicator.show { display:block; }
+
+  /* CONTEXT MENU */
+  .ctx-menu {
+    position:fixed; background:var(--surface2); border:1px solid var(--border);
+    border-radius:10px; padding:6px; z-index:300; min-width:150px; box-shadow:0 4px 20px rgba(0,0,0,0.5);
+    display:none;
+  }
+  .ctx-menu.show { display:block; }
+  .ctx-item { padding:8px 12px; border-radius:6px; cursor:pointer; font-size:10pt; display:flex; align-items:center; gap:8px; }
+  .ctx-item:hover { background:var(--border); }
+  .ctx-item.danger { color:var(--red); }
+
+  /* EMPTY STATE */
+  .empty-state { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; pointer-events:none; }
+  .empty-state.hidden { display:none; }
+  .empty-icon { font-size:52pt; opacity:0.2; }
+  .empty-text { font-size:13pt; color:var(--muted); text-align:center; }
+  .empty-sub { font-size:10pt; color:var(--border); text-align:center; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+  @media (max-width:600px) {
+    .sidebar { width:220px; }
+    .panel { width:240px; transform:translateX(240px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">relnet <span>relationship graph</span></div>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost btn-sm" id="toggle-sidebar" title="Toggle sidebar">☰</button>
+    <button class="btn btn-ghost btn-sm" id="btn-add-contact">+ Contact</button>
+    <button class="btn btn-ghost btn-sm" id="btn-add-edge" title="Draw relationship between two contacts">⟷ Relationship</button>
+    <button class="btn btn-ghost btn-sm" id="btn-import">⬆ Import CSV</button>
+    <button class="btn btn-ghost btn-sm" id="btn-export">⬇ Export</button>
+    <button class="btn btn-primary btn-sm" id="btn-reset-view">⊙ Fit</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-section">
+        <input type="text" class="search-box" id="search-input" placeholder="Search contacts..." />
+      </div>
+      <div class="sidebar-section">
+        <h4>Network Stats</h4>
+        <div class="stat-row">
+          <div class="stat-item"><div class="stat-num" id="stat-nodes">0</div><div class="stat-label">Contacts</div></div>
+          <div class="stat-item"><div class="stat-num" id="stat-edges">0</div><div class="stat-label">Connections</div></div>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <h4>Filter by Tag</h4>
+        <div class="tag-filter" id="tag-filter"></div>
+      </div>
+      <div class="sidebar-section">
+        <h4>Contacts</h4>
+        <ul class="contact-list" id="contact-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAPH -->
+  <div class="graph-wrap" id="graph-wrap">
+    <svg id="graph-svg">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="20" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#4a4a8a"/>
+        </marker>
+      </defs>
+      <g id="graph-root">
+        <g id="links-layer"></g>
+        <g id="nodes-layer"></g>
+      </g>
+    </svg>
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">🕸️</div>
+      <div class="empty-text">Your network is empty</div>
+      <div class="empty-sub">Click "+ Contact" to add your first node<br>or "⬆ Import CSV" to bulk import</div>
+    </div>
+    <div class="edge-mode-indicator" id="edge-mode-indicator">
+      ⟷ Relationship Mode — Click first contact, then second
+    </div>
+    <div class="zoom-controls">
+      <button class="btn btn-ghost btn-icon btn-sm" id="btn-zoom-in">+</button>
+      <button class="btn btn-ghost btn-icon btn-sm" id="btn-zoom-out">−</button>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL (contact detail / edge editor) -->
+  <div class="panel" id="right-panel">
+    <div class="panel-header">
+      <h3 id="panel-title">Contact</h3>
+      <button class="btn btn-ghost btn-icon btn-sm" id="panel-close">✕</button>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </div>
+</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip"></div>
+
+<!-- CONTEXT MENU -->
+<div class="ctx-menu" id="ctx-menu">
+  <div class="ctx-item" id="ctx-edit">✏️ Edit</div>
+  <div class="ctx-item" id="ctx-connect">⟷ Add Relationship</div>
+  <div class="ctx-item danger" id="ctx-delete">🗑 Delete</div>
+</div>
+
+<!-- ADD CONTACT MODAL -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <h3>➕ Add Contact</h3>
+    <div class="form-group">
+      <label class="form-label">Name *</label>
+      <input type="text" class="form-input" id="add-name" placeholder="Full name" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tags (comma separated)</label>
+      <input type="text" class="form-input" id="add-tags" placeholder="VC, HCMC, Tech, Friend..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Company / Role</label>
+      <input type="text" class="form-input" id="add-role" placeholder="Partner @ Sequoia" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">LinkedIn URL</label>
+      <input type="text" class="form-input" id="add-li" placeholder="linkedin.com/in/..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="add-notes" rows="3" placeholder="How you met, key context..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add')">Cancel</button>
+      <button class="btn btn-primary" id="add-confirm">Add Contact</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD EDGE MODAL -->
+<div class="modal-overlay" id="modal-edge">
+  <div class="modal">
+    <h3>⟷ Add Relationship</h3>
+    <div class="form-group">
+      <label class="form-label">From</label>
+      <select class="form-input" id="edge-source"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">To</label>
+      <select class="form-input" id="edge-target"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Type</label>
+      <select class="form-input" id="edge-type">
+        <option value="friend">Friend</option>
+        <option value="colleague">Colleague</option>
+        <option value="business">Business Partner</option>
+        <option value="deal">Deal / Investment</option>
+        <option value="family">Family</option>
+        <option value="mentor">Mentor/Mentee</option>
+        <option value="acquaintance">Acquaintance</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Strength (1 = weak, 5 = very close)</label>
+      <input type="range" id="edge-strength" min="1" max="5" value="3" style="width:100%;" />
+      <div id="edge-strength-label" style="text-align:center; font-size:10pt; color:var(--accent); margin-top:4px;">3 — Moderate</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <input type="text" class="form-input" id="edge-notes" placeholder="How they met, context..." />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-edge')">Cancel</button>
+      <button class="btn btn-primary" id="edge-confirm">Add Relationship</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT MODAL -->
+<div class="modal-overlay" id="modal-import">
+  <div class="modal">
+    <h3>⬆ Import Contacts (CSV)</h3>
+    <p style="font-size:10pt; color:var(--muted); margin-bottom:14px;">CSV format: <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;">name,tags,role,notes</code><br>Tags: comma-separated values in one cell (use semicolons if CSV uses commas).</p>
+    <div class="form-group">
+      <label class="form-label">Paste CSV data</label>
+      <textarea class="form-input" id="import-csv" rows="8" placeholder="name,tags,role,notes&#10;Alice Nguyen,VC;HCMC,Partner @ Dragon Capital,Met at Vinaforum 2025&#10;Bob Chen,Tech;Singapore,CTO @ Shopee,Introduction via Dung&#10;..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-import')">Cancel</button>
+      <button class="btn btn-primary" id="import-confirm">Import</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let state = {
+  nodes: [],
+  edges: [],
+  selectedNode: null,
+  edgeMode: false,
+  edgeModeFirst: null,
+  filterTags: new Set(),
+  searchQuery: '',
+};
+
+const TAG_COLORS = [
+  '#6366f1','#10b981','#f59e0b','#ef4444','#8b5cf6',
+  '#06b6d4','#ec4899','#84cc16','#f97316','#14b8a6',
+];
+const tagColorMap = {};
+let tagColorIdx = 0;
+
+function getTagColor(tag) {
+  if (!tagColorMap[tag]) tagColorMap[tag] = TAG_COLORS[tagColorIdx++ % TAG_COLORS.length];
+  return tagColorMap[tag];
+}
+
+const STRENGTH_LABELS = ['','Casual','Acquaintance','Moderate','Close','Very Close'];
+
+// ══════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════
+function save() {
+  localStorage.setItem('relnet-v1', JSON.stringify({ nodes: state.nodes, edges: state.edges }));
+}
+
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem('relnet-v1') || '{}');
+    if (d.nodes) state.nodes = d.nodes;
+    if (d.edges) state.edges = d.edges;
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════
+// D3 GRAPH
+// ══════════════════════════════════════════
+const svg = d3.select('#graph-svg');
+const root = svg.select('#graph-root');
+const linksLayer = root.select('#links-layer');
+const nodesLayer = root.select('#nodes-layer');
+
+let simulation;
+
+// Zoom
+const zoom = d3.zoom()
+  .scaleExtent([0.1, 4])
+  .on('zoom', e => root.attr('transform', e.transform));
+svg.call(zoom);
+
+document.getElementById('btn-zoom-in').onclick = () => svg.transition().call(zoom.scaleBy, 1.3);
+document.getElementById('btn-zoom-out').onclick = () => svg.transition().call(zoom.scaleBy, 0.75);
+document.getElementById('btn-reset-view').onclick = resetView;
+
+function resetView() {
+  const wrap = document.getElementById('graph-wrap');
+  svg.transition().duration(500).call(zoom.transform,
+    d3.zoomIdentity.translate(wrap.clientWidth/2, wrap.clientHeight/2).scale(0.9)
+  );
+}
+
+function renderGraph() {
+  const activeNodes = getFilteredNodes();
+  const activeIds = new Set(activeNodes.map(n => n.id));
+  const activeEdges = state.edges.filter(e => activeIds.has(e.source.id || e.source) && activeIds.has(e.target.id || e.target));
+
+  document.getElementById('empty-state').classList.toggle('hidden', state.nodes.length > 0);
+  document.getElementById('stat-nodes').textContent = state.nodes.length;
+  document.getElementById('stat-edges').textContent = state.edges.length;
+
+  // Links
+  const link = linksLayer.selectAll('.link')
+    .data(activeEdges, d => d.id)
+    .join(
+      enter => enter.append('line').attr('class', d => `link strength-${d.strength}`),
+      update => update.attr('class', d => `link strength-${d.strength}`),
+      exit => exit.remove()
+    )
+    .attr('stroke', d => {
+      const typeColors = { friend:'#818cf8', colleague:'#34d399', business:'#fbbf24', deal:'#f472b6', family:'#fb923c', mentor:'#22d3ee', acquaintance:'#94a3b8' };
+      return typeColors[d.type] || '#4a4a8a';
+    })
+    .attr('stroke-width', d => Math.max(1, d.strength * 0.8));
+
+  // Nodes
+  const node = nodesLayer.selectAll('.node-group')
+    .data(activeNodes, d => d.id)
+    .join(
+      enter => {
+        const g = enter.append('g').attr('class','node-group').call(
+          d3.drag()
+            .on('start', dragStart)
+            .on('drag', dragged)
+            .on('end', dragEnd)
+        );
+        g.append('circle').attr('class','node-circle').attr('r', 22);
+        g.append('text').attr('class','node-label').attr('dy', '0.35em');
+        g.append('text').attr('class','node-label-name').attr('dy', '2.6em');
+        return g;
+      },
+      update => update,
+      exit => exit.remove()
+    );
+
+  node.select('.node-circle')
+    .attr('fill', d => getTagColor(d.tags[0] || 'default'))
+    .attr('stroke', d => d.id === state.selectedNode ? 'white' : 'transparent')
+    .attr('r', d => d.id === state.selectedNode ? 26 : 22)
+    .on('click', (e, d) => { e.stopPropagation(); handleNodeClick(d); })
+    .on('contextmenu', (e, d) => { e.preventDefault(); showCtxMenu(e, d); })
+    .on('mouseover', (e, d) => showTooltip(e, d))
+    .on('mouseout', hideTooltip);
+
+  node.select('.node-label')
+    .text(d => initials(d.name));
+
+  node.select('.node-label-name')
+    .text(d => d.name.split(' ')[0]);
+
+  // Simulation
+  if (simulation) simulation.stop();
+  simulation = d3.forceSimulation(activeNodes)
+    .force('link', d3.forceLink(activeEdges).id(d => d.id).distance(d => 140 / Math.max(d.strength || 1, 0.5)))
+    .force('charge', d3.forceManyBody().strength(-350))
+    .force('center', d3.forceCenter(0, 0))
+    .force('collision', d3.forceCollide(35))
+    .on('tick', () => {
+      linksLayer.selectAll('.link')
+        .attr('x1', d => (d.source.x || 0))
+        .attr('y1', d => (d.source.y || 0))
+        .attr('x2', d => (d.target.x || 0))
+        .attr('y2', d => (d.target.y || 0));
+      nodesLayer.selectAll('.node-group')
+        .attr('transform', d => `translate(${d.x || 0},${d.y || 0})`);
+    });
+
+  updateSidebar();
+}
+
+function dragStart(e, d) { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
+function dragged(e, d) { d.fx = e.x; d.fy = e.y; }
+function dragEnd(e, d) { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
+
+// Click on SVG background — deselect
+svg.on('click', () => {
+  if (state.edgeMode) {
+    state.edgeMode = false; state.edgeModeFirst = null;
+    document.getElementById('edge-mode-indicator').classList.remove('show');
+  }
+  state.selectedNode = null;
+  closePanel();
+  renderGraph();
+});
+
+// ══════════════════════════════════════════
+// NODE INTERACTION
+// ══════════════════════════════════════════
+function handleNodeClick(d) {
+  if (state.edgeMode) {
+    if (!state.edgeModeFirst) {
+      state.edgeModeFirst = d.id;
+      document.getElementById('edge-mode-indicator').textContent = `⟷ Now click the second contact to connect with "${d.name}"`;
+    } else if (state.edgeModeFirst !== d.id) {
+      openEdgeModal(state.edgeModeFirst, d.id);
+      state.edgeMode = false; state.edgeModeFirst = null;
+      document.getElementById('edge-mode-indicator').classList.remove('show');
+    }
+    return;
+  }
+  state.selectedNode = d.id;
+  openContactPanel(d);
+  renderGraph();
+}
+
+function initials(name) {
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+// ══════════════════════════════════════════
+// TOOLTIP
+// ══════════════════════════════════════════
+const tooltip = document.getElementById('tooltip');
+function showTooltip(e, d) {
+  const edges = state.edges.filter(ed => (ed.source.id||ed.source) === d.id || (ed.target.id||ed.target) === d.id);
+  tooltip.innerHTML = `<div class="tt-name">${d.name}</div><div class="tt-meta">${d.tags.join(', ') || 'No tags'}<br>${edges.length} connection${edges.length !== 1 ? 's' : ''}</div>`;
+  tooltip.classList.add('show');
+  moveTip(e);
+}
+function moveTip(e) { tooltip.style.left = (e.clientX + 12) + 'px'; tooltip.style.top = (e.clientY - 10) + 'px'; }
+function hideTooltip() { tooltip.classList.remove('show'); }
+svg.on('mousemove.tip', moveTip);
+
+// ══════════════════════════════════════════
+// CONTEXT MENU
+// ══════════════════════════════════════════
+let ctxNode = null;
+const ctxMenu = document.getElementById('ctx-menu');
+function showCtxMenu(e, d) {
+  ctxNode = d;
+  ctxMenu.style.left = e.clientX + 'px';
+  ctxMenu.style.top = e.clientY + 'px';
+  ctxMenu.classList.add('show');
+  e.stopPropagation();
+}
+document.addEventListener('click', () => ctxMenu.classList.remove('show'));
+document.getElementById('ctx-edit').onclick = () => { if (ctxNode) { state.selectedNode = ctxNode.id; openContactPanel(ctxNode); renderGraph(); } };
+document.getElementById('ctx-connect').onclick = () => {
+  if (ctxNode) {
+    state.edgeMode = true;
+    state.edgeModeFirst = ctxNode.id;
+    document.getElementById('edge-mode-indicator').textContent = `⟷ Now click the second contact to connect with "${ctxNode.name}"`;
+    document.getElementById('edge-mode-indicator').classList.add('show');
+  }
+};
+document.getElementById('ctx-delete').onclick = () => {
+  if (ctxNode && confirm(`Delete "${ctxNode.name}"?`)) {
+    state.nodes = state.nodes.filter(n => n.id !== ctxNode.id);
+    state.edges = state.edges.filter(e => (e.source.id||e.source) !== ctxNode.id && (e.target.id||e.target) !== ctxNode.id);
+    if (state.selectedNode === ctxNode.id) { state.selectedNode = null; closePanel(); }
+    ctxNode = null; save(); renderGraph();
+  }
+};
+
+// ══════════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════════
+function updateSidebar() {
+  // Tag filters
+  const allTags = [...new Set(state.nodes.flatMap(n => n.tags))].sort();
+  const tf = document.getElementById('tag-filter');
+  tf.innerHTML = '';
+  const allBtn = document.createElement('div');
+  allBtn.className = 'tag-pill' + (state.filterTags.size === 0 ? ' active' : '');
+  allBtn.textContent = 'All';
+  allBtn.style.background = state.filterTags.size === 0 ? '#4f46e5' : '#1a1a3e';
+  allBtn.style.color = state.filterTags.size === 0 ? 'white' : '#94a3b8';
+  allBtn.onclick = () => { state.filterTags.clear(); renderGraph(); };
+  tf.appendChild(allBtn);
+  allTags.forEach(tag => {
+    const p = document.createElement('div');
+    const active = state.filterTags.has(tag);
+    p.className = 'tag-pill' + (active ? ' active' : '');
+    p.textContent = tag;
+    p.style.background = active ? getTagColor(tag) : 'transparent';
+    p.style.color = active ? 'white' : getTagColor(tag);
+    p.style.borderColor = getTagColor(tag);
+    p.onclick = () => { if (state.filterTags.has(tag)) state.filterTags.delete(tag); else state.filterTags.add(tag); renderGraph(); };
+    tf.appendChild(p);
+  });
+
+  // Contact list
+  const cl = document.getElementById('contact-list');
+  const q = state.searchQuery.toLowerCase();
+  const visible = state.nodes.filter(n => !q || n.name.toLowerCase().includes(q) || n.tags.some(t => t.toLowerCase().includes(q)));
+  cl.innerHTML = '';
+  visible.forEach(n => {
+    const li = document.createElement('li');
+    li.className = 'contact-item' + (n.id === state.selectedNode ? ' selected' : '');
+    const color = getTagColor(n.tags[0] || 'default');
+    li.innerHTML = `<div class="ci-avatar" style="background:${color}20;color:${color}">${initials(n.name)}</div><div><div class="ci-name">${n.name}</div><div class="ci-tags">${n.tags.slice(0,3).join(' · ')}</div></div>`;
+    li.onclick = () => { state.selectedNode = n.id; openContactPanel(n); renderGraph(); };
+    cl.appendChild(li);
+  });
+}
+
+document.getElementById('search-input').addEventListener('input', e => {
+  state.searchQuery = e.target.value;
+  renderGraph();
+});
+
+function getFilteredNodes() {
+  if (state.filterTags.size === 0 && !state.searchQuery) return state.nodes;
+  return state.nodes.filter(n => {
+    const tagMatch = state.filterTags.size === 0 || n.tags.some(t => state.filterTags.has(t));
+    const searchMatch = !state.searchQuery || n.name.toLowerCase().includes(state.searchQuery.toLowerCase()) || n.tags.some(t => t.toLowerCase().includes(state.searchQuery.toLowerCase()));
+    return tagMatch && searchMatch;
+  });
+}
+
+// ══════════════════════════════════════════
+// CONTACT PANEL
+// ══════════════════════════════════════════
+function openContactPanel(node) {
+  const panel = document.getElementById('right-panel');
+  document.getElementById('panel-title').textContent = node.name;
+  const connectedEdges = state.edges.filter(e => (e.source.id||e.source) === node.id || (e.target.id||e.target) === node.id);
+
+  document.getElementById('panel-body').innerHTML = `
+    <div class="form-group">
+      <label class="form-label">Name</label>
+      <input type="text" class="form-input" id="pe-name" value="${node.name}" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Role / Company</label>
+      <input type="text" class="form-input" id="pe-role" value="${node.role || ''}" placeholder="Partner @ Dragon Capital" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tags</label>
+      <div style="display:flex; gap:6px;">
+        <input type="text" class="form-input" id="pe-tag-input" placeholder="Add tag + Enter" style="flex:1;" />
+      </div>
+      <div class="node-tags" id="pe-tags">
+        ${node.tags.map(t => `<span class="node-tag" style="background:${getTagColor(t)}20;color:${getTagColor(t)};border:1px solid ${getTagColor(t)}"><span>${t}</span><span class="rm" data-tag="${t}">✕</span></span>`).join('')}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">LinkedIn</label>
+      <input type="text" class="form-input" id="pe-li" value="${node.li || ''}" placeholder="linkedin.com/in/..." />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" id="pe-notes" rows="3">${node.notes || ''}</textarea>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:18px;">
+      <button class="btn btn-primary btn-sm" id="pe-save" style="flex:1;">Save</button>
+      <button class="btn btn-ghost btn-sm" id="pe-add-edge">+ Relationship</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label" style="margin-bottom:10px;">Connections (${connectedEdges.length})</label>
+      <ul class="edge-list">
+        ${connectedEdges.map(e => {
+          const otherId = (e.source.id||e.source) === node.id ? (e.target.id||e.target) : (e.source.id||e.source);
+          const other = state.nodes.find(n => n.id === otherId);
+          if (!other) return '';
+          const dots = Array.from({length:5}, (_,i) => `<div class="sdot" style="background:${i < e.strength ? getTagColor(other.tags[0]||'x') : '#2a2a5a'}"></div>`).join('');
+          return `<li class="edge-item">
+            <div class="edge-target">${other.name}</div>
+            <div class="edge-meta">${e.type} · <span class="strength-dots">${dots}</span> ${STRENGTH_LABELS[e.strength]}</div>
+            ${e.notes ? `<div class="edge-meta" style="margin-top:2px;font-style:italic;">${e.notes}</div>` : ''}
+            <div style="margin-top:6px;"><button class="btn btn-ghost btn-sm rm-edge" data-edge="${e.id}" style="font-size:8.5pt;color:var(--red);">Remove</button></div>
+          </li>`;
+        }).join('')}
+        ${connectedEdges.length === 0 ? '<li style="color:var(--muted);font-size:10pt;">No connections yet.</li>' : ''}
+      </ul>
+    </div>
+  `;
+
+  // Tag input
+  const tagInput = document.getElementById('pe-tag-input');
+  let nodeTags = [...node.tags];
+  tagInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      const val = tagInput.value.trim().replace(/,/g,'');
+      if (val && !nodeTags.includes(val)) { nodeTags.push(val); renderTags(); tagInput.value = ''; }
+    }
+  });
+  function renderTags() {
+    document.getElementById('pe-tags').innerHTML = nodeTags.map(t =>
+      `<span class="node-tag" style="background:${getTagColor(t)}20;color:${getTagColor(t)};border:1px solid ${getTagColor(t)}"><span>${t}</span><span class="rm" data-tag="${t}">✕</span></span>`
+    ).join('');
+    document.getElementById('pe-tags').querySelectorAll('.rm').forEach(el => {
+      el.onclick = () => { nodeTags = nodeTags.filter(t => t !== el.dataset.tag); renderTags(); };
+    });
+  }
+  renderTags();
+
+  // Remove edge buttons
+  document.querySelectorAll('.rm-edge').forEach(btn => {
+    btn.onclick = () => {
+      state.edges = state.edges.filter(e => e.id !== btn.dataset.edge);
+      save(); renderGraph(); openContactPanel(node);
+    };
+  });
+
+  // Save
+  document.getElementById('pe-save').onclick = () => {
+    const n = state.nodes.find(x => x.id === node.id);
+    if (n) {
+      n.name = document.getElementById('pe-name').value.trim() || n.name;
+      n.role = document.getElementById('pe-role').value.trim();
+      n.tags = nodeTags;
+      n.li = document.getElementById('pe-li').value.trim();
+      n.notes = document.getElementById('pe-notes').value.trim();
+      save(); renderGraph(); openContactPanel(n);
+    }
+  };
+
+  // Add relationship from panel
+  document.getElementById('pe-add-edge').onclick = () => openEdgeModal(node.id, null);
+
+  panel.classList.add('open');
+}
+
+function closePanel() {
+  document.getElementById('right-panel').classList.remove('open');
+}
+
+document.getElementById('panel-close').onclick = () => { state.selectedNode = null; closePanel(); renderGraph(); };
+document.getElementById('toggle-sidebar').onclick = () => document.getElementById('sidebar').classList.toggle('collapsed');
+
+// ══════════════════════════════════════════
+// ADD CONTACT MODAL
+// ══════════════════════════════════════════
+document.getElementById('btn-add-contact').onclick = () => {
+  document.getElementById('add-name').value = '';
+  document.getElementById('add-tags').value = '';
+  document.getElementById('add-role').value = '';
+  document.getElementById('add-li').value = '';
+  document.getElementById('add-notes').value = '';
+  openModal('modal-add');
+  setTimeout(() => document.getElementById('add-name').focus(), 50);
+};
+
+document.getElementById('add-confirm').onclick = () => {
+  const name = document.getElementById('add-name').value.trim();
+  if (!name) return;
+  const tags = document.getElementById('add-tags').value.split(',').map(t => t.trim().replace(/;/g,'')).filter(Boolean);
+  const node = {
+    id: crypto.randomUUID(),
+    name, tags,
+    role: document.getElementById('add-role').value.trim(),
+    li: document.getElementById('add-li').value.trim(),
+    notes: document.getElementById('add-notes').value.trim(),
+    x: (Math.random() - 0.5) * 200,
+    y: (Math.random() - 0.5) * 200,
+  };
+  state.nodes.push(node);
+  save(); renderGraph(); closeModal('modal-add');
+};
+
+// ══════════════════════════════════════════
+// ADD EDGE MODAL
+// ══════════════════════════════════════════
+function openEdgeModal(sourceId, targetId) {
+  const src = document.getElementById('edge-source');
+  const tgt = document.getElementById('edge-target');
+  src.innerHTML = state.nodes.map(n => `<option value="${n.id}" ${n.id === sourceId ? 'selected' : ''}>${n.name}</option>`).join('');
+  tgt.innerHTML = `<option value="">— Select contact —</option>` + state.nodes.map(n => `<option value="${n.id}" ${n.id === targetId ? 'selected' : ''}>${n.name}</option>`).join('');
+  document.getElementById('edge-strength').value = 3;
+  document.getElementById('edge-strength-label').textContent = '3 — Moderate';
+  document.getElementById('edge-notes').value = '';
+  openModal('modal-edge');
+}
+
+document.getElementById('edge-strength').addEventListener('input', e => {
+  document.getElementById('edge-strength-label').textContent = `${e.target.value} — ${STRENGTH_LABELS[e.target.value]}`;
+});
+
+document.getElementById('btn-add-edge').onclick = () => {
+  state.edgeMode = true; state.edgeModeFirst = null;
+  document.getElementById('edge-mode-indicator').textContent = '⟷ Click the first contact to start drawing a relationship';
+  document.getElementById('edge-mode-indicator').classList.add('show');
+};
+
+document.getElementById('edge-confirm').onclick = () => {
+  const src = document.getElementById('edge-source').value;
+  const tgt = document.getElementById('edge-target').value;
+  if (!src || !tgt || src === tgt) return alert('Please select two different contacts.');
+  const exists = state.edges.find(e =>
+    ((e.source.id||e.source) === src && (e.target.id||e.target) === tgt) ||
+    ((e.source.id||e.source) === tgt && (e.target.id||e.target) === src)
+  );
+  if (exists) return alert('Relationship already exists. Edit it in the contact panel.');
+  state.edges.push({
+    id: crypto.randomUUID(),
+    source: src, target: tgt,
+    type: document.getElementById('edge-type').value,
+    strength: parseInt(document.getElementById('edge-strength').value),
+    notes: document.getElementById('edge-notes').value.trim(),
+  });
+  save(); renderGraph(); closeModal('modal-edge');
+  if (state.selectedNode) {
+    const n = state.nodes.find(x => x.id === state.selectedNode);
+    if (n) openContactPanel(n);
+  }
+};
+
+// ══════════════════════════════════════════
+// IMPORT CSV
+// ══════════════════════════════════════════
+document.getElementById('btn-import').onclick = () => openModal('modal-import');
+
+document.getElementById('import-confirm').onclick = () => {
+  const raw = document.getElementById('import-csv').value.trim();
+  const lines = raw.split('\n').filter(Boolean);
+  let imported = 0;
+  lines.forEach((line, idx) => {
+    if (idx === 0 && line.toLowerCase().startsWith('name')) return; // skip header
+    const cols = line.split(',').map(s => s.trim().replace(/^"|"$/g,''));
+    const name = cols[0];
+    if (!name) return;
+    const tags = (cols[1] || '').split(';').map(t => t.trim()).filter(Boolean);
+    state.nodes.push({
+      id: crypto.randomUUID(), name, tags,
+      role: cols[2] || '', notes: cols[3] || '',
+      x: (Math.random() - 0.5) * 300, y: (Math.random() - 0.5) * 300,
+    });
+    imported++;
+  });
+  save(); renderGraph(); closeModal('modal-import');
+  alert(`✅ Imported ${imported} contacts.`);
+};
+
+// ══════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════
+document.getElementById('btn-export').onclick = () => {
+  const data = { nodes: state.nodes, edges: state.edges.map(e => ({...e, source: e.source.id||e.source, target: e.target.id||e.target})) };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `relnet-export-${new Date().toISOString().split('T')[0]}.json`;
+  a.click(); URL.revokeObjectURL(url);
+};
+
+// ══════════════════════════════════════════
+// MODAL HELPERS
+// ══════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); }));
+
+// Enter key in modals
+document.getElementById('add-name').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('add-confirm').click(); });
+
+// ══════════════════════════════════════════
+// SAMPLE DATA (first load)
+// ══════════════════════════════════════════
+function loadSampleData() {
+  const people = [
+    { name: 'Bach Tran', tags: ['RCC','HCMC'], role: 'Deputy CEO @ RCC' },
+    { name: 'Anh Quang', tags: ['RCC','CEO'], role: 'Chairman @ RCC' },
+    { name: 'Nguyen Van A', tags: ['VC','Tech'], role: 'Partner @ Dragon Capital' },
+    { name: 'Sarah Kim', tags: ['Singapore','Hospitality'], role: 'GM @ Marriott SG' },
+    { name: 'Tom Goedhart', tags: ['HCMC','Lifestyle'], role: 'Co-founder @ Barbaard' },
+    { name: 'David Chen', tags: ['Tech','Singapore'], role: 'CTO @ Shopee' },
+    { name: 'Linh Tran', tags: ['HCMC','Legal'], role: 'Partner @ VILAF' },
+  ];
+  people.forEach((p, i) => {
+    const angle = (i / people.length) * 2 * Math.PI;
+    state.nodes.push({ id: crypto.randomUUID(), ...p, notes: '', li: '', x: Math.cos(angle)*180, y: Math.sin(angle)*180 });
+  });
+  const ids = state.nodes.map(n => n.id);
+  const sampleEdges = [[0,1,5,'colleague'],[0,2,3,'business'],[0,4,4,'business'],[1,6,3,'colleague'],[2,3,2,'acquaintance'],[3,5,4,'friend'],[4,5,2,'acquaintance'],[0,6,3,'colleague']];
+  sampleEdges.forEach(([a,b,str,type]) => {
+    if (ids[a] && ids[b]) state.edges.push({ id: crypto.randomUUID(), source: ids[a], target: ids[b], strength: str, type, notes: '' });
+  });
+  save();
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+load();
+if (state.nodes.length === 0) loadSampleData();
+renderGraph();
+setTimeout(resetView, 200);
+</script>
+</body>
+</html>
