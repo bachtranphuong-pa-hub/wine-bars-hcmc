@@ -26,6 +26,7 @@
   .btn-green{background:#065f46;color:#34d399;border:1px solid #047857;}.btn-green:hover{background:#047857;}
   .btn-orange{background:#7c2d12;color:#fb923c;border:1px solid #9a3412;}.btn-orange:hover{background:#9a3412;}
   .btn-purple{background:#4c1d95;color:#c4b5fd;border:1px solid #5b21b6;}.btn-purple:hover{background:#5b21b6;}
+  .btn-blue{background:#1e3a5f;color:#60a5fa;border:1px solid #1d4ed8;}.btn-blue:hover{background:#1d4ed8;}
   .btn-sm{padding:5px 10px;font-size:9pt;}
   .btn-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13pt;}
 
@@ -187,6 +188,7 @@
     <button class="btn btn-ghost btn-sm" id="btn-add-contact">+ Contact</button>
     <button class="btn btn-ghost btn-sm" id="btn-add-edge">⟷ Link</button>
     <button class="btn btn-green btn-sm" id="btn-fb-import">📥 Facebook</button>
+    <button class="btn btn-blue btn-sm" id="btn-li-import">💼 LinkedIn</button>
     <button class="btn btn-purple btn-sm" id="btn-path-finder">🔍 Path</button>
     <button class="btn btn-orange btn-sm" id="btn-decay">⏱ Decay</button>
     <button class="btn btn-ghost btn-sm" id="btn-import-csv">⬆ CSV</button>
@@ -414,6 +416,75 @@
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('modal-decay')">Close</button>
       <button class="btn btn-primary" id="decay-save">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- LINKEDIN IMPORT MODAL -->
+<div class="modal-overlay" id="modal-li">
+  <div class="modal">
+    <h3>💼 LinkedIn Import</h3>
+    <div class="modal-tabs">
+      <div class="modal-tab active" data-tab="li-how">How to Export</div>
+      <div class="modal-tab" data-tab="li-paste">Paste CSV</div>
+      <div class="modal-tab" data-tab="li-messages">Messages JSON</div>
+    </div>
+
+    <div class="tab-panel active" id="li-how">
+      <div class="fb-step">
+        <h4>Step 1 — Request LinkedIn data export</h4>
+        <p>Go to LinkedIn → Me → Settings & Privacy → Data Privacy → <strong>Get a copy of your data</strong>.<br>
+        Tick <code>Connections</code> and <code>Messages</code>. Click "Request archive". LinkedIn emails you within 10 minutes (basic) or 24 hours (full).</p>
+      </div>
+      <div class="fb-step">
+        <h4>Step 2 — Download & unzip</h4>
+        <p>Extract the ZIP. Your connections are in <code>Connections.csv</code>.<br>
+        Messages are in <code>messages.csv</code> (or individual conversation files).</p>
+      </div>
+      <div class="fb-step">
+        <h4>Step 3 — Import here</h4>
+        <p><strong>Paste CSV tab:</strong> Open <code>Connections.csv</code> in a text editor, copy all, paste below.<br>
+        <strong>Messages tab:</strong> Paste <code>messages.csv</code> content to infer relationship strength from message frequency.</p>
+      </div>
+      <div class="fb-step" style="background:rgba(96,165,250,0.08);border-color:#1d4ed8;">
+        <h4 style="color:#60a5fa;">What gets imported</h4>
+        <p>From <code>Connections.csv</code>: First Name, Last Name, Email, Company, Position, Connected On date → mapped to name, role, tags, lastContact.<br>
+        From messages: message count per person → relationship strength (1–5 log scale).</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="li-paste">
+      <div class="fb-step">
+        <h4>Paste Connections.csv</h4>
+        <p>Open <code>Connections.csv</code>, select all (Ctrl+A), copy (Ctrl+C), paste below. First row must be the header row LinkedIn provides.</p>
+        <p style="margin-top:6px;">Expected columns: <code>First Name, Last Name, Email Address, Company, Position, Connected On</code></p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Paste CSV content</label>
+        <textarea class="form-input" id="li-csv-input" rows="9" placeholder="First Name,Last Name,Email Address,Company,Position,Connected On&#10;Nguyen,Van A,nguyen@example.com,Dragon Capital,Partner,08 Mar 2023&#10;Sarah,Kim,,Marriott,GM,15 Jan 2024&#10;..."></textarea>
+      </div>
+      <div id="li-csv-preview" class="fb-stat" style="margin-bottom:10px;"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modal-li')">Cancel</button>
+        <button class="btn btn-blue" id="li-csv-confirm">Import Connections</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="li-messages">
+      <div class="fb-step">
+        <h4>Paste messages.csv to infer relationship strength</h4>
+        <p>LinkedIn's <code>messages.csv</code> has columns: <code>CONVERSATION ID, CONVERSATION TITLE, FROM, SENDER PROFILE URL, DATE, SUBJECT, CONTENT, FOLDER</code>.<br>
+        Relnet counts messages per contact → sets strength 1–5 and updates lastContact from most recent message.</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Paste messages.csv content</label>
+        <textarea class="form-input" id="li-msg-input" rows="9" placeholder="CONVERSATION ID,CONVERSATION TITLE,FROM,SENDER PROFILE URL,DATE,SUBJECT,CONTENT,FOLDER&#10;..."></textarea>
+      </div>
+      <div id="li-msg-preview" class="fb-stat" style="margin-bottom:10px;"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal('modal-li')">Cancel</button>
+        <button class="btn btn-blue" id="li-msg-confirm">Process Messages</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1106,6 +1177,169 @@ document.getElementById('edge-confirm').onclick = () => {
   state.edges.push({ id: uuid(), source: s, target: t, type: document.getElementById('edge-type').value, strength: parseInt(document.getElementById('edge-strength').value), notes: document.getElementById('edge-notes').value.trim() });
   save(); renderGraph(); closeModal('modal-edge');
   if (state.selectedNode) { const n = state.nodes.find(x => x.id === state.selectedNode); if (n) openContactPanel(n); }
+};
+
+// ════════════════════════════════════════════════════
+// LINKEDIN IMPORT
+// ════════════════════════════════════════════════════
+document.getElementById('btn-li-import').onclick = () => openModal('modal-li');
+
+// Parse LinkedIn Connections.csv
+// LI header: "First Name","Last Name","URL","Email Address","Company","Position","Connected On"
+// Note: LI sometimes adds 3 lines of notes before header — skip non-header preamble
+function parseLiCsv(raw) {
+  const lines = raw.trim().split('\n');
+  // Find header line (contains "First Name" or "first name")
+  let headerIdx = lines.findIndex(l => /first.?name/i.test(l));
+  if (headerIdx === -1) headerIdx = 0; // fallback
+  const headers = parseCSVLine(lines[headerIdx]).map(h => h.trim().toLowerCase().replace(/"/g,''));
+  const rows = [];
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const cols = parseCSVLine(lines[i]);
+    const row = {};
+    headers.forEach((h, idx) => { row[h] = (cols[idx]||'').trim().replace(/^"|"$/g,''); });
+    rows.push(row);
+  }
+  return rows;
+}
+
+// Proper CSV line parser (handles quoted fields with commas)
+function parseCSVLine(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+// Parse "08 Mar 2023" or "2023-03-08" or "March 8, 2023" to ISO
+function parseLiDate(str) {
+  if (!str) return null;
+  try {
+    const d = new Date(str);
+    if (!isNaN(d.getTime())) return d.toISOString();
+  } catch(e) {}
+  return null;
+}
+
+document.getElementById('li-csv-confirm').onclick = () => {
+  const raw = document.getElementById('li-csv-input').value.trim();
+  if (!raw) return alert('Please paste your Connections.csv content.');
+  const rows = parseLiCsv(raw);
+  let imported = 0, skipped = 0, updated = 0;
+
+  rows.forEach(r => {
+    // Field mapping — LinkedIn uses different column names across exports
+    const firstName = r['first name'] || r['firstname'] || '';
+    const lastName  = r['last name']  || r['lastname']  || '';
+    const name = `${firstName} ${lastName}`.trim();
+    if (!name) return;
+
+    const company  = r['company']       || r['organization'] || '';
+    const position = r['position']      || r['job title']    || '';
+    const email    = r['email address'] || r['email']        || '';
+    const connOn   = r['connected on']  || r['connection date'] || '';
+    const liUrl    = r['url']           || r['profile url']  || r['linkedin url'] || '';
+    const role     = [position, company].filter(Boolean).join(' @ ');
+    const lastContact = parseLiDate(connOn) || new Date().toISOString();
+
+    // Check for existing node (by name or email)
+    const existing = state.nodes.find(n =>
+      n.name.toLowerCase() === name.toLowerCase() ||
+      (email && n.email && n.email.toLowerCase() === email.toLowerCase())
+    );
+
+    if (existing) {
+      // Enrich existing — add LinkedIn URL and role if missing
+      if (liUrl && !existing.li) existing.li = liUrl;
+      if (role && !existing.role) existing.role = role;
+      if (email && !existing.email) existing.email = email;
+      if (!existing.tags.includes('LinkedIn')) existing.tags.push('LinkedIn');
+      // Update lastContact to connection date if earlier
+      if (!existing.lastContact) existing.lastContact = lastContact;
+      updated++;
+    } else {
+      const tags = ['LinkedIn'];
+      if (company) tags.push(company.split(/[,\s]/)[0]); // first word of company as tag
+      state.nodes.push({
+        id: uuid(), name, tags,
+        role, email: email || '',
+        li: liUrl, notes: `LinkedIn connection since ${connOn || 'unknown'}`,
+        lastContact, x: (Math.random()-0.5)*400, y: (Math.random()-0.5)*400,
+      });
+      imported++;
+    }
+  });
+
+  save(); renderGraph();
+  document.getElementById('li-csv-preview').innerHTML = `
+    <div class="fb-stat-item">✅ Imported: <strong>${imported}</strong></div>
+    <div class="fb-stat-item">🔄 Enriched: <strong>${updated}</strong></div>
+    <div class="fb-stat-item">Total rows: <strong>${rows.length}</strong></div>`;
+  if (imported + updated > 0) setTimeout(() => closeModal('modal-li'), 2000);
+};
+
+// Parse LinkedIn messages.csv to infer strength
+// LI messages.csv columns: CONVERSATION ID, CONVERSATION TITLE, FROM, SENDER PROFILE URL, DATE, SUBJECT, CONTENT, FOLDER
+document.getElementById('li-msg-confirm').onclick = () => {
+  const raw = document.getElementById('li-msg-input').value.trim();
+  if (!raw) return alert('Please paste your messages.csv content.');
+  const rows = parseLiCsv(raw);
+
+  // Count messages per person (FROM column, excluding yourself)
+  // We don't know user's own name definitively — find the most common sender = "you"
+  const senderCounts = {};
+  rows.forEach(r => {
+    const from = (r['from'] || r['sender'] || '').trim();
+    if (from) senderCounts[from] = (senderCounts[from] || 0) + 1;
+  });
+  // Most prolific sender is likely "you"
+  const myName = Object.entries(senderCounts).sort((a,b) => b[1]-a[1])[0]?.[0] || '';
+
+  // Count exchanges per OTHER person & track latest date
+  const personData = {}; // name → { count, latestDate }
+  rows.forEach(r => {
+    const from = (r['from'] || r['sender'] || '').trim();
+    const date  = r['date'] || r['timestamp'] || '';
+    if (!from || from === myName) return;
+    if (!personData[from]) personData[from] = { count: 0, latestDate: null };
+    personData[from].count++;
+    const d = parseLiDate(date);
+    if (d && (!personData[from].latestDate || d > personData[from].latestDate)) {
+      personData[from].latestDate = d;
+    }
+  });
+
+  let updated = 0, created = 0;
+  Object.entries(personData).forEach(([name, data]) => {
+    const strength = Math.min(5, Math.max(1, Math.ceil(Math.log2(data.count + 1))));
+    let node = state.nodes.find(n => n.name.toLowerCase() === name.toLowerCase());
+    if (!node) {
+      node = { id: uuid(), name, tags: ['LinkedIn'], role: '', notes: '', li: '', email: '',
+        lastContact: data.latestDate, x: (Math.random()-0.5)*300, y: (Math.random()-0.5)*300 };
+      state.nodes.push(node); created++;
+    } else {
+      if (data.latestDate) node.lastContact = data.latestDate;
+      updated++;
+    }
+    node.liMessageCount = data.count;
+    node.liInferredStrength = strength;
+    if (!node.notes.includes('LI messages')) {
+      node.notes = (node.notes ? node.notes + ' · ' : '') + `LI messages: ${data.count} (strength ${strength}/5)`;
+    }
+  });
+
+  save(); renderGraph();
+  const totalPeople = Object.keys(personData).length;
+  document.getElementById('li-msg-preview').innerHTML = `
+    <div class="fb-stat-item">Messages parsed: <strong>${rows.length}</strong></div>
+    <div class="fb-stat-item">Contacts found: <strong>${totalPeople}</strong></div>
+    <div class="fb-stat-item">Created: <strong>${created}</strong> · Enriched: <strong>${updated}</strong></div>`;
 };
 
 // ════════════════════════════════════════════════════
