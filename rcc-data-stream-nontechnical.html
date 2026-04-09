@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCC — Hướng dẫn chuyển đổi số cho nhân viên</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f7ff;color:#1a2e44;font-size:12pt;line-height:1.7;}
+.page{max-width:900px;margin:0 auto;padding:32px 20px 64px;}
+
+.header{background:linear-gradient(135deg,#1d4ed8,#059669);border-radius:16px;padding:36px 40px;color:white;margin-bottom:28px;text-align:center;}
+.header .tag{font-size:9pt;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:10px;}
+.header h1{font-size:24pt;font-weight:700;margin-bottom:8px;}
+.header .sub{font-size:11pt;color:rgba(255,255,255,0.75);}
+
+.section{background:white;border-radius:14px;padding:28px 32px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,0.06);}
+.sec-icon{font-size:28pt;margin-bottom:10px;}
+.sec-label{font-size:8.5pt;letter-spacing:2px;text-transform:uppercase;color:#059669;font-weight:700;margin-bottom:6px;}
+h2{font-size:16pt;font-weight:700;color:#1d4ed8;margin-bottom:16px;}
+p{font-size:11.5pt;color:#374151;margin-bottom:12px;}
+
+/* PAIN CARDS */
+.pain-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px;}
+.pain-card{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:16px;text-align:center;}
+.pain-card .pi{font-size:24pt;margin-bottom:8px;}
+.pain-card .pt{font-size:10.5pt;font-weight:700;color:#c2410c;margin-bottom:4px;}
+.pain-card .pb{font-size:10pt;color:#78350f;font-style:italic;}
+
+/* BEFORE/AFTER */
+.ba-table{width:100%;border-collapse:collapse;margin-top:14px;}
+.ba-table th{padding:10px 14px;font-size:9.5pt;text-transform:uppercase;letter-spacing:1px;font-weight:700;}
+.ba-table th:first-child{background:#fee2e2;color:#991b1b;border-radius:8px 0 0 0;}
+.ba-table th:last-child{background:#d1fae5;color:#065f46;border-radius:0 8px 0 0;}
+.ba-table td{padding:10px 14px;border-bottom:1px solid #f3f4f6;font-size:11pt;vertical-align:top;}
+.ba-table td:first-child{color:#6b7280;background:#fafafa;}
+.ba-table td:last-child{color:#065f46;background:#f0fdf4;font-weight:600;}
+.ba-table tr:last-child td{border-bottom:none;}
+
+/* ACTION STEPS */
+.steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px;}
+.step{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1.5px solid #bfdbfe;border-radius:12px;padding:18px;text-align:center;}
+.step .sn{font-size:28pt;font-weight:800;color:#1d4ed8;line-height:1;margin-bottom:8px;}
+.step .st{font-size:11.5pt;font-weight:700;color:#1e40af;margin-bottom:6px;}
+.step .sd{font-size:10.5pt;color:#374151;}
+
+/* REASSURANCE */
+.check-list{list-style:none;padding:0;}
+.check-list li{padding:10px 0;border-bottom:1px solid #f3f4f6;display:flex;align-items:flex-start;gap:10px;font-size:11.5pt;}
+.check-list li:last-child{border-bottom:none;}
+.check-list li::before{content:'✅';flex-shrink:0;margin-top:1px;}
+
+/* FAQ */
+.faq-item{border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.faq-q{background:#f8fafc;padding:14px 18px;font-size:11.5pt;font-weight:700;color:#1e40af;cursor:pointer;}
+.faq-q::before{content:'❓ ';}
+.faq-a{padding:14px 18px;font-size:11pt;color:#374151;border-top:1px solid #e5e7eb;}
+
+/* TIMELINE */
+.timeline{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-top:16px;position:relative;}
+.timeline::before{content:'';position:absolute;top:24px;left:16.5%;right:16.5%;height:3px;background:linear-gradient(to right,#1d4ed8,#059669);z-index:0;}
+.tl-item{text-align:center;position:relative;z-index:1;}
+.tl-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:16pt;}
+.tl-item:nth-child(1) .tl-dot{background:#dbeafe;}
+.tl-item:nth-child(2) .tl-dot{background:#d1fae5;}
+.tl-item:nth-child(3) .tl-dot{background:#ede9fe;}
+.tl-month{font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#1d4ed8;margin-bottom:6px;}
+.tl-label{font-size:13pt;font-weight:700;color:#1a2e44;margin-bottom:8px;}
+.tl-items{font-size:10pt;color:#6b7280;list-style:none;padding:0;}
+.tl-items li{padding:2px 0;}
+.tl-items li::before{content:'→ ';}
+
+.footer{text-align:center;font-size:9pt;color:#9ca3af;padding:16px 0;margin-top:8px;}
+
+@media(max-width:600px){
+  .pain-grid,.steps,.timeline{grid-template-columns:1fr;}
+  .timeline::before{display:none;}
+  .header{padding:24px 18px;}
+  .header h1{font-size:18pt;}
+  .section{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="tag">RCC Royal Canary Corp · Nội bộ</div>
+  <h1>📋 Chúng ta đang thay đổi cách làm việc</h1>
+  <div class="sub">Hướng dẫn dành cho tất cả nhân viên · Không cần kiến thức kỹ thuật</div>
+</div>
+
+<!-- SECTION 1: WHY -->
+<div class="section">
+  <div class="sec-icon">🤔</div>
+  <div class="sec-label">Phần 1</div>
+  <h2>Vì sao chúng ta cần thay đổi?</h2>
+  <p>Những tình huống này có quen không? Nếu anh/chị đã từng gặp một trong số này, thì đây chính xác là lý do chúng ta cần thay đổi cách làm việc.</p>
+
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="pi">🔍</div>
+      <div class="pt">"File báo cáo tháng trước ở đâu?"</div>
+      <div class="pb">Tìm mãi trong email, Zalo, máy tính cá nhân... mất cả tiếng đồng hồ</div>
+    </div>
+    <div class="pain-card">
+      <div class="pi">🔢</div>
+      <div class="pt">"Tại sao số liệu 2 người khác nhau?"</div>
+      <div class="pb">Mỗi người lưu một file Excel riêng, ai cũng nghĩ file của mình là mới nhất</div>
+    </div>
+    <div class="pain-card">
+      <div class="pi">⏳</div>
+      <div class="pt">"Dashboard chờ mãi mà chưa có"</div>
+      <div class="pb">Phải thu thập số liệu từ nhiều nguồn, tổng hợp thủ công mất 2-3 ngày</div>
+    </div>
+    <div class="pain-card">
+      <div class="pi">📧</div>
+      <div class="pt">"Gửi file qua Zalo nhưng không ai mở"</div>
+      <div class="pb">Thông tin quan trọng bị chôn vùi trong hàng trăm tin nhắn Zalo mỗi ngày</div>
+    </div>
+    <div class="pain-card">
+      <div class="pi">💾</div>
+      <div class="pt">"File bị ghi đè mất rồi"</div>
+      <div class="pb">Hai người cùng chỉnh sửa một file, phiên bản cuối cùng không ai biết là đúng không</div>
+    </div>
+    <div class="pain-card">
+      <div class="pi">🆕</div>
+      <div class="pt">"Nhân viên mới không biết tìm tài liệu ở đâu"</div>
+      <div class="pb">Kiến thức và quy trình nằm trong đầu người cũ, không được lưu lại đâu cả</div>
+    </div>
+  </div>
+
+  <p style="margin-top:16px;background:#eff6ff;padding:14px 18px;border-radius:8px;border-left:4px solid #1d4ed8;color:#1e3a5f;">
+  💡 <strong>Mục tiêu của chúng ta:</strong> Mọi thông tin quan trọng đều có <em>một nơi</em> để tìm, <em>một format</em> thống nhất, và <em>mọi người trong team</em> đều biết chỗ đó là đâu.
+  </p>
+</div>
+
+<!-- SECTION 2: BEFORE/AFTER -->
+<div class="section">
+  <div class="sec-icon">🔄</div>
+  <div class="sec-label">Phần 2</div>
+  <h2>Thay đổi trông như thế nào trong công việc hàng ngày?</h2>
+  <p>Dưới đây là 5 việc thường gặp — và cách chúng sẽ thay đổi. Thay đổi ở đây rất nhỏ, không phải học lại từ đầu.</p>
+
+  <table class="ba-table">
+    <thead>
+      <tr>
+        <th>❌ Trước đây</th>
+        <th>✅ Sau này</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Gửi file báo cáo qua Zalo hoặc email</td>
+        <td>Upload file vào đúng thư mục SharePoint → tự động thông báo cho team</td>
+      </tr>
+      <tr>
+        <td>Đặt tên file: "baocao.xlsx", "baocao_final.xlsx", "baocao_final2.xlsx"</td>
+        <td>Đặt tên theo quy định: "2026-04-07_LMSG_FnB_DailyReport_v1.xlsx"</td>
+      </tr>
+      <tr>
+        <td>Tìm tài liệu bằng cách hỏi đồng nghiệp hoặc lục email</td>
+        <td>Tìm kiếm trong SharePoint theo tên file hoặc từ khóa — ra ngay</td>
+      </tr>
+      <tr>
+        <td>Số liệu từ mỗi người mỗi khác, họp mới biết ai đúng</td>
+        <td>Chỉ có một file chính thức — mọi người cùng nhìn vào một nguồn</td>
+      </tr>
+      <tr>
+        <td>Dashboard được làm thủ công mỗi tuần, mất 2-3 ngày</td>
+        <td>AI tự động kéo số liệu → dashboard có ngay mỗi sáng trước 7h</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 3: 3 ACTIONS -->
+<div class="section">
+  <div class="sec-icon">✋</div>
+  <div class="sec-label">Phần 3</div>
+  <h2>3 việc tôi cần làm — và chỉ 3 việc thôi</h2>
+  <p>Chúng ta không yêu cầu anh/chị học thêm phần mềm mới hay hiểu kỹ thuật. Chỉ cần 3 thay đổi nhỏ trong thói quen làm việc hàng ngày.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="sn">1</div>
+      <div class="st">Đặt tên file đúng quy định</div>
+      <div class="sd">Format: <strong>Ngày_Tên dự án_Loại file</strong><br><br>Ví dụ: <em>2026-04-07_LMSG_BaoCaoNgay.xlsx</em><br><br>Team sẽ có một tờ hướng dẫn dán gần máy tính.</div>
+    </div>
+    <div class="step">
+      <div class="sn">2</div>
+      <div class="st">Lưu vào đúng thư mục chung</div>
+      <div class="sd">Không gửi qua Zalo hay email nữa. Lưu trực tiếp vào SharePoint theo thư mục của bộ phận mình.<br><br>Được hướng dẫn cách làm trong buổi training 1 tiếng.</div>
+    </div>
+    <div class="step">
+      <div class="sn">3</div>
+      <div class="st">Báo cáo khi có vấn đề</div>
+      <div class="sd">Nếu không biết lưu vào đâu, hoặc thấy file bị sai — báo ngay cho Business Analyst hoặc anh Bach.<br><br>Không phán xét, chỉ giúp sửa.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: WHAT STAYS -->
+<div class="section">
+  <div class="sec-icon">🛡️</div>
+  <div class="sec-label">Phần 4</div>
+  <h2>Những gì KHÔNG thay đổi</h2>
+  <p>Nhiều người lo lắng sẽ phải học lại từ đầu. Thực ra không phải vậy. Đây là danh sách những thứ <strong>vẫn giữ nguyên</strong>:</p>
+
+  <ul class="check-list">
+    <li>Anh/chị vẫn dùng Excel để nhập liệu và làm báo cáo như bình thường</li>
+    <li>Anh/chị vẫn dùng Zalo để liên lạc với đồng nghiệp trong công việc hàng ngày</li>
+    <li>Không cần cài thêm phần mềm nào mới trong 3 tháng đầu</li>
+    <li>Anh/chị vẫn làm cùng công việc hiện tại — chỉ thay đổi <em>cách lưu trữ kết quả</em></li>
+    <li>Không ai bị đánh giá xấu vì mắc lỗi trong giai đoạn chuyển đổi</li>
+    <li>Công việc của anh/chị vẫn an toàn — AI hỗ trợ, không thay thế</li>
+  </ul>
+</div>
+
+<!-- SECTION 5: FAQ -->
+<div class="section">
+  <div class="sec-icon">💬</div>
+  <div class="sec-label">Phần 5</div>
+  <h2>Câu hỏi thường gặp</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">Tôi có mất việc không vì AI?</div>
+    <div class="faq-a"><strong>Không.</strong> AI (Zera) đang làm những việc nhàm chán như tổng hợp số liệu, làm báo cáo tự động, scan tin tức M&A — để anh/chị có thêm thời gian làm những việc cần suy nghĩ và phán đoán của con người. RCC cần <em>con người</em> đưa ra quyết định. AI chỉ là công cụ hỗ trợ.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">AI có đọc được email hay tin nhắn cá nhân của tôi không?</div>
+    <div class="faq-a"><strong>Không.</strong> AI chỉ có quyền truy cập vào các thư mục SharePoint được chỉ định và các file báo cáo công việc. Email cá nhân, Zalo cá nhân hoàn toàn riêng tư và không liên quan.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Nếu tôi upload nhầm file hoặc lưu sai chỗ thì sao?</div>
+    <div class="faq-a"><strong>Không sao cả.</strong> SharePoint lưu lại lịch sử mọi thay đổi — file cũ không bao giờ mất hoàn toàn. Anh/chị chỉ cần báo cho BA để họ chỉnh lại. Trong 3 tháng đầu, không ai bị phê bình vì lỗi này.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Tôi cần học thêm gì không?</div>
+    <div class="faq-a">Có một buổi training <strong>1 tiếng</strong> — thực hành trực tiếp, không có slide dài. Sau đó có tờ hướng dẫn 1 trang để dán gần máy tính. Và luôn có người để hỏi nếu cần thêm.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Sẽ mất bao lâu để mọi thứ ổn định?</div>
+    <div class="faq-a"><strong>3 tháng</strong> để tạo thói quen mới. Tháng đầu có thể hơi bất tiện vì phải thay đổi thói quen cũ. Từ tháng 2 trở đi sẽ thấy việc tìm file và làm báo cáo nhanh hơn hẳn.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Ai tôi liên hệ khi cần giúp đỡ?</div>
+    <div class="faq-a">Liên hệ <strong>Business Analyst</strong> của team (người được chỉ định) — hoặc nhắn tin cho <strong>Zera</strong> trên Telegram để được hướng dẫn nhanh. Trong trường hợp khẩn cấp, liên hệ trực tiếp <strong>anh Bach</strong>.</div>
+  </div>
+</div>
+
+<!-- SECTION 6: TIMELINE -->
+<div class="section">
+  <div class="sec-icon">📅</div>
+  <div class="sec-label">Phần 6</div>
+  <h2>Lộ trình 3 tháng — mọi thứ sẽ diễn ra như thế này</h2>
+  <p>Chúng ta thay đổi từng bước nhỏ, không làm ồ ạt một lúc. Mỗi tháng chỉ thêm một thứ mới.</p>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">🌱</div>
+      <div class="tl-month">Tháng 1</div>
+      <div class="tl-label">Tập làm quen</div>
+      <ul class="tl-items">
+        <li>Training 1 tiếng</li>
+        <li>Nhận hướng dẫn đặt tên file</li>
+        <li>Bắt đầu lưu file vào SharePoint</li>
+        <li>Được hỗ trợ khi cần</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🌿</div>
+      <div class="tl-month">Tháng 2</div>
+      <div class="tl-label">Áp dụng thực tế</div>
+      <ul class="tl-items">
+        <li>Toàn team dùng SharePoint</li>
+        <li>AI bắt đầu tự tạo dashboard</li>
+        <li>Ít phải hỏi "file ở đâu?" hơn</li>
+        <li>Phản hồi để cải thiện</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🌳</div>
+      <div class="tl-month">Tháng 3</div>
+      <div class="tl-label">Ổn định</div>
+      <ul class="tl-items">
+        <li>Thành thói quen tự nhiên</li>
+        <li>Dashboard tự động mỗi sáng</li>
+        <li>Báo cáo nhanh hơn 50%</li>
+        <li>Review và cải tiến tiếp</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">RCC Royal Canary Corp · Tài liệu nội bộ · Tháng 4/2026 · Dành cho tất cả nhân viên</div>
+</div>
+</body>
+</html>
