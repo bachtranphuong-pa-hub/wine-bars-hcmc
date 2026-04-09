@@ -3,32 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>LMSG Dashboard — 2026-04-07</title>
+<title>LMSG Dashboard — 07/04/2026</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',Calibri,Arial,sans-serif;background:#f0f2f7;color:#1a1a2e;font-size:11pt;line-height:1.5;}
 .page{max-width:980px;margin:0 auto;padding:24px 16px 48px;}
-.header{background:linear-gradient(140deg,#0d1b2a,#1a3a5c);border-radius:14px;padding:28px 32px;color:white;margin-bottom:18px;}
+
+/* HEADER */
+.header{background:linear-gradient(140deg,#0d1b2a,#1a3a5c);border-radius:14px;padding:26px 32px;color:white;margin-bottom:16px;}
 .header .tag{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:#c8a050;margin-bottom:8px;font-weight:700;}
-.header h1{font-size:20pt;font-weight:700;margin-bottom:4px;}
-.header .sub{font-size:10pt;color:rgba(255,255,255,0.55);}
-.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px;}
-.kpi{background:white;border-radius:11px;padding:14px 12px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
-.kpi .lbl{font-size:7.5pt;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:5px;font-weight:700;}
-.kpi .val{font-size:16pt;font-weight:700;line-height:1;margin-bottom:3px;}
-.kpi .meta{font-size:8.5pt;color:#888;}
-.card{background:white;border-radius:12px;padding:18px 20px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
-.card-hd{font-size:8.5pt;text-transform:uppercase;letter-spacing:2px;color:#1a3a5c;font-weight:700;margin-bottom:12px;}
+.header h1{font-size:22pt;font-weight:700;margin-bottom:4px;}
+.header .sub{font-size:9.5pt;color:rgba(255,255,255,0.5);}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
+.kpi{background:white;border-radius:11px;padding:14px 12px;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.kpi-lbl{font-size:7pt;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;margin-bottom:5px;font-weight:700;}
+.kpi-val{font-size:20pt;font-weight:700;line-height:1;margin-bottom:3px;}
+.kpi-sub{font-size:8.5pt;color:#6b7280;margin-bottom:3px;}
+.kpi-pct{font-size:9pt;}
+
+/* TABLES */
+.card{background:white;border-radius:12px;padding:18px 20px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.card-hd{font-size:8pt;text-transform:uppercase;letter-spacing:2.5px;color:#1a3a5c;font-weight:700;margin-bottom:12px;border-bottom:2px solid #e5eaf0;padding-bottom:8px;}
 table{width:100%;border-collapse:collapse;font-size:10.5pt;}
-th{background:#1a3a5c;color:white;padding:8px 14px;text-align:right;font-size:8pt;text-transform:uppercase;letter-spacing:0.5px;}
+th{background:#1a3a5c;color:white;padding:9px 14px;text-align:right;font-size:8pt;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;border:none;}
 th:first-child{text-align:left;}
-.sec td{background:#f7f9fc;font-weight:700;font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;color:#1a3a5c;padding:6px 14px;border-bottom:1px solid #e5eaf0;}
-.footer{text-align:center;font-size:8.5pt;color:#aaa;padding:12px 0;}
-@media(max-width:600px){.kpi-grid{grid-template-columns:1fr 1fr;}}
+.td-label{padding:8px 14px;border-bottom:1px solid #f0f4f8;font-weight:600;color:#1a1a2e;}
+.td-num{text-align:right;padding:8px 14px;border-bottom:1px solid #f0f4f8;color:#374151;}
+.sec-hd td{background:#f1f5f9;font-weight:700;font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;color:#475569;padding:6px 14px;border-bottom:1px solid #e2e8f0;}
+tr:hover .td-label, tr:hover .td-num{background:#f8fafc;}
+
+.footer{text-align:center;font-size:8.5pt;color:#9ca3af;padding:14px 0;}
+@media(max-width:640px){.kpi-grid{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
 <div class="page">
+
   <div class="header">
     <div class="tag">Le Méridien Saigon · RCC Dashboard</div>
     <h1>Daily Performance Report</h1>
@@ -37,29 +49,34 @@ th:first-child{text-align:left;}
 
   <div class="kpi-grid">
     <div class="kpi">
-      <div class="lbl">Total Revenue MTD</div>
-      <div class="val" style="color:#f87171;">80.39B</div>
-      <div class="meta">$3.00M · <span style="color:#f87171;font-weight:700;">▼20%</span></div>
+      <div class="kpi-lbl">Total Revenue MTD</div>
+      <div class="kpi-val" style="color:#f87171;">80.39B</div>
+      <div class="kpi-sub">$3.00M</div>
+      <div class="kpi-pct"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 20%</span></div>
     </div>
     <div class="kpi">
-      <div class="lbl">Occupancy (daily)</div>
-      <div class="val" style="color:#f87171;">79.9%</div>
-      <div class="meta">MTD 70.9% · YTD 79.5%</div>
+      <div class="kpi-lbl">Occupancy (Daily)</div>
+      <div class="kpi-val" style="color:#f87171;">79.9%</div>
+      <div class="kpi-sub">MTD 70.9% · YTD 79.5%</div>
+      <div class="kpi-pct">&nbsp;</div>
     </div>
     <div class="kpi">
-      <div class="lbl">RevPAR (daily)</div>
-      <div class="val" style="color:#a78bfa;">4M</div>
-      <div class="meta">MTD 3M · YTD 4M</div>
+      <div class="kpi-lbl">RevPAR (Daily)</div>
+      <div class="kpi-val" style="color:#818cf8;">4M</div>
+      <div class="kpi-sub">MTD 3M · YTD 4M</div>
+      <div class="kpi-pct">&nbsp;</div>
     </div>
     <div class="kpi">
-      <div class="lbl">Rooms Revenue MTD</div>
-      <div class="val" style="color:#60a5fa;">38.16B</div>
-      <div class="meta">$1.42M · <span style="color:#f87171;font-weight:700;">▼19%</span></div>
+      <div class="kpi-lbl">Rooms Revenue MTD</div>
+      <div class="kpi-val" style="color:#f87171;">7.12B</div>
+      <div class="kpi-sub">$266K</div>
+      <div class="kpi-pct"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 19%</span></div>
     </div>
     <div class="kpi">
-      <div class="lbl">La Victoire GGR MTD</div>
-      <div class="val" style="color:#f87171;">$1.03M</div>
-      <div class="meta">1,025,665 USD · <span style="color:#f87171;font-weight:700;">▼22%</span></div>
+      <div class="kpi-lbl">La Victoire GGR MTD</div>
+      <div class="kpi-val" style="color:#f87171;">$229K</div>
+      <div class="kpi-sub">228,634.5 USD</div>
+      <div class="kpi-pct"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 22%</span></div>
     </div>
   </div>
 
@@ -77,65 +94,65 @@ th:first-child{text-align:left;}
         </tr>
       </thead>
       <tbody>
-        <tr class="sec"><td colspan="6">🏨 Hotel Total</td></tr>
+        <tr class="sec-hd"><td colspan="6">🏨 Hotel Total</td></tr>
         <tr>
-      <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">Royal Canary (Total)</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">15.85B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">80.39B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼20%</span></td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">250.72B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼23%</span></td>
+      <td class="td-label">Royal Canary (Total)</td>
+      <td class="td-num">15.85B</td>
+      <td class="td-num">80.39B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 20%</span></td>
+      <td class="td-num">250.72B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 23%</span></td>
     </tr>
-        <tr class="sec"><td colspan="6">🛏 Rooms</td></tr>
+        <tr class="sec-hd"><td colspan="6">🛏 Rooms</td></tr>
         <tr>
-      <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">Rooms</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">7.12B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">38.16B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼19%</span></td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">124.10B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼27%</span></td>
+      <td class="td-label">Rooms</td>
+      <td class="td-num">1.26B</td>
+      <td class="td-num">7.12B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 19%</span></td>
+      <td class="td-num">124.10B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 27%</span></td>
     </tr>
-        <tr class="sec"><td colspan="6">🍽 Food & Beverage</td></tr>
+        <tr class="sec-hd"><td colspan="6">🍽 Food & Beverage</td></tr>
         <tr>
-      <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">Latest Recipe</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">787M</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">4.55B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼17%</span></td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">14.52B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼25%</span></td>
-    </tr>
-        <tr>
-      <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">AKUNA</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">659M</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">2.73B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼24%</span></td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">7.64B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼23%</span></td>
+      <td class="td-label">Latest Recipe</td>
+      <td class="td-num">787M</td>
+      <td class="td-num">4.55B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 17%</span></td>
+      <td class="td-num">14.52B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 25%</span></td>
     </tr>
         <tr>
-      <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">Barson</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">227M</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">1.68B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼13%</span></td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">4.52B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼23%</span></td>
+      <td class="td-label">AKUNA</td>
+      <td class="td-num">659M</td>
+      <td class="td-num">2.73B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 24%</span></td>
+      <td class="td-num">7.64B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 23%</span></td>
     </tr>
         <tr>
-      <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">Banquet/Catering</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">757M</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">3.55B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼21%</span></td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">16.50B</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼37%</span></td>
+      <td class="td-label">Barson</td>
+      <td class="td-num">227M</td>
+      <td class="td-num">1.68B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 13%</span></td>
+      <td class="td-num">4.52B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 23%</span></td>
     </tr>
-        <tr class="sec"><td colspan="6">🎰 La Victoire (USD K)</td></tr>
         <tr>
-      <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">La Victoire GGR</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">228,634.5K</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">1,025,665.3K</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼22%</span></td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">2,918,356.9K</td>
-      <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;"><span style="color:#f87171;font-weight:700;">▼17%</span></td>
+      <td class="td-label">Banquet/Catering</td>
+      <td class="td-num">757M</td>
+      <td class="td-num">3.55B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 21%</span></td>
+      <td class="td-num">16.50B</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 37%</span></td>
+    </tr>
+        <tr class="sec-hd"><td colspan="6">🎰 La Victoire (USD)</td></tr>
+        <tr>
+      <td class="td-label">La Victoire GGR</td>
+      <td class="td-num">0.0K</td>
+      <td class="td-num">228,634.5K</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 22%</span></td>
+      <td class="td-num">2,918,356.9K</td>
+      <td class="td-num"><span style="color:#f87171;font-weight:700;font-size:9.5pt;">▼ 17%</span></td>
     </tr>
       </tbody>
     </table>
@@ -156,28 +173,28 @@ th:first-child{text-align:left;}
       </thead>
       <tbody>
         <tr>
-          <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">Sold Rooms</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">275</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">1707</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">288</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">26533</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">2019</td>
+          <td class="td-label">Sold Rooms</td>
+          <td class="td-num">275</td><td class="td-num">1707</td>
+          <td class="td-num">288</td><td class="td-num">26533</td>
+          <td class="td-num">2019</td>
         </tr>
         <tr>
-          <td style="padding:8px 14px;border-bottom:1px solid #e5eaf0;font-weight:600;">Occupancy %</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">79.9%</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">70.9%</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">84.1%</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">79.5%</td>
-          <td style="text-align:right;padding:8px 14px;border-bottom:1px solid #e5eaf0;">—</td>
+          <td class="td-label">Occupancy %</td>
+          <td class="td-num">79.9%</td><td class="td-num">70.9%</td>
+          <td class="td-num">84.1%</td><td class="td-num">79.5%</td>
+          <td class="td-num">—</td>
         </tr>
         <tr>
-          <td style="padding:8px 14px;font-weight:600;">RevPAR</td>
-          <td style="text-align:right;padding:8px 14px;">4M</td>
-          <td style="text-align:right;padding:8px 14px;">3M</td>
-          <td style="text-align:right;padding:8px 14px;">4M</td>
-          <td style="text-align:right;padding:8px 14px;">4M</td>
-          <td style="text-align:right;padding:8px 14px;">—</td>
+          <td class="td-label">RevPAR (VND)</td>
+          <td class="td-num">4M</td><td class="td-num">3M</td>
+          <td class="td-num">4M</td><td class="td-num">4M</td>
+          <td class="td-num">—</td>
+        </tr>
+        <tr>
+          <td class="td-label">Rooms Sales (VND)</td>
+          <td class="td-num">1.26B</td><td class="td-num">7.12B</td>
+          <td class="td-num">1.27B</td><td class="td-num">124.10B</td>
+          <td class="td-num">—</td>
         </tr>
       </tbody>
     </table>
