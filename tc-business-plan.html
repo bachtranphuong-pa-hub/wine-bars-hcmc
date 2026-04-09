@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lam Ngọc Villas — Investment Business Plan</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#0d1b2a;--navy2:#1a3a5c;--gold:#c8a050;--gold2:#e8c070;--text:#1a2e44;--muted:#6b7280;--green:#059669;--red:#dc2626;--surface:#f4f6f9;}
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;background:var(--surface);color:var(--text);font-size:11pt;line-height:1.6;}
+.page{max-width:1000px;margin:0 auto;padding:28px 20px 60px;}
+
+/* HEADER */
+.header{background:linear-gradient(140deg,var(--navy),var(--navy2));border-radius:16px;padding:40px 44px;color:white;margin-bottom:24px;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(200,160,80,0.15),transparent 70%);border-radius:50%;}
+.header .conf{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:12px;}
+.header h1{font-size:26pt;font-weight:700;line-height:1.1;margin-bottom:8px;}
+.header h1 em{color:var(--gold);font-style:normal;}
+.header .sub{font-size:11pt;color:rgba(255,255,255,0.55);margin-bottom:24px;}
+.header .meta{display:flex;gap:16px;flex-wrap:wrap;}
+.header .meta span{background:rgba(255,255,255,0.1);padding:5px 14px;border-radius:14px;font-size:9pt;color:rgba(255,255,255,0.8);}
+
+/* KPI CARDS */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+.kpi{background:white;border-radius:12px;padding:18px 16px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-top:3px solid var(--gold);}
+.kpi .kl{font-size:8pt;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:6px;font-weight:700;}
+.kpi .kv{font-size:20pt;font-weight:700;line-height:1;margin-bottom:4px;}
+.kpi .ks{font-size:9.5pt;color:var(--muted);}
+
+/* CARDS */
+.card{background:white;border-radius:12px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.card-label{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;}
+h2{font-size:14pt;font-weight:700;color:var(--navy);margin-bottom:16px;}
+h3{font-size:11.5pt;font-weight:700;color:var(--navy2);margin-bottom:10px;margin-top:18px;}
+h3:first-of-type{margin-top:0;}
+p{font-size:10.5pt;color:#444;margin-bottom:10px;}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:10.5pt;margin:8px 0;}
+th{background:var(--navy);color:white;padding:9px 12px;text-align:left;font-size:8.5pt;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;}
+th.r{text-align:right;}
+td{padding:8px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top;}
+td.r{text-align:right;}
+td.bold{font-weight:700;}
+tr:nth-child(even) td{background:#fafafa;}
+tr.subtotal td{background:#f0f4f8;font-weight:700;}
+tr.total td{background:var(--navy);color:white;font-weight:700;font-size:11pt;}
+tr.total td.g{color:var(--gold);}
+
+/* DEAL STRUCTURE */
+.deal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:12px 0;}
+.deal-item{background:var(--surface);border-radius:10px;padding:14px;border-left:3px solid var(--gold);}
+.deal-item .di-label{font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:4px;}
+.deal-item .di-val{font-size:13pt;font-weight:700;color:var(--navy);}
+.deal-item .di-sub{font-size:9.5pt;color:var(--muted);margin-top:2px;}
+
+/* CSS BAR CHARTS */
+.bar-chart{margin:12px 0;}
+.bc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.bc-label{width:200px;font-size:10pt;flex-shrink:0;color:var(--text);}
+.bc-bar-wrap{flex:1;background:#e5e7eb;border-radius:4px;height:22px;position:relative;overflow:visible;}
+.bc-bar{height:22px;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:9pt;font-weight:700;color:white;white-space:nowrap;position:relative;}
+.bc-val{position:absolute;right:-60px;font-size:9.5pt;color:var(--text);font-weight:700;}
+
+/* UNIT TABLE VISUAL */
+.unit-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:8.5pt;font-weight:700;}
+.ub-bay-sea{background:#fef3c7;color:#b45309;}
+.ub-bay{background:#dbeafe;color:#1d4ed8;}
+.ub-marina{background:#d1fae5;color:#065f46;}
+
+/* FINANCIAL BOX */
+.fin-highlight{background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border-radius:12px;padding:22px 28px;color:white;margin:14px 0;}
+.fin-highlight h3{color:var(--gold);margin-bottom:14px;}
+.fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.fin-item .fi-label{font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.55);margin-bottom:4px;}
+.fin-item .fi-val{font-size:22pt;font-weight:700;color:var(--gold);line-height:1;}
+.fin-item .fi-sub{font-size:9.5pt;color:rgba(255,255,255,0.6);margin-top:3px;}
+
+/* WATERFALL */
+.waterfall{display:flex;gap:0;align-items:flex-end;height:180px;margin:14px 0;border-bottom:2px solid #e5e7eb;}
+.wf-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.wf-bar{width:60px;border-radius:4px 4px 0 0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-size:8.5pt;font-weight:700;color:white;}
+.wf-label{font-size:8.5pt;color:var(--muted);text-align:center;margin-top:6px;}
+.wf-val{font-size:9pt;font-weight:700;color:var(--navy);}
+
+/* METT CARD */
+.mett-card{background:linear-gradient(135deg,#1a3a5c,#0d1b2a);border-radius:12px;padding:22px 26px;color:white;border:1.5px solid var(--gold);}
+.mett-card .mc-tag{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.mett-card h3{color:white;font-size:15pt;margin-bottom:6px;}
+.mett-card .mc-sub{font-size:10pt;color:rgba(255,255,255,0.55);margin-bottom:16px;}
+.mett-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mf-item{background:rgba(255,255,255,0.08);border-radius:8px;padding:10px 12px;}
+.mf-item .mfi-label{font-size:8.5pt;color:rgba(255,255,255,0.55);margin-bottom:3px;}
+.mf-item .mfi-val{font-size:10.5pt;font-weight:700;color:white;}
+
+/* SALES PHASES */
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:14px 0;position:relative;}
+.phases::before{content:'';position:absolute;top:24px;left:12%;right:12%;height:2px;background:linear-gradient(to right,var(--gold),var(--navy2));z-index:0;}
+.ph{text-align:center;position:relative;z-index:1;}
+.ph-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:14pt;border:3px solid var(--gold);background:white;}
+.ph-time{font-size:8.5pt;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.ph-title{font-size:10.5pt;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.ph-desc{font-size:9.5pt;color:var(--muted);}
+
+/* RISK LIGHTS */
+.risk-grid{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0;}
+.risk-item{display:flex;gap:14px;align-items:flex-start;padding:12px 16px;background:white;border-radius:10px;border:1px solid #e5e7eb;}
+.risk-light{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.rl-high{background:#ef4444;}
+.rl-med{background:#f59e0b;}
+.rl-low{background:#22c55e;}
+.risk-content .rc-title{font-size:11pt;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.risk-content .rc-desc{font-size:10pt;color:var(--muted);}
+.risk-status{margin-left:auto;flex-shrink:0;}
+.rs-badge{padding:3px 10px;border-radius:8px;font-size:8.5pt;font-weight:700;}
+.rs-high{background:#fee2e2;color:#991b1b;}
+.rs-med{background:#fef3c7;color:#b45309;}
+
+/* GO/NO-GO */
+.go-box{background:linear-gradient(135deg,#064e3b,#065f46);border-radius:14px;padding:28px 32px;color:white;margin:14px 0;}
+.go-box .gb-tag{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:10px;}
+.go-box .gb-rec{font-size:28pt;font-weight:800;color:#34d399;margin-bottom:8px;}
+.go-box .gb-sub{font-size:11pt;color:rgba(255,255,255,0.7);margin-bottom:16px;}
+.conditions{list-style:none;padding:0;}
+.conditions li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;gap:10px;font-size:10.5pt;color:white;}
+.conditions li:last-child{border-bottom:none;}
+.conditions li::before{content:'✓';color:#34d399;font-weight:800;flex-shrink:0;}
+
+/* SENSITIVITY TABLE */
+.sens-table td.good{color:var(--green);font-weight:700;}
+.sens-table td.warn{color:#b45309;}
+.sens-table td.bad{color:var(--red);}
+.sens-table tr.base-row td{background:#eff6ff;font-weight:700;}
+
+.footer{text-align:center;font-size:8.5pt;color:#aaa;padding:14px 0;}
+@media(max-width:640px){
+  .kpi-row,.deal-grid,.fin-grid,.mett-features,.phases{grid-template-columns:1fr 1fr;}
+  .phases::before{display:none;}
+  .header h1{font-size:19pt;}
+  .card{padding:18px 16px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="conf">RCC Royal Canary Corp · Confidential · Investment Memorandum</div>
+  <h1><em>Lam Ngọc Villas</em><br>Tuần Châu Island, Hạ Long Bay</h1>
+  <div class="sub">Business Plan & Investment Thesis · Prepared for Board Review · April 2026</div>
+  <div class="meta">
+    <span>🏝 18 Luxury Villas · 15,966 m²</span>
+    <span>💰 Acquisition: $25.5M</span>
+    <span>📅 Closing: Q3/2026</span>
+    <span>🎯 GDV: $117.3M</span>
+    <span>📊 IRR: 146%</span>
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kl">Total GDV</div>
+    <div class="kv" style="color:var(--navy);">$117.3M</div>
+    <div class="ks">3,050B VND · 18 units</div>
+  </div>
+  <div class="kpi">
+    <div class="kl">Net Profit</div>
+    <div class="kv" style="color:var(--green);">$49.0M</div>
+    <div class="ks">1,275B VND · 41.8% margin</div>
+  </div>
+  <div class="kpi">
+    <div class="kl">Equity IRR</div>
+    <div class="kv" style="color:var(--gold);">146%</div>
+    <div class="ks">Payback ~18–24 months</div>
+  </div>
+  <div class="kpi">
+    <div class="kl">Equity Required</div>
+    <div class="kv" style="color:var(--navy);">$11.9M</div>
+    <div class="ks">309B VND · 30% LTV</div>
+  </div>
+</div>
+
+<!-- SECTION 1: DEAL OVERVIEW -->
+<div class="card">
+  <div class="card-label">Section 01</div>
+  <h2>Deal Overview</h2>
+  <div class="deal-grid">
+    <div class="deal-item">
+      <div class="di-label">Structure</div>
+      <div class="di-val">Share Deal</div>
+      <div class="di-sub">100% equity via NewCo · 3-tranche escrow</div>
+    </div>
+    <div class="deal-item">
+      <div class="di-label">Acquisition Price</div>
+      <div class="di-val">$25.5M</div>
+      <div class="di-sub">663B VND · down from $30M ask (-$4.5M adjustments)</div>
+    </div>
+    <div class="deal-item">
+      <div class="di-label">Target Entity</div>
+      <div class="di-val">Jen Tuần Châu</div>
+      <div class="di-sub">From Jen Capital (51%) + Đảo Ngọc (49%)</div>
+    </div>
+    <div class="deal-item">
+      <div class="di-label">Closing</div>
+      <div class="di-val">Q3/2026</div>
+      <div class="di-sub">Subject to 4 Closing Conditions</div>
+    </div>
+    <div class="deal-item">
+      <div class="di-label">Current State</div>
+      <div class="di-val">Pre-launch</div>
+      <div class="di-sub">1 model villa complete · infra ready · 18 units zoning approved</div>
+    </div>
+    <div class="deal-item">
+      <div class="di-label">Advisors</div>
+      <div class="di-val">FIIVN · EY · CBRE</div>
+      <div class="di-sub">Legal · Financial/Tax · Valuation (31/12/2025)</div>
+    </div>
+  </div>
+
+  <h3>Price Discovery — $4.5M Negotiated Down</h3>
+  <table>
+    <thead><tr><th>Adjustment</th><th class="r">Amount (B VND)</th><th class="r">USD</th></tr></thead>
+    <tbody>
+      <tr><td>Gross asking price</td><td class="r">786B</td><td class="r">$30.0M</td></tr>
+      <tr><td>− Legal risk adjustments (Loại 2 — leverage)</td><td class="r">−103.3B</td><td class="r">−$3.94M</td></tr>
+      <tr><td>− Financial & tax adjustments (EY confirmed)</td><td class="r">−18.3B</td><td class="r">−$0.70M</td></tr>
+      <tr class="subtotal"><td>= <strong>Final acquisition price</strong></td><td class="r"><strong>664.4B</strong></td><td class="r"><strong>$25.5M</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 2: ASSET & ZONING -->
+<div class="card">
+  <div class="card-label">Section 02</div>
+  <h2>Asset & Zoning — 18 Units</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Unit</th><th>Type</th><th class="r">Land m²</th><th>Floors</th>
+        <th class="r">Price tr/m²</th><th class="r">Unit Price (B)</th><th class="r">USD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>H-30</td><td><span class="unit-badge ub-bay-sea">Bay Seafront</span></td><td class="r">1,515</td><td>2F</td><td class="r">230</td><td class="r bold">348.4B</td><td class="r">$13.4M</td></tr>
+      <tr><td>H-31</td><td><span class="unit-badge ub-bay-sea">Bay Seafront</span></td><td class="r">1,523</td><td>2F</td><td class="r">230</td><td class="r bold">350.3B</td><td class="r">$13.5M</td></tr>
+      <tr><td>H-23 to H-29</td><td><span class="unit-badge ub-bay">Bay Standard ×7</span></td><td class="r">~1,010</td><td>2F</td><td class="r">200</td><td class="r bold">~202B ea.</td><td class="r">~$7.8M ea.</td></tr>
+      <tr><td>H-54 to H-62</td><td><span class="unit-badge ub-marina">Marina ×9</span></td><td class="r">550–939</td><td>3F</td><td class="r">160</td><td class="r bold">88–150B ea.</td><td class="r">$3.4–5.8M ea.</td></tr>
+      <tr class="total">
+        <td colspan="2"><strong>TOTAL — 18 UNITS</strong></td>
+        <td class="r">15,966 m²</td><td></td><td></td>
+        <td class="r g"><strong>3,050B</strong></td>
+        <td class="r g"><strong>$117.3M</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:16px;">Revenue by Segment</h3>
+  <div class="bar-chart">
+    <div class="bc-row">
+      <div class="bc-label">🌊 Bay Seafront (2 units)</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:23%;background:#b45309;">$26.9M</div>
+        <div class="bc-val">698.7B</div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">🏠 Bay Standard (7 units)</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:46%;background:#1d4ed8;">$54.4M</div>
+        <div class="bc-val">1,414B</div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">⚓ Marina (9 units)</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:31%;background:#059669;">$36.0M</div>
+        <div class="bc-val">937B</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: MARKET POSITIONING -->
+<div class="card">
+  <div class="card-label">Section 03</div>
+  <h2>Market Positioning — First Mover at This Price Point</h2>
+  <p><strong>No comparable at 180–230 tr/m² exists in Hạ Long.</strong> Lam Ngọc Villas will be the first ultra-luxury branded villa offering on the island — creating a genuine white space opportunity.</p>
+
+  <h3>Price Ladder — Hạ Long & Regional Comparables</h3>
+  <div class="bar-chart" style="margin-bottom:16px;">
+    <div class="bc-row">
+      <div class="bc-label">🎯 Lam Ngọc Bay SF (230tr)</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:92%;background:var(--gold);color:#0d1b2a;">$8,800/m²</div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">Grand Marina Saigon</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:88%;background:#374151;">$7,000–10,000/m²</div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">🎯 Lam Ngọc Bay Std (200tr)</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:76%;background:var(--navy2);">$7,700/m²</div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">Park Hyatt Phu Quoc</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:70%;background:#374151;">$6,000–8,000/m²</div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">🎯 Lam Ngọc Marina (160tr)</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:62%;background:#1e40af;">$6,150/m²</div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">InterContinental Halong</div>
+      <div class="bc-bar-wrap">
+        <div class="bc-bar" style="width:38%;background:#dc2626;">~$3,700/m²</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Why 180–230 tr/m² is Justified</h3>
+  <table>
+    <thead><tr><th>Differentiator</th><th>Lam Ngọc Villas</th><th>Closest Comp (IHG Halong)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Location</strong></td><td>Tuần Châu Island · UNESCO World Heritage Bay</td><td>Halong Bay mainland</td></tr>
+      <tr><td><strong>Scarcity</strong></td><td>Only 18 units — no new island land available</td><td>41 villas + 60 sky residences</td></tr>
+      <tr><td><strong>Average unit size</strong></td><td>887 m² land / unit</td><td>~470 m² / unit</td></tr>
+      <tr><td><strong>Management brand</strong></td><td>METT (Sunset HG) — Members Club</td><td>InterContinental (IHG)</td></tr>
+      <tr><td><strong>Buyer proposition</strong></td><td>Island exclusivity + rental yield + F&B ecosystem</td><td>Hotel-adjacent branded</td></tr>
+      <tr><td><strong>Proximity to Hanoi</strong></td><td>2 hours — premium weekend retreat market</td><td>2 hours</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Target Buyer Profile</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;">
+    <div style="background:#eff6ff;border-radius:10px;padding:14px;border-left:3px solid #1d4ed8;">
+      <div style="font-size:9pt;text-transform:uppercase;letter-spacing:1px;color:#1d4ed8;font-weight:700;margin-bottom:4px;">50% · Primary</div>
+      <div style="font-weight:700;font-size:11pt;margin-bottom:4px;">Hà Nội UHNWI</div>
+      <div style="font-size:10pt;color:#555;">Second home, weekend retreat. Budget 150–350B/căn. Values exclusivity + distance from city.</div>
+    </div>
+    <div style="background:#f0fdf4;border-radius:10px;padding:14px;border-left:3px solid #059669;">
+      <div style="font-size:9pt;text-transform:uppercase;letter-spacing:1px;color:#059669;font-weight:700;margin-bottom:4px;">30% · Secondary</div>
+      <div style="font-weight:700;font-size:11pt;margin-bottom:4px;">VN HNW Investor</div>
+      <div style="font-size:10pt;color:#555;">Rental yield play. 4–6%/yr. Expects professional management + rental program.</div>
+    </div>
+    <div style="background:#fdf4ff;border-radius:10px;padding:14px;border-left:3px solid #7c3aed;">
+      <div style="font-size:9pt;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;font-weight:700;margin-bottom:4px;">20% · Tertiary</div>
+      <div style="font-weight:700;font-size:11pt;margin-bottom:4px;">Overseas Viet / Expat</div>
+      <div style="font-size:10pt;color:#555;">Singapore/HK-based. "Homeland luxury" narrative. Budget $3–6M/villa.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: FINANCIAL MODEL -->
+<div class="card">
+  <div class="card-label">Section 04</div>
+  <h2>Financial Model — P&L & Returns</h2>
+
+  <table>
+    <thead><tr><th>P&L Item</th><th class="r">VND (B)</th><th class="r">USD (M)</th><th class="r">% of GDV</th></tr></thead>
+    <tbody>
+      <tr><td class="bold">Gross Revenue (GDV)</td><td class="r bold">3,050B</td><td class="r bold">$117.3M</td><td class="r">100%</td></tr>
+      <tr><td style="padding-left:20px;">Acquisition (share deal)</td><td class="r">663B</td><td class="r">$25.5M</td><td class="r">21.7%</td></tr>
+      <tr><td style="padding-left:20px;">Construction (EY + 15% contingency)</td><td class="r">549B</td><td class="r">$21.1M</td><td class="r">18.0%</td></tr>
+      <tr><td style="padding-left:20px;">Soft costs (legal, sales, mgmt — 8%)</td><td class="r">244B</td><td class="r">$9.4M</td><td class="r">8.0%</td></tr>
+      <tr class="subtotal"><td><strong>Total Cost</strong></td><td class="r"><strong>1,456B</strong></td><td class="r"><strong>$56.0M</strong></td><td class="r"><strong>47.7%</strong></td></tr>
+      <tr><td class="bold" style="color:var(--green);">EBT (Earnings Before Tax)</td><td class="r bold" style="color:var(--green);">1,594B</td><td class="r bold" style="color:var(--green);">$61.3M</td><td class="r">52.3%</td></tr>
+      <tr><td style="padding-left:20px;">CIT (20%)</td><td class="r">319B</td><td class="r">$12.3M</td><td class="r">10.5%</td></tr>
+      <tr class="total"><td class="g"><strong>NET PROFIT</strong></td><td class="r g"><strong>1,275B</strong></td><td class="r g"><strong>$49.0M</strong></td><td class="r g"><strong>41.8%</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="fin-highlight" style="margin-top:16px;">
+    <h3>Key Return Metrics</h3>
+    <div class="fin-grid">
+      <div class="fin-item">
+        <div class="fi-label">Net Profit Margin</div>
+        <div class="fi-val">41.8%</div>
+        <div class="fi-sub">After all costs + CIT 20%</div>
+      </div>
+      <div class="fin-item">
+        <div class="fi-label">ROIC</div>
+        <div class="fi-val">87.6%</div>
+        <div class="fi-sub">Net profit / Total cost invested</div>
+      </div>
+      <div class="fin-item">
+        <div class="fi-label">Equity IRR</div>
+        <div class="fi-val">146%</div>
+        <div class="fi-sub">After interest, 2-year model</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.15);display:flex;gap:24px;flex-wrap:wrap;">
+      <div><span style="color:rgba(255,255,255,0.55);font-size:9.5pt;">Net profit after loan interest: </span><span style="font-weight:700;color:var(--gold);">1,136B / $43.7M</span></div>
+      <div><span style="color:rgba(255,255,255,0.55);font-size:9.5pt;">Payback period: </span><span style="font-weight:700;color:var(--gold);">~18–24 months</span></div>
+    </div>
+  </div>
+
+  <h3>Sensitivity Analysis</h3>
+  <table class="sens-table">
+    <thead><tr><th>Scenario</th><th class="r">GDV</th><th class="r">Net Profit</th><th class="r">Margin</th><th class="r">IRR</th></tr></thead>
+    <tbody>
+      <tr class="base-row"><td><strong>Base case (as modeled)</strong></td><td class="r">3,050B</td><td class="r good">1,275B</td><td class="r good">41.8%</td><td class="r good">146%</td></tr>
+      <tr><td>Price +10% (avg ~198 tr/m²)</td><td class="r">3,355B</td><td class="r good">1,500B</td><td class="r good">44.7%</td><td class="r good">187%</td></tr>
+      <tr><td>Cost +15% construction only</td><td class="r">3,050B</td><td class="r good">1,209B</td><td class="r good">39.7%</td><td class="r good">137%</td></tr>
+      <tr><td>Price −10% (avg ~162 tr/m²)</td><td class="r">2,745B</td><td class="r warn">1,051B</td><td class="r warn">38.3%</td><td class="r warn">96%</td></tr>
+      <tr><td>Price −10% + Cost +15%</td><td class="r">2,745B</td><td class="r warn">985B</td><td class="r warn">35.9%</td><td class="r warn">82%</td></tr>
+      <tr><td>Bay premium removed (all 180 tr)</td><td class="r">2,867B</td><td class="r warn">1,141B</td><td class="r warn">39.8%</td><td class="r warn">118%</td></tr>
+      <tr><td>Price −20% (break-even zone)</td><td class="r">2,440B</td><td class="r bad">826B</td><td class="r bad">33.9%</td><td class="r bad">~1%</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:9.5pt;color:var(--muted);margin-top:8px;">✅ Project remains profitable (IRR >80%) even at price −10% + cost +15% scenario. Break-even only at −20% price — highly unlikely given market positioning.</p>
+</div>
+
+<!-- SECTION 5: FUNDING -->
+<div class="card">
+  <div class="card-label">Section 05</div>
+  <h2>Funding Structure</h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+    <div>
+      <h3>Capital Stack</h3>
+      <table>
+        <thead><tr><th>Source</th><th class="r">Amount</th><th class="r">% of Acq.</th></tr></thead>
+        <tbody>
+          <tr><td>M&A Loan @ 10%/yr, 3yr</td><td class="r">464B ($17.8M)</td><td class="r">70%</td></tr>
+          <tr><td>RCC Equity</td><td class="r">199B ($7.7M)</td><td class="r">30%</td></tr>
+          <tr class="subtotal"><td>Acquisition Total</td><td class="r">663B ($25.5M)</td><td class="r">100%</td></tr>
+          <tr><td>Construction (presale cashflow)</td><td class="r">~439B</td><td class="r">—</td></tr>
+          <tr><td>Construction equity top-up</td><td class="r">~110B</td><td class="r">—</td></tr>
+          <tr class="total"><td class="g">Total Equity Required</td><td class="r g"><strong>~309B ($11.9M)</strong></td><td class="r g">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Cash Flow Summary</h3>
+      <table>
+        <thead><tr><th>Item</th><th class="r">Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Presale (50% of GDV, M1–14)</td><td class="r">1,525B</td></tr>
+          <tr><td>Completion sales (50%, M15–24)</td><td class="r">1,525B</td></tr>
+          <tr><td>− Loan repayment</td><td class="r">464B</td></tr>
+          <tr><td>− Interest (3yr simple)</td><td class="r">139B</td></tr>
+          <tr><td>− Construction + soft cost</td><td class="r">793B</td></tr>
+          <tr><td>− CIT 20%</td><td class="r">319B</td></tr>
+          <tr class="total"><td class="g">Net Cash to RCC</td><td class="r g"><strong>1,136B ($43.7M)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p style="background:#eff6ff;padding:12px 16px;border-radius:8px;border-left:3px solid #1d4ed8;font-size:10.5pt;color:#1e3a5f;">
+  💡 <strong>Key insight:</strong> Equity invested ~$11.9M → returns ~$43.7M net in 24 months. Every $1 of equity generates ~$3.7 in return. Presale cashflow funds majority of construction — minimizing peak equity exposure.
+  </p>
+</div>
+
+<!-- SECTION 6: MANAGEMENT UNIT -->
+<div class="card">
+  <div class="card-label">Section 06</div>
+  <h2>Management Unit — Recommended: The METT</h2>
+
+  <div class="mett-card">
+    <div class="mc-tag">Recommended Operator · Priority #1</div>
+    <h3>The METT by Sunset Hospitality Group</h3>
+    <div class="mc-sub">Goldman Sachs-backed lifestyle hospitality group · 26+ F&B brands · Active Vietnam pipeline</div>
+    <div class="mett-features">
+      <div class="mf-item">
+        <div class="mfi-label">Management Fee (buyer pays)</div>
+        <div class="mfi-val">$3,500–6,000 / villa / month</div>
+      </div>
+      <div class="mf-item">
+        <div class="mfi-label">Vietnam Presence</div>
+        <div class="mfi-val">Hanoi Q4 2025 · Phu Quoc pipeline</div>
+      </div>
+      <div class="mf-item">
+        <div class="mfi-label">Members Club Model</div>
+        <div class="mfi-val">Villa owner = automatic METT member</div>
+      </div>
+      <div class="mf-item">
+        <div class="mfi-label">Buyer Rental Yield</div>
+        <div class="mfi-val">~4–6% per annum</div>
+      </div>
+      <div class="mf-item">
+        <div class="mfi-label">F&B Ecosystem</div>
+        <div class="mfi-val">26+ brands · F&B membership bundled</div>
+      </div>
+      <div class="mf-item">
+        <div class="mfi-label">Fallback Operator</div>
+        <div class="mfi-val">Anantara (proven Vietnam model)</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:16px;">Buyer Value Proposition with METT</h3>
+  <table>
+    <thead><tr><th>Element</th><th>What Buyer Gets</th><th>Impact on Sale</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Members Club Access</strong></td><td>Automatic METT membership — F&B, spa, events</td><td>Justifies premium price vs unbranded</td></tr>
+      <tr><td><strong>Rental Program</strong></td><td>METT manages rental — 4–6% yield/yr</td><td>Investor buyers: income while not using</td></tr>
+      <tr><td><strong>Marina Berth</strong></td><td>Tuần Châu port access — speedboat/yacht</td><td>Lifestyle premium — "island experience"</td></tr>
+      <tr><td><strong>F&B Membership</strong></td><td>Access to 26+ Sunset HG F&B brands globally</td><td>Network value for UHNWI buyers</td></tr>
+      <tr><td><strong>Concierge</strong></td><td>24/7 villa management, arrival prep, in-villa dining</td><td>Second home buyers want zero-hassle</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:9.5pt;color:var(--muted);margin-top:8px;">Note: Management fee is paid by villa buyers, not RCC. RCC's cost = one-time setup fee (TBD via RFP) + revenue share on GOP. LOI with METT to be signed before Closing.</p>
+</div>
+
+<!-- SECTION 7: SALES STRATEGY -->
+<div class="card">
+  <div class="card-label">Section 07</div>
+  <h2>Sales Strategy — 4-Phase Go To Market</h2>
+
+  <div class="phases">
+    <div class="ph">
+      <div class="ph-dot">🤝</div>
+      <div class="ph-time">Month 1–3</div>
+      <div class="ph-title">VIP Pre-Launch</div>
+      <div class="ph-desc">3–4 units via anh Quang/Bach personal network. No public announcement.</div>
+    </div>
+    <div class="ph">
+      <div class="ph-dot">🚀</div>
+      <div class="ph-time">Month 4–8</div>
+      <div class="ph-title">Broker Launch</div>
+      <div class="ph-desc">5–6 units. Savills + CBRE. HN launch event at Sofitel/JW Marriott.</div>
+    </div>
+    <div class="ph">
+      <div class="ph-dot">📣</div>
+      <div class="ph-time">Month 9–14</div>
+      <div class="ph-title">General Presale</div>
+      <div class="ph-desc">4–5 units. SG/HK brokers for overseas Vietnamese. Digital campaign.</div>
+    </div>
+    <div class="ph">
+      <div class="ph-dot">🏡</div>
+      <div class="ph-time">Month 15–24</div>
+      <div class="ph-title">Completion Launch</div>
+      <div class="ph-desc">Remaining units. Show villa ready. Full METT branding + rental proof.</div>
+    </div>
+  </div>
+
+  <h3>Sales Channels</h3>
+  <table>
+    <thead><tr><th>Channel</th><th>Role</th><th>Target Segment</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Savills Vietnam</strong></td><td>Primary broker — HNW local network</td><td>Hanoi/HCMC UHNWI</td></tr>
+      <tr><td><strong>CBRE Vietnam</strong></td><td>Secondary broker — institutional reach</td><td>Corporate HNW, fund buyers</td></tr>
+      <tr><td><strong>In-house VIP</strong></td><td>Direct relationship sales (Phase 1)</td><td>anh Quang/Bach network</td></tr>
+      <tr><td><strong>Singapore/HK brokers</strong></td><td>Overseas Vietnamese + expat segment</td><td>OV/$USD buyers</td></tr>
+      <tr><td><strong>METT Global Network</strong></td><td>Lifestyle member referrals (post-brand)</td><td>International UHNWI</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Bundled Package with Each Villa</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+    <div style="background:#f0fdf4;border-radius:10px;padding:14px;border-left:3px solid #059669;">
+      <div style="font-weight:700;font-size:11pt;margin-bottom:8px;">🌿 Signature Package (included)</div>
+      <ul style="list-style:none;padding:0;font-size:10pt;color:#374151;">
+        <li>• METT Members Club lifetime membership</li>
+        <li>• Marina berth (1 slot) — Tuần Châu port</li>
+        <li>• F&B membership — 26+ Sunset HG brands</li>
+        <li>• First-year villa management complimentary</li>
+      </ul>
+    </div>
+    <div style="background:#eff6ff;border-radius:10px;padding:14px;border-left:3px solid #1d4ed8;">
+      <div style="font-weight:700;font-size:11pt;margin-bottom:8px;">💰 Rental Plus (optional add-on)</div>
+      <ul style="list-style:none;padding:0;font-size:10pt;color:#374151;">
+        <li>• METT managed rental program</li>
+        <li>• OTA listing (Airbnb Luxe, Mr & Mrs Smith)</li>
+        <li>• Revenue share: 80% owner / 20% METT</li>
+        <li>• Expected yield: 4–6% of purchase price/yr</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 8: LEGAL RISKS -->
+<div class="card">
+  <div class="card-label">Section 08</div>
+  <h2>Legal Risk Summary — 4 Closing Conditions</h2>
+  <p style="margin-bottom:14px;font-size:10.5pt;color:var(--muted);">All 4 conditions are <strong>Bên Bán's responsibility</strong> to resolve before RCC pays any tranche. These are not RCC's risk to absorb — they are contractual preconditions.</p>
+
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="risk-light rl-high"></div>
+      <div class="risk-content">
+        <div class="rc-title">1. GCN QSDĐ Update — 138m² Discrepancy</div>
+        <div class="rc-desc">Land use certificate must be updated to reflect correct area (15,966m²) and transferred to Jen Tuần Châu. May trigger additional land-use fees from tax authority.</div>
+      </div>
+      <div class="risk-status"><span class="rs-badge rs-high">HIGH</span></div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-light rl-high"></div>
+      <div class="risk-content">
+        <div class="rc-title">2. Construction Permit Transition (LXD 2025)</div>
+        <div class="rc-desc">Project exempted from building permit under LXD 2014. Must confirm transitional validity under LXD 2025 or obtain new permit. No commencement notice before 1/1/2026 creates risk. If unresolvable: RCC self-files, deducts ~1–2B from price.</div>
+      </div>
+      <div class="risk-status"><span class="rs-badge rs-high">HIGH</span></div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-light rl-high"></div>
+      <div class="risk-content">
+        <div class="rc-title">3. Infrastructure Agreement with T&H Hạ Long</div>
+        <div class="rc-desc">Shared infrastructure (17,311m² road/utilities) owned by T&H — must formalize usage agreement, handover timeline, and maintenance fee structure before Closing.</div>
+      </div>
+      <div class="risk-status"><span class="rs-badge rs-high">HIGH</span></div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-light rl-med"></div>
+      <div class="risk-content">
+        <div class="rc-title">4. PCCC Fire Safety Sign-Off</div>
+        <div class="rc-desc">Fire safety inspection required for shared infrastructure area. Expected resolution procedural — lower complexity than other CPs.</div>
+      </div>
+      <div class="risk-status"><span class="rs-badge rs-med">MEDIUM</span></div>
+    </div>
+  </div>
+  <p style="font-size:9.5pt;color:var(--muted);margin-top:10px;">Advisors: FIIVN (legal) · EY (financial/tax) · CBRE (valuation 31/12/2025)</p>
+</div>
+
+<!-- SECTION 9: GO/NO-GO -->
+<div class="card">
+  <div class="card-label">Section 09</div>
+  <h2>Investment Recommendation</h2>
+
+  <div class="go-box">
+    <div class="gb-tag">Board Recommendation</div>
+    <div class="gb-rec">✅ GO — with conditions</div>
+    <div class="gb-sub">Strong risk-adjusted returns. First-mover position in an underserved premium market. Proceed to Closing subject to 3 conditions:</div>
+    <ul class="conditions">
+      <li>Bên Bán completes all 4 Closing Conditions (CPs) on agreed milestone schedule before each payment tranche</li>
+      <li>Management unit LOI signed with METT (or Anantara fallback) before or concurrent with Closing</li>
+      <li>Minimum 4 villa presales secured within 6 months post-Closing — validates pricing and market demand</li>
+    </ul>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+    <div style="background:#f0fdf4;border-radius:10px;padding:16px;border-left:3px solid var(--green);">
+      <div style="font-size:9.5pt;text-transform:uppercase;letter-spacing:1px;color:var(--green);font-weight:700;margin-bottom:8px;">✅ Key Strengths</div>
+      <ul style="list-style:none;padding:0;font-size:10.5pt;color:#374151;">
+        <li>• IRR 146% base case — exceptional risk/reward</li>
+        <li>• No local competitor at this price point</li>
+        <li>• UNESCO World Heritage location — supply constrained</li>
+        <li>• 50% of investment already sunk (EY confirmed)</li>
+        <li>• Lỗ thuế 27.4B + VAT 6.2B — usable immediately</li>
+        <li>• Presale funds construction — low peak equity</li>
+      </ul>
+    </div>
+    <div style="background:#fff7ed;border-radius:10px;padding:16px;border-left:3px solid #f59e0b;">
+      <div style="font-size:9.5pt;text-transform:uppercase;letter-spacing:1px;color:#b45309;font-weight:700;margin-bottom:8px;">⚠️ Key Watch Points</div>
+      <ul style="list-style:none;padding:0;font-size:10.5pt;color:#374151;">
+        <li>• 4 CPs must close on time — Bên Bán accountability critical</li>
+        <li>• METT LOI required before Closing — no brand = no premium</li>
+        <li>• Q1/2027 completion timeline tight — may need 1yr extension</li>
+        <li>• No verified Hạ Long rental data — Phu Quoc used as proxy</li>
+        <li>• Sales depend on VIP network activation (Phase 1)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Lam Ngọc Villas · Investment Business Plan · RCC Royal Canary Corp · April 2026<br>
+  Confidential — For Board Review Only · Prepared by Zera (RCC AI Advisor)<br>
+  Advisors: FIIVN (Legal) · EY (Financial & Tax) · CBRE (Valuation 31/12/2025)
+</div>
+
+</div>
+</body>
+</html>
