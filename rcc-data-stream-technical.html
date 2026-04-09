@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCC — Data Unification: Technical Brief</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;background:#f4f6f9;color:#1a2e44;font-size:11pt;line-height:1.6;}
+.page{max-width:960px;margin:0 auto;padding:28px 20px 64px;}
+
+.header{background:linear-gradient(140deg,#0d1b2a,#1a3a5c);border-radius:12px;padding:30px 36px;color:white;margin-bottom:22px;}
+.header .tag{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:#c8a050;margin-bottom:8px;font-weight:700;}
+.header h1{font-size:20pt;font-weight:700;margin-bottom:6px;}
+.header .sub{font-size:10pt;color:rgba(255,255,255,0.55);}
+.header .meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;}
+.header .meta span{background:rgba(255,255,255,0.1);padding:4px 12px;border-radius:14px;font-size:8.5pt;color:rgba(255,255,255,0.8);}
+
+.card{background:white;border-radius:10px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.sec-num{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:#1d4ed8;font-weight:700;margin-bottom:4px;}
+h2{font-size:13pt;font-weight:700;color:#0d1b2a;margin-bottom:14px;}
+h3{font-size:11pt;font-weight:700;color:#1a3a5c;margin-bottom:8px;margin-top:16px;}
+h3:first-of-type{margin-top:0;}
+p{font-size:10.5pt;color:#374151;margin-bottom:10px;}
+
+/* SILO DIAGRAM */
+.silo-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0;align-items:start;}
+.silo{border-radius:8px;padding:12px 10px;text-align:center;border:2px solid;}
+.silo.bad{background:#fef2f2;border-color:#fca5a5;color:#991b1b;}
+.silo.ok{background:#fefce8;border-color:#fde047;color:#854d0e;}
+.silo .s-icon{font-size:20pt;margin-bottom:6px;}
+.silo .s-name{font-size:9.5pt;font-weight:700;}
+.silo .s-data{font-size:8.5pt;margin-top:4px;opacity:0.8;}
+.silo-arrow{display:flex;align-items:center;justify-content:center;font-size:18pt;color:#dc2626;margin-top:8px;}
+
+/* TARGET ARCH */
+.tier-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0;}
+.tier{border-radius:8px;padding:14px;border:1.5px solid;}
+.tier.hot{background:#fff1f2;border-color:#fda4af;}.tier.hot h4{color:#be123c;}
+.tier.warm{background:#fffbeb;border-color:#fcd34d;}.tier.warm h4{color:#b45309;}
+.tier.cold{background:#f0f9ff;border-color:#7dd3fc;}.tier.cold h4{color:#0369a1;}
+.tier h4{font-size:9.5pt;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:6px;}
+.tier ul{list-style:none;padding:0;}
+.tier ul li{font-size:9.5pt;padding:2px 0;color:#374151;}
+.tier ul li::before{content:'· ';}
+
+/* TABLE STYLES */
+table{width:100%;border-collapse:collapse;font-size:10pt;margin:10px 0;}
+th{background:#1a3a5c;color:white;padding:8px 10px;text-align:left;font-size:8.5pt;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;}
+td{padding:8px 10px;border-bottom:1px solid #e5e7eb;vertical-align:top;}
+tr:nth-child(even) td{background:#f8fafc;}
+tr:hover td{background:#eff6ff;}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:8pt;font-weight:700;}
+.badge.high{background:#fef3c7;color:#b45309;}
+.badge.critical{background:#fee2e2;color:#991b1b;}
+.badge.medium{background:#dbeafe;color:#1d4ed8;}
+.badge.low{background:#d1fae5;color:#065f46;}
+
+/* CODE/MONO */
+.code{background:#0f172a;color:#e2e8f0;border-radius:8px;padding:14px 18px;font-family:'Courier New',monospace;font-size:9.5pt;line-height:1.8;overflow-x:auto;margin:10px 0;}
+.code .kw{color:#818cf8;}.code .val{color:#34d399;}.code .cm{color:#64748b;font-style:italic;}
+.inline-code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:9.5pt;color:#1e3a5f;}
+
+/* STAKEHOLDER MAP */
+.stake-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+.stake-item{border-radius:8px;padding:12px 14px;border-left:4px solid;}
+.stake-item.sponsor{background:#f0fdf4;border-color:#22c55e;}
+.stake-item.champion{background:#eff6ff;border-color:#3b82f6;}
+.stake-item.implement{background:#faf5ff;border-color:#a855f7;}
+.stake-item.influencer{background:#fff7ed;border-color:#f97316;}
+.stake-item.adopter{background:#f8fafc;border-color:#94a3b8;}
+.stake-item .role{font-size:8pt;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px;}
+.stake-item .name{font-size:11pt;font-weight:700;}
+.stake-item .desc{font-size:9.5pt;color:#6b7280;margin-top:3px;}
+
+/* WEEK PLAN */
+.week-item{display:grid;grid-template-columns:100px 1fr;gap:0;margin-bottom:8px;}
+.week-num{background:#1a3a5c;color:white;padding:10px;border-radius:8px 0 0 8px;text-align:center;font-size:9pt;font-weight:700;}
+.week-content{background:white;border:1px solid #e5e7eb;border-left:none;border-radius:0 8px 8px 0;padding:10px 14px;}
+.week-content .phase{font-weight:700;font-size:10.5pt;color:#1d4ed8;margin-bottom:4px;}
+.week-content .acts{font-size:9.5pt;color:#374151;}
+
+/* RACI */
+.raci-note{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+.raci-badge{padding:4px 12px;border-radius:8px;font-size:9pt;font-weight:700;}
+.r-R{background:#fee2e2;color:#991b1b;}
+.r-A{background:#dbeafe;color:#1d4ed8;}
+.r-C{background:#fef3c7;color:#b45309;}
+.r-I{background:#d1fae5;color:#065f46;}
+
+/* DEPENDENCY MAP */
+.dep-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0;}
+.dep-item{border-radius:8px;padding:12px 14px;}
+.dep-item.need{background:#fef2f2;border:1.5px solid #fca5a5;}
+.dep-item.need h4{color:#991b1b;font-size:9.5pt;font-weight:700;margin-bottom:6px;}
+.dep-item.break{background:#fff7ed;border:1.5px solid #fed7aa;}
+.dep-item.break h4{color:#c2410c;font-size:9.5pt;font-weight:700;margin-bottom:6px;}
+.dep-item ul{list-style:none;padding:0;}
+.dep-item ul li{font-size:9.5pt;color:#374151;padding:2px 0;}
+.dep-item ul li::before{content:'→ ';}
+
+.footer{text-align:center;font-size:8.5pt;color:#9ca3af;padding:14px 0;margin-top:8px;}
+
+@media(max-width:640px){
+  .silo-wrap,.tier-grid,.stake-grid,.dep-grid{grid-template-columns:1fr;}
+  .week-item{grid-template-columns:1fr;}
+  .week-num{border-radius:8px 8px 0 0;}
+  .week-content{border-radius:0 0 8px 8px;border-left:1px solid #e5e7eb;border-top:none;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="tag">RCC Royal Canary Corp · Technical Brief · Confidential</div>
+  <h1>Data Unification & Standardization<br>Stream B — BA & IT Specialist</h1>
+  <div class="sub">Phase 1 In-Depth Analysis · April 2026 · Prepared by Zera (RCC AI Advisor)</div>
+  <div class="meta">
+    <span>🏢 Scope: RCC HQ + LMSG + La Victoire</span>
+    <span>👤 Audience: Business Analyst + IT-adjacent</span>
+    <span>📅 Horizon: 12 weeks</span>
+    <span>🎯 Priority: Critical</span>
+  </div>
+</div>
+
+<!-- SECTION 1: CURRENT STATE -->
+<div class="card">
+  <div class="sec-num">Section 01</div>
+  <h2>Current State Assessment — Data Fragmentation Map</h2>
+
+  <h3>Where Data Lives Today</h3>
+  <div class="silo-wrap">
+    <div class="silo bad">
+      <div class="s-icon">🗂</div>
+      <div class="s-name">SharePoint</div>
+      <div class="s-data">Daily hotel reports · Partially used · No naming convention</div>
+    </div>
+    <div class="silo bad">
+      <div class="s-icon">📊</div>
+      <div class="s-name">Excel (Personal)</div>
+      <div class="s-data">KPIs, budgets, deal models · Each person has their own copy</div>
+    </div>
+    <div class="silo bad">
+      <div class="s-icon">💬</div>
+      <div class="s-name">Telegram/Zalo</div>
+      <div class="s-data">Decisions, approvals, file sharing · No search, no archive</div>
+    </div>
+    <div class="silo bad">
+      <div class="s-icon">📧</div>
+      <div class="s-name">Email</div>
+      <div class="s-data">Contracts, deal memos, vendor correspondence · Siloed per person</div>
+    </div>
+    <div class="silo ok">
+      <div class="s-icon">📈</div>
+      <div class="s-name">Power BI</div>
+      <div class="s-data">LV Casino + LMSG dashboards · Manually refreshed · Git/infra issues</div>
+    </div>
+  </div>
+
+  <h3>Core Problems</h3>
+  <table>
+    <thead><tr><th>Problem</th><th>Impact</th><th>Frequency</th><th>Severity</th></tr></thead>
+    <tbody>
+      <tr><td>No single source of truth — multiple Excel versions</td><td>Wrong decisions based on outdated data</td><td>Weekly</td><td><span class="badge critical">Critical</span></td></tr>
+      <tr><td>No file naming convention</td><td>2-4 hours lost per search incident</td><td>Daily</td><td><span class="badge high">High</span></td></tr>
+      <tr><td>Data in Telegram/Zalo — not searchable/auditable</td><td>Decisions not documented, knowledge lost</td><td>Daily</td><td><span class="badge high">High</span></td></tr>
+      <tr><td>AI (Zera) pulls data ad-hoc — no reliable pipeline</td><td>Dashboard failures, manual intervention required</td><td>Weekly</td><td><span class="badge high">High</span></td></tr>
+      <tr><td>No version control on shared documents</td><td>Overwrite incidents, lost work</td><td>Monthly</td><td><span class="badge medium">Medium</span></td></tr>
+      <tr><td>Onboarding gap — knowledge in people's heads</td><td>Staff turnover = knowledge loss</td><td>Per hire</td><td><span class="badge medium">Medium</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 2: TARGET ARCHITECTURE -->
+<div class="card">
+  <div class="sec-num">Section 02</div>
+  <h2>Target Architecture — Single Source of Truth</h2>
+
+  <h3>Data Tiering Strategy</h3>
+  <div class="tier-grid">
+    <div class="tier hot">
+      <h4>🔴 Tier 1 — Hot Data</h4>
+      <ul>
+        <li>Daily hotel KPI reports (LMSG)</li>
+        <li>La Victoire casino daily GGR</li>
+        <li>Occupancy, RevPAR real-time</li>
+        <li>M&A pipeline active deals</li>
+      </ul>
+      <p style="margin-top:8px;font-size:9pt;color:#6b7280;">Home: <strong>SharePoint + Power BI</strong><br>Refresh: Daily automated</p>
+    </div>
+    <div class="tier warm">
+      <h4>🟡 Tier 2 — Warm Data</h4>
+      <ul>
+        <li>Monthly financial reports</li>
+        <li>Deal term sheets & memos</li>
+        <li>Partner profiles & contacts</li>
+        <li>Project status tracking</li>
+      </ul>
+      <p style="margin-top:8px;font-size:9pt;color:#6b7280;">Home: <strong>SharePoint Lists / Notion</strong><br>Refresh: Weekly/manual</p>
+    </div>
+    <div class="tier cold">
+      <h4>🔵 Tier 3 — Cold Data</h4>
+      <ul>
+        <li>Executed contracts & legal docs</li>
+        <li>Historical financial archives</li>
+        <li>Completed deal files</li>
+        <li>Regulatory submissions</li>
+      </ul>
+      <p style="margin-top:8px;font-size:9pt;color:#6b7280;">Home: <strong>SharePoint Document Library</strong><br>Refresh: On-change only</p>
+    </div>
+  </div>
+
+  <h3>Recommended Stack for RCC Constraints</h3>
+  <p style="background:#eff6ff;padding:12px 16px;border-radius:8px;border-left:3px solid #1d4ed8;">
+  <strong>Anchor: Microsoft 365 / SharePoint</strong> — already licensed, familiar to team, integrates with Outlook and Power BI. No new vendor. Extend existing investment.
+  </p>
+  <ul style="padding-left:18px;margin-top:8px;">
+    <li><strong>SharePoint Online</strong> — file storage, version control, access control, document library</li>
+    <li><strong>Power BI Pro</strong> — visualization, automated dashboard refresh from SharePoint</li>
+    <li><strong>Microsoft Lists</strong> — structured data tracking (deals, tasks, contacts) without needing a CRM</li>
+    <li><strong>Zera (AI)</strong> — automated data pull, report synthesis, M&A scans; depends on clean SP structure</li>
+  </ul>
+</div>
+
+<!-- SECTION 3: DATA DOMAINS -->
+<div class="card">
+  <div class="sec-num">Section 03</div>
+  <h2>Five Data Domains for RCC</h2>
+  <table>
+    <thead>
+      <tr><th>Domain</th><th>Data Types</th><th>Current Location</th><th>Target Location</th><th>Owner</th><th>Freq</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>(A) Property Operations</strong></td>
+        <td>Hotel KPIs, F&B daily, occupancy, RevPAR, LV GGR, casino intervals</td>
+        <td>SharePoint (inconsistent) + Power BI</td>
+        <td>SP: <span class="inline-code">/Properties/[Hotel]/Daily/</span> → Power BI auto-refresh</td>
+        <td>Hotel GM / BA</td>
+        <td>Daily</td>
+        <td><span class="badge critical">P1</span></td>
+      </tr>
+      <tr>
+        <td><strong>(B) Financial</strong></td>
+        <td>P&L, budgets, deal financials, FX exposure, cash flow</td>
+        <td>Excel (personal), email</td>
+        <td>SP: <span class="inline-code">/Finance/[Year]/[Month]/</span> + SharePoint Lists for budget tracking</td>
+        <td>CFO / Finance admin</td>
+        <td>Monthly/Weekly</td>
+        <td><span class="badge critical">P1</span></td>
+      </tr>
+      <tr>
+        <td><strong>(C) Investment Pipeline</strong></td>
+        <td>M&A deals, term sheets, CPs, legal docs, deal memos, valuations</td>
+        <td>Email + personal folders + Telegram</td>
+        <td>SP: <span class="inline-code">/Investments/[DealCode]/</span> + MS Lists for pipeline status</td>
+        <td>Bach Tran / BA</td>
+        <td>Per-deal event</td>
+        <td><span class="badge critical">P1</span></td>
+      </tr>
+      <tr>
+        <td><strong>(D) People / HR</strong></td>
+        <td>Org chart, contacts, responsibilities, onboarding docs</td>
+        <td>Scattered / verbal</td>
+        <td>SP: <span class="inline-code">/People/</span> + MS Lists for contact directory</td>
+        <td>Admin / Bach</td>
+        <td>On-change</td>
+        <td><span class="badge medium">P2</span></td>
+      </tr>
+      <tr>
+        <td><strong>(E) External Intelligence</strong></td>
+        <td>Market data, competitor intel, vendor contracts, partner profiles</td>
+        <td>Email + personal notes + Zera memory</td>
+        <td>SP: <span class="inline-code">/Intelligence/</span> + Zera automated scan outputs</td>
+        <td>Bach Tran / Zera</td>
+        <td>Weekly / on-event</td>
+        <td><span class="badge medium">P2</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 4: PROCESS DESIGN -->
+<div class="card">
+  <div class="sec-num">Section 04</div>
+  <h2>Process Design — Naming, Structure & SOPs</h2>
+
+  <h3>File Naming Convention</h3>
+  <div class="code">
+<span class="cm"># Standard format:</span>
+<span class="val">YYYY-MM-DD</span>_<span class="val">[PropertyCode]</span>_<span class="val">[Department]</span>_<span class="val">[DocType]</span>_<span class="val">v[N]</span>.<span class="val">[ext]</span>
+
+<span class="cm"># Property codes: LMSG | LV | RCC | EXT</span>
+<span class="cm"># Department: OPS | FNB | FIN | MA | HR | GEN</span>
+<span class="cm"># DocType: DailyReport | Budget | DealMemo | Contract | Analysis</span>
+
+<span class="cm"># Examples:</span>
+2026-04-07_LMSG_OPS_DailyReport_v1.xlsx
+2026-04-01_RCC_MA_DealMemo_LamNgoc_v2.pdf
+2026-03_LMSG_FIN_MonthlySummary_v1.xlsx
+  </div>
+
+  <h3>SharePoint Folder Structure (max 2 levels)</h3>
+  <div class="code">
+RCC SharePoint Root/
+├── <span class="val">Properties/</span>
+│   ├── Le-Meridien-Saigon/
+│   │   ├── Daily/  <span class="cm">← YYYY-MM/YYYY-MM-DD.xlsx</span>
+│   │   └── Monthly/
+│   └── La-Victoire/
+│       └── Daily/
+├── <span class="val">Investments/</span>
+│   ├── [DealCode]-[ShortName]/  <span class="cm">← e.g. TC01-LamNgoc</span>
+│   │   ├── Legal/
+│   │   ├── Financial/
+│   │   └── Correspondence/
+│   └── Pipeline/  <span class="cm">← MS Lists: active deal tracker</span>
+├── <span class="val">Finance/</span>
+│   └── [YYYY]/[MM-MonthName]/
+├── <span class="val">Intelligence/</span>
+│   ├── MA-Scans/  <span class="cm">← Zera daily output</span>
+│   └── Market-Reports/
+└── <span class="val">People/</span>
+    └── Directory/  <span class="cm">← MS Lists: contact directory</span>
+  </div>
+
+  <h3>Daily Report Upload SOP (5 steps)</h3>
+  <table>
+    <thead><tr><th>#</th><th>Step</th><th>Who</th><th>How</th><th>Verification</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Prepare daily report file in Excel</td><td>Hotel ops staff</td><td>Use standard template</td><td>Check all required fields filled</td></tr>
+      <tr><td>2</td><td>Rename file per naming convention</td><td>Hotel ops staff</td><td>Copy from naming guide on desk</td><td>Format: YYYY-MM-DD_LMSG_OPS_DailyReport_v1.xlsx</td></tr>
+      <tr><td>3</td><td>Upload to SharePoint folder</td><td>Hotel ops staff</td><td>Drag to <span class="inline-code">/Properties/LMSG/Daily/YYYY-MM/</span></td><td>SP shows file with green checkmark</td></tr>
+      <tr><td>4</td><td>Zera auto-checks upload</td><td>Zera (automated)</td><td>Script runs at 09:00 VN daily</td><td>Telegram DM to Bach if missing</td></tr>
+      <tr><td>5</td><td>Dashboard auto-refreshes</td><td>Power BI / Zera</td><td>Triggered by new file in folder</td><td>Dashboard visible on GitHub Pages</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 5: TOOL MATRIX -->
+<div class="card">
+  <div class="sec-num">Section 05</div>
+  <h2>Tool Evaluation Matrix</h2>
+  <table>
+    <thead>
+      <tr><th>Criteria</th><th>SharePoint</th><th>Notion</th><th>Airtable</th><th>Google Workspace</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Cost (per user/mo)</strong></td><td>Already licensed</td><td>$10/user</td><td>$20/user</td><td>$6/user</td></tr>
+      <tr><td><strong>Learning curve</strong></td><td>🟡 Medium (Windows-familiar)</td><td>🟢 Low</td><td>🟡 Medium</td><td>🟢 Low</td></tr>
+      <tr><td><strong>Microsoft 365 integration</strong></td><td>✅ Native</td><td>⚠️ Limited</td><td>⚠️ Via Zapier</td><td>❌ Separate ecosystem</td></tr>
+      <tr><td><strong>AI/automation readiness</strong></td><td>✅ Graph API, Power Automate</td><td>🟡 API available</td><td>✅ Strong API</td><td>✅ Apps Script, API</td></tr>
+      <tr><td><strong>Offline access</strong></td><td>✅ OneDrive sync</td><td>🟡 Limited</td><td>❌ Online only</td><td>✅ Google Drive</td></tr>
+      <tr><td><strong>Vietnamese language UI</strong></td><td>✅ Full VN support</td><td>🟡 Partial</td><td>🟡 English-dominant</td><td>✅ Full VN support</td></tr>
+      <tr><td><strong>Mobile app</strong></td><td>✅ OneDrive + SP mobile</td><td>✅ Excellent</td><td>✅ Good</td><td>✅ Excellent</td></tr>
+      <tr><td><strong>File version control</strong></td><td>✅ Built-in, 500 versions</td><td>❌ Not for binary files</td><td>❌ Spreadsheet-only</td><td>✅ Version history</td></tr>
+      <tr><td><strong>Access control (per folder)</strong></td><td>✅ Granular</td><td>🟡 Page-level</td><td>✅ Per-base</td><td>✅ Per-folder</td></tr>
+      <tr><td><strong>Zera integration</strong></td><td>✅ Graph API (in use)</td><td>🟡 REST API</td><td>✅ REST API</td><td>✅ Sheets API</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:12px;background:#f0fdf4;padding:12px 16px;border-radius:8px;border-left:3px solid #22c55e;">
+  <strong>✅ Recommendation: Extend SharePoint</strong> — Already licensed, Graph API in use by Zera, native Microsoft 365 integration, best-in-class file versioning. Add <strong>Notion</strong> selectively for unstructured knowledge base (meeting notes, deal research) where SharePoint's UI is too rigid. Avoid adding a 3rd tool ecosystem (Airtable/GWorkspace) at this stage.
+  </p>
+</div>
+
+<!-- SECTION 6: ENGAGEMENT STRATEGY -->
+<div class="card">
+  <div class="sec-num">Section 06</div>
+  <h2>Engagement & Change Management Strategy</h2>
+
+  <h3>Stakeholder Map</h3>
+  <div class="stake-grid">
+    <div class="stake-item sponsor">
+      <div class="role" style="color:#15803d;">Sponsor</div>
+      <div class="name">Anh Quang (Chairman)</div>
+      <div class="desc">Provides mandate + resources. Needs: quarterly progress, no operational detail. Engagement: brief monthly update, celebrate quick wins.</div>
+    </div>
+    <div class="stake-item champion">
+      <div class="role" style="color:#1d4ed8;">Champion</div>
+      <div class="name">Anh Bach (Deputy CEO)</div>
+      <div class="desc">Drives adoption, removes blockers, owns success metrics. Needs: weekly status, decision points. Engagement: daily Zera DM updates.</div>
+    </div>
+    <div class="stake-item implement">
+      <div class="role" style="color:#7c3aed;">Implementer</div>
+      <div class="name">Business Analyst</div>
+      <div class="desc">Builds structure, trains team, validates data. Needs: clear spec, time allocation, escalation path. Engagement: daily standup during pilot.</div>
+    </div>
+    <div class="stake-item influencer">
+      <div class="role" style="color:#ea580c;">Influencers</div>
+      <div class="name">Department Heads (Hotel GM, F&B Mgr, Finance)</div>
+      <div class="desc">Can accelerate or block adoption in their teams. Needs: "what's in it for me?" framing. Engagement: 1:1 before launch, demo tailored to their pain points.</div>
+    </div>
+    <div class="stake-item adopter" style="grid-column:1/-1;">
+      <div class="role" style="color:#64748b;">Adopters</div>
+      <div class="name">Frontline Staff (ops, F&B, admin)</div>
+      <div class="desc">Execute daily. Resistant to change if not explained clearly. Need: simple instructions, safe-to-fail environment, visible support. Engagement: Stream A briefing + 1hr training + on-desk cheat sheet.</div>
+    </div>
+  </div>
+
+  <h3>Early Adopter Strategy</h3>
+  <p>Identify <strong>1-2 "bridge people"</strong> per department — those who are slightly more tech-comfortable than average. Brief them first, get them comfortable, then let them become peer coaches. Do NOT launch to the full team simultaneously.</p>
+  <table>
+    <thead><tr><th>Objection</th><th>Response</th></tr></thead>
+    <tbody>
+      <tr><td>"Tôi đã quen cách cũ rồi"</td><td>"Cách mới tốn thêm 30 giây lúc đầu, tiết kiệm 2 tiếng sau này. Em thử 2 tuần xem?"</td></tr>
+      <tr><td>"Tôi không rành kỹ thuật"</td><td>"Không cần. Chỉ cần đổi tên file và kéo vào đúng thư mục. Em chỉ cho anh/chị một lần."</td></tr>
+      <tr><td>"Nếu tôi làm sai thì sao?"</td><td>"SharePoint lưu lại tất cả lịch sử. Không có gì mất được. Em fix được hết."</td></tr>
+      <tr><td>"Mất thời gian lắm"</td><td>"3 tháng đầu hơi bất tiện. Từ tháng 3 trở đi dashboard có tự động, anh/chị không cần làm nữa."</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Feedback Cadence</h3>
+  <ul style="padding-left:18px;">
+    <li><strong>Weeks 1-8 (pilot):</strong> Weekly 15-min check-in — what's blocked? what's working?</li>
+    <li><strong>Weeks 9-12 (rollout):</strong> Bi-weekly BA office hours for Q&A</li>
+    <li><strong>Post-launch:</strong> Monthly retrospective, quarterly SOP review</li>
+    <li><strong>Ongoing:</strong> Zera monitors SharePoint upload compliance daily, alerts Bach if gaps</li>
+  </ul>
+</div>
+
+<!-- SECTION 7: 12-WEEK PLAN -->
+<div class="card">
+  <div class="sec-num">Section 07</div>
+  <h2>12-Week Migration Plan</h2>
+
+  <div class="week-item"><div class="week-num">Wk 1–2</div><div class="week-content"><div class="phase">Phase 1: Audit & Decision</div><div class="acts">Map all current data sources. Inventory SharePoint existing content. Decision: confirm tool stack (SharePoint + Notion). Define 5 data domains. Produce naming convention guide. <strong>Owner: BA · Deliverable: Data inventory + naming guide · Risk: Scope creep</strong></div></div></div>
+
+  <div class="week-item"><div class="week-num">Wk 3–4</div><div class="week-content"><div class="phase">Phase 2: Structure Setup</div><div class="acts">Create SharePoint folder hierarchy (2-level max). Set permissions per domain. Create file naming cheat sheet (print-ready A5). Brief department heads 1:1. Set up MS Lists for deal pipeline tracking. <strong>Owner: BA · Deliverable: SP structure live + dept head signoff · Risk: Permissions misconfiguration</strong></div></div></div>
+
+  <div class="week-item"><div class="week-num">Wk 5–6</div><div class="week-content"><div class="phase">Phase 3: Pilot — Property Operations</div><div class="acts">Pilot with LMSG daily report team (2-3 people). Train on naming + upload. Zera validates daily. Fix any workflow gaps. Stream A briefing distributed. <strong>Owner: BA + LMSG ops · Deliverable: 5 consecutive days of clean uploads · Risk: Staff resistance</strong></div></div></div>
+
+  <div class="week-item"><div class="week-num">Wk 7–8</div><div class="week-content"><div class="phase">Phase 4: Expand to Investment Pipeline</div><div class="acts">Migrate active deal files to <span class="inline-code">/Investments/[DealCode]/</span>. Set up MS Lists deal tracker. Bach + BA validate deal memo structure. Zera M&A scan outputs routed to SP. <strong>Owner: Bach + BA · Deliverable: All active deals in SP structure · Risk: Incomplete legacy files</strong></div></div></div>
+
+  <div class="week-item"><div class="week-num">Wk 9–10</div><div class="week-content"><div class="phase">Phase 5: Financial Data Migration</div><div class="acts">Move monthly P&L and budget files to SP. BA training on financial data standards. FX exposure tracking in MS Lists. Zera financial report auto-pull tested. <strong>Owner: Finance admin + BA · Deliverable: 3 months financial history migrated · Risk: Sensitive data access control</strong></div></div></div>
+
+  <div class="week-item"><div class="week-num">Wk 11–12</div><div class="week-content"><div class="phase">Phase 6: Full Rollout & Retrospective</div><div class="acts">All departments using SP. Full automation: Zera pulls daily → dashboard → Telegram. Retrospective: what worked, what didn't. SOP finalized and approved. Success metrics reviewed. <strong>Owner: BA · Deliverable: SOP v1.0 signed off · Risk: None blocking if phases 1-5 complete</strong></div></div></div>
+
+  <h3 style="margin-top:18px;">RACI Matrix</h3>
+  <div class="raci-note">
+    <span class="raci-badge r-R">R = Responsible</span>
+    <span class="raci-badge r-A">A = Accountable</span>
+    <span class="raci-badge r-C">C = Consulted</span>
+    <span class="raci-badge r-I">I = Informed</span>
+  </div>
+  <table>
+    <thead><tr><th>Activity</th><th>BA</th><th>Anh Bach</th><th>Anh Quang</th><th>Dept Heads</th><th>Staff</th></tr></thead>
+    <tbody>
+      <tr><td>Data audit & inventory</td><td>R</td><td>A</td><td>I</td><td>C</td><td>C</td></tr>
+      <tr><td>Tool decision</td><td>C</td><td>A/R</td><td>I</td><td>I</td><td>-</td></tr>
+      <tr><td>SP structure setup</td><td>R</td><td>A</td><td>-</td><td>I</td><td>-</td></tr>
+      <tr><td>Staff training</td><td>R</td><td>A</td><td>-</td><td>C</td><td>R</td></tr>
+      <tr><td>Daily upload compliance</td><td>I</td><td>A</td><td>-</td><td>C</td><td>R</td></tr>
+      <tr><td>Deal pipeline migration</td><td>R</td><td>A/R</td><td>-</td><td>-</td><td>-</td></tr>
+      <tr><td>SOP sign-off</td><td>R</td><td>A</td><td>I</td><td>C</td><td>I</td></tr>
+      <tr><td>Zera automation setup</td><td>C</td><td>A</td><td>-</td><td>-</td><td>-</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 8: AI INTEGRATION -->
+<div class="card">
+  <div class="sec-num">Section 08</div>
+  <h2>AI Integration Touchpoints — Zera Dependency Map</h2>
+
+  <h3>What Zera Does Post-Migration</h3>
+  <table>
+    <thead><tr><th>Cadence</th><th>Task</th><th>Data Source</th><th>Output</th><th>Dependency</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Daily 07:00</strong></td><td>M&A pipeline scan</td><td>Web search + memory</td><td>Brief → Bach DM</td><td>None (external)</td></tr>
+      <tr><td><strong>Daily 09:00</strong></td><td>SharePoint upload check</td><td>SP: /Properties/</td><td>Alert if missing → Bach DM</td><td>Clean SP structure</td></tr>
+      <tr><td><strong>Daily 09:30</strong></td><td>Dashboard auto-render</td><td>SP: daily report XLSX</td><td>PNG + GitHub link → Telegram</td><td>Naming convention + folder structure</td></tr>
+      <tr><td><strong>Weekly</strong></td><td>Deal pipeline status</td><td>SP: /Investments/ + MS Lists</td><td>Pipeline brief → Bach DM</td><td>Deals in SP structure</td></tr>
+      <tr><td><strong>Monthly</strong></td><td>BOD report draft</td><td>SP: /Finance/ + /Properties/</td><td>HTML report → GitHub</td><td>Financial data in SP</td></tr>
+      <tr><td><strong>On-demand</strong></td><td>Contract/memo parsing</td><td>PDF uploaded to SP</td><td>Summary + key terms → DM</td><td>PDF in designated SP folder</td></tr>
+    </tbody>
+  </table>
+
+  <h3>What Breaks Without Data Structure</h3>
+  <div class="dep-grid">
+    <div class="dep-item need">
+      <h4>🔴 Zera Needs (to work reliably)</h4>
+      <ul>
+        <li>Consistent file naming (finds files by pattern)</li>
+        <li>Fixed folder paths (hardcoded in scripts)</li>
+        <li>One file per date per property (no duplicates)</li>
+        <li>SharePoint Graph API token (auth)</li>
+        <li>Excel sheets with consistent tab names</li>
+      </ul>
+    </div>
+    <div class="dep-item break">
+      <h4>⚠️ What Causes Failures Today</h4>
+      <ul>
+        <li>File named "baocao.xlsx" → script can't find it</li>
+        <li>File in wrong folder → Graph API returns 404</li>
+        <li>Two files same date → picks wrong one</li>
+        <li>SharePoint API timeout → dashboard skipped</li>
+        <li>Sheet tab renamed → parsing fails silently</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="margin-top:12px;background:#fffbeb;padding:12px 16px;border-radius:8px;border-left:3px solid #f59e0b;">
+  <strong>Bottom line:</strong> Every hour invested in data structure = multiple hours saved in Zera maintenance and debugging. Clean data architecture is the foundation that makes AI automation reliable vs brittle.
+  </p>
+</div>
+
+<div class="footer">RCC Royal Canary Corp · Technical Brief Stream B · April 2026 · Prepared by Zera (AI Advisor) · CONFIDENTIAL — BA & IT only</div>
+</div>
+</body>
+</html>
