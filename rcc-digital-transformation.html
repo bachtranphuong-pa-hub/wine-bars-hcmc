@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCC — Digital & AI Transformation Roadmap</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#f0f2f7;--surface:#ffffff;--surface2:#f7f9fc;
+  --border:#e5eaf0;--accent:#1a3a5c;--accent2:#2563eb;
+  --gold:#b8860b;--text:#1a1a2e;--muted:#666;
+  --green:#15803d;--red:#c0392b;--yellow:#d97706;--orange:#c2410c;
+}
+body{font-family:'Segoe UI',Calibri,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:11pt;line-height:1.65;}
+.page{max-width:920px;margin:0 auto;padding:32px 20px 60px;}
+
+.header{background:linear-gradient(140deg,#0d1b2a,#1a3a5c);border-radius:16px;padding:36px 40px;color:white;margin-bottom:28px;}
+.header .tag{font-size:8.5pt;letter-spacing:3px;text-transform:uppercase;color:#c8a050;margin-bottom:10px;font-weight:700;}
+.header h1{font-size:22pt;font-weight:700;margin-bottom:8px;line-height:1.2;}
+.header h1 em{color:#c8a050;font-style:normal;}
+.header .sub{font-size:10.5pt;color:rgba(255,255,255,0.6);margin-bottom:18px;}
+.header .meta{display:flex;gap:16px;flex-wrap:wrap;}
+.header .meta span{background:rgba(255,255,255,0.1);padding:5px 14px;border-radius:20px;font-size:9pt;color:rgba(255,255,255,0.8);}
+
+.card{background:var(--surface);border-radius:12px;padding:24px 28px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.card-label{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);margin-bottom:6px;font-weight:700;}
+h2{font-size:15pt;font-weight:700;color:var(--accent);margin-bottom:14px;}
+h3{font-size:12pt;font-weight:700;color:var(--accent);margin-bottom:10px;margin-top:20px;}
+h3:first-of-type{margin-top:0;}
+p{color:#444;font-size:10.5pt;margin-bottom:10px;}
+
+/* OBSERVATION BOX */
+.obs-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:6px;}
+.obs-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:14px;}
+.obs-icon{font-size:20pt;margin-bottom:6px;}
+.obs-title{font-size:10pt;font-weight:700;color:var(--accent);margin-bottom:4px;}
+.obs-text{font-size:9.5pt;color:var(--muted);line-height:1.5;}
+
+/* PROBLEM CARDS */
+.prob-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.prob-card{border-radius:10px;padding:16px;}
+.prob-card.p1{background:#fff7ed;border:1.5px solid #fdba74;}
+.prob-card.p2{background:#fef2f2;border:1.5px solid #fca5a5;}
+.prob-card.p3{background:#fefce8;border:1.5px solid #fde047;}
+.prob-num{font-size:22pt;font-weight:800;opacity:0.2;line-height:1;}
+.prob-title{font-size:10.5pt;font-weight:700;margin-bottom:6px;}
+.prob-card.p1 .prob-title{color:#c2410c;}
+.prob-card.p2 .prob-title{color:#b91c1c;}
+.prob-card.p3 .prob-title{color:#a16207;}
+.prob-text{font-size:9.5pt;color:var(--muted);line-height:1.55;}
+
+/* OBJECTIVE BLOCKS */
+.obj-block{border-left:4px solid var(--accent2);padding:14px 18px;background:var(--surface2);border-radius:0 10px 10px 0;margin-bottom:12px;}
+.obj-title{font-size:11pt;font-weight:700;color:var(--accent);margin-bottom:8px;}
+.obj-timeline{font-size:8.5pt;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:10.5pt;margin:10px 0;}
+.tbl th{background:var(--accent);color:white;padding:9px 12px;text-align:left;font-size:9pt;text-transform:uppercase;letter-spacing:0.5px;}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:var(--surface2);}
+.tbl .td-arrow{color:var(--green);font-weight:700;}
+.tbl .td-bad{color:var(--red);}
+
+/* QUICK WINS */
+.qw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.qw-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:14px;}
+.qw-item .qw-task{font-weight:700;font-size:10.5pt;margin-bottom:4px;}
+.qw-item .qw-now{font-size:9pt;color:var(--red);margin-bottom:3px;}
+.qw-item .qw-after{font-size:9pt;color:var(--green);}
+
+/* DONT DO */
+.dont-list{list-style:none;padding:0;}
+.dont-list li{padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:10.5pt;background:#fef2f2;border:1px solid #fca5a5;color:#7f1d1d;display:flex;gap:10px;align-items:flex-start;}
+.dont-list li::before{content:'✗';font-weight:800;flex-shrink:0;margin-top:1px;}
+
+/* METRICS TABLE */
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.metric-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+.metric-item .mi-label{font-size:8.5pt;color:var(--muted);margin-bottom:6px;font-weight:600;}
+.metric-item .mi-baseline{font-size:9.5pt;color:var(--red);margin-bottom:4px;}
+.metric-item .mi-target{font-size:11pt;font-weight:700;color:var(--green);}
+
+/* PRINCIPLE BOX */
+.principle{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:2px solid #93c5fd;border-radius:12px;padding:18px 22px;margin-bottom:18px;text-align:center;}
+.principle h3{font-size:13pt;color:#1d4ed8;margin-bottom:6px;}
+.principle p{font-size:10.5pt;color:#374151;margin:0;}
+
+.footer{text-align:center;font-size:8.5pt;color:#aaa;padding:14px 0;}
+
+@media(max-width:640px){
+  .obs-grid,.prob-grid,.qw-grid,.metric-grid{grid-template-columns:1fr;}
+  .header{padding:24px 18px;}
+  .header h1{font-size:17pt;}
+  .card{padding:18px 16px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="tag">RCC Family Office · Internal Working Document</div>
+  <h1>Digital & <em>AI Transformation</em><br>Phase 1 Roadmap</h1>
+  <div class="sub">Framework khởi động — dành cho tổ chức team mỏng, không có IT, low AI literacy</div>
+  <div class="meta">
+    <span>📅 April 2026</span>
+    <span>👤 Phụ trách: Bach Tran</span>
+    <span>🤖 Prepared by: Zera (AI Advisor)</span>
+    <span>⏱ Horizon: 6 tháng</span>
+  </div>
+</div>
+
+<!-- CONTEXT -->
+<div class="card">
+  <div class="card-label">Context</div>
+  <h2>Điểm xuất phát của RCC</h2>
+  <div class="obs-grid">
+    <div class="obs-item">
+      <div class="obs-icon">🏢</div>
+      <div class="obs-title">Tổ chức</div>
+      <div class="obs-text">Family office nhỏ, team vận hành mỏng. Không có IT team. Tất cả nhân viên (trừ anh Bach + business analyst) không có background kỹ thuật.</div>
+    </div>
+    <div class="obs-item">
+      <div class="obs-icon">🗂</div>
+      <div class="obs-title">Infrastructure</div>
+      <div class="obs-text">Không có ERP, CRM, hay company-wide software platform. Data nằm rải rác: SharePoint, Excel cá nhân, Telegram, email.</div>
+    </div>
+    <div class="obs-item">
+      <div class="obs-icon">🧠</div>
+      <div class="obs-title">AI hiện tại</div>
+      <div class="obs-text">Zera đang làm M&A research, deal memo, KPI reporting, ad-hoc analysis — là AI agent duy nhất đang serve RCC hiện tại.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3 CORE PROBLEMS -->
+<div class="card">
+  <div class="card-label">Root Cause Analysis</div>
+  <h2>3 Vấn đề cốt lõi cần giải quyết trước</h2>
+  <div class="prob-grid">
+    <div class="prob-card p2">
+      <div class="prob-num">01</div>
+      <div class="prob-title">Data Fragmentation</div>
+      <div class="prob-text">Không có single source of truth. Data nằm rải rác ở nhiều nơi — AI phải "đoán" data ở đâu mỗi lần query. Output không reliable khi input không chuẩn.</div>
+    </div>
+    <div class="prob-card p1">
+      <div class="prob-num">02</div>
+      <div class="prob-title">No Standardized Process</div>
+      <div class="prob-text">Không có ERP/CRM = không có process enforcement. Mỗi người làm một kiểu. AI không thể automate một process chưa tồn tại — sẽ chỉ amplify chaos.</div>
+    </div>
+    <div class="prob-card p3">
+      <div class="prob-num">03</div>
+      <div class="prob-title">Resistance to Change</div>
+      <div class="prob-text">Team vận hành mỏng, ít technical background, dễ cảm thấy AI là mối đe dọa. Đây là hurdle lớn nhất — cần strategy riêng để manage.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CORE PRINCIPLE -->
+<div class="principle">
+  <h3>💡 Nguyên tắc Phase 1</h3>
+  <p><strong>"Đừng automate chaos. Fix the process first — then automate."</strong><br>
+  Mọi tool và AI initiative chỉ có giá trị khi có process rõ ràng phía sau nó.</p>
+</div>
+
+<!-- OBJECTIVE 1 -->
+<div class="card">
+  <div class="card-label">Mục tiêu 1</div>
+  <h2>Standardize Data Input</h2>
+  <div class="obj-block">
+    <div class="obj-timeline">Tháng 1–2</div>
+    <div class="obj-title">Chọn 1 nơi lưu tài liệu duy nhất — và enforce nó</div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Việc cần làm</th><th>Tool gợi ý</th><th>Ai thực hiện</th></tr></thead>
+    <tbody>
+      <tr><td>Chọn 1 platform lưu tài liệu duy nhất</td><td>SharePoint (đã có) hoặc Notion</td><td>Anh Bach quyết định</td></tr>
+      <tr><td>Template hóa 5–7 báo cáo thường xuyên nhất</td><td>Google Sheets / Excel + form chuẩn</td><td>Business Analyst</td></tr>
+      <tr><td>Đặt naming convention cho file</td><td>1 trang guideline, enforce từ trên xuống</td><td>Anh Bach</td></tr>
+      <tr><td>Di chuyển data hiện tại vào đúng nơi</td><td>Migration 1 lần, cần 1–2 tuần</td><td>BA + Anh Bach</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:9.5pt;color:var(--green);margin-top:8px;">✅ Kết quả: Agents có thể pull data reliably — không cần hỏi "file ở đâu?" mỗi lần.</p>
+</div>
+
+<!-- OBJECTIVE 2 -->
+<div class="card">
+  <div class="card-label">Mục tiêu 2</div>
+  <h2>Quick Wins — Automation Có Thể Nhìn Thấy</h2>
+  <div class="obj-block">
+    <div class="obj-timeline">Tháng 1–3</div>
+    <div class="obj-title">Chọn 5 task lặp đi lặp lại, có thể measure, automate trước</div>
+  </div>
+  <div class="qw-grid">
+    <div class="qw-item">
+      <div class="qw-task">📊 Daily KPI Report</div>
+      <div class="qw-now">Now: Analyst làm tay 1–2h mỗi sáng</div>
+      <div class="qw-after">→ Agent pull SharePoint → format → gửi Telegram 7AM tự động</div>
+    </div>
+    <div class="qw-item">
+      <div class="qw-task">📰 M&A News Scan</div>
+      <div class="qw-now">Now: Không có hoặc manual, không nhất quán</div>
+      <div class="qw-after">→ Agent scan daily, flag deals relevant với RCC, gửi briefing sáng</div>
+    </div>
+    <div class="qw-item">
+      <div class="qw-task">📋 Meeting Prep Brief</div>
+      <div class="qw-now">Now: Tự search + tổng hợp, mất 30–60 phút</div>
+      <div class="qw-after">→ Agent chuẩn bị 1-page brief trước meeting 1 tiếng</div>
+    </div>
+    <div class="qw-item">
+      <div class="qw-task">📄 Contract/Memo Summary</div>
+      <div class="qw-now">Now: Đọc toàn bộ document, mất hàng giờ</div>
+      <div class="qw-after">→ Agent extract key points trong 30 giây, flag risk items</div>
+    </div>
+    <div class="qw-item">
+      <div class="qw-task">📈 Monthly BOD Deck Data</div>
+      <div class="qw-now">Now: 2–3 ngày compile từ nhiều nguồn</div>
+      <div class="qw-after">→ Agent draft data slides từ SharePoint, human chỉ review + polish</div>
+    </div>
+    <div class="qw-item">
+      <div class="qw-task">📧 Email Triage & Draft</div>
+      <div class="qw-now">Now: Không phân loại, trả lời thủ công</div>
+      <div class="qw-after">→ Agent phân loại ưu tiên, draft reply cho các loại email lặp lại</div>
+    </div>
+  </div>
+  <p style="font-size:9.5pt;color:var(--green);margin-top:12px;">✅ Kết quả: Nhân viên thấy AI giúp họ bớt việc nhàm — không phải thay thế họ. Đây là chìa khóa để giảm resistance.</p>
+</div>
+
+<!-- OBJECTIVE 3 -->
+<div class="card">
+  <div class="card-label">Mục tiêu 3</div>
+  <h2>AI Literacy — Không Cần IT Background</h2>
+  <div class="obj-block">
+    <div class="obj-timeline">Tháng 2–4</div>
+    <div class="obj-title">Dạy 3 thứ — không phải coding</div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>#</th><th>Kỹ năng</th><th>Format đề xuất</th><th>Thời lượng</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1</strong></td><td><strong>Cách đặt câu hỏi tốt cho AI</strong> (prompt thinking)</td><td>Workshop thực hành với case thật của RCC</td><td>2h, 1 lần</td></tr>
+      <tr><td><strong>2</strong></td><td><strong>Khi nào tin AI, khi nào verify</strong> (critical thinking)</td><td>Tình huống thực tế + discussion</td><td>1h, 1 lần</td></tr>
+      <tr><td><strong>3</strong></td><td><strong>Cách report vấn đề khi AI sai</strong> (feedback loop)</td><td>Hướng dẫn 1 trang, thực hành ngay</td><td>30 phút</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:10px;font-size:10.5pt;"><strong>Format hiệu quả nhất:</strong> "Lunch & Learn" 30 phút/tuần. Không gọi là "AI training" — gọi là "cách làm việc nhanh hơn".</p>
+  <p style="font-size:9.5pt;color:var(--green);">✅ Kết quả: Team tự dùng được AI ở mức cơ bản mà không cần hỏi anh Bach mỗi lần.</p>
+</div>
+
+<!-- OBJECTIVE 4 -->
+<div class="card">
+  <div class="card-label">Mục tiêu 4</div>
+  <h2>Chọn 1 Tool Company-Wide Làm Anchor</h2>
+  <div class="obj-block">
+    <div class="obj-timeline">Tháng 2–3</div>
+    <div class="obj-title">Thay vì implement ERP — chọn 1 tool đơn giản, toàn công ty dùng được</div>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Tool</th><th>Ưu điểm</th><th>Phù hợp với RCC?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Notion</strong></td><td>Documents + database + task tracking. Rất dễ dùng, không cần IT. AI-native.</td><td class="td-arrow">✅ Top pick — low friction nhất</td></tr>
+      <tr><td><strong>Microsoft 365</strong></td><td>Nếu đã có SharePoint → extend sang Teams + Planner + Copilot</td><td class="td-arrow">✅ Nếu SharePoint đã stable</td></tr>
+      <tr><td><strong>Monday.com</strong></td><td>Project tracking, visual, low learning curve</td><td>⚡ Nếu focus vào project mgmt</td></tr>
+      <tr><td><strong>ERP (SAP, Odoo...)</strong></td><td>Full integration, accounting, HR, operations</td><td class="td-bad">❌ Phase 2+ — quá lớn cho Phase 1</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:9.5pt;color:var(--green);margin-top:8px;">✅ Kết quả: Sau khi team quen 1 tool → mới layer AI automation lên trên. Foundation trước, automation sau.</p>
+</div>
+
+<!-- DONT DO -->
+<div class="card">
+  <div class="card-label">Anti-patterns</div>
+  <h2>Những Gì Không Nên Làm ở Phase 1</h2>
+  <ul class="dont-list">
+    <li>Implement ERP ngay — quá lớn, quá tốn, sẽ fail do resistance và thiếu IT support</li>
+    <li>Force toàn bộ team dùng AI cùng lúc — sẽ tạo backlash, làm chậm adoption</li>
+    <li>Automate trước khi có process rõ ràng — automate sai process = amplify chaos</li>
+    <li>Mua nhiều tool — tool fatigue là thật, mỗi tool mới = thêm 1 lý do để resistance</li>
+    <li>Đánh giá thành công bằng số tool đã deploy — đánh giá bằng time saved và adoption rate</li>
+  </ul>
+</div>
+
+<!-- METRICS -->
+<div class="card">
+  <div class="card-label">Tracking</div>
+  <h2>Metric Theo Dõi Phase 1 (6 tháng)</h2>
+  <div class="metric-grid">
+    <div class="metric-item">
+      <div class="mi-label">Giờ báo cáo thủ công/tuần</div>
+      <div class="mi-baseline">Baseline: survey</div>
+      <div class="mi-target">↓ 50%</div>
+    </div>
+    <div class="metric-item">
+      <div class="mi-label">File "không tìm được"/tháng</div>
+      <div class="mi-baseline">Baseline: hiện tại</div>
+      <div class="mi-target">→ 0</div>
+    </div>
+    <div class="metric-item">
+      <div class="mi-label">% task lặp lại đã automate</div>
+      <div class="mi-baseline">Baseline: ~0%</div>
+      <div class="mi-target">↑ 30–40%</div>
+    </div>
+    <div class="metric-item">
+      <div class="mi-label">Team AI comfort score (1–5)</div>
+      <div class="mi-baseline">Baseline: survey</div>
+      <div class="mi-target">↑ +1.5 điểm</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  RCC Digital & AI Transformation · Phase 1 Roadmap · Prepared by Zera · April 2026<br>
+  Draft — for discussion with Bach Tran & Nexa (New Era AI)
+</div>
+</div>
+</body>
+</html>
