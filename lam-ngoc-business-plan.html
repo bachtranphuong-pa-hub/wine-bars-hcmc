@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    width: 1200px;
+    padding: 32px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a2342 0%, #1a3a5c 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 28px 36px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-left h1 { font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }
+  .header-left p { font-size: 13px; color: #a8c4e0; margin-top: 4px; }
+  .header-right { text-align: right; }
+  .header-right .badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: #e0eef8;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  .header-right .acq-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4fc3f7;
+  }
+  .header-right .acq-label { font-size: 11px; color: #a8c4e0; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #64748b;
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+
+  /* KPI ROW */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .kpi-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    border-left: 4px solid #0a2342;
+  }
+  .kpi-card.green { border-left-color: #10b981; }
+  .kpi-card.blue { border-left-color: #3b82f6; }
+  .kpi-card.amber { border-left-color: #f59e0b; }
+  .kpi-card.purple { border-left-color: #8b5cf6; }
+  .kpi-card.teal { border-left-color: #14b8a6; }
+  .kpi-label { font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-value { font-size: 20px; font-weight: 700; color: #0a2342; margin-top: 4px; }
+  .kpi-sub { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+
+  /* TWO-COL LAYOUT */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0a2342;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th {
+    background: #0a2342;
+    color: white;
+    padding: 8px 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  thead th:first-child { text-align: left; border-radius: 6px 0 0 0; }
+  thead th:last-child { border-radius: 0 6px 0 0; }
+  tbody tr:nth-child(even) { background: #f8fafc; }
+  tbody td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; }
+  tbody td:not(:first-child) { text-align: center; }
+  .base-row td { background: #eff6ff !important; font-weight: 700; color: #1d4ed8; }
+  .bear-row td { background: #fef2f2 !important; color: #dc2626; }
+  .bull-row td { background: #f0fdf4 !important; color: #16a34a; }
+
+  /* SENSITIVITY MATRIX */
+  .sens-matrix table thead th { background: #1e40af; font-size: 10px; padding: 6px 8px; }
+  .sens-matrix table tbody td { text-align: center; padding: 6px 8px; font-size: 11px; }
+  .cell-base { background: #dbeafe !important; font-weight: 700; color: #1d4ed8; }
+  .cell-good { background: #dcfce7 !important; color: #16a34a; }
+  .cell-warn { background: #fef9c3 !important; color: #854d0e; }
+  .cell-bad { background: #fee2e2 !important; color: #dc2626; }
+  .row-label { text-align: left !important; font-weight: 600; color: #374151; background: #f8fafc !important; }
+
+  /* TIMELINE */
+  .timeline { margin-top: 4px; }
+  .tl-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+  .tl-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #0a2342;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+  .tl-dot.green { background: #10b981; }
+  .tl-dot.blue { background: #3b82f6; }
+  .tl-dot.amber { background: #f59e0b; }
+  .tl-dot.purple { background: #8b5cf6; }
+  .tl-line {
+    flex: 1;
+  }
+  .tl-date { font-size: 10px; font-weight: 700; color: #64748b; }
+  .tl-desc { font-size: 12px; color: #1e293b; }
+
+  /* STRATEGY CARDS */
+  .strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .strat-card {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px 14px;
+    border-left: 3px solid #3b82f6;
+  }
+  .strat-card.green { border-left-color: #10b981; }
+  .strat-card.amber { border-left-color: #f59e0b; }
+  .strat-card.purple { border-left-color: #8b5cf6; }
+  .strat-title { font-size: 11px; font-weight: 700; color: #0a2342; margin-bottom: 4px; }
+  .strat-body { font-size: 11px; color: #475569; line-height: 1.5; }
+
+  /* SAVILLS BOX */
+  .savills-box {
+    background: linear-gradient(135deg, #fefce8, #fef9c3);
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+  .savills-box .title { font-size: 11px; font-weight: 700; color: #92400e; margin-bottom: 8px; }
+  .savills-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .savills-row span { font-size: 11px; color: #78350f; }
+  .savills-row strong { font-size: 11px; font-weight: 700; color: #92400e; }
+
+  /* RISK TABLE */
+  .risk-item { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .risk-badge {
+    font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+    white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+  }
+  .risk-high { background: #fee2e2; color: #dc2626; }
+  .risk-med { background: #fef9c3; color: #854d0e; }
+  .risk-low { background: #dcfce7; color: #16a34a; }
+  .risk-text { font-size: 11px; color: #374151; line-height: 1.5; }
+  .risk-mitigation { font-size: 10px; color: #10b981; margin-top: 2px; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  /* HIGHLIGHT */
+  .highlight-box {
+    background: linear-gradient(135deg, #0a2342, #1a3a5c);
+    color: white;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .highlight-box .label { font-size: 11px; color: #a8c4e0; }
+  .highlight-box .value { font-size: 18px; font-weight: 700; color: #4fc3f7; }
+  .highlight-box .note { font-size: 10px; color: #7fb3d3; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>🏝 Lam Ngọc Villas — Business Plan</h1>
+    <p>TC Quang Ninh | Tuần Châu, Hạ Long | April 2026 | CONFIDENTIAL</p>
+  </div>
+  <div class="header-right">
+    <div class="badge">Share Acquisition — 100% Equity</div>
+    <div class="acq-price">$25M</div>
+    <div class="acq-label">Target Acquisition Cost</div>
+  </div>
+</div>
+
+<!-- KPI ROW -->
+<div class="section-title">Project Snapshot</div>
+<div class="kpi-row">
+  <div class="kpi-card green">
+    <div class="kpi-label">Total GDV</div>
+    <div class="kpi-value">$86M</div>
+    <div class="kpi-sub">2.374 tỷ VNĐ | 18 villas</div>
+  </div>
+  <div class="kpi-card blue">
+    <div class="kpi-label">PAT (HoldCo)</div>
+    <div class="kpi-value">$19M</div>
+    <div class="kpi-sub">507 tỷ VNĐ | Base case</div>
+  </div>
+  <div class="kpi-card amber">
+    <div class="kpi-label">Equity IRR</div>
+    <div class="kpi-value">42%</div>
+    <div class="kpi-sub">p.a. | Base case</div>
+  </div>
+  <div class="kpi-card purple">
+    <div class="kpi-label">Land Valuation</div>
+    <div class="kpi-value">686 tỷ</div>
+    <div class="kpi-sub">Savills Mar 2026 | 43M/m²</div>
+  </div>
+  <div class="kpi-card teal">
+    <div class="kpi-label">Project Duration</div>
+    <div class="kpi-value">~30M</div>
+    <div class="kpi-sub">Apr 2026 → Nov 2028</div>
+  </div>
+</div>
+
+<!-- ROW 2: Financials + Timeline -->
+<div class="two-col">
+
+  <!-- P&L SUMMARY -->
+  <div class="card">
+    <div class="card-title">📊 P&L Summary — Project & HoldCo</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>VNĐ tỷ</th>
+          <th>USD mn</th>
+          <th>% Rev</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Revenue</b></td><td>2.374</td><td>$86M</td><td>100%</td></tr>
+        <tr><td style="padding-left:14px;color:#64748b">Bay Villas (9 căn)</td><td>1.457</td><td>$53M</td><td>61%</td></tr>
+        <tr><td style="padding-left:14px;color:#64748b">Marina Villas (9 căn)</td><td>917</td><td>$33M</td><td>39%</td></tr>
+        <tr><td><b>Total Dev Cost</b></td><td>(771)</td><td>($28M)</td><td>32%</td></tr>
+        <tr><td><b>PBT</b></td><td>1.536</td><td>$56M</td><td>65%</td></tr>
+        <tr><td style="padding-left:14px;color:#64748b">CIT (20%)</td><td>(207)</td><td>($8M)</td><td></td></tr>
+        <tr><td><b>PAT — Project</b></td><td>1.332</td><td>$49M</td><td>56%</td></tr>
+        <tr><td style="padding-left:14px;color:#64748b">M&A Cost + Interest</td><td>(825)</td><td>($30M)</td><td></td></tr>
+        <tr class="base-row"><td><b>PAT — HoldCo</b></td><td><b>507</b></td><td><b>$19M</b></td><td><b>21%</b></td></tr>
+      </tbody>
+    </table>
+
+    <!-- Savills validation -->
+    <div class="savills-box">
+      <div class="title">⚡ Savills Valuation Cross-Check (30/03/2026)</div>
+      <div class="savills-row"><span>Land Value (So sánh trực tiếp)</span><strong>686,5 tỷ | 43M/m²</strong></div>
+      <div class="savills-row"><span>Land Value (Thặng dư, DR=20%)</span><strong>677,8 tỷ | 42.5M/m²</strong></div>
+      <div class="savills-row"><span>Acquisition vs Savills</span><strong style="color:#16a34a">-35 tỷ (-5.2%) ✅</strong></div>
+      <div class="savills-row"><span>Bay sell price — Model vs Savills</span><strong style="color:#dc2626">121M vs 108M (+12%) ⚠️</strong></div>
+      <div class="savills-row"><span>Marina sell price — Model vs Savills</span><strong style="color:#16a34a">110M vs 114M (-4%) ✅</strong></div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card">
+    <div class="card-title">📅 Development Timeline</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-line">
+          <div class="tl-date">Apr 2026</div>
+          <div class="tl-desc">Ký kết — Deposit 10% ($2.5M) | Khởi công xây dựng</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green"></div>
+        <div class="tl-line">
+          <div class="tl-date">Sep 2026</div>
+          <div class="tl-desc">Completion — Balance 90% ($22.5M) | Drawdown M&A loan</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot blue"></div>
+        <div class="tl-line">
+          <div class="tl-date">Nov 2026</div>
+          <div class="tl-desc">🚀 First sale launch — Bay H-23 (~146 tỷ VNĐ)</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot green"></div>
+        <div class="tl-line">
+          <div class="tl-date">Jan 2027</div>
+          <div class="tl-desc">Marina launch — H-54 đến H-62 (staggered)</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot amber"></div>
+        <div class="tl-line">
+          <div class="tl-date">Q2 2027</div>
+          <div class="tl-desc">Construction complete — Handover model villa | 50% GDV presold target</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot purple"></div>
+        <div class="tl-line">
+          <div class="tl-date">Aug 2028</div>
+          <div class="tl-desc">M&A loan repayment | Bay H-30 settlement (~218 tỷ)</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#dc2626"></div>
+        <div class="tl-line">
+          <div class="tl-date">Nov 2028</div>
+          <div class="tl-desc">✅ Final sale — Bay H-31 (~220 tỷ) | Project close</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SENSITIVITY SECTION -->
+<div class="section-title">Sensitivity Analysis & Scenario Comparison</div>
+<div class="two-col">
+
+  <!-- 3-SCENARIO TABLE -->
+  <div class="card">
+    <div class="card-title">🎯 3-Scenario Analysis — PAT HoldCo</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Giá bán</th>
+          <th>Constr. cost</th>
+          <th>PAT HoldCo</th>
+          <th>Margin</th>
+          <th>vs Base</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bear-row">
+          <td>🐻 Bear (Savills floor)</td>
+          <td>-10%</td>
+          <td>+10%</td>
+          <td>329 tỷ / $12M</td>
+          <td>14%</td>
+          <td>-35%</td>
+        </tr>
+        <tr class="base-row">
+          <td>📊 Base (Inhouse model)</td>
+          <td>110</td>
+          <td>100%</td>
+          <td>507 tỷ / $19M</td>
+          <td>21%</td>
+          <td>—</td>
+        </tr>
+        <tr class="bull-row">
+          <td>🚀 Bull (+5% price)</td>
+          <td>+5%</td>
+          <td>-5%</td>
+          <td>558 tỷ / $21M</td>
+          <td>23%</td>
+          <td>+10%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px">
+      <div style="font-size:11px;font-weight:700;color:#0a2342;margin-bottom:8px">Key Insight — Inhouse vs Savills</div>
+      <div style="font-size:11px;color:#374151;line-height:1.7">
+        ✅ <b>Deal viable ở mọi scenario</b> — PAT HoldCo dương kể cả worst case<br>
+        ⚠️ <b>Bay villas</b> là rủi ro chính: model 121M/m² vs Savills 108M/m² (+12%)<br>
+        ✅ <b>Marina villas</b> conservative: model 110M/m² vs Savills 114M/m²<br>
+        ✅ <b>Mua dưới valuation</b> $1.4M — built-in margin of safety<br>
+        ⚠️ <b>Sales timeline 25 tháng</b> — cashflow management là yếu tố then chốt
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL SENSITIVITY MATRIX -->
+  <div class="card sens-matrix">
+    <div class="card-title">📐 Full Sensitivity Matrix — PAT HoldCo (tỷ VNĐ)</div>
+    <div style="font-size:10px;color:#64748b;margin-bottom:8px">Biến số: Giá bán (cột) × Chi phí xây dựng (hàng)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Constr. \ Sell</th>
+          <th>99 (-10%)</th>
+          <th>105 (-5%)</th>
+          <th>110 (base)</th>
+          <th>116 (+5%)</th>
+          <th>121 (+10%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">90% (-10%)</td>
+          <td class="cell-warn">329</td>
+          <td class="cell-good">400</td>
+          <td class="cell-good">470</td>
+          <td class="cell-good">539</td>
+          <td class="cell-good">609</td>
+        </tr>
+        <tr>
+          <td class="row-label">95% (-5%)</td>
+          <td class="cell-warn">348</td>
+          <td class="cell-good">418</td>
+          <td class="cell-good">488</td>
+          <td class="cell-good">558</td>
+          <td class="cell-good">628</td>
+        </tr>
+        <tr>
+          <td class="row-label">100% (base)</td>
+          <td class="cell-warn">367</td>
+          <td class="cell-good">437</td>
+          <td class="cell-base">507 ★</td>
+          <td class="cell-good">577</td>
+          <td class="cell-good">647</td>
+        </tr>
+        <tr>
+          <td class="row-label">105% (+5%)</td>
+          <td class="cell-warn">385</td>
+          <td class="cell-good">456</td>
+          <td class="cell-good">526</td>
+          <td class="cell-good">596</td>
+          <td class="cell-good">666</td>
+        </tr>
+        <tr>
+          <td class="row-label">110% (+10%)</td>
+          <td class="cell-warn">404</td>
+          <td class="cell-good">474</td>
+          <td class="cell-good">544</td>
+          <td class="cell-good">614</td>
+          <td class="cell-good">684</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:8px;font-size:10px;color:#64748b">
+      🟢 >400 tỷ — Strong | 🟡 300-400 tỷ — Acceptable | 🔴 <300 tỷ — Review needed
+    </div>
+    <div style="margin-top:10px;background:#eff6ff;border-radius:8px;padding:10px 12px">
+      <div style="font-size:10px;font-weight:700;color:#1d4ed8;margin-bottom:4px">Savills Bear Scenario</div>
+      <div style="font-size:11px;color:#374151">Bay giá Savills (108M) = Sell index ~99 → PAT 367–404 tỷ<br>Vẫn trong vùng <b style="color:#f59e0b">Acceptable</b> — deal không break even</div>
+    </div>
+  </div>
+</div>
+
+<!-- SALES STRATEGY -->
+<div class="section-title">Sales Strategy — Quản lý rủi ro dòng tiền & Tăng tốc độ bán</div>
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">🎯 Chiến lược bán hàng tích hợp — 4 Trụ cột</div>
+  <div class="strategy-grid">
+    <div class="strat-card">
+      <div class="strat-title">🏁 1. Presale Acceleration — Target 50% trước Q2 2027</div>
+      <div class="strat-body">
+        Ưu tiên bán <b>Bay H-23 → H-27</b> (5 căn nhỏ, ~146 tỷ/căn) ngay từ Nov 2026.<br>
+        Thu về ~730 tỷ trước khi construction hoàn thành → cover toàn bộ development loan (434 tỷ).<br>
+        <b>KPI:</b> 50% GDV presold trước handover Q2 2027.
+      </div>
+    </div>
+    <div class="strat-card green">
+      <div class="strat-title">💎 2. Premium Bay H-30, H-31 — Back-load chiến lược</div>
+      <div class="strat-body">
+        H-30 và H-31 (2 căn lớn nhất, ~218–220 tỷ/căn) giữ lại bán <b>Aug–Nov 2028</b>.<br>
+        Lý do: giá trị tăng theo thời gian sau khi community hoàn thiện + brand established.<br>
+        <b>Mục tiêu:</b> Sell tại hoặc trên model price (218–220 tỷ).
+      </div>
+    </div>
+    <div class="strat-card amber">
+      <div class="strat-title">⚡ 3. Marina Fast-Close — Absorb cashflow gap</div>
+      <div class="strat-body">
+        Marina H-54 → H-62 launch Jan 2027, pricing <b>tại Savills level</b> (~110–114M/m²).<br>
+        Conservative pricing tăng tốc absorption, fill cashflow gap giữa Bay presales.<br>
+        <b>Option:</b> Offer early-buyer incentives (fit-out package, marina berth priority).
+      </div>
+    </div>
+    <div class="strat-card purple">
+      <div class="strat-title">🛡️ 4. Cashflow Buffer — Quản lý rủi ro dòng tiền</div>
+      <div class="strat-body">
+        Duy trì <b>3-tháng interest reserve</b> trong escrow (~15 tỷ) cho M&A loan.<br>
+        Nếu Bay chỉ đạt Savills pricing (-12%): Bù đắp bằng Marina upside (+4%) và cost optimization.<br>
+        <b>Trigger:</b> Nếu &lt;3 căn sold sau 6 tháng → activate Plan B pricing.
+      </div>
+    </div>
+  </div>
+
+  <!-- Sales cadence table -->
+  <div style="margin-top:16px">
+    <div style="font-size:12px;font-weight:700;color:#0a2342;margin-bottom:8px">Lịch bán hàng & Dòng tiền dự kiến</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Giai đoạn</th>
+          <th>Căn</th>
+          <th>Unit</th>
+          <th>Revenue (tỷ)</th>
+          <th>Cumulative</th>
+          <th>Cashflow note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Nov 2026</td><td>Bay H-23</td><td>1</td><td>146</td><td>146</td><td style="color:#16a34a">Presale launch</td></tr>
+        <tr><td>Feb 2027</td><td>Bay H-24</td><td>1</td><td>146</td><td>292</td><td style="color:#16a34a">Cover dev loan interest</td></tr>
+        <tr><td>Jan–Apr 2027</td><td>Marina H-54, H-55</td><td>2</td><td>173</td><td>465</td><td style="color:#f59e0b">Hỗ trợ construction close</td></tr>
+        <tr><td>Q2 2027</td><td>Bay H-25 + Marina H-56</td><td>2</td><td>234</td><td>699</td><td style="color:#16a34a">Dev loan repaid ✅</td></tr>
+        <tr><td>Q3–Q4 2027</td><td>Bay H-26, H-27 + Marina</td><td>4</td><td>468</td><td>1.167</td><td style="color:#16a34a">M&A loan service</td></tr>
+        <tr><td>2028</td><td>Bay H-28, H-29 + Marina</td><td>5</td><td>697</td><td>1.864</td><td style="color:#16a34a">On track to repay M&A</td></tr>
+        <tr class="base-row"><td>Aug–Nov 2028</td><td>Bay H-30, H-31</td><td>2</td><td>438</td><td>2.374</td><td>M&A loan repaid ✅ Full close</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- RISKS -->
+<div class="section-title">Risk Assessment & Mitigants</div>
+<div class="card" style="margin-bottom:16px">
+  <div class="card-title">⚠️ Key Risks & Chiến lược xử lý</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div>
+      <div class="risk-item">
+        <div class="risk-badge risk-high">HIGH</div>
+        <div>
+          <div class="risk-text"><b>Bay pricing gap vs Savills (+12%)</b><br>Model 121M vs Savills 108M — cần market absorption tại premium</div>
+          <div class="risk-mitigation">→ Sensitivity shows deal viable at 99 (-10%); Bay H-30, H-31 back-loaded để tăng giá theo thời gian</div>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-high">HIGH</div>
+        <div>
+          <div class="risk-text"><b>Sales absorption rate</b><br>Model: 1 căn/3 tháng. Nếu chậm hơn → M&A loan pressure</div>
+          <div class="risk-mitigation">→ Marina fast-close strategy + 3-tháng interest reserve buffer</div>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-med">MED</div>
+        <div>
+          <div class="risk-text"><b>Bay H-30, H-31 concentration risk</b><br>2 căn = ~438 tỷ (18% GDV) sold cuối cùng Aug–Nov 2028</div>
+          <div class="risk-mitigation">→ Có thể pre-market từ 2027; hoặc adjust schedule nếu cần cashflow sớm</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="risk-item">
+        <div class="risk-badge risk-med">MED</div>
+        <div>
+          <div class="risk-text"><b>Regulatory/permit risk</b><br>Post-tỉnh merger Quảng Ninh — LURC extension và permit timeline</div>
+          <div class="risk-mitigation">→ $2M CP escrow trong deal structure; EY legal DD confirmed</div>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-med">MED</div>
+        <div>
+          <div class="risk-text"><b>Construction cost overrun</b><br>Model 35M VNĐ/m² GFA — cần fixed-price contractor</div>
+          <div class="risk-mitigation">→ Sensitivity: +10% cost chỉ giảm PAT ~5%; 5% contingency built-in</div>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-badge risk-low">LOW</div>
+        <div>
+          <div class="risk-text"><b>Acquisition price vs Savills</b><br>$25M vs Savills 686 tỷ ($26.4M) — mua dưới market 5.2%</div>
+          <div class="risk-mitigation">→ Built-in margin of safety; no overpayment risk ✅</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Royal Canary Corporation — Lam Ngọc Villas Business Plan | Prepared by Zera (RCC AI) | April 2026 | STRICTLY CONFIDENTIAL
+</div>
+
+</body>
+</html>
