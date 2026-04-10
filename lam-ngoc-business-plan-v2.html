@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    width: 1200px;
+    padding: 32px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a2342 0%, #1a3a5c 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 28px 36px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-left h1 { font-size: 26px; font-weight: 700; }
+  .header-left p { font-size: 13px; color: #a8c4e0; margin-top: 4px; }
+  .header-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 11px; color: #e0eef8;
+  }
+  .header-right { text-align: right; }
+  .acq-price { font-size: 26px; font-weight: 700; color: #4fc3f7; }
+  .acq-label { font-size: 11px; color: #a8c4e0; margin-top: 2px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: #64748b; margin-bottom: 10px; padding-left: 4px;
+  }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 20px; }
+  .kpi-card {
+    background: white; border-radius: 12px; padding: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-left: 4px solid #0a2342;
+  }
+  .kpi-card.green { border-left-color: #10b981; }
+  .kpi-card.blue { border-left-color: #3b82f6; }
+  .kpi-card.amber { border-left-color: #f59e0b; }
+  .kpi-card.purple { border-left-color: #8b5cf6; }
+  .kpi-card.teal { border-left-color: #14b8a6; }
+  .kpi-card.red { border-left-color: #ef4444; }
+  .kpi-label { font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; }
+  .kpi-value { font-size: 18px; font-weight: 700; color: #0a2342; margin-top: 4px; }
+  .kpi-sub { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+
+  /* CARD */
+  .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .card-title { font-size: 13px; font-weight: 700; color: #0a2342; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; }
+
+  /* LAYOUT */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .col-6040 { display: grid; grid-template-columns: 6fr 4fr; gap: 16px; margin-bottom: 20px; }
+  .col-4060 { display: grid; grid-template-columns: 4fr 6fr; gap: 16px; margin-bottom: 20px; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th {
+    background: #0a2342; color: white; padding: 8px 10px;
+    text-align: center; font-weight: 600; font-size: 11px;
+  }
+  thead th:first-child { text-align: left; }
+  tbody tr:nth-child(even) { background: #f8fafc; }
+  tbody td { padding: 7px 10px; border-bottom: 1px solid #f1f5f9; }
+  tbody td:not(:first-child) { text-align: center; }
+  .row-total td { background: #eff6ff !important; font-weight: 700; color: #1d4ed8; }
+  .row-base td { background: #dbeafe !important; font-weight: 700; }
+  .row-bear td { background: #fef2f2 !important; color: #dc2626; }
+  .row-bull td { background: #f0fdf4 !important; color: #16a34a; }
+  .row-mett td { background: #f5f3ff !important; color: #7c3aed; font-weight: 700; }
+  .row-highlight td { background: #fff7ed !important; }
+
+  /* SENSITIVITY */
+  .cell-base { background: #dbeafe !important; font-weight: 700; color: #1d4ed8; }
+  .cell-good { background: #dcfce7 !important; color: #15803d; }
+  .cell-warn { background: #fef9c3 !important; color: #854d0e; }
+  .cell-bad { background: #fee2e2 !important; color: #dc2626; }
+  .row-label { text-align: left !important; font-weight: 600; background: #f8fafc !important; }
+
+  /* BRAND SECTION */
+  .mett-header {
+    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    color: white; border-radius: 12px; padding: 20px 24px; margin-bottom: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .mett-header h3 { font-size: 18px; font-weight: 700; }
+  .mett-header p { font-size: 12px; color: #c4b5fd; margin-top: 4px; }
+  .mett-badge {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px; padding: 8px 16px; text-align: right;
+  }
+  .mett-badge .val { font-size: 20px; font-weight: 700; color: #a5b4fc; }
+  .mett-badge .lbl { font-size: 10px; color: #c4b5fd; }
+
+  /* BRAND BENEFITS */
+  .benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .benefit-card {
+    background: #f5f3ff; border-radius: 8px; padding: 12px;
+    border-left: 3px solid #8b5cf6;
+  }
+  .benefit-title { font-size: 11px; font-weight: 700; color: #4c1d95; margin-bottom: 4px; }
+  .benefit-body { font-size: 11px; color: #6b7280; line-height: 1.5; }
+
+  /* CASHFLOW TIMELINE */
+  .cf-bar {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+  }
+  .cf-label { font-size: 10px; color: #374151; width: 140px; flex-shrink: 0; font-weight: 600; }
+  .cf-track { flex: 1; height: 22px; background: #f1f5f9; border-radius: 4px; overflow: hidden; position: relative; }
+  .cf-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 6px; }
+  .cf-fill span { font-size: 10px; color: white; font-weight: 700; white-space: nowrap; }
+  .cf-val { font-size: 10px; color: #374151; width: 80px; text-align: right; flex-shrink: 0; }
+
+  /* DEAL STRUCTURE */
+  .deal-box {
+    background: #f8fafc; border-radius: 8px; padding: 12px 14px;
+    border: 1px solid #e2e8f0; margin-bottom: 8px;
+  }
+  .deal-label { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+  .deal-val { font-size: 13px; font-weight: 700; color: #0a2342; margin-top: 2px; }
+  .deal-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+
+  /* ADJUSTMENT TABLE */
+  .adj-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+  .adj-row:last-child { border-bottom: none; }
+  .adj-label { font-size: 11px; color: #374151; }
+  .adj-val { font-size: 11px; font-weight: 600; }
+  .adj-neg { color: #dc2626; }
+  .adj-pos { color: #16a34a; }
+
+  /* TIMELINE */
+  .tl-item { display: flex; align-items: flex-start; margin-bottom: 10px; gap: 10px; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; background: #0a2342; margin-top: 3px; flex-shrink: 0; }
+  .tl-dot.green { background: #10b981; }
+  .tl-dot.blue { background: #3b82f6; }
+  .tl-dot.amber { background: #f59e0b; }
+  .tl-dot.purple { background: #8b5cf6; }
+  .tl-dot.red { background: #ef4444; }
+  .tl-date { font-size: 10px; font-weight: 700; color: #64748b; }
+  .tl-desc { font-size: 11px; color: #1e293b; line-height: 1.5; }
+
+  /* STRATEGY */
+  .strat-card { background: #f8fafc; border-radius: 8px; padding: 12px 14px; border-left: 3px solid #3b82f6; margin-bottom: 8px; }
+  .strat-card.green { border-left-color: #10b981; }
+  .strat-card.amber { border-left-color: #f59e0b; }
+  .strat-card.purple { border-left-color: #8b5cf6; }
+  .strat-title { font-size: 11px; font-weight: 700; color: #0a2342; margin-bottom: 4px; }
+  .strat-body { font-size: 11px; color: #475569; line-height: 1.5; }
+
+  /* RISK */
+  .risk-badge { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .risk-high { background: #fee2e2; color: #dc2626; }
+  .risk-med { background: #fef9c3; color: #854d0e; }
+  .risk-low { background: #dcfce7; color: #16a34a; }
+
+  /* FOOTER */
+  .footer { text-align: center; font-size: 10px; color: #94a3b8; margin-top: 16px; padding-top: 12px; border-bottom: 1px solid #e2e8f0; }
+
+  /* HIGHLIGHT BOX */
+  .info-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 14px; margin-top: 10px; }
+  .warn-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 10px 14px; margin-top: 10px; }
+  .success-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px 14px; margin-top: 10px; }
+
+  /* PAGE BREAK INDICATOR */
+  .page-break { border-top: 2px dashed #cbd5e1; margin: 24px 0; padding-top: 4px; text-align: center; font-size: 10px; color: #94a3b8; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 1: OVERVIEW & DEAL STRUCTURE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="header">
+  <div class="header-left">
+    <h1>🏝 Lam Ngọc Villas — Investment Deck v2</h1>
+    <p>TC Quang Ninh | Tuần Châu, Hạ Long | April 2026 | STRICTLY CONFIDENTIAL</p>
+    <div class="header-badges">
+      <span class="badge">Share Deal — 100% Equity</span>
+      <span class="badge">Jen Tuần Châu Co. Ltd</span>
+      <span class="badge">The Mett Brand — Operator Model</span>
+      <span class="badge">Savills Validated Mar 2026</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="acq-price">$25.5M</div>
+    <div class="acq-label">Final Acquisition Price (664.4 tỷ VNĐ)</div>
+    <div style="margin-top:6px;font-size:11px;color:#a8c4e0">Down from $30M asking price</div>
+  </div>
+</div>
+
+<!-- KPI ROW -->
+<div class="section-title">Project at a Glance</div>
+<div class="kpi-row">
+  <div class="kpi-card green">
+    <div class="kpi-label">GDV (w/ Mett)</div>
+    <div class="kpi-value">$81.7M</div>
+    <div class="kpi-sub">2.255 tỷ | sau Sunset 5%</div>
+  </div>
+  <div class="kpi-card blue">
+    <div class="kpi-label">PAT HoldCo (base)</div>
+    <div class="kpi-value">$14.7M</div>
+    <div class="kpi-sub">388 tỷ | sau Mett fee</div>
+  </div>
+  <div class="kpi-card amber">
+    <div class="kpi-label">Equity IRR</div>
+    <div class="kpi-value">~35%</div>
+    <div class="kpi-sub">adj. for Mett fee</div>
+  </div>
+  <div class="kpi-card purple">
+    <div class="kpi-label">Savills Land Val.</div>
+    <div class="kpi-value">686 tỷ</div>
+    <div class="kpi-sub">43M/m² | Mar 2026</div>
+  </div>
+  <div class="kpi-card teal">
+    <div class="kpi-label">Villas</div>
+    <div class="kpi-value">18 căn</div>
+    <div class="kpi-sub">9 Bay + 9 Marina</div>
+  </div>
+  <div class="kpi-card red">
+    <div class="kpi-label">Price Discount</div>
+    <div class="kpi-value">-15.5%</div>
+    <div class="kpi-sub">786→664 tỷ | DD adj.</div>
+  </div>
+</div>
+
+<!-- DEAL STRUCTURE + TERM SHEET -->
+<div class="section-title">Transaction Structure — Term Sheet Summary</div>
+<div class="col-4060">
+
+  <!-- LEFT: DEAL MECHANICS -->
+  <div class="card">
+    <div class="card-title">📋 Cấu Trúc Giao Dịch</div>
+
+    <div class="deal-box">
+      <div class="deal-label">Công ty mục tiêu</div>
+      <div class="deal-val">Công ty TNHH Jen Tuần Châu</div>
+    </div>
+    <div class="deal-box">
+      <div class="deal-label">Bên bán</div>
+      <div class="deal-val">Jen Capital Vietnam (51%) + Đảo Ngọc (49%)</div>
+      <div class="deal-note">100% equity transfer qua NewCo</div>
+    </div>
+    <div class="deal-box">
+      <div class="deal-label">Tái cơ cấu trước giao dịch</div>
+      <div class="deal-val">Vốn điều lệ: 246.3 → 613.7 tỷ VNĐ</div>
+      <div class="deal-note">Chuyển đổi 179 tỷ (Đảo Ngọc) + 188 tỷ (Jen Capital) shareholder loans → equity</div>
+    </div>
+    <div class="deal-box" style="border-left:3px solid #10b981">
+      <div class="deal-label">Điều kiện tiên quyết đợt 1</div>
+      <div class="deal-val" style="color:#16a34a">Điều chỉnh GCNĐT & GCNĐKDN</div>
+      <div class="deal-note">Dự kiến 2–3 tuần | Tăng vốn điều lệ</div>
+    </div>
+
+    <div style="margin-top:14px">
+      <div style="font-size:11px;font-weight:700;color:#0a2342;margin-bottom:8px">Price Adjustment Breakdown</div>
+      <div class="adj-row">
+        <span class="adj-label"><b>Giá Mua Trước Điều Chỉnh</b></span>
+        <span class="adj-val">786.0 tỷ ($30M)</span>
+      </div>
+      <div class="adj-row">
+        <span class="adj-label">↓ Điều chỉnh pháp lý</span>
+        <span class="adj-val adj-neg">-103.3 tỷ</span>
+      </div>
+      <div class="adj-row" style="padding-left:12px">
+        <span class="adj-label" style="color:#64748b">• Phạt chậm đưa đất vào sử dụng</span>
+        <span class="adj-val adj-neg">-23.7 tỷ</span>
+      </div>
+      <div class="adj-row" style="padding-left:12px">
+        <span class="adj-label" style="color:#64748b">• Doanh thu giữ lại (5% × GDV CBRE)</span>
+        <span class="adj-val adj-neg">-79.6 tỷ</span>
+      </div>
+      <div class="adj-row">
+        <span class="adj-label">↓ Điều chỉnh tài chính & thuế</span>
+        <span class="adj-val adj-neg">-18.3 tỷ</span>
+      </div>
+      <div class="adj-row" style="padding-left:12px">
+        <span class="adj-label" style="color:#64748b">• VAT, ứng trước, FX chênh lệch</span>
+        <span class="adj-val adj-neg">-18.3 tỷ</span>
+      </div>
+      <div class="adj-row" style="border-top:2px solid #0a2342;padding-top:6px;margin-top:2px">
+        <span class="adj-label"><b>FINAL PRICE</b></span>
+        <span class="adj-val" style="color:#16a34a;font-size:14px"><b>664.4 tỷ ($25.5M)</b></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: FINANCIAL SNAPSHOT -->
+  <div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">📊 P&L — Inhouse Model (w/ & w/o The Mett)</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>No Brand</th>
+            <th>+The Mett (5%)</th>
+            <th>+Mett +5% Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><b>GDV</b></td><td>2.374 tỷ</td><td>2.255 tỷ</td><td>2.492 tỷ</td></tr>
+          <tr><td style="color:#64748b;padding-left:12px">Sunset fee (5%)</td><td>—</td><td style="color:#dc2626">(119 tỷ)</td><td style="color:#dc2626">(125 tỷ)</td></tr>
+          <tr><td><b>Dev Cost</b></td><td>(771 tỷ)</td><td>(771 tỷ)</td><td>(771 tỷ)</td></tr>
+          <tr><td><b>PBT</b></td><td>1.536 tỷ</td><td>1.408 tỷ</td><td>1.541 tỷ</td></tr>
+          <tr><td><b>PAT Project</b></td><td>1.332 tỷ</td><td>1.219 tỷ</td><td>1.335 tỷ</td></tr>
+          <tr><td style="color:#64748b;padding-left:12px">M&A + Interest</td><td>(825 tỷ)</td><td>(825 tỷ)</td><td>(825 tỷ)</td></tr>
+          <tr class="row-base"><td><b>PAT HoldCo</b></td><td>507 tỷ / $19M</td><td style="color:#7c3aed"><b>388 tỷ / $15M</b></td><td style="color:#16a34a"><b>510 tỷ / $20M</b></td></tr>
+          <tr><td><b>Margin</b></td><td>21%</td><td style="color:#7c3aed">17%</td><td style="color:#16a34a">20%</td></tr>
+        </tbody>
+      </table>
+      <div class="success-box">
+        <div style="font-size:11px;font-weight:700;color:#15803d;margin-bottom:4px">⚡ Key Insight: Mett Brand Break-even</div>
+        <div style="font-size:11px;color:#374151">Nếu The Mett brand premium cho phép tăng giá bán +5% → Sunset fee 5% tự bù đắp hoàn toàn. PAT HoldCo ~510 tỷ — tương đương no-brand scenario, nhưng <b>có thêm 10 năm quản lý chuyên nghiệp + brand cachet</b>.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Savills Cross-Check</div>
+      <table>
+        <thead><tr><th>Metric</th><th>Inhouse</th><th>Savills</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Acquisition vs Land Value</td><td>664 tỷ</td><td>686 tỷ</td><td style="color:#16a34a">-3.2% ✅</td></tr>
+          <tr><td>Bay sell price/m² đất</td><td>121M</td><td>108M</td><td style="color:#f59e0b">+12% ⚠️</td></tr>
+          <tr><td>Marina sell price/m² đất</td><td>110M</td><td>114M</td><td style="color:#16a34a">-4% ✅</td></tr>
+          <tr><td>Discount rate (Savills)</td><td>—</td><td>20%</td><td style="color:#64748b">Conservative</td></tr>
+          <tr class="row-highlight"><td><b>Bear case PAT (Savills price)</b></td><td colspan="2"><b>329–404 tỷ</b></td><td style="color:#f59e0b"><b>Viable ✅</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE BREAK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page-break">— THE METT BRAND & OPERATOR STRATEGY —</div>
+
+<!-- THE METT BRAND SECTION -->
+<div class="section-title">Brand & Operator Model — The Mett by Sunset Hospitality</div>
+
+<div class="mett-header">
+  <div>
+    <h3>THE METT — Viable Operator for Lam Ngọc</h3>
+    <p>Sunset Hospitality Group | Boutique Luxury Lifestyle Brand | HMA 10 năm</p>
+  </div>
+  <div class="mett-badge">
+    <div class="lbl">Sunset Management Fee</div>
+    <div class="val">5% of sale price/villa</div>
+    <div class="lbl">= ~119 tỷ VNĐ ($4.3M total)</div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="card-title">🏨 Tại sao The Mett phù hợp với Lam Ngọc?</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="benefit-title">🎯 Brand Positioning</div>
+        <div class="benefit-body">The Mett định vị boutique luxury — phù hợp với villa lifestyle segment. Target: UHNW Vietnam + expat + APAC leisure traveler.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-title">🌏 Distribution Network</div>
+        <div class="benefit-body">Sunset HG có network tại UAE, Med, và APAC. Có thể kéo international buyer vào presale phase — giảm rủi ro absorption.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-title">💎 Price Premium Justification</div>
+        <div class="benefit-body">Brand management cho phép Bay villas justify 121M/m² (vs Savills 108M). The Mett brand = +5–12% premium vs unbranded comparable.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-title">🔄 Revenue Sharing</div>
+        <div class="benefit-body">Rental income pooling cho owners khi không ở. Tăng attractiveness vs pure residential — rental yield ~4–6% p.a. est.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-title">📋 HMA Structure</div>
+        <div class="benefit-body">10 năm HMA: Sunset quản lý vận hành, marketing, staffing. RCC/NewCo giữ ownership. Phí 5% one-time tại sale settlement.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-title">🏆 Stakeholder Signal</div>
+        <div class="benefit-body">International brand giải quyết concern của institutional buyers về "trophy asset without operations." Tăng bankability cho M&A loan.</div>
+      </div>
+    </div>
+
+    <div class="warn-box" style="margin-top:12px">
+      <div style="font-size:11px;font-weight:700;color:#92400e;margin-bottom:4px">⚠️ Rủi ro cần negotiation với Sunset</div>
+      <div style="font-size:11px;color:#78350f;line-height:1.6">
+        • <b>Fee structure:</b> 5% upfront one-time vs annual mgmt fee — confirm với Sunset term<br>
+        • <b>Brand standards:</b> Sunset có thể yêu cầu spec upgrade → tăng construction cost<br>
+        • <b>Exit clause:</b> HMA 10 năm cần exit provision nếu performance không đạt KPI<br>
+        • <b>Reservation rights:</b> Owner usage rights cần define rõ trong HMA
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERATOR COMPARISON -->
+  <div class="card">
+    <div class="card-title">🏨 Operator Options — So sánh</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Tiêu chí</th>
+          <th>No Brand</th>
+          <th style="background:#312e81">The Mett ★</th>
+          <th>Aman/Six Senses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Brand recognition VN</td><td>❌</td><td style="background:#ede9fe">✅ Growing</td><td>✅✅ Strong</td></tr>
+        <tr><td>Management fee</td><td>~0%</td><td style="background:#ede9fe">5% one-time</td><td>3–5% annual</td></tr>
+        <tr><td>Price premium est.</td><td>0%</td><td style="background:#ede9fe">+5–10%</td><td>+15–25%</td></tr>
+        <tr><td>Feasibility/timeline</td><td>✅ Immediate</td><td style="background:#ede9fe">✅ Fast</td><td>⚠️ 12–18M</td></tr>
+        <tr><td>Brand standard cost</td><td>Low</td><td style="background:#ede9fe">Medium</td><td>High</td></tr>
+        <tr><td>International buyer pull</td><td>Low</td><td style="background:#ede9fe">Medium</td><td>High</td></tr>
+        <tr><td>Net PAT impact</td><td>+507 tỷ</td><td style="background:#ede9fe;font-weight:700;color:#7c3aed">388–510 tỷ</td><td>TBD</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px">
+      <div style="font-size:12px;font-weight:700;color:#0a2342;margin-bottom:10px">Sunset Fee Impact — Sensitivity</div>
+      <table>
+        <thead>
+          <tr><th>Sunset Fee</th><th>Net GDV</th><th>PAT HoldCo</th><th>vs Base</th></tr>
+        </thead>
+        <tbody>
+          <tr class="row-bear"><td>0% (no deal)</td><td>2.374 tỷ</td><td>507 tỷ / $19M</td><td>—</td></tr>
+          <tr><td>3%</td><td>2.303 tỷ</td><td>435 tỷ / $17M</td><td>-14%</td></tr>
+          <tr class="row-mett"><td><b>5% (base)</b></td><td><b>2.255 tỷ</b></td><td><b>388 tỷ / $15M</b></td><td><b>-24%</b></td></tr>
+          <tr><td>5% + Price +5%</td><td>2.492 tỷ</td><td>510 tỷ / $20M</td><td style="color:#16a34a">+1%</td></tr>
+          <tr class="row-bull"><td>5% + Price +10%</td><td>2.611 tỷ</td><td>629 tỷ / $24M</td><td style="color:#16a34a">+24%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="success-box" style="margin-top:10px">
+      <div style="font-size:11px;color:#374151;line-height:1.6">
+        <b style="color:#15803d">Recommendation:</b> Proceed với The Mett nếu Sunset đồng ý <b>không yêu cầu major spec upgrade</b> (<5% construction cost increase). Ngay cả tại 5% fee + zero price uplift → PAT 388 tỷ vẫn strong. Upside nếu brand delivers +5% price = full fee recovery.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE BREAK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page-break">— SENSITIVITY ANALYSIS & SALES STRATEGY —</div>
+
+<div class="section-title">Sensitivity Analysis — Full Matrix (PAT HoldCo, tỷ VNĐ)</div>
+<div class="two-col">
+  <!-- SENSITIVITY MATRIX -->
+  <div class="card" style="font-size:12px">
+    <div class="card-title">📐 5×5 Matrix — Giá bán × Chi phí xây dựng</div>
+    <div style="font-size:10px;color:#64748b;margin-bottom:8px">Base: Sell=110, Cost=100% → PAT=507 tỷ | Sau Mett 5%: 388 tỷ</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Cost \ Sell</th>
+          <th>99 (-10%)</th>
+          <th>105 (-5%)</th>
+          <th>110 (base)</th>
+          <th>116 (+5%)</th>
+          <th>121 (+10%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">90% (-10%)</td>
+          <td class="cell-warn">329</td><td class="cell-good">400</td><td class="cell-good">470</td><td class="cell-good">539</td><td class="cell-good">609</td>
+        </tr>
+        <tr>
+          <td class="row-label">95% (-5%)</td>
+          <td class="cell-warn">348</td><td class="cell-good">418</td><td class="cell-good">488</td><td class="cell-good">558</td><td class="cell-good">628</td>
+        </tr>
+        <tr>
+          <td class="row-label">100% (base)</td>
+          <td class="cell-warn">367</td><td class="cell-good">437</td><td class="cell-base">507 ★</td><td class="cell-good">577</td><td class="cell-good">647</td>
+        </tr>
+        <tr>
+          <td class="row-label">105% (+5%)</td>
+          <td class="cell-warn">385</td><td class="cell-good">456</td><td class="cell-good">526</td><td class="cell-good">596</td><td class="cell-good">666</td>
+        </tr>
+        <tr>
+          <td class="row-label">110% (+10%)</td>
+          <td class="cell-warn">404</td><td class="cell-good">474</td><td class="cell-good">544</td><td class="cell-good">614</td><td class="cell-good">684</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:8px;font-size:10px;color:#64748b">🟢 >400 tỷ Strong | 🟡 300–400 tỷ Acceptable | 🔴 <300 tỷ Review</div>
+
+    <div style="margin-top:12px">
+      <div style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:6px">Sau khi trừ Mett fee 5% (-119 tỷ):</div>
+      <table>
+        <thead>
+          <tr><th>Scenario</th><th>PAT before Mett</th><th>After Mett (-119)</th><th>% chênh</th></tr>
+        </thead>
+        <tbody>
+          <tr class="row-bear"><td>Bear (Sell 99, Cost +10%)</td><td>404</td><td style="color:#dc2626">285</td><td>-29%</td></tr>
+          <tr class="row-mett"><td>Base (Sell 110, Cost 100%)</td><td>507</td><td><b>388</b></td><td>-24%</td></tr>
+          <tr class="row-bull"><td>Bull (Sell 121, Cost 90%)</td><td>609</td><td style="color:#16a34a">490</td><td>-20%</td></tr>
+        </tbody>
+      </table>
+      <div class="warn-box" style="margin-top:8px">
+        <div style="font-size:11px;color:#92400e"><b>Bear case với Mett:</b> PAT 285 tỷ — vẫn dương nhưng tight. Cần giữ construction cost ≤100% và sell price ≥99 trong mọi scenario.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 SCENARIOS -->
+  <div class="card">
+    <div class="card-title">🎯 3 Scenarios — Tổng hợp so sánh</div>
+    <table>
+      <thead>
+        <tr><th>Scenario</th><th>Giá bán</th><th>Cost</th><th>Mett</th><th>PAT HoldCo</th><th>IRR est.</th></tr>
+      </thead>
+      <tbody>
+        <tr class="row-bear"><td>🐻 Bear</td><td>Savills (-10%)</td><td>+10%</td><td>-119</td><td>285 tỷ / $11M</td><td>~22%</td></tr>
+        <tr class="row-mett"><td>🏨 Base+Mett</td><td>110 (model)</td><td>100%</td><td>-119</td><td>388 tỷ / $15M</td><td>~35%</td></tr>
+        <tr class="row-base"><td>📊 Base (no Mett)</td><td>110 (model)</td><td>100%</td><td>—</td><td>507 tỷ / $19M</td><td>42%</td></tr>
+        <tr class="row-bull"><td>🚀 Bull+Mett</td><td>+10% uplift</td><td>-5%</td><td>-125</td><td>490 tỷ / $19M</td><td>~41%</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:16px">
+      <div style="font-size:12px;font-weight:700;color:#0a2342;margin-bottom:10px">🗓 Development & Sales Timeline</div>
+      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-date">Apr 2026</div><div class="tl-desc">Signing | Deposit 10% ($2.55M) | Khởi công | GCNĐT điều chỉnh</div></div></div>
+      <div class="tl-item"><div class="tl-dot blue"></div><div><div class="tl-date">Jun–Aug 2026</div><div class="tl-desc">Finalize HMA với Sunset/The Mett | Brand standards alignment</div></div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div><div class="tl-date">Sep 2026</div><div class="tl-desc">Balance 90% ($22.95M) | M&A loan drawdown | CP2 hoàn thành</div></div></div>
+      <div class="tl-item"><div class="tl-dot amber"></div><div><div class="tl-date">Nov 2026</div><div class="tl-desc">🚀 Presale launch — Bay H-23 dưới The Mett brand</div></div></div>
+      <div class="tl-item"><div class="tl-dot blue"></div><div><div class="tl-date">Jan 2027</div><div class="tl-desc">Marina launch H-54 → H-62 | Target 50% GDV sold by Q2 2027</div></div></div>
+      <div class="tl-item"><div class="tl-dot green"></div><div><div class="tl-date">Q2 2027</div><div class="tl-desc">Construction complete | Dev loan repaid | Model villa handover</div></div></div>
+      <div class="tl-item"><div class="tl-dot purple"></div><div><div class="tl-date">Aug 2028</div><div class="tl-desc">M&A loan repayment | Bay H-30 settlement (~218 tỷ)</div></div></div>
+      <div class="tl-item"><div class="tl-dot red"></div><div><div class="tl-date">Nov 2028</div><div class="tl-desc">✅ Final villa sold | Project close | Total duration ~30 tháng</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="page-break">— SALES STRATEGY & CASHFLOW MANAGEMENT —</div>
+
+<div class="section-title">Sales Strategy — Adapted for The Mett Brand</div>
+<div class="card" style="margin-bottom:20px">
+  <div class="card-title">🎯 4-Pillar Sales Strategy — The Mett Edition</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+    <div class="strat-card purple">
+      <div class="strat-title">🏨 1. Brand-Led Presale — "The Mett Founding Owners"</div>
+      <div class="strat-body">
+        Launch Bay H-23 → H-27 dưới concept <b>"Founding Owner" program</b>: quyền ưu tiên villa selection, lifetime membership, early rental pool access.<br>
+        Target: UHNW VN (Hà Nội, HCM) + Sunset's existing network (UAE, Singapore).<br>
+        <b>KPI:</b> 5 căn Bay sold Nov 2026 → Feb 2027 (~730 tỷ presale revenue).
+      </div>
+    </div>
+    <div class="strat-card green">
+      <div class="strat-title">💎 2. Bay H-30, H-31 — "Signature Collection" Back-load</div>
+      <div class="strat-body">
+        2 căn lớn nhất (218–220 tỷ/căn) định vị là <b>"The Mett Signature Villas"</b> — ra mắt Aug–Nov 2028 sau khi community hoàn thiện.<br>
+        Sunset có thể giới thiệu qua international HNW network.<br>
+        <b>Target price:</b> Duy trì 218–220 tỷ hoặc cao hơn nếu brand established.
+      </div>
+    </div>
+    <div class="strat-card amber">
+      <div class="strat-title">⚡ 3. Marina — "The Mett Marina Collection" Fast-Close</div>
+      <div class="strat-body">
+        Marina H-54→H-62 pricing tại <b>110M/m² đất</b> (Savills-aligned, conservative).<br>
+        Incentive cho early buyers: <b>complimentary marina berth 5 năm</b> + Mett Club membership.<br>
+        Target: Bán 5/9 căn Marina trước Q3 2027 → fill cashflow gap giữa Bay phases.
+      </div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-title">🛡️ 4. Cashflow Buffer — Risk Management</div>
+      <div class="strat-body">
+        Maintain <b>3-tháng interest reserve</b> (~15 tỷ) trong escrow cho M&A loan.<br>
+        <b>Trigger mechanism:</b> Nếu <3 căn sold trong 6 tháng đầu → activate price adjustment xuống Savills level (-10%) để accelerate absorption.<br>
+        Sunset fee chỉ trả tại settlement — <b>zero upfront cost</b> cho RCC.
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES CADENCE -->
+  <div style="font-size:12px;font-weight:700;color:#0a2342;margin-bottom:8px">Lịch bán & Dòng tiền dự kiến (với The Mett)</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Giai đoạn</th>
+        <th>Căn</th>
+        <th>Brand lever</th>
+        <th>Revenue (tỷ)</th>
+        <th>Sunset 5%</th>
+        <th>Net Revenue</th>
+        <th>Cumulative</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Nov 2026</td><td>Bay H-23</td><td>Founding Owner launch</td><td>146</td><td style="color:#dc2626">(7.3)</td><td>138.7</td><td>138.7</td></tr>
+      <tr><td>Feb 2027</td><td>Bay H-24</td><td>International referral</td><td>146</td><td style="color:#dc2626">(7.3)</td><td>138.7</td><td>277.4</td></tr>
+      <tr><td>Jan–Apr 2027</td><td>Marina H-54, H-55</td><td>Marina berth incentive</td><td>173</td><td style="color:#dc2626">(8.7)</td><td>164.3</td><td>441.7</td></tr>
+      <tr><td>Q2 2027</td><td>Bay H-25 + Marina H-56</td><td>Post-handover momentum</td><td>234</td><td style="color:#dc2626">(11.7)</td><td>222.3</td><td>664.0</td></tr>
+      <tr><td>Q3–Q4 2027</td><td>4 căn mixed</td><td>Mett Club events marketing</td><td>468</td><td style="color:#dc2626">(23.4)</td><td>444.6</td><td>1.108</td></tr>
+      <tr><td>2028</td><td>5 căn mixed</td><td>Rental yield track record</td><td>697</td><td style="color:#dc2626">(34.9)</td><td>662.2</td><td>1.770</td></tr>
+      <tr class="row-mett"><td>Aug–Nov 2028</td><td>Bay H-30, H-31 (Signature)</td><td>Sunset intl. premium close</td><td>438</td><td style="color:#dc2626">(21.9)</td><td>416.1</td><td>2.186</td></tr>
+      <tr class="row-total"><td><b>TOTAL</b></td><td><b>18 căn</b></td><td></td><td><b>2.374 tỷ</b></td><td style="color:#dc2626"><b>(115 tỷ)</b></td><td><b>2.259 tỷ</b></td><td><b>$86.8M</b></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- RISKS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section-title">Risk Assessment</div>
+<div class="card" style="margin-bottom:16px">
+  <div class="card-title">⚠️ Key Risks & Mitigants</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+        <span class="risk-badge risk-high">HIGH</span>
+        <div>
+          <div style="font-size:11px;font-weight:700">Mett fee without price uplift</div>
+          <div style="font-size:11px;color:#374151">PAT giảm 24% (507→388 tỷ) nếu brand không deliver price premium</div>
+          <div style="font-size:10px;color:#10b981">→ Trigger: nếu Sell 99 trong 6 tháng → drop Mett fee negotiation hoặc restructure sang annual mgmt fee</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+        <span class="risk-badge risk-high">HIGH</span>
+        <div>
+          <div style="font-size:11px;font-weight:700">Bay pricing gap vs Savills (+12%)</div>
+          <div style="font-size:11px;color:#374151">Model 121M vs Savills 108M — cần brand justify premium</div>
+          <div style="font-size:10px;color:#10b981">→ The Mett brand = key mitigant; back-load H-30, H-31 để build precedent</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+        <span class="risk-badge risk-med">MED</span>
+        <div>
+          <div style="font-size:11px;font-weight:700">HMA negotiation delay</div>
+          <div style="font-size:11px;color:#374151">Nếu Sunset HMA không finalize trước Nov 2026 → presale launch bị delay</div>
+          <div style="font-size:10px;color:#10b981">→ Target: HMA term sheet signed Jun 2026 (trong 60 ngày sau closing)</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+        <span class="risk-badge risk-med">MED</span>
+        <div>
+          <div style="font-size:11px;font-weight:700">Regulatory/GCNĐT risk (post-merger Quảng Ninh)</div>
+          <div style="font-size:11px;color:#374151">CP1 (GCNĐT adjustment) cần 2–3 tuần — nếu delay → ảnh hưởng closing timeline</div>
+          <div style="font-size:10px;color:#10b981">→ EY DD đã identify; 23.7 tỷ penalty adjustment trong purchase price</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+        <span class="risk-badge risk-med">MED</span>
+        <div>
+          <div style="font-size:11px;font-weight:700">Sunset brand standards → cost overrun</div>
+          <div style="font-size:11px;color:#374151">The Mett có thể yêu cầu upgrade specs → tăng construction cost</div>
+          <div style="font-size:10px;color:#10b981">→ Cap brand upgrade cost tại 5% of construction (=~26 tỷ) trong HMA negotiation</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;align-items:flex-start">
+        <span class="risk-badge risk-low">LOW</span>
+        <div>
+          <div style="font-size:11px;font-weight:700">Acquisition price vs Savills</div>
+          <div style="font-size:11px;color:#374151">664 tỷ vs Savills 686 tỷ → mua dưới market 3.2%</div>
+          <div style="font-size:10px;color:#10b981">→ Built-in margin of safety ✅ Không có overpayment risk</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Royal Canary Corporation — Lam Ngọc Villas Business Plan v2 | The Mett Operator Model | April 2026 | STRICTLY CONFIDENTIAL<br>
+  Prepared by Zera (RCC AI Strategic Advisor) | Based on: Savills Valuation 30/03/2026 · EY DD · Inhouse Financial Model v3
+</div>
+
+</body>
+</html>
