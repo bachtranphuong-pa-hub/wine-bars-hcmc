@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Domaine Leroy — Order Sheet | April 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', serif;
+    background: #0a0a0f;
+    color: #e8e0d0;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container { max-width: 820px; margin: 0 auto; }
+
+  .header {
+    text-align: center;
+    border-bottom: 1px solid #3a2a14;
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .header .domain {
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: #8a7050;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: normal;
+    color: #d4b896;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .header .meta {
+    font-size: 13px;
+    color: #6a5840;
+    font-style: italic;
+  }
+
+  .badges {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+  .badge.green  { color: #4daa60; border-color: #1a4a20; background: #051208; }
+  .badge.gold   { color: #c0a020; border-color: #4a4010; background: #0e0c02; }
+  .badge.blue   { color: #4090d0; border-color: #0a2a4a; background: #030a18; }
+
+  /* Order table */
+  .order-section { margin-bottom: 36px; }
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #8a7050;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #2a1f10;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th {
+    text-align: left;
+    padding: 10px 14px;
+    background: #0d0806;
+    color: #6a5030;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: normal;
+    border-bottom: 1px solid #2a1f10;
+  }
+  thead th.right { text-align: right; }
+  tbody tr { border-bottom: 1px solid #18100a; }
+  tbody tr:hover { background: #120c06; }
+  tbody td { padding: 14px 14px; vertical-align: top; }
+  td.right { text-align: right; }
+
+  .wine-name { color: #d4b896; font-size: 15px; margin-bottom: 3px; }
+  .wine-meta { color: #5a4830; font-size: 12px; }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+  .tag.gc  { background: #1a0a30; color: #9060d0; border: 1px solid #3a1a60; }
+  .tag.pc  { background: #0a1a10; color: #40a060; border: 1px solid #1a4a28; }
+  .tag.v15 { background: #1a1005; color: #a07020; border: 1px solid #3a2a08; }
+  .tag.v14 { background: #050f1a; color: #3080b0; border: 1px solid #0a2a40; }
+
+  td.price { color: #c8a870; font-size: 14px; }
+  td.qty   { color: #a09070; font-size: 14px; }
+  td.total { color: #d4b060; font-size: 14px; font-weight: bold; }
+
+  /* Totals box */
+  .totals-box {
+    background: linear-gradient(135deg, #100a04 0%, #1a1008 100%);
+    border: 1px solid #4a3520;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 32px;
+  }
+  .totals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 600px) {
+    .totals-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .total-item .t-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #6a5030;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .total-item .t-value {
+    font-size: 22px;
+    color: #d4a820;
+  }
+  .total-item .t-sub {
+    font-size: 12px;
+    color: #5a4030;
+    margin-top: 2px;
+  }
+  .total-item.highlight .t-value { color: #e8c840; font-size: 26px; }
+
+  /* Allocation pie / breakdown bar */
+  .breakdown { margin-bottom: 32px; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .bar-label { width: 260px; color: #a89070; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track {
+    flex: 1;
+    height: 6px;
+    background: #1a1208;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-pct { width: 40px; text-align: right; color: #6a5030; font-size: 12px; }
+
+  /* Notes */
+  .notes {
+    background: #070507;
+    border: 1px solid #2a1f10;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+  }
+  .notes .n-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .notes .n-row:last-child { margin-bottom: 0; }
+  .notes .n-key { color: #6a5030; min-width: 140px; }
+  .notes .n-val { color: #b09070; }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #1e1408;
+    font-size: 11px;
+    color: #3a2810;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="domain">Domaine Leroy · Vosne-Romanée</div>
+    <h1>Order Sheet — Special Selection</h1>
+    <div class="meta">April 2026 · EXW Pool · Excellent Condition</div>
+  </div>
+
+  <div class="badges">
+    <span class="badge green">✓ Excellent Condition</span>
+    <span class="badge gold">EXW Pool</span>
+    <span class="badge blue">15 Bottles · 4 References</span>
+  </div>
+
+  <div class="order-section">
+    <div class="section-title">Order Detail</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:45%">Wine</th>
+          <th class="right">Price / btl</th>
+          <th class="right">Qty</th>
+          <th class="right">Line Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="wine-name">Richebourg Grand Cru 2015</div>
+            <div class="wine-meta">75cl · Côte de Nuits</div>
+            <div>
+              <span class="tag gc">Grand Cru</span>
+              <span class="tag v15">2015</span>
+            </div>
+          </td>
+          <td class="price right">€13,889</td>
+          <td class="qty right">×2</td>
+          <td class="total right">€27,778</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="wine-name">Pommard "Les Vignots" 2015</div>
+            <div class="wine-meta">75cl · Côte de Beaune</div>
+            <div>
+              <span class="tag pc">1er Cru</span>
+              <span class="tag v15">2015</span>
+            </div>
+          </td>
+          <td class="price right">€3,889</td>
+          <td class="qty right">×4</td>
+          <td class="total right">€15,556</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="wine-name">Nuits-Saint-Georges 1er Cru "Les Boudots" 2015</div>
+            <div class="wine-meta">75cl · Côte de Nuits</div>
+            <div>
+              <span class="tag pc">1er Cru</span>
+              <span class="tag v15">2015</span>
+            </div>
+          </td>
+          <td class="price right">€5,278</td>
+          <td class="qty right">×3</td>
+          <td class="total right">€15,833</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="wine-name">Vosne-Romanée 1er Cru "Les Beaux Monts" 2014</div>
+            <div class="wine-meta">75cl · Côte de Nuits</div>
+            <div>
+              <span class="tag pc">1er Cru</span>
+              <span class="tag v14">2014</span>
+            </div>
+          </td>
+          <td class="price right">€4,333</td>
+          <td class="qty right">×6</td>
+          <td class="total right">€26,000</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="totals-box">
+    <div class="totals-grid">
+      <div class="total-item highlight">
+        <div class="t-label">Order Total</div>
+        <div class="t-value">€85,167</div>
+        <div class="t-sub">~$92,500 EXW</div>
+      </div>
+      <div class="total-item">
+        <div class="t-label">Bottles</div>
+        <div class="t-value">15</div>
+        <div class="t-sub">4 references</div>
+      </div>
+      <div class="total-item">
+        <div class="t-label">Avg / Bottle</div>
+        <div class="t-value">€5,678</div>
+        <div class="t-sub">~$6,167</div>
+      </div>
+      <div class="total-item">
+        <div class="t-label">Landed (est.)</div>
+        <div class="t-value">~$96,000</div>
+        <div class="t-sub">all-in incl. freight</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="breakdown">
+    <div class="section-title">Budget Allocation by Wine</div>
+
+    <div class="bar-row">
+      <div class="bar-label">Richebourg GC 2015</div>
+      <div class="bar-track"><div class="bar-fill" style="width:32.6%;background:#9060d0;"></div></div>
+      <div class="bar-pct">32.6%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Vosne-Romanée "Les Beaux Monts" 2014</div>
+      <div class="bar-track"><div class="bar-fill" style="width:30.5%;background:#3080b0;"></div></div>
+      <div class="bar-pct">30.5%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Nuits-Saint-Georges "Les Boudots" 2015</div>
+      <div class="bar-track"><div class="bar-fill" style="width:18.6%;background:#a07020;"></div></div>
+      <div class="bar-pct">18.6%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Pommard "Les Vignots" 2015</div>
+      <div class="bar-track"><div class="bar-fill" style="width:18.3%;background:#40a060;"></div></div>
+      <div class="bar-pct">18.3%</div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="section-title" style="margin-bottom:14px">Order Conditions</div>
+    <div class="n-row"><span class="n-key">Producer</span><span class="n-val">Domaine Leroy, Vosne-Romanée</span></div>
+    <div class="n-row"><span class="n-key">Condition</span><span class="n-val">Excellent (all bottles)</span></div>
+    <div class="n-row"><span class="n-key">Delivery Terms</span><span class="n-val">EXW Pool</span></div>
+    <div class="n-row"><span class="n-key">Format</span><span class="n-val">75cl (standard)</span></div>
+    <div class="n-row"><span class="n-key">Vintages</span><span class="n-val">2014, 2015</span></div>
+    <div class="n-row"><span class="n-key">Budget Utilization</span><span class="n-val">€85,167 / ~$100,000 budget (~92.5% allocated)</span></div>
+  </div>
+
+  <div class="footer">
+    Domaine Leroy Special Order · April 2026<br/>
+    Prepared by Zera · Royal Canary Corp
+  </div>
+
+</div>
+</body>
+</html>
