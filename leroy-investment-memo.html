@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #f7f5f0;
+    color: #1a1a1a;
+    width: 900px;
+    padding: 48px;
+  }
+
+  /* HEADER */
+  .header {
+    border-top: 4px solid #2c1810;
+    border-bottom: 1px solid #2c1810;
+    padding: 24px 0 20px;
+    margin-bottom: 36px;
+  }
+  .memo-tag {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: #8b6914; margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 22px; font-weight: 700; color: #2c1810;
+    line-height: 1.3; margin-bottom: 6px;
+  }
+  .header .sub {
+    font-size: 13px; color: #666; font-style: italic;
+  }
+  .meta-row {
+    display: flex; gap: 32px; margin-top: 16px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .meta-item { font-size: 11px; }
+  .meta-label { color: #999; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; }
+  .meta-val { color: #1a1a1a; font-weight: 600; margin-top: 2px; }
+
+  /* SECTION */
+  .section { margin-bottom: 32px; }
+  .section-title {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #8b6914;
+    border-bottom: 1px solid #d4b896; padding-bottom: 6px; margin-bottom: 14px;
+  }
+  p { font-size: 13.5px; line-height: 1.8; color: #333; margin-bottom: 10px; }
+  strong { color: #1a1a1a; }
+
+  /* CALLOUT BOX */
+  .callout {
+    background: #fdf8f0; border-left: 3px solid #8b6914;
+    padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 12px 0;
+    font-size: 13px; line-height: 1.7; color: #3a2a10;
+  }
+
+  /* TABLE */
+  table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 12px; margin: 12px 0;
+  }
+  thead th {
+    background: #2c1810; color: #f5e6c8;
+    padding: 9px 12px; text-align: left;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  thead th.r { text-align: right; }
+  tbody td { padding: 8px 12px; border-bottom: 1px solid #ede8df; }
+  tbody td.r { text-align: right; }
+  tbody tr:nth-child(even) td { background: #faf7f2; }
+  .row-rec td { background: #f0f9f0 !important; font-weight: 600; color: #1a5c1a; }
+  .row-note td { background: #fdf8f0 !important; font-size: 11px; color: #666; font-style: italic; }
+  .tag-best { background: #d4edda; color: #1a5c1a; padding: 1px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+  .tag-good { background: #fff3cd; color: #856404; padding: 1px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 16px 0; }
+  .kpi {
+    background: white; border-radius: 6px; padding: 14px 16px;
+    border-top: 3px solid #8b6914;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .kpi .kl { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #999; }
+  .kpi .kv { font-size: 19px; font-weight: 700; color: #2c1810; margin: 4px 0; }
+  .kpi .ks { font-size: 10px; color: #666; }
+
+  /* RECOMMENDATION BOX */
+  .rec-box {
+    background: #2c1810; color: white; border-radius: 8px;
+    padding: 22px 28px; margin: 20px 0;
+  }
+  .rec-box .rtag { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #c8a050; margin-bottom: 10px; }
+  .rec-box h3 { font-size: 16px; font-weight: 700; color: #f5e6c8; margin-bottom: 10px; }
+  .rec-box p { color: #d4b896; font-size: 12.5px; line-height: 1.7; }
+  .rec-box ul { color: #d4b896; font-size: 12.5px; line-height: 1.9; padding-left: 18px; }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid #d4b896; margin-top: 36px; padding-top: 14px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 10px; color: #999; text-align: center; line-height: 1.8;
+  }
+  .disclaimer {
+    background: #f5f5f5; border-radius: 6px; padding: 12px 16px; margin-top: 16px;
+    font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; color: #888; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="memo-tag">Investment Memorandum — Confidential</div>
+  <h1>Domaine Leroy — Fine Wine Investment Opportunity<br>April 2026 Special Offering</h1>
+  <div class="sub">Burgundy Grand Crus · EXW Pool · 91 bottles · Total lot value €546,556</div>
+  <div class="meta-row">
+    <div class="meta-item"><div class="meta-label">Prepared for</div><div class="meta-val">Anh Quang — RCC</div></div>
+    <div class="meta-item"><div class="meta-label">Date</div><div class="meta-val">April 2026</div></div>
+    <div class="meta-item"><div class="meta-label">Prepared by</div><div class="meta-val">Bach Tran</div></div>
+    <div class="meta-item"><div class="meta-label">Classification</div><div class="meta-val">Strictly Confidential</div></div>
+  </div>
+</div>
+
+<!-- SECTION 1: GIỚI THIỆU DOMAINE LEROY -->
+<div class="section">
+  <div class="section-title">I. Domaine Leroy — Giới thiệu</div>
+
+  <p><strong>Domaine Leroy là nhà sản xuất rượu vang được xem là danh giá nhất Burgundy</strong>, vùng sản xuất rượu vang cao cấp nổi tiếng nhất thế giới của Pháp. Người đứng sau Domaine là <strong>Madame Lalou Bize-Leroy</strong> — thường được giới chuyên môn gọi là "người phụ nữ quyền lực nhất thế giới rượu vang."</p>
+
+  <p>Domaine được thành lập năm 1988 khi bà Lalou mua lại 22 ha vườn nho tại Burgundy và chuyển đổi toàn bộ sang canh tác <strong>biodynamic</strong> — phương pháp hữu cơ nghiêm ngặt nhất, không phân bón hóa học, không thuốc trừ sâu, thu hoạch thủ công 100%. Kết quả là sản lượng cực thấp (chỉ ~15,000–20,000 chai/năm toàn Domaine) nhưng chất lượng được đánh giá ngang và đôi khi vượt cả DRC (Domaine de la Romanée-Conti).</p>
+
+  <div class="callout">
+    <strong>Tại sao Leroy đặc biệt về mặt đầu tư?</strong><br>
+    • Sản lượng cực thấp — một số appellation chỉ 200–400 chai/năm<br>
+    • Không có danh sách phân phối mở — phần lớn bán qua mailing list riêng hoặc đấu giá<br>
+    • Giá tăng đều đặn 12–18%/năm trong 15 năm qua (Liv-ex Fine Wine Index)<br>
+    • Critics scores thường xuyên 97–100/100 (Wine Advocate, Jancis Robinson)<br>
+    • Thanh khoản cao tại các nhà đấu giá lớn: Sotheby's, Christie's, Acker Merrall (Asia)
+  </div>
+
+  <p>Trong thị trường fine wine, Domaine Leroy được xem là <strong>"Hermès của rượu vang"</strong> — không phải vì marketing, mà vì sự khan hiếm thực sự và chất lượng không thể tranh cãi. Đây là category đầu tư được UHNWI toàn cầu sử dụng như một lớp tài sản thay thế phi tương quan với thị trường chứng khoán.</p>
+</div>
+
+<!-- SECTION 2: MỤC TIÊU ĐẦU TƯ -->
+<div class="section">
+  <div class="section-title">II. Mục tiêu & Parameters đầu tư</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kl">Budget</div>
+      <div class="kv">$60K</div>
+      <div class="ks">USD · EXW Pool</div>
+    </div>
+    <div class="kpi">
+      <div class="kl">Holding period</div>
+      <div class="kv">18–24M</div>
+      <div class="ks">Flip window</div>
+    </div>
+    <div class="kpi">
+      <div class="kl">Target return</div>
+      <div class="kv">25–40%</div>
+      <div class="ks">Pre-cost gross</div>
+    </div>
+    <div class="kpi">
+      <div class="kl">Exit channel</div>
+      <div class="kv">Auction</div>
+      <div class="ks">HK/SG/London</div>
+    </div>
+  </div>
+
+  <p>Chiến lược: <strong>mua EXW Pool</strong> (giá gốc tại hầm rượu Pháp, không bao gồm shipping và thuế) → lưu kho bonded warehouse tại Hong Kong hoặc Singapore → bán qua đấu giá trong 18–24 tháng. Phương pháp này tối ưu hóa chi phí và duy trì tính xác thực nguồn gốc — yếu tố quyết định giá đấu giá.</p>
+
+  <p><strong>Chi phí phụ trội ước tính:</strong> Shipping + bảo hiểm ~$800–1,200/case (12 chai). Lưu kho bonded ~$15–25/case/năm. Phí đấu giá (buyer's premium phía mua) ~15–20% — tuy nhiên phía người bán (seller's commission) thường ~10–12%.</p>
+</div>
+
+<!-- SECTION 3: VALUE ANALYSIS -->
+<div class="section">
+  <div class="section-title">III. Phân tích giá trị — So sánh với thị trường</div>
+
+  <p>Giá trong offering là <strong>EXW Pool price</strong> — thường thấp hơn 20–35% so với giá retail trên Wine-Searcher, phản ánh giá mua trực tiếp qua pool mà không qua intermediary. Đây là cơ hội hiếm vì phần lớn Leroy được phân phối qua mailing list hạn chế.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Wine</th>
+        <th>Vintage</th>
+        <th class="r">Offer (€/chai)</th>
+        <th class="r">Market avg ($)</th>
+        <th class="r">Discount</th>
+        <th>Score</th>
+        <th>Verdict</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-rec">
+        <td><strong>Richebourg Grand Cru</strong></td>
+        <td>2015</td>
+        <td class="r">€13,889</td>
+        <td class="r">$20,666</td>
+        <td class="r" style="color:#1a5c1a"><strong>-27%</strong></td>
+        <td>97/100 ★</td>
+        <td><span class="tag-best">Best</span></td>
+      </tr>
+      <tr class="row-rec">
+        <td><strong>Romanée-Saint-Vivant GC</strong></td>
+        <td>2015</td>
+        <td class="r">€12,778</td>
+        <td class="r">$18,988</td>
+        <td class="r" style="color:#1a5c1a"><strong>-27%</strong></td>
+        <td>99/100 ★</td>
+        <td><span class="tag-best">Best</span></td>
+      </tr>
+      <tr class="row-rec">
+        <td><strong>Clos de Vougeot Grand Cru</strong></td>
+        <td>2015</td>
+        <td class="r">€7,500</td>
+        <td class="r">$12,256</td>
+        <td class="r" style="color:#1a5c1a"><strong>-33%</strong></td>
+        <td>97/100 ★</td>
+        <td><span class="tag-best">Best value</span></td>
+      </tr>
+      <tr>
+        <td>Clos de Vougeot Grand Cru</td>
+        <td>2014</td>
+        <td class="r">€5,833</td>
+        <td class="r">$6,906</td>
+        <td class="r">-8%</td>
+        <td>95/100</td>
+        <td><span class="tag-good">Decent</span></td>
+      </tr>
+      <tr>
+        <td>Romanée-Saint-Vivant GC</td>
+        <td>2014</td>
+        <td class="r">€8,333</td>
+        <td class="r">$10,484</td>
+        <td class="r">-13%</td>
+        <td>97/100</td>
+        <td><span class="tag-good">OK</span></td>
+      </tr>
+      <tr>
+        <td>Richebourg Grand Cru</td>
+        <td>2014</td>
+        <td class="r">€9,167</td>
+        <td class="r">$10,000</td>
+        <td class="r">~0%</td>
+        <td>97/100</td>
+        <td>Fair</td>
+      </tr>
+      <tr class="row-note">
+        <td colspan="7">* Giá market từ Wine-Searcher avg (ex-tax). Offer price chuyển đổi tại €1 = $1.087. Discount so với retail không bao gồm phí shipping/storage/đấu giá.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Nhận xét:</strong> Vintage 2015 của Burgundy được giới chuyên môn đánh giá là một trong 3 vintage xuất sắc nhất thập kỷ (cùng 2010 và 2019). Leroy 2015 đang trong giai đoạn appreciation tích cực — thường kéo dài 5–10 năm sau khi vintage được công nhận. Window 18–24 tháng là thời điểm tốt để exit trước khi market bão hòa.</p>
+</div>
+
+<!-- SECTION 4: RECOMMENDATION -->
+<div class="section">
+  <div class="section-title">IV. Khuyến nghị đầu tư</div>
+
+  <div class="rec-box">
+    <div class="rtag">Recommended Portfolio — $60,000 budget</div>
+    <h3>Option B — Diversified 2015 Grand Crus (5 bottles)</h3>
+    <ul>
+      <li>Richebourg Grand Cru 2015 × 2 chai — €13,889/chai → ~$30,200</li>
+      <li>Clos de Vougeot Grand Cru 2015 × 3 chai — €7,500/chai → ~$24,450</li>
+    </ul>
+    <p style="margin-top:12px"><strong style="color:#f5e6c8">Total cost: ~$54,650</strong> (+ ~$2,000–3,000 landed costs) → all-in ~$57,000</p>
+    <p style="margin-top:8px">Market value hiện tại: ~$78,100 | Gross upside: <strong style="color:#f5e6c8">+43% vs cost</strong></p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Bottle</th>
+        <th>Qty</th>
+        <th class="r">Cost (€)</th>
+        <th class="r">Cost ($)</th>
+        <th class="r">Market now</th>
+        <th class="r">Est. exit (24M)</th>
+        <th class="r">Gross return</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Richebourg GC 2015</td>
+        <td>×2</td>
+        <td class="r">€27,778</td>
+        <td class="r">$30,200</td>
+        <td class="r">$41,332</td>
+        <td class="r"><strong>$45,000–50,000</strong></td>
+        <td class="r" style="color:#1a5c1a">+49–65%</td>
+      </tr>
+      <tr>
+        <td>Clos de Vougeot GC 2015</td>
+        <td>×3</td>
+        <td class="r">€22,500</td>
+        <td class="r">$24,450</td>
+        <td class="r">$36,768</td>
+        <td class="r"><strong>$40,000–45,000</strong></td>
+        <td class="r" style="color:#1a5c1a">+64–84%</td>
+      </tr>
+      <tr style="font-weight:700;border-top:2px solid #2c1810">
+        <td><strong>Total</strong></td>
+        <td>5</td>
+        <td class="r">€50,278</td>
+        <td class="r"><strong>$54,650</strong></td>
+        <td class="r"><strong>$78,100</strong></td>
+        <td class="r"><strong>$85,000–95,000</strong></td>
+        <td class="r" style="color:#1a5c1a"><strong>+55–74%</strong></td>
+      </tr>
+      <tr class="row-note">
+        <td colspan="7">* Est. exit dựa trên tốc độ tăng giá lịch sử Leroy 2015 (~12–15%/năm) + auction premium. Sau khi trừ seller commission ~10–12% và landed costs ~$3,000 → net return ước tính 35–55%.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 5: RISKS -->
+<div class="section">
+  <div class="section-title">V. Rủi ro & Lưu ý</div>
+
+  <table>
+    <thead>
+      <tr><th>Rủi ro</th><th>Mức độ</th><th>Ghi chú</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Thanh khoản</td>
+        <td>Thấp</td>
+        <td>Leroy là top-5 liquid label tại auction châu Á — Sotheby's HK, Acker Asia thường xuyên có lot</td>
+      </tr>
+      <tr>
+        <td>Market downturn</td>
+        <td>Trung bình</td>
+        <td>Fine wine ít tương quan với chứng khoán; Leroy ít bị ảnh hưởng hơn các label đại trà</td>
+      </tr>
+      <tr>
+        <td>Storage & provenance</td>
+        <td>Thấp</td>
+        <td>EXW Pool → bonded warehouse có chứng từ đầy đủ — đây là yếu tố quyết định giá auction</td>
+      </tr>
+      <tr>
+        <td>Currency (EUR/USD)</td>
+        <td>Trung bình</td>
+        <td>Cost tính bằng EUR, exit bằng USD/HKD — có thể hedge hoặc chấp nhận rủi ro FX nhỏ</td>
+      </tr>
+      <tr>
+        <td>Timing exit</td>
+        <td>Thấp</td>
+        <td>2015 vintage còn đang trong appreciation window — exit trong 24 tháng là hợp lý</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CONCLUSION -->
+<div class="section">
+  <div class="section-title">VI. Kết luận</div>
+  <p>Đây là cơ hội mua Domaine Leroy với mức discount <strong>27–33% so với giá thị trường</strong> — hiếm gặp với một label đang có thanh khoản cao và appreciation trend mạnh. Với budget $60,000, Option B (Richebourg 2015 × 2 + CVG 2015 × 3) cho phép đa dạng hóa trong cùng vintage xuất sắc, tối ưu hóa upside trong window 18–24 tháng với risk profile thấp.</p>
+  <p><strong>Đề xuất: Tiến hành với Option B. Budget committed: ~$57,000 all-in. Target exit: Q4 2027 tại Sotheby's hoặc Acker Merrall Hong Kong.</strong></p>
+</div>
+
+<div class="disclaimer">
+  <strong>Disclaimer:</strong> Tài liệu này được chuẩn bị cho mục đích thông tin nội bộ. Đầu tư rượu vang fine wine có rủi ro mất vốn. Giá trị ước tính dựa trên dữ liệu thị trường tại thời điểm soạn thảo và không phải là cam kết lợi nhuận. Quyết định đầu tư cuối cùng thuộc về nhà đầu tư.
+</div>
+
+<div class="footer">
+  Domaine Leroy Investment Memo · April 2026 · Royal Canary Corporation — Internal Use Only<br>
+  Prepared by Bach Tran | Data sources: Wine-Searcher, Liv-ex, Sotheby's auction records
+</div>
+
+</body>
+</html>
