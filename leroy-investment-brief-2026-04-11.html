@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Domaine Leroy — Investment Brief | April 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', serif;
+    background: #0a0a0f;
+    color: #e8e0d0;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    border-bottom: 1px solid #4a3520;
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .header .domain {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #8a7050;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: normal;
+    color: #d4b896;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: #6a5840;
+    font-style: italic;
+  }
+  .milestone-box {
+    background: linear-gradient(135deg, #1a0e05 0%, #2a1810 100%);
+    border: 1px solid #8b6914;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .milestone-box .label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #8b6914;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .milestone-box .value {
+    font-size: 22px;
+    color: #d4a017;
+    margin-bottom: 6px;
+  }
+  .milestone-box .desc {
+    font-size: 13px;
+    color: #a08060;
+    line-height: 1.6;
+  }
+  section {
+    margin-bottom: 36px;
+  }
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #8a7050;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #2a1f10;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead tr th {
+    text-align: left;
+    padding: 10px 14px;
+    background: #12090a;
+    color: #7a6040;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: normal;
+    border-bottom: 1px solid #2a1f10;
+  }
+  tbody tr {
+    border-bottom: 1px solid #1e1408;
+    transition: background 0.2s;
+  }
+  tbody tr:hover { background: #1a1008; }
+  tbody td {
+    padding: 12px 14px;
+    color: #c8b898;
+    line-height: 1.4;
+  }
+  tbody td strong { color: #d4b080; }
+  tbody td.source { color: #5a4830; font-size: 12px; }
+  .outlook-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) {
+    .outlook-grid { grid-template-columns: 1fr; }
+  }
+  .outlook-card {
+    border-radius: 8px;
+    padding: 18px;
+    border: 1px solid;
+  }
+  .outlook-card.hold {
+    background: #051208;
+    border-color: #1a4a20;
+  }
+  .outlook-card.caution {
+    background: #0e0c02;
+    border-color: #4a4010;
+  }
+  .outlook-card.strategic {
+    background: #030a18;
+    border-color: #0a2a4a;
+  }
+  .outlook-card .badge {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .outlook-card .card-title {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .outlook-card.hold .card-title { color: #4daa60; }
+  .outlook-card.caution .card-title { color: #c0a020; }
+  .outlook-card.strategic .card-title { color: #4090d0; }
+  .outlook-card .card-body {
+    font-size: 13px;
+    color: #907060;
+    line-height: 1.6;
+  }
+  .watchlist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .watch-item {
+    background: #0e0a06;
+    border: 1px solid #2a1f10;
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .watch-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #8b6914;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .watch-item .wine-name {
+    font-size: 14px;
+    color: #d4b080;
+    margin-bottom: 3px;
+  }
+  .watch-item .wine-note {
+    font-size: 12px;
+    color: #5a4830;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid #1e1408;
+    font-size: 11px;
+    color: #3a2810;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="domain">Domaine Leroy · Vosne-Romanée</div>
+    <h1>Investment Brief</h1>
+    <div class="subtitle">Auction Market Analysis — April 11, 2026</div>
+  </div>
+
+  <div class="milestone-box">
+    <div class="label">🏆 Historic Milestone — July 2025</div>
+    <div class="value">$50,000+ per bottle (avg. all vintages)</div>
+    <div class="desc">
+      Domaine Leroy Musigny Grand Cru — first wine in the world to average over $50,000/btl across all vintages.<br/>
+      Surpasses DRC Romanée-Conti. <em>Source: Wine-Searcher, Jul 2025</em>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-title">Latest Auction Prices (2025–2026)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Wine</th>
+          <th>Price / Bottle</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Musigny Grand Cru <em>(avg all vintages)</em></td>
+          <td><strong>$50,000+</strong></td>
+          <td class="source">Wine-Searcher, Jul 2025</td>
+        </tr>
+        <tr>
+          <td>Musigny Grand Cru 2006</td>
+          <td><strong>€25,416</strong></td>
+          <td class="source">iDealwine, 2025 record</td>
+        </tr>
+        <tr>
+          <td>Musigny Grand Cru 2015</td>
+          <td><strong>$28,000+</strong></td>
+          <td class="source">McLaren Vale Cellars, Nov 2025</td>
+        </tr>
+        <tr>
+          <td>Musigny Grand Cru <em>(96-lot range)</em></td>
+          <td><strong>avg $47,713</strong> <span style="color:#5a4830;font-size:12px">($9,225–$275,000)</span></td>
+          <td class="source">WineAuction.ai</td>
+        </tr>
+        <tr>
+          <td>Richebourg 1997 <em>(12 btl)</em></td>
+          <td><strong>$89,625</strong> <span style="color:#4daa60;font-size:12px">+20% vs estimate</span></td>
+          <td class="source">Hart Davis Hart, Nov 2025</td>
+        </tr>
+        <tr>
+          <td>Chambolle-Musigny 2004</td>
+          <td><strong>€5,071</strong></td>
+          <td class="source">iDealwine, Apr 2025</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="section-title">Investment Outlook</div>
+    <div class="outlook-grid">
+      <div class="outlook-card hold">
+        <div class="badge">🟢</div>
+        <div class="card-title">Hold — Long-Term</div>
+        <div class="card-body">Leroy continues to outperform Burgundy. Ultra-low production (biodynamic, &lt;1ha plots), no expansion plan → supply permanently constrained.</div>
+      </div>
+      <div class="outlook-card caution">
+        <div class="badge">🟡</div>
+        <div class="card-title">Drinking Window Risk</div>
+        <div class="card-body">Vintages 1993–1999 entering peak 2024–2030. Consider consuming or selling before post-2030 decline to maximize value.</div>
+      </div>
+      <div class="outlook-card strategic">
+        <div class="badge">🔵</div>
+        <div class="card-title">Tier Strategy</div>
+        <div class="card-body">Musigny / Richebourg / RSV = ultra-premium hold. Chambolle-Musigny / Gevrey village = liquidity play for quick cash exits.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Watch List</div>
+    <div class="watchlist">
+      <div class="watch-item">
+        <div class="dot"></div>
+        <div>
+          <div class="wine-name">Musigny Grand Cru — 2006, 2010, 2015</div>
+          <div class="wine-note">Strong auction demand · steady price appreciation · top priority holds</div>
+        </div>
+      </div>
+      <div class="watch-item">
+        <div class="dot"></div>
+        <div>
+          <div class="wine-name">Richebourg — 1996, 1997</div>
+          <div class="wine-note">Approaching peak drinking window · strong buyer interest · consider partial realization</div>
+        </div>
+      </div>
+      <div class="watch-item">
+        <div class="dot"></div>
+        <div>
+          <div class="wine-name">Vosne-Romanée Les Beaux Monts</div>
+          <div class="wine-note">Undervalued vs Grand Cru tier · solid entry point for new acquisitions</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    Sources: Wine-Searcher · iDealwine · Heritage Auctions · Hart Davis Hart · WineAuction.ai<br/>
+    Prepared by Zera · Royal Canary Corp · April 11, 2026
+  </div>
+
+</div>
+</body>
+</html>
