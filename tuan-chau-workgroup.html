@@ -37,7 +37,7 @@ body {
 /* ─── PEOPLE LAYER ─── */
 .people-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   margin-bottom: 28px;
 }
@@ -285,45 +285,30 @@ body {
 
 <!-- EXCOM LAYER -->
 <div class="section-title">Project Oversight — Executive Committee</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;max-width:700px">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:20px">
 
-  <div class="person-card" style="border-color:#e2b96a;background:linear-gradient(135deg,#1f2d1a,#243320)">
-    <div class="person-avatar" style="background:rgba(226,185,106,0.2);border:2px solid #e2b96a">👑</div>
-    <div class="person-name">Anh Quang</div>
-    <div class="person-role" style="color:#e2b96a">Chairman / Sponsor</div>
-    <div class="person-scope">Final approval · Strategic direction</div>
+  <!-- Anh Quang — Chairman above ExCom -->
+  <div style="grid-column:1/-1;text-align:center;margin-bottom:10px">
+    <div style="display:inline-block;background:linear-gradient(135deg,#2a1f08,#3a2a0a);border:2px solid #e2b96a;border-radius:12px;padding:14px 40px;text-align:center">
+      <div style="font-size:22px;margin-bottom:6px">👑</div>
+      <div style="font-size:15px;font-weight:700;color:white">Anh Quang</div>
+      <div style="font-size:11px;color:#e2b96a;margin-top:2px">Chairman & Project Sponsor</div>
+      <div style="font-size:10px;color:#94a3b8;margin-top:4px">Final approval · Strategic direction · Board reporting</div>
+    </div>
   </div>
-
-  <div class="person-card" style="border-color:#e2b96a;background:linear-gradient(135deg,#1f2d1a,#243320)">
-    <div class="person-avatar" style="background:rgba(226,185,106,0.2);border:2px solid #e2b96a">🏢</div>
-    <div class="person-name">Colin</div>
-    <div class="person-role" style="color:#e2b96a">ExCom — Project Oversight</div>
-    <div class="person-scope">IC committee · Investor relations · External advisory</div>
-  </div>
-
-  <div class="person-card" style="border-color:#e2b96a;background:linear-gradient(135deg,#1f2d1a,#243320)">
-    <div class="person-avatar" style="background:rgba(239,68,68,0.2);border:2px solid #e2b96a">💰</div>
-    <div class="person-name">Dung</div>
-    <div class="person-role" style="color:#e2b96a">ExCom — CFO</div>
-    <div class="person-scope">Financial oversight · Reporting to board · Risk management</div>
-  </div>
+  <div style="grid-column:1/-1;text-align:center;font-size:11px;color:#475569;margin-bottom:8px">↓ Reports to Chairman</div>
 
 </div>
 <div style="background:#1a2d40;border-radius:8px;padding:10px 16px;margin-bottom:28px;border:1px solid #e2b96a;font-size:11px;color:#94a3b8;display:flex;align-items:center;gap:10px">
   <span style="font-size:14px">⬇️</span>
-  <span><strong style="color:#e2b96a">ExCom</strong> giữ Project Oversight — nhận báo cáo từ Bach (Project Leader) và có quyền approval các quyết định vượt ngưỡng · Bach báo cáo lên ExCom hàng tháng hoặc khi có major decision</span>
+  <span><strong style="color:#e2b96a">ExCom (Colin · Dung · Bach)</strong> giữ Project Oversight — nhận báo cáo từ Working Group, approval các quyết định vượt ngưỡng, và report lên Chairman · ExCom họp hàng tháng hoặc khi có major decision</span>
 </div>
 
 <!-- PEOPLE LAYER -->
 <div class="section-title">Working Group — Project Leader + Functional Leads</div>
 <div class="people-row">
 
-  <div class="person-card leader">
-    <div class="person-avatar">🎯</div>
-    <div class="person-name">Bach</div>
-    <div class="person-role">Project Leader</div>
-    <div class="person-scope">Day-to-day management · IC presentation · ExCom reporting</div>
-  </div>
+
 
   <div class="person-card inv-card">
     <div class="person-avatar">📈</div>
