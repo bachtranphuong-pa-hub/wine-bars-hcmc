@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0f1923;
+  color: #e2e8f0;
+  width: 1300px;
+  padding: 36px;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #1a3a5c, #0d2137);
+  border-radius: 14px;
+  padding: 28px 36px;
+  margin-bottom: 28px;
+  border: 1px solid #2a4a6c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header h1 { font-size: 22px; font-weight: 700; color: white; }
+.header p { font-size: 12px; color: #7fb3d3; margin-top: 4px; }
+.header-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 12px; font-size: 10px; color: #c8dff0; }
+.header-right { text-align: right; }
+.header-right .tag { font-size: 10px; color: #4fc3f7; letter-spacing: 1px; text-transform: uppercase; }
+.header-right .val { font-size: 18px; font-weight: 700; color: #4fc3f7; }
+
+/* SECTION TITLE */
+.section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #4fc3f7; margin-bottom: 12px; padding-left: 2px; }
+
+/* ─── PEOPLE LAYER ─── */
+.people-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.person-card {
+  background: #1a2d40;
+  border-radius: 10px;
+  padding: 14px 12px;
+  text-align: center;
+  border: 1.5px solid #2a4a6c;
+  position: relative;
+}
+.person-card.leader { border-color: #f59e0b; background: #1f2d1a; }
+.person-card.orchestrator { border-color: #8b5cf6; background: #1e1a2e; }
+.person-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; margin: 0 auto 8px;
+}
+.person-name { font-size: 12px; font-weight: 700; color: white; margin-bottom: 2px; }
+.person-role { font-size: 10px; color: #94a3b8; line-height: 1.4; }
+.person-scope { font-size: 9px; color: #4fc3f7; margin-top: 4px; font-style: italic; }
+.leader .person-avatar { background: rgba(245,158,11,0.2); border: 2px solid #f59e0b; }
+.orchestrator .person-avatar { background: rgba(139,92,246,0.2); border: 2px solid #8b5cf6; }
+.pm-card .person-avatar { background: rgba(16,185,129,0.15); border: 2px solid #10b981; }
+.inv-card .person-avatar { background: rgba(59,130,246,0.15); border: 2px solid #3b82f6; }
+.cfo-card .person-avatar { background: rgba(239,68,68,0.15); border: 2px solid #ef4444; }
+.proc-card .person-avatar { background: rgba(245,158,11,0.15); border: 2px solid #f59e0b; }
+.legal-card .person-avatar { background: rgba(100,116,139,0.15); border: 2px solid #64748b; }
+
+/* ─── CONNECT LINES visual ─── */
+.connect-label {
+  text-align: center; font-size: 9px; color: #475569; margin-bottom: 6px;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* ─── WORKSTREAM GRID ─── */
+.workstream-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.ws-card {
+  background: #1a2d40;
+  border-radius: 10px;
+  padding: 14px;
+  border-top: 3px solid #2a4a6c;
+}
+.ws-card.ws-acq { border-top-color: #3b82f6; }
+.ws-card.ws-const { border-top-color: #10b981; }
+.ws-card.ws-finance { border-top-color: #ef4444; }
+.ws-card.ws-legal { border-top-color: #64748b; }
+.ws-card.ws-proc { border-top-color: #f59e0b; }
+.ws-card.ws-sales { border-top-color: #8b5cf6; }
+.ws-title { font-size: 11px; font-weight: 700; color: white; margin-bottom: 6px; }
+.ws-owner { font-size: 9px; color: #4fc3f7; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.ws-files { list-style: none; }
+.ws-files li {
+  font-size: 10px; color: #94a3b8; padding: 3px 0;
+  border-bottom: 1px solid #1e3a50;
+  display: flex; align-items: center; gap: 4px;
+}
+.ws-files li:last-child { border-bottom: none; }
+.file-icon { font-size: 9px; }
+.f-forecast { color: #60a5fa; }
+.f-wip { color: #f59e0b; }
+.f-output { color: #34d399; }
+
+/* ─── FOLDER STRUCTURE ─── */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.folder-card {
+  background: #1a2d40;
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #2a4a6c;
+}
+.folder-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 1px solid #243447;
+}
+.folder-icon { font-size: 16px; }
+.folder-name { font-size: 12px; font-weight: 700; color: white; }
+.folder-owner { font-size: 10px; color: #4fc3f7; margin-left: auto; }
+.folder-tree { font-size: 10px; color: #94a3b8; line-height: 1.9; }
+.folder-tree .sub { padding-left: 14px; color: #64748b; }
+.folder-tree .forecast { color: #60a5fa; }
+.folder-tree .wip { color: #f59e0b; }
+.folder-tree .output { color: #34d399; }
+.folder-tree .memory { color: #c084fc; }
+
+/* ─── EVOLUTION TIMELINE ─── */
+.timeline-section {
+  background: #1a2d40;
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  border: 1px solid #2a4a6c;
+}
+.tl-header { font-size: 13px; font-weight: 700; color: white; margin-bottom: 6px; }
+.tl-sub { font-size: 11px; color: #64748b; margin-bottom: 20px; }
+
+.timeline-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  position: relative;
+  margin-bottom: 20px;
+}
+.tl-phase {
+  position: relative;
+  text-align: center;
+}
+.tl-phase::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  right: -50%;
+  height: 2px;
+  background: #2a4a6c;
+  z-index: 0;
+}
+.tl-phase:last-child::before { display: none; }
+.tl-dot {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; margin: 0 auto 8px;
+  position: relative; z-index: 1;
+  border: 2px solid;
+}
+.tl-phase-label { font-size: 10px; font-weight: 700; color: white; margin-bottom: 4px; }
+.tl-phase-date { font-size: 9px; color: #64748b; margin-bottom: 8px; }
+
+/* Phase colors */
+.phase-1 .tl-dot { background: rgba(59,130,246,0.2); border-color: #3b82f6; }
+.phase-2 .tl-dot { background: rgba(16,185,129,0.2); border-color: #10b981; }
+.phase-3 .tl-dot { background: rgba(245,158,11,0.2); border-color: #f59e0b; }
+.phase-4 .tl-dot { background: rgba(239,68,68,0.2); border-color: #ef4444; }
+.phase-5 .tl-dot { background: rgba(139,92,246,0.2); border-color: #8b5cf6; }
+.phase-1::before { background: #3b82f6; }
+.phase-2::before { background: #10b981; }
+.phase-3::before { background: #f59e0b; }
+.phase-4::before { background: #ef4444; }
+
+/* File evolution per phase */
+.tl-files { font-size: 9px; color: #64748b; line-height: 1.7; }
+.tl-files .ev { color: #34d399; }
+.tl-files .born { color: #60a5fa; }
+
+/* File evolution arrow rows */
+.evolution-rows { margin-top: 16px; }
+.evo-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  background: #152233; border-radius: 8px; padding: 8px 12px;
+}
+.evo-start { font-size: 10px; color: #60a5fa; flex: 1; }
+.evo-arrow { font-size: 12px; color: #4fc3f7; }
+.evo-mid { font-size: 10px; color: #f59e0b; flex: 1; }
+.evo-end { font-size: 10px; color: #34d399; flex: 1; }
+.evo-label { font-size: 9px; color: #475569; width: 120px; flex-shrink: 0; }
+
+/* ─── RULES BOX ─── */
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.rule-card {
+  background: #1a2d40;
+  border-radius: 10px;
+  padding: 16px;
+  border-left: 3px solid #3b82f6;
+}
+.rule-card.r2 { border-left-color: #10b981; }
+.rule-card.r3 { border-left-color: #f59e0b; }
+.rule-card.r4 { border-left-color: #8b5cf6; }
+.rule-title { font-size: 11px; font-weight: 700; color: white; margin-bottom: 8px; }
+.rule-items { list-style: none; }
+.rule-items li { font-size: 10px; color: #94a3b8; padding: 3px 0; padding-left: 12px; position: relative; line-height: 1.5; }
+.rule-items li::before { content: '→'; position: absolute; left: 0; color: #4fc3f7; font-size: 9px; }
+
+/* TELEGRAM STRUCTURE */
+.tg-box {
+  background: #1a2d40;
+  border-radius: 10px;
+  padding: 16px 20px;
+  border: 1px solid #2a4a6c;
+  margin-bottom: 24px;
+}
+.tg-title { font-size: 12px; font-weight: 700; color: white; margin-bottom: 10px; }
+.tg-topics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.tg-topic {
+  background: #152233;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border-left: 3px solid #2a4a6c;
+}
+.tg-topic.t-main { border-left-color: #8b5cf6; }
+.tg-topic.t-acq { border-left-color: #3b82f6; }
+.tg-topic.t-const { border-left-color: #10b981; }
+.tg-topic.t-fin { border-left-color: #ef4444; }
+.tg-topic.t-legal { border-left-color: #64748b; }
+.tg-topic.t-proc { border-left-color: #f59e0b; }
+.tg-topic.t-sales { border-left-color: #a855f7; }
+.tg-topic-name { font-size: 10px; font-weight: 700; color: white; margin-bottom: 4px; }
+.tg-topic-role { font-size: 9px; color: #60a5fa; margin-bottom: 4px; }
+.tg-topic-desc { font-size: 9px; color: #64748b; line-height: 1.5; }
+
+/* FOOTER */
+.footer { text-align: center; font-size: 10px; color: #475569; margin-top: 16px; padding-top: 12px; border-top: 1px solid #1e3a50; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>🏝 Tuần Châu Private Estate — Project Working Group</h1>
+    <p>Cấu trúc tổ chức · Folder system · File evolution · Telegram channels</p>
+    <div class="header-badges">
+      <span class="badge">7 Members</span>
+      <span class="badge">6 Workstreams</span>
+      <span class="badge">Forecast → Management System</span>
+      <span class="badge">Zera as Orchestrator</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="tag">Project</div>
+    <div class="val">Lam Ngọc Villas</div>
+    <div style="font-size:10px;color:#4fc3f7;margin-top:2px">18 villas · $25.5M · Closing Q3/2026</div>
+  </div>
+</div>
+
+<!-- PEOPLE LAYER -->
+<div class="section-title">Working Group — Nhân sự & Phạm vi trách nhiệm</div>
+<div class="people-row">
+
+  <div class="person-card leader">
+    <div class="person-avatar">👑</div>
+    <div class="person-name">Anh Quang</div>
+    <div class="person-role">Chairman / Sponsor</div>
+    <div class="person-scope">Final approval · Strategic direction</div>
+  </div>
+
+  <div class="person-card leader">
+    <div class="person-avatar">🎯</div>
+    <div class="person-name">Bach</div>
+    <div class="person-role">Project Leader</div>
+    <div class="person-scope">Overall orchestration · IC presentation</div>
+  </div>
+
+  <div class="person-card inv-card">
+    <div class="person-avatar">📈</div>
+    <div class="person-name">Sơn</div>
+    <div class="person-role">Investment Manager</div>
+    <div class="person-scope">Acquisition · Deal structure · Returns</div>
+  </div>
+
+  <div class="person-card cfo-card">
+    <div class="person-avatar">💰</div>
+    <div class="person-name">Dung</div>
+    <div class="person-role">CFO</div>
+    <div class="person-scope">Financial model · Cashflow · Reporting</div>
+  </div>
+
+  <div class="person-card pm-card">
+    <div class="person-avatar">🏗️</div>
+    <div class="person-name">Phán</div>
+    <div class="person-role">Project Manager</div>
+    <div class="person-scope">Construction · Timeline · Progress tracking</div>
+  </div>
+
+  <div class="person-card proc-card">
+    <div class="person-avatar">📋</div>
+    <div class="person-name">Hường</div>
+    <div class="person-role">Procurement & Cost</div>
+    <div class="person-scope">Contracts · Vendors · Cost control</div>
+  </div>
+
+  <div class="person-card legal-card">
+    <div class="person-avatar">⚖️</div>
+    <div class="person-name">Cả</div>
+    <div class="person-role">Legal</div>
+    <div class="person-scope">DD · CP completion · Compliance</div>
+  </div>
+
+</div>
+
+<!-- ORCHESTRATOR ROW -->
+<div class="connect-label" style="margin-bottom:8px">↕ Zera đóng vai trò Orchestrator — theo dõi master progress, điều phối giữa workstreams, sub-personality trong mỗi topic ↕</div>
+<div style="background:#1e1a2e;border-radius:10px;padding:12px 20px;margin-bottom:28px;border:1.5px solid #8b5cf6;display:flex;align-items:center;gap:16px">
+  <div class="person-avatar" style="background:rgba(139,92,246,0.2);border:2px solid #8b5cf6;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🤖</div>
+  <div>
+    <div style="font-size:12px;font-weight:700;color:white">Zera — Project Orchestrator</div>
+    <div style="font-size:10px;color:#c084fc;margin-top:2px">Master progress tracking · Cross-workstream coordination · Memory consistency · Sub-personality per topic (adapt skill set theo person in charge)</div>
+  </div>
+  <div style="margin-left:auto;text-align:right">
+    <div style="font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:1px">Scope</div>
+    <div style="font-size:10px;color:#a78bfa">All 6 workstreams · Group main channel · 6 topic channels</div>
+  </div>
+</div>
+
+<!-- WORKSTREAM CARDS -->
+<div class="section-title">6 Workstreams — Files & Deliverables</div>
+<div class="workstream-grid">
+
+  <div class="ws-card ws-acq">
+    <div class="ws-title">🏦 Acquisition</div>
+    <div class="ws-owner">Sơn (Investment Mgr)</div>
+    <ul class="ws-files">
+      <li><span class="file-icon f-forecast">◆</span> Feasibility Study v1</li>
+      <li><span class="file-icon f-forecast">◆</span> Financial Model (FM)</li>
+      <li><span class="file-icon f-wip">●</span> Term Sheet tracker</li>
+      <li><span class="file-icon f-wip">●</span> Valuation (Savills)</li>
+      <li><span class="file-icon f-output">✓</span> IC Presentation</li>
+      <li><span class="file-icon f-output">✓</span> SPA executed</li>
+    </ul>
+  </div>
+
+  <div class="ws-card ws-const">
+    <div class="ws-title">🏗️ Construction</div>
+    <div class="ws-owner">Phán (PM)</div>
+    <ul class="ws-files">
+      <li><span class="file-icon f-forecast">◆</span> Construction schedule</li>
+      <li><span class="file-icon f-forecast">◆</span> Budget estimate</li>
+      <li><span class="file-icon f-wip">●</span> Contractor selection</li>
+      <li><span class="file-icon f-wip">●</span> Progress tracker</li>
+      <li><span class="file-icon f-output">✓</span> Milestone sign-offs</li>
+      <li><span class="file-icon f-output">✓</span> Handover docs</li>
+    </ul>
+  </div>
+
+  <div class="ws-card ws-finance">
+    <div class="ws-title">💰 Finance & Cashflow</div>
+    <div class="ws-owner">Dung (CFO)</div>
+    <ul class="ws-files">
+      <li><span class="file-icon f-forecast">◆</span> Financial model</li>
+      <li><span class="file-icon f-forecast">◆</span> Cashflow forecast</li>
+      <li><span class="file-icon f-wip">●</span> Loan drawdown tracker</li>
+      <li><span class="file-icon f-wip">●</span> Actual vs budget</li>
+      <li><span class="file-icon f-output">✓</span> Monthly CFO report</li>
+      <li><span class="file-icon f-output">✓</span> Investor reporting</li>
+    </ul>
+  </div>
+
+  <div class="ws-card ws-legal">
+    <div class="ws-title">⚖️ Legal & Compliance</div>
+    <div class="ws-owner">Cả (Legal)</div>
+    <ul class="ws-files">
+      <li><span class="file-icon f-forecast">◆</span> DD report (EY)</li>
+      <li><span class="file-icon f-forecast">◆</span> CP checklist</li>
+      <li><span class="file-icon f-wip">●</span> GCNDT/GCNDKDN tracker</li>
+      <li><span class="file-icon f-wip">●</span> T&H agreement</li>
+      <li><span class="file-icon f-output">✓</span> SPA/EMA signed</li>
+      <li><span class="file-icon f-output">✓</span> Closing docs</li>
+    </ul>
+  </div>
+
+  <div class="ws-card ws-proc">
+    <div class="ws-title">📋 Procurement</div>
+    <div class="ws-owner">Hường (Cost & Contract)</div>
+    <ul class="ws-files">
+      <li><span class="file-icon f-forecast">◆</span> BOQ estimate</li>
+      <li><span class="file-icon f-forecast">◆</span> Vendor longlist</li>
+      <li><span class="file-icon f-wip">●</span> RFQ/RFP tracker</li>
+      <li><span class="file-icon f-wip">●</span> Contract register</li>
+      <li><span class="file-icon f-output">✓</span> Awarded contracts</li>
+      <li><span class="file-icon f-output">✓</span> Cost variance report</li>
+    </ul>
+  </div>
+
+  <div class="ws-card ws-sales">
+    <div class="ws-title">🏡 Sales & Operator</div>
+    <div class="ws-owner">Bach (Project Leader)</div>
+    <ul class="ws-files">
+      <li><span class="file-icon f-forecast">◆</span> Business Plan deck</li>
+      <li><span class="file-icon f-forecast">◆</span> Pricing model</li>
+      <li><span class="file-icon f-wip">●</span> Mett EMA negotiation</li>
+      <li><span class="file-icon f-wip">●</span> Sales pipeline CRM</li>
+      <li><span class="file-icon f-output">✓</span> Sale agreements</li>
+      <li><span class="file-icon f-output">✓</span> Settlement tracker</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FILE LEGEND -->
+<div style="display:flex;gap:20px;margin-bottom:28px;font-size:10px">
+  <span style="color:#60a5fa">◆ Forecast / Initial assumption</span>
+  <span style="color:#f59e0b">● Work-in-Progress (WIP)</span>
+  <span style="color:#34d399">✓ Output / Executed document</span>
+  <span style="color:#c084fc">★ Memory / Context file</span>
+</div>
+
+<!-- FILE EVOLUTION TIMELINE -->
+<div class="timeline-section">
+  <div class="tl-header">📅 File Evolution — Forecast → Management System</div>
+  <div class="tl-sub">Mỗi file bắt đầu là giả định (Forecast) và tiến hóa thành hệ thống quản lý (Management System) theo timeline dự án</div>
+
+  <div class="timeline-track">
+
+    <div class="tl-phase phase-1">
+      <div class="tl-dot">📋</div>
+      <div class="tl-phase-label">Pre-Closing</div>
+      <div class="tl-phase-date">Apr–Jul 2026</div>
+      <div class="tl-files">
+        <div class="born">+ Feasibility Study</div>
+        <div class="born">+ Financial Model v1</div>
+        <div class="born">+ Term Sheet tracker</div>
+        <div class="born">+ CP checklist</div>
+        <div class="born">+ DD reports</div>
+      </div>
+    </div>
+
+    <div class="tl-phase phase-2">
+      <div class="tl-dot">🔑</div>
+      <div class="tl-phase-label">Closing & Setup</div>
+      <div class="tl-phase-date">Q3 2026</div>
+      <div class="tl-files">
+        <div class="ev">↑ FM → Cashflow tracker</div>
+        <div class="born">+ Loan drawdown log</div>
+        <div class="born">+ Construction schedule</div>
+        <div class="born">+ Vendor selection</div>
+        <div class="ev">↑ CP checklist → Done</div>
+      </div>
+    </div>
+
+    <div class="tl-phase phase-3">
+      <div class="tl-dot">🏗️</div>
+      <div class="tl-phase-label">Construction</div>
+      <div class="tl-phase-date">Q4 2026–Q2 2027</div>
+      <div class="tl-files">
+        <div class="ev">↑ Schedule → Progress log</div>
+        <div class="ev">↑ BOQ → Cost tracker</div>
+        <div class="born">+ Sales pipeline CRM</div>
+        <div class="born">+ Mett EMA active</div>
+        <div class="ev">↑ FM → Actual vs Budget</div>
+      </div>
+    </div>
+
+    <div class="tl-phase phase-4">
+      <div class="tl-dot">🏡</div>
+      <div class="tl-phase-label">Presale & Handover</div>
+      <div class="tl-phase-date">Q3 2027–Q4 2028</div>
+      <div class="tl-files">
+        <div class="ev">↑ Pipeline → Settlement log</div>
+        <div class="ev">↑ Cashflow → Revenue actual</div>
+        <div class="ev">↑ FM → Investor report</div>
+        <div class="born">+ Handover docs per villa</div>
+        <div class="ev">↑ Loan tracker → Repaid</div>
+      </div>
+    </div>
+
+    <div class="tl-phase phase-5">
+      <div class="tl-dot">✅</div>
+      <div class="tl-phase-label">Project Close</div>
+      <div class="tl-phase-date">Nov 2028</div>
+      <div class="tl-files">
+        <div class="ev">↑ All files → Archive</div>
+        <div class="ev">↑ FM → Final P&L report</div>
+        <div class="ev">↑ Sales log → Completed</div>
+        <div class="ev">↑ Cost tracker → Final audit</div>
+        <div class="born">+ Lessons learned</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FILE EVOLUTION EXAMPLES -->
+  <div class="evolution-rows">
+    <div style="font-size:10px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Ví dụ file evolution:</div>
+
+    <div class="evo-row">
+      <div class="evo-label" style="color:#64748b">Financial Model</div>
+      <div class="evo-start">◆ Feasibility Study<br><span style="font-size:9px;color:#475569">Giả định giá đất, xây dựng, doanh thu</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-mid">● FM v3 — Actual vs Forecast<br><span style="font-size:9px;color:#475569">Cập nhật actual costs mỗi tháng</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-end">✓ Management Dashboard<br><span style="font-size:9px;color:#475569">Live P&L + cashflow tracking</span></div>
+    </div>
+
+    <div class="evo-row">
+      <div class="evo-label" style="color:#64748b">Construction Plan</div>
+      <div class="evo-start">◆ Initial Schedule<br><span style="font-size:9px;color:#475569">Milestone targets, contractor assumptions</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-mid">● Progress Tracker<br><span style="font-size:9px;color:#475569">Weekly completion % per package</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-end">✓ Handover Dashboard<br><span style="font-size:9px;color:#475569">Villa-by-villa status + punch list</span></div>
+    </div>
+
+    <div class="evo-row">
+      <div class="evo-label" style="color:#64748b">Sales Pipeline</div>
+      <div class="evo-start">◆ Pricing Model<br><span style="font-size:9px;color:#475569">ASP assumptions, absorption rate</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-mid">● CRM Pipeline<br><span style="font-size:9px;color:#475569">Lead tracking, negotiation stage</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-end">✓ Settlement Register<br><span style="font-size:9px;color:#475569">Signed SPAs + cashflow received</span></div>
+    </div>
+
+    <div class="evo-row">
+      <div class="evo-label" style="color:#64748b">Legal CP Tracker</div>
+      <div class="evo-start">◆ DD Report (EY)<br><span style="font-size:9px;color:#475569">Issues list, risk assessment</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-mid">● CP Completion Log<br><span style="font-size:9px;color:#475569">Status mỗi CP: pending/done</span></div>
+      <div class="evo-arrow">→</div>
+      <div class="evo-end">✓ Closing Docs Archive<br><span style="font-size:9px;color:#475569">Executed GCN, SPA, EMA</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TELEGRAM STRUCTURE -->
+<div class="section-title">Telegram Group Structure — Main Channel + 6 Topics</div>
+<div class="tg-box">
+  <div class="tg-title">📱 Nhóm Telegram: "Tuần Châu Project" — Cấu trúc Topics</div>
+  <div class="tg-topics">
+
+    <div class="tg-topic t-main">
+      <div class="tg-topic-name">🤖 Main Channel</div>
+      <div class="tg-topic-role">Zera (Orchestrator)</div>
+      <div class="tg-topic-desc">Master progress updates · Cross-workstream alerts · Weekly summary · File version log · Escalation</div>
+    </div>
+
+    <div class="tg-topic t-acq">
+      <div class="tg-topic-name">🏦 Acquisition</div>
+      <div class="tg-topic-role">Sơn + Zera (IM mode)</div>
+      <div class="tg-topic-desc">Deal structure · FM updates · Valuation · Term sheet negotiation · IC prep</div>
+    </div>
+
+    <div class="tg-topic t-const">
+      <div class="tg-topic-name">🏗️ Construction</div>
+      <div class="tg-topic-role">Phán + Zera (PM mode)</div>
+      <div class="tg-topic-desc">Schedule · Progress photos · Contractor issues · Milestone sign-offs · Site reports</div>
+    </div>
+
+    <div class="tg-topic t-fin">
+      <div class="tg-topic-name">💰 Finance</div>
+      <div class="tg-topic-role">Dung + Zera (CFO mode)</div>
+      <div class="tg-topic-desc">Cashflow · Loan drawdowns · Monthly reports · Actual vs budget · Investor reporting</div>
+    </div>
+
+    <div class="tg-topic t-legal">
+      <div class="tg-topic-name">⚖️ Legal</div>
+      <div class="tg-topic-role">Cả + Zera (Legal mode)</div>
+      <div class="tg-topic-desc">CP tracking · Document collection · GCNDT/GCN · T&H agreement · Closing timeline</div>
+    </div>
+
+    <div class="tg-topic t-proc">
+      <div class="tg-topic-name">📋 Procurement</div>
+      <div class="tg-topic-role">Hường + Zera (Cost mode)</div>
+      <div class="tg-topic-desc">RFQ/RFP · Vendor scoring · Contract drafts · Cost variance alerts · Payment approvals</div>
+    </div>
+
+    <div class="tg-topic t-sales">
+      <div class="tg-topic-name">🏡 Sales & Operator</div>
+      <div class="tg-topic-role">Bach + Zera (BD mode)</div>
+      <div class="tg-topic-desc">Mett EMA · Buyer leads · Pricing updates · Presale milestones · Settlement tracking</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOLDER STRUCTURE -->
+<div class="section-title">Folder Structure — SharePoint / Drive</div>
+<div class="folder-grid">
+
+  <div class="folder-card">
+    <div class="folder-header">
+      <div class="folder-icon">📁</div>
+      <div class="folder-name">00 — Master</div>
+      <div class="folder-owner">Bach</div>
+    </div>
+    <div class="folder-tree">
+      📄 <span class="memory">MEMORY.md</span> — master context<br>
+      <span class="sub">📄 <span class="memory">progress-log.md</span></span><br>
+      📄 <span class="forecast">Business Plan vX.html</span><br>
+      📄 <span class="output">IC Presentation</span><br>
+      <span class="sub">📄 <span class="output">Board Minutes</span></span><br>
+      📅 Timeline master<br>
+    </div>
+  </div>
+
+  <div class="folder-card">
+    <div class="folder-header">
+      <div class="folder-icon">📁</div>
+      <div class="folder-name">01 — Acquisition</div>
+      <div class="folder-owner">Sơn</div>
+    </div>
+    <div class="folder-tree">
+      📄 <span class="memory">MEMORY.md</span> — deal context<br>
+      📄 <span class="forecast">Feasibility Study v1</span><br>
+      <span class="sub">📄 <span class="wip">FM_vX_YYYY-MM-DD.xlsx</span></span><br>
+      📄 <span class="wip">Term Sheet tracker</span><br>
+      📄 Savills Valuation<br>
+      <span class="sub">📄 <span class="output">SPA_executed.pdf</span></span><br>
+    </div>
+  </div>
+
+  <div class="folder-card">
+    <div class="folder-header">
+      <div class="folder-icon">📁</div>
+      <div class="folder-name">02 — Finance</div>
+      <div class="folder-owner">Dung</div>
+    </div>
+    <div class="folder-tree">
+      📄 <span class="memory">MEMORY.md</span> — finance context<br>
+      📄 <span class="forecast">Cashflow forecast</span><br>
+      <span class="sub">📄 <span class="wip">Actual_vs_Budget_YYYY-MM.xlsx</span></span><br>
+      📄 <span class="wip">Loan tracker</span><br>
+      📄 <span class="output">Monthly CFO report</span><br>
+      <span class="sub">📄 <span class="output">Investor package</span></span><br>
+    </div>
+  </div>
+
+  <div class="folder-card">
+    <div class="folder-header">
+      <div class="folder-icon">📁</div>
+      <div class="folder-name">03 — Construction</div>
+      <div class="folder-owner">Phán</div>
+    </div>
+    <div class="folder-tree">
+      📄 <span class="memory">MEMORY.md</span> — site context<br>
+      📄 <span class="forecast">Schedule v1</span><br>
+      <span class="sub">📄 <span class="wip">Progress_log_WeekXX.md</span></span><br>
+      📄 <span class="wip">Issue tracker</span><br>
+      📄 <span class="output">Milestone certificates</span><br>
+      <span class="sub">📁 Site photos / YYYY-MM/</span><br>
+    </div>
+  </div>
+
+  <div class="folder-card">
+    <div class="folder-header">
+      <div class="folder-icon">📁</div>
+      <div class="folder-name">04 — Legal</div>
+      <div class="folder-owner">Cả</div>
+    </div>
+    <div class="folder-tree">
+      📄 <span class="memory">MEMORY.md</span> — legal context<br>
+      📄 <span class="forecast">DD Report (EY)</span><br>
+      <span class="sub">📄 <span class="wip">CP_tracker.md</span></span><br>
+      📄 <span class="wip">GCNDT amendment log</span><br>
+      📄 <span class="output">SPA / EMA signed</span><br>
+      <span class="sub">📁 GCN / permits / legal docs</span><br>
+    </div>
+  </div>
+
+  <div class="folder-card">
+    <div class="folder-header">
+      <div class="folder-icon">📁</div>
+      <div class="folder-name">05 — Procurement</div>
+      <div class="folder-owner">Hường</div>
+    </div>
+    <div class="folder-tree">
+      📄 <span class="memory">MEMORY.md</span> — vendor context<br>
+      📄 <span class="forecast">BOQ estimate v1</span><br>
+      <span class="sub">📄 <span class="wip">Contract_register.xlsx</span></span><br>
+      📄 <span class="wip">Vendor evaluation</span><br>
+      📄 <span class="output">Awarded contracts</span><br>
+      <span class="sub">📄 <span class="output">Cost variance report</span></span><br>
+    </div>
+  </div>
+
+</div>
+
+<!-- WORKING RULES -->
+<div class="section-title">File Versioning & Working Rules</div>
+<div class="rules-grid">
+
+  <div class="rule-card">
+    <div class="rule-title">📌 Versioning Rules</div>
+    <ul class="rule-items">
+      <li>Tên file: <code>[WorkstreamCode]_[FileType]_v[X]_[YYYY-MM-DD]</code></li>
+      <li>Không xóa version cũ — archive vào subfolder /archive/</li>
+      <li>Mỗi update phải ghi change log 1 dòng vào MEMORY.md</li>
+      <li>Version lẻ (v1, v3...) = draft | Version chẵn (v2, v4...) = reviewed</li>
+      <li>Output file = đóng băng, không edit — tạo version mới nếu cần sửa</li>
+    </ul>
+  </div>
+
+  <div class="rule-card r2">
+    <div class="rule-title">🤖 Zera Orchestrator Rules</div>
+    <ul class="rule-items">
+      <li>Mỗi thứ Hai: post Weekly Progress Summary vào Main Channel</li>
+      <li>Khi có update trong topic: cập nhật MEMORY.md của workstream đó</li>
+      <li>Flag cross-workstream dependencies ngay khi detect</li>
+      <li>Sub-personality: adapt tone/skill khi vào từng topic (PM mode, CFO mode...)</li>
+      <li>Không tự quyết định — escalate lên Bach khi cần approval</li>
+    </ul>
+  </div>
+
+  <div class="rule-card r3">
+    <div class="rule-title">📂 MEMORY.md Convention</div>
+    <ul class="rule-items">
+      <li>Mỗi folder có 1 MEMORY.md riêng — context of that workstream</li>
+      <li>Ghi: current status, last decision, open items, key numbers</li>
+      <li>Update mỗi khi có decision hoặc file version mới</li>
+      <li>00-Master/MEMORY.md = tổng hợp từ tất cả workstreams</li>
+      <li>Không ghi transcript — chỉ ghi decisions và facts</li>
+    </ul>
+  </div>
+
+  <div class="rule-card r4">
+    <div class="rule-title">🔄 Forecast → Management System</div>
+    <ul class="rule-items">
+      <li>Forecast file: readonly sau khi project starts — baseline reference</li>
+      <li>Management file: live update, so sánh với forecast mỗi tháng</li>
+      <li>Variance >10% so với forecast → alert vào Main Channel</li>
+      <li>Quarterly: review tất cả files, upgrade stage nếu cần (Forecast → WIP → Output)</li>
+      <li>Project close: toàn bộ archive + Lessons Learned document</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  Tuần Châu Private Estate — Project Working Group Structure · April 2026 · For Review by Bach & Anh Quang<br>
+  Prepared by Zera (RCC AI Orchestrator) · Version 1.0 · Subject to confirmation
+</div>
+
+</body>
+</html>
