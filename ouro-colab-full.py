@@ -1,10 +1,17 @@
 # ============================================================
-# CELL 1 - Install dependencies
+# OURO AREZ BOT - Full Colab Script
+# Run: !wget -q https://raw.githubusercontent.com/bachtranphuong-pa-hub/wine-bars-hcmc/main/ouro-colab-full.py
+# Then run each cell in order
 # ============================================================
-# !pip install -U transformers accelerate torch bitsandbytes python-telegram-bot nest_asyncio -q
 
 # ============================================================
-# CELL 2 - Load Ouro model
+# CELL 1 - Install (run once, then restart runtime)
+# ============================================================
+# Uncomment and run:
+# !pip install -U transformers accelerate torch bitsandbytes>=0.46.1 python-telegram-bot nest_asyncio -q
+
+# ============================================================
+# CELL 2 - Load model (~5 min)
 # ============================================================
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
@@ -24,29 +31,34 @@ model = AutoModelForCausalLM.from_pretrained(
     quantization_config=bnb_config,
     device_map="auto"
 )
-print("Model loaded")
+print("Model loaded OK")
 
 # ============================================================
-# CELL 3+4 - Prompts + Inference
+# CELL 3 - Prompts + Inference
 # ============================================================
-SYSTEM_DEVIL = """Ban la Arez - Devil's Advocate AI, doi trong phan tich voi Zera (AI Advisor RCC).
-Nhiem vu:
-1. Tim lo hong trong moi phan tich, de xuat, ket luan
-2. Dat cau hoi ve gia dinh - Du lieu nay lay tu dau? Tai sao tin con so nay?
-3. Phan bien co ly, khong pha hoai - dua ra rui ro thuc te
-4. Yeu cau bang chung - khong co data thi noi thang day la gia dinh
-5. Kiem tra logic - phat hien circular reasoning, confirmation bias
-Phong cach: Truc tiep, ngan gon, fair. Ket thuc bang: Dieu kien de ket luan nay dung vung: [X]
-Ngon ngu: Tieng Viet. English terms khi can."""
+SYSTEM_DEVIL = (
+    "Ban la Arez - Devil's Advocate AI, doi trong phan tich voi Zera (AI Advisor RCC).\n"
+    "Nhiem vu:\n"
+    "1. Tim lo hong trong moi phan tich, de xuat, ket luan\n"
+    "2. Dat cau hoi ve gia dinh - Du lieu nay lay tu dau? Tai sao tin con so nay?\n"
+    "3. Phan bien co ly, khong pha hoai - dua ra rui ro thuc te\n"
+    "4. Yeu cau bang chung - khong co data thi noi thang: day la gia dinh\n"
+    "5. Kiem tra logic - phat hien circular reasoning, confirmation bias, sunk cost\n"
+    "Phong cach: Truc tiep, ngan gon, fair.\n"
+    "Ket thuc bang: Dieu kien de ket luan nay dung vung: [X]\n"
+    "Ngon ngu: Tieng Viet. English terms khi can."
+)
 
-SYSTEM_CHALLENGE = """Ban la Specialist Devil's Advocate trong linh vuc: {domain}
-Phan bien phan tich sau tu goc nhin chuyen gia {domain}:
-1. Dieu gi bi bo qua hoac underestimated?
-2. Benchmark nao dang dung sai?
-3. Rui ro thuc te trong nganh ma phan tich khong capture?
-4. Neu that bai - nguyen nhan so 1 la gi?
-Ket thuc: De toi thay doi quan diem, toi can thay: [X, Y, Z]
-Ngon ngu: Tieng Viet."""
+SYSTEM_CHALLENGE = (
+    "Ban la Specialist Devil's Advocate trong linh vuc: {domain}\n"
+    "Phan bien phan tich sau tu goc nhin chuyen gia {domain}:\n"
+    "1. Dieu gi bi bo qua hoac underestimated?\n"
+    "2. Benchmark nao dang dung sai?\n"
+    "3. Rui ro thuc te trong nganh ma phan tich khong capture?\n"
+    "4. Neu that bai - nguyen nhan so 1 la gi?\n"
+    "Ket thuc: De toi thay doi quan diem, toi can thay: [X, Y, Z]\n"
+    "Ngon ngu: Tieng Viet."
+)
 
 def ouro_analyze(question, system_prompt=None, max_tokens=600):
     if system_prompt is None:
@@ -74,23 +86,32 @@ def ouro_analyze(question, system_prompt=None, max_tokens=600):
     )
     return response.strip()
 
-print("Ready")
+print("Inference ready")
 print(ouro_analyze("ROI 15%/nam tu resort 25M USD - rui ro?"))
 
 # ============================================================
-# CELL 5 - Telegram Bot
+# CELL 4 - Telegram Bot
 # ============================================================
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-import asyncio, nest_asyncio
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    filters,
+    ContextTypes,
+)
+import asyncio
+import nest_asyncio
 
 BOT_TOKEN = "8747730907:AAFTAb7I6r7T36Da6bpX1eVT9mEfg-rOkrM"
 BOT_USERNAME = "Arez_provocateur_bot"
-AUTHORIZED_GROUPS = [-1234567890]
+AUTHORIZED_GROUPS = [-1234567890]  # replace with real group ID
 MAX_INPUT_CHARS = 3000
+
 
 async def start(update, ctx):
     await update.message.reply_text("Arez Devil's Advocate - san sang phan bien.")
+
 
 async def handle_message(update, ctx):
     msg = update.message
@@ -112,7 +133,7 @@ async def handle_message(update, ctx):
     await ctx.bot.send_chat_action(chat_id=chat_id, action="typing")
     if "/challenge" in query:
         content = query.replace("/challenge", "").strip()
-        prompt = f"Day la output cua Zera. Phan bien:\n\n{content}"
+        prompt = "Day la output cua Zera. Phan bien:\n\n" + content
         system = SYSTEM_DEVIL
     elif "/specialize" in query:
         parts = query.replace("/specialize", "").strip().split(None, 1)
@@ -125,19 +146,23 @@ async def handle_message(update, ctx):
         prompt = query
     try:
         response = ouro_analyze(prompt, system_prompt=system)
-        full = f"Arez | Devil's Advocate\n\n{response}"
+        full = "Arez | Devil's Advocate\n\n" + response
         if len(full) > 4000:
             full = full[:4000] + "\n\n[truncated]"
         await msg.reply_text(full)
     except Exception as e:
-        await msg.reply_text(f"Loi: {str(e)[:100]}")
+        await msg.reply_text("Loi: " + str(e)[:100])
+
 
 async def main():
     app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    print(f"Arez bot running...")
+    app.add_handler(
+        MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
+    )
+    print("Arez bot running...")
     await app.run_polling(drop_pending_updates=True)
+
 
 nest_asyncio.apply()
 asyncio.get_event_loop().run_until_complete(main())
