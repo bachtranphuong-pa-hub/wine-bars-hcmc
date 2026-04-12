@@ -105,7 +105,7 @@ import nest_asyncio
 
 BOT_TOKEN = "8747730907:AAFTAb7I6r7T36Da6bpX1eVT9mEfg-rOkrM"
 BOT_USERNAME = "Arez_provocateur_bot"
-AUTHORIZED_GROUPS = [-1234567890]  # replace with real group ID
+AUTHORIZED_GROUPS = [-1003814611727]  # replace with real group ID
 MAX_INPUT_CHARS = 3000
 
 
