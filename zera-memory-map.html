@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zera 🌟 — Memory & Knowledge Map</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    position: relative;
+  }
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .header p {
+    color: #6b7280;
+    margin-top: 6px;
+    font-size: 0.9rem;
+  }
+  .timestamp {
+    font-size: 0.75rem;
+    color: #4b5563;
+    margin-top: 4px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #9ca3af;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  /* Main diagram area */
+  .diagram-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+
+  /* Section headers */
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #4b5563;
+    margin-bottom: 14px;
+    padding-left: 4px;
+  }
+
+  /* Grid rows */
+  .row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  /* Node cards */
+  .node {
+    border-radius: 12px;
+    padding: 14px 18px;
+    min-width: 150px;
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s;
+    border: 1px solid transparent;
+  }
+  .node:hover {
+    transform: translateY(-3px);
+    z-index: 10;
+  }
+  .node.dimmed { opacity: 0.3; }
+  .node.highlighted { opacity: 1; }
+
+  .node-icon { font-size: 1.4rem; margin-bottom: 6px; }
+  .node-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #f3f4f6;
+    word-break: break-all;
+  }
+  .node-desc {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .node-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .node-badge {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 0.6rem;
+    color: #6b7280;
+  }
+
+  /* Color themes */
+  .identity {
+    background: rgba(239,68,68,0.08);
+    border-color: rgba(239,68,68,0.25);
+  }
+  .identity:hover { box-shadow: 0 8px 24px rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); }
+  .identity .node-tag { background: rgba(239,68,68,0.15); color: #f87171; }
+
+  .knowledge {
+    background: rgba(234,179,8,0.08);
+    border-color: rgba(234,179,8,0.25);
+  }
+  .knowledge:hover { box-shadow: 0 8px 24px rgba(234,179,8,0.2); border-color: rgba(234,179,8,0.5); }
+  .knowledge .node-tag { background: rgba(234,179,8,0.15); color: #fbbf24; }
+
+  .scripts {
+    background: rgba(52,211,153,0.08);
+    border-color: rgba(52,211,153,0.25);
+  }
+  .scripts:hover { box-shadow: 0 8px 24px rgba(52,211,153,0.2); border-color: rgba(52,211,153,0.5); }
+  .scripts .node-tag { background: rgba(52,211,153,0.15); color: #34d399; }
+
+  .projects {
+    background: rgba(96,165,250,0.08);
+    border-color: rgba(96,165,250,0.25);
+  }
+  .projects:hover { box-shadow: 0 8px 24px rgba(96,165,250,0.2); border-color: rgba(96,165,250,0.5); }
+  .projects .node-tag { background: rgba(96,165,250,0.15); color: #60a5fa; }
+
+  .skills-node {
+    background: rgba(167,139,250,0.08);
+    border-color: rgba(167,139,250,0.25);
+  }
+  .skills-node:hover { box-shadow: 0 8px 24px rgba(167,139,250,0.2); border-color: rgba(167,139,250,0.5); }
+  .skills-node .node-tag { background: rgba(167,139,250,0.15); color: #a78bfa; }
+
+  .output-node {
+    background: rgba(107,114,128,0.08);
+    border-color: rgba(107,114,128,0.25);
+  }
+  .output-node:hover { box-shadow: 0 8px 24px rgba(107,114,128,0.2); border-color: rgba(107,114,128,0.5); }
+  .output-node .node-tag { background: rgba(107,114,128,0.15); color: #9ca3af; }
+
+  .memory-node {
+    background: rgba(251,146,60,0.08);
+    border-color: rgba(251,146,60,0.25);
+  }
+  .memory-node:hover { box-shadow: 0 8px 24px rgba(251,146,60,0.2); border-color: rgba(251,146,60,0.5); }
+  .memory-node .node-tag { background: rgba(251,146,60,0.15); color: #fb923c; }
+
+  /* Zera center node */
+  .zera-center {
+    background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(96,165,250,0.15));
+    border: 2px solid rgba(167,139,250,0.4);
+    text-align: center;
+    padding: 20px;
+  }
+  .zera-center:hover { box-shadow: 0 12px 36px rgba(167,139,250,0.3); }
+  .zera-center .node-name { font-size: 1.1rem; color: #a78bfa; }
+  .zera-center .node-desc { color: #8b9cf0; }
+
+  /* Section dividers */
+  .section-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+    margin: 24px 0 20px;
+  }
+
+  /* SVG connector lines */
+  .connectors {
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Info panel */
+  .info-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(17,24,39,0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 16px 20px;
+    max-width: 300px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 100;
+  }
+  .info-panel.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .info-panel h3 { font-size: 0.9rem; color: #f3f4f6; margin-bottom: 6px; }
+  .info-panel p { font-size: 0.78rem; color: #9ca3af; line-height: 1.5; }
+  .info-panel .close-btn {
+    position: absolute; top: 10px; right: 14px;
+    cursor: pointer; color: #4b5563; font-size: 1rem;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    padding: 12px 20px;
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.3rem; font-weight: 700; color: #a78bfa; }
+  .stat-label { font-size: 0.65rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Category sections */
+  .category-section {
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  /* Pill row */
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  .pill:hover { transform: scale(1.05); }
+  .pill.memory-pill {
+    background: rgba(251,146,60,0.1);
+    border-color: rgba(251,146,60,0.3);
+    color: #fb923c;
+  }
+  .pill.memory-pill:hover { background: rgba(251,146,60,0.2); }
+
+  /* Flow diagram SVG */
+  .flow-section {
+    margin-top: 32px;
+    padding: 24px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .flow-section h2 {
+    font-size: 0.85rem;
+    color: #6b7280;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    background: rgba(17,24,39,0.95);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    color: #e0e0e0;
+    pointer-events: none;
+    z-index: 999;
+    max-width: 220px;
+    line-height: 1.5;
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .node { min-width: 120px; }
+    .header h1 { font-size: 1.6rem; }
+    .stat-num { font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>🌟 Zera — Memory & Knowledge Map</h1>
+  <p>Royal Canary Corp · Strategic Advisor & Executive Assistant</p>
+  <div class="timestamp">Generated: Sunday, April 12, 2026 · 12:00 PM ICT</div>
+</div>
+
+<!-- Stats bar -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">4</div>
+    <div class="stat-label">Core Config Files</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">24+</div>
+    <div class="stat-label">Daily Memory Files</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">12+</div>
+    <div class="stat-label">Scripts</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">9+</div>
+    <div class="stat-label">Skills</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">2</div>
+    <div class="stat-label">Active Projects</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">100+</div>
+    <div class="stat-label">Output Files</div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> Identity / Security</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#eab308"></div> Knowledge / Config</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fb923c"></div> Memory / Daily Notes</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div> Scripts / Tools</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div> Projects</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Skills</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#9ca3af"></div> Output</div>
+</div>
+
+<!-- Main diagram -->
+<div class="diagram-container">
+
+  <!-- ZERA CENTER -->
+  <div class="category-section" style="text-align:center; margin-bottom: 32px;">
+    <div style="display:inline-block; min-width: 280px;">
+      <div class="node zera-center" onclick="showInfo('zera', 'Zera 🌟', 'Strategic Advisor & Executive Assistant for Royal Canary Corp. Deployed on VM (vm-ai-agent-prod-001). Powered by Claude Sonnet 4. Handles executive support, analysis, reporting, M&A research, and operational intelligence for CEO Bach.')">
+        <div class="node-icon">🌟</div>
+        <div class="node-name">ZERA</div>
+        <div class="node-desc">@rcc_ai_bot · Strategic Advisor<br>Royal Canary Corp · Hospitality</div>
+        <div class="node-tag" style="background:rgba(167,139,250,0.2);color:#a78bfa">CORE AGENT</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 1: IDENTITY / SECURITY -->
+  <div class="category-section">
+    <div class="section-label">🔴 Identity & Security Files</div>
+    <div class="row">
+      <div class="node identity" onclick="showInfo('soul', 'SOUL.md', 'Core identity & personality file. Defines who Zera is: name, role, tone, language (Vietnamese), security guardrails, behavior rules, and communication style. CRITICAL — read every session.')">
+        <div class="node-badge">SOUL</div>
+        <div class="node-icon">🧬</div>
+        <div class="node-name">SOUL.md</div>
+        <div class="node-desc">Identity, personality, security guardrails, behavior rules</div>
+        <div class="node-tag">Identity</div>
+      </div>
+      <div class="node identity" onclick="showInfo('identity', 'IDENTITY.md', 'Compact identity card: Name=Zera, Role=Strategic Advisor, Emoji=🌟, Context=Royal Canary Corp hospitality industry. Quick reference for persona consistency.')">
+        <div class="node-badge">ID</div>
+        <div class="node-icon">🪪</div>
+        <div class="node-name">IDENTITY.md</div>
+        <div class="node-desc">Name, role, emoji, personality summary</div>
+        <div class="node-tag">Identity</div>
+      </div>
+      <div class="node identity" onclick="showInfo('agents', 'AGENTS.md', 'Workspace operational rules: admin allowlist, admin-only commands, requireMention rules, group management protocols, auto-message rules, group activation protocol (Shared/Selective/Isolated modes), group approval flow.')">
+        <div class="node-badge">OPS</div>
+        <div class="node-icon">⚙️</div>
+        <div class="node-name">AGENTS.md</div>
+        <div class="node-desc">Operational rules, admin perms, group protocols, security</div>
+        <div class="node-tag">Security</div>
+      </div>
+      <div class="node identity" onclick="showInfo('user', 'USER.md', 'Profile of primary user: Name=Bach (Deputy CEO, RCC), Telegram=@bachtranp, ID=423467217, Timezone=Asia/Ho_Chi_Minh, Language=Vietnamese.')">
+        <div class="node-badge">USER</div>
+        <div class="node-icon">👤</div>
+        <div class="node-name">USER.md</div>
+        <div class="node-desc">Bach — Deputy CEO, RCC · Telegram profile</div>
+        <div class="node-tag">Identity</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: KNOWLEDGE / CONFIG -->
+  <div class="category-section">
+    <div class="section-label">🟡 Knowledge & Configuration</div>
+    <div class="row">
+      <div class="node knowledge" onclick="showInfo('memory-md', 'MEMORY.md', 'Long-term persistent memory. Key decisions, important facts, rules learned over time. Permanent record across sessions. Updated when significant new information is encountered.')">
+        <div class="node-badge">LT</div>
+        <div class="node-icon">🧠</div>
+        <div class="node-name">MEMORY.md</div>
+        <div class="node-desc">Long-term persistent memory & key decisions</div>
+        <div class="node-tag">Knowledge</div>
+      </div>
+      <div class="node knowledge" onclick="showInfo('shared', 'SHARED-CONTEXT.md', 'Cross-session shared context. Group registry with activation modes (Shared/Selective/Isolated). Shared knowledge between sessions and groups that Zera operates in.')">
+        <div class="node-badge">SHARED</div>
+        <div class="node-icon">🔗</div>
+        <div class="node-name">SHARED-CONTEXT.md</div>
+        <div class="node-desc">Group registry, cross-session context, activation modes</div>
+        <div class="node-tag">Knowledge</div>
+      </div>
+      <div class="node knowledge" onclick="showInfo('heartbeat', 'HEARTBEAT.md', 'Health monitoring file. Tracks bot status, active cron jobs, scheduled tasks, system heartbeat status. Used by the monitoring system to verify Zera is operational.')">
+        <div class="node-badge">♥</div>
+        <div class="node-icon">💓</div>
+        <div class="node-name">HEARTBEAT.md</div>
+        <div class="node-desc">System health, cron status, monitoring</div>
+        <div class="node-tag">Config</div>
+      </div>
+      <div class="node knowledge" onclick="showInfo('tools', 'TOOLS.md', 'Local tool reference guide. Commands for Calendar (Google/Microsoft), Email (Gmail/Outlook), API endpoints, auth setup instructions, and operational shortcuts.')">
+        <div class="node-badge">🛠</div>
+        <div class="node-icon">🔧</div>
+        <div class="node-name">TOOLS.md</div>
+        <div class="node-desc">Calendar, Email, API commands reference</div>
+        <div class="node-tag">Config</div>
+      </div>
+      <div class="node knowledge" onclick="showInfo('arch', 'ARCHITECTURE.md', 'System architecture documentation. Describes the multi-agent setup, how Zera fits within the larger RCC AI system, infrastructure notes.')">
+        <div class="node-badge">ARCH</div>
+        <div class="node-icon">🏗️</div>
+        <div class="node-name">ARCHITECTURE.md</div>
+        <div class="node-desc">System architecture & multi-agent structure</div>
+        <div class="node-tag">Config</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3: DAILY MEMORY -->
+  <div class="category-section">
+    <div class="section-label">🟠 Daily Memory (memory/)</div>
+    <div class="row">
+      <div class="node memory-node" onclick="showInfo('today', 'memory/2026-04-12.md', 'Today\'s memory file. Key facts, decisions, and events from April 12, 2026. Updated throughout the day. Max 50 lines per file.')">
+        <div class="node-badge">TODAY</div>
+        <div class="node-icon">📅</div>
+        <div class="node-name">2026-04-12.md</div>
+        <div class="node-desc">Today's session notes & decisions</div>
+        <div class="node-tag">Daily</div>
+      </div>
+      <div class="node memory-node" onclick="showInfo('yesterday', 'memory/2026-04-11.md', 'Yesterday\'s memory. Recent context from April 11: wine inventory dashboard, Leroy order processing, group activities.')">
+        <div class="node-badge">YEST</div>
+        <div class="node-icon">📆</div>
+        <div class="node-name">2026-04-11.md</div>
+        <div class="node-desc">Yesterday — wine dashboard, Leroy order</div>
+        <div class="node-tag">Daily</div>
+      </div>
+      <div class="node memory-node" onclick="showInfo('archive-mem', 'memory/archive/', 'Archived daily memory files from March 2026 and earlier. Historical record of decisions, context, and events.')">
+        <div class="node-badge">ARC</div>
+        <div class="node-icon">📦</div>
+        <div class="node-name">memory/archive/</div>
+        <div class="node-desc">Historical daily notes (Mar 2026+)</div>
+        <div class="node-tag">Archive</div>
+      </div>
+      <div class="node memory-node" onclick="showInfo('ma-pipeline', 'memory/ma-pipeline/', 'M&A pipeline memory files. Tracks hospitality M&A deal flow, target companies, screening results from daily scans.')">
+        <div class="node-badge">M&A</div>
+        <div class="node-icon">🏢</div>
+        <div class="node-name">memory/ma-pipeline/</div>
+        <div class="node-desc">M&A deal pipeline, target screening</div>
+        <div class="node-tag">Pipeline</div>
+      </div>
+      <div class="node memory-node" onclick="showInfo('contacts', 'memory/contacts.md', 'Contact directory. Key people, vendors, partners relevant to RCC operations.')">
+        <div class="node-badge">📇</div>
+        <div class="node-icon">📇</div>
+        <div class="node-name">contacts.md</div>
+        <div class="node-desc">Key contacts, vendors, partners</div>
+        <div class="node-tag">Directory</div>
+      </div>
+      <div class="node memory-node" onclick="showInfo('workflows', 'memory/workflows.md', 'Standard operating procedures and automated workflows. Documents recurring tasks, cron schedules, and process flows.')">
+        <div class="node-badge">WF</div>
+        <div class="node-icon">🔄</div>
+        <div class="node-name">workflows.md</div>
+        <div class="node-desc">SOPs, cron schedules, process flows</div>
+        <div class="node-tag">Workflow</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 4: PROJECTS -->
+  <div class="category-section">
+    <div class="section-label">🔵 Active Projects (projects/)</div>
+    <div class="row">
+      <div class="node projects" onclick="showInfo('tuan-chau', 'projects/tuan-chau/', 'Tuần Châu Island resort development project. Property analysis, financial modeling, investment memos, legal briefings. Active project for RCC expansion.')">
+        <div class="node-badge">🏝️</div>
+        <div class="node-icon">🏝️</div>
+        <div class="node-name">projects/tuan-chau/</div>
+        <div class="node-desc">Resort development · Property analysis · Legal briefs</div>
+        <div class="node-tag">Project</div>
+      </div>
+      <div class="node projects" onclick="showInfo('wine', 'projects/wine/', 'Wine program & Barson venue project. Park90 investment analysis, Domaine Leroy ordering, wine inventory management, bar operations.')">
+        <div class="node-badge">🍷</div>
+        <div class="node-icon">🍷</div>
+        <div class="node-name">projects/wine/ (Barson)</div>
+        <div class="node-desc">Wine program · Park90 · Barson venue · Leroy ordering</div>
+        <div class="node-tag">Project</div>
+      </div>
+      <div class="node projects" onclick="showInfo('lv-project', 'Las Vegas Dashboard', 'Live LV gaming dashboard project. Interval analysis by game type, win/loss reporting, machine performance. Automated daily updates.')">
+        <div class="node-badge">🎰</div>
+        <div class="node-icon">🎰</div>
+        <div class="node-name">LV Dashboard</div>
+        <div class="node-desc">Gaming analytics · Interval reports · Win/Loss</div>
+        <div class="node-tag">Analytics</div>
+      </div>
+      <div class="node projects" onclick="showInfo('ma-project', 'M&A Pipeline', 'Hospitality M&A deal screening. Daily scan of luxury hospitality targets in SEA. Automated morning briefings to Bach at 07:00 VN.')">
+        <div class="node-badge">📊</div>
+        <div class="node-icon">📊</div>
+        <div class="node-name">M&A Pipeline</div>
+        <div class="node-desc">Luxury hospitality targets · Daily scan · Deal flow</div>
+        <div class="node-tag">Strategy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 5: SCRIPTS -->
+  <div class="category-section">
+    <div class="section-label">🟢 Scripts & Tools (scripts/)</div>
+    <div class="row">
+      <div class="node scripts" onclick="showInfo('email-js', 'scripts/email.js', 'Unified email script. Auto-detects Gmail or Outlook. Commands: list, unread, read, send, search. Requires --user rccai flag. Uses OAuth tokens stored securely.')">
+        <div class="node-badge">📧</div>
+        <div class="node-icon">📧</div>
+        <div class="node-name">email.js</div>
+        <div class="node-desc">Gmail/Outlook · list, unread, send, search</div>
+        <div class="node-tag">Script</div>
+      </div>
+      <div class="node scripts" onclick="showInfo('calendar-js', 'scripts/calendar.js', 'Unified calendar script. Auto-detects Google or Microsoft Calendar. Commands: today, list, create. Requires --user rccai flag.')">
+        <div class="node-badge">📅</div>
+        <div class="node-icon">📅</div>
+        <div class="node-name">calendar.js</div>
+        <div class="node-desc">Google/MS Calendar · today, list, create</div>
+        <div class="node-tag">Script</div>
+      </div>
+      <div class="node scripts" onclick="showInfo('sharepoint-js', 'scripts/sharepoint.js', 'SharePoint integration. Monitors SharePoint for new files/updates. Sends alerts to Bach at 09:00 VN daily when changes detected.')">
+        <div class="node-badge">📁</div>
+        <div class="node-icon">📁</div>
+        <div class="node-name">sharepoint.js</div>
+        <div class="node-desc">SharePoint monitor · Daily check · File alerts</div>
+        <div class="node-tag">Script</div>
+      </div>
+      <div class="node scripts" onclick="showInfo('invintory-js', 'scripts/invintory-scraper.js', 'Invintory wine platform scraper. Pulls wine catalog, pricing, availability for Barson venue management and Leroy ordering workflow.')">
+        <div class="node-badge">🍷</div>
+        <div class="node-icon">🍷</div>
+        <div class="node-name">invintory-scraper.js</div>
+        <div class="node-desc">Wine catalog scraper · Barson · Leroy</div>
+        <div class="node-tag">Script</div>
+      </div>
+      <div class="node scripts" onclick="showInfo('dashboard-js', 'scripts/build-live-dashboard.js', 'Live dashboard builder. Generates HTML/PNG dashboards for LV gaming data, sales reports, and operational metrics.')">
+        <div class="node-badge">📈</div>
+        <div class="node-icon">📈</div>
+        <div class="node-name">build-live-dashboard.js</div>
+        <div class="node-desc">Dashboard builder · HTML/PNG reports</div>
+        <div class="node-tag">Script</div>
+      </div>
+      <div class="node scripts" onclick="showInfo('meeting-js', 'scripts/meeting-monitor.js', 'Meeting monitor. Auto-joins Google Meet/Teams/Zoom, records, transcribes, and summarizes meetings for Bach.')">
+        <div class="node-badge">🎙️</div>
+        <div class="node-icon">🎙️</div>
+        <div class="node-name">meeting-monitor.js</div>
+        <div class="node-desc">Auto-record · Transcribe · Summarize meetings</div>
+        <div class="node-tag">Script</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 6: SKILLS -->
+  <div class="category-section">
+    <div class="section-label">🟣 Skills (skills/)</div>
+    <div class="row">
+      <div class="node skills-node" onclick="showInfo('reporting-skill', 'skills/reporting/', 'PNG report generator using Puppeteer + Handlebars. Creates visual dashboards, charts, and data summaries as PNG images for Telegram delivery.')">
+        <div class="node-badge">🖼️</div>
+        <div class="node-icon">🖼️</div>
+        <div class="node-name">reporting/</div>
+        <div class="node-desc">Puppeteer · Handlebars · PNG dashboards</div>
+        <div class="node-tag">Skill</div>
+      </div>
+      <div class="node skills-node" onclick="showInfo('property-skill', 'skills/property-analyst/', 'Nova — Real estate financial analyst. Investment memos, IRR/NPV models, property yield analysis. Triggered by \"call Nova\" command.')">
+        <div class="node-badge">🏠</div>
+        <div class="node-icon">🏠</div>
+        <div class="node-name">property-analyst/</div>
+        <div class="node-desc">Nova · Investment memos · IRR/NPV models</div>
+        <div class="node-tag">Skill</div>
+      </div>
+      <div class="node skills-node" onclick="showInfo('calendar-skill', 'skills/calendar-email/', 'Calendar & Email setup skill. Connects Google/Microsoft Calendar and Gmail/Outlook. Handles OAuth flow and auth page routing.')">
+        <div class="node-badge">📆</div>
+        <div class="node-icon">📆</div>
+        <div class="node-name">calendar-email/</div>
+        <div class="node-desc">OAuth setup · Google/MS Calendar · Gmail/Outlook</div>
+        <div class="node-tag">Skill</div>
+      </div>
+      <div class="node skills-node" onclick="showInfo('meeting-skill', 'skills/meeting-monitor/', 'Meeting recording & summary skill. Supports Google Meet, Teams, Zoom. Auto-join → record → transcribe → summarize.')">
+        <div class="node-badge">🎙️</div>
+        <div class="node-icon">🎙️</div>
+        <div class="node-name">meeting-monitor/</div>
+        <div class="node-desc">Record · Transcribe · Summarize meetings</div>
+        <div class="node-tag">Skill</div>
+      </div>
+      <div class="node skills-node" onclick="showInfo('lv-skill', 'skills/lv-dashboard/', 'Las Vegas gaming dashboard skill. Automated interval analysis, game-type breakdowns, win/loss reports.')">
+        <div class="node-badge">🎰</div>
+        <div class="node-icon">🎰</div>
+        <div class="node-name">lv-dashboard/</div>
+        <div class="node-desc">Gaming analytics · Automated reports</div>
+        <div class="node-tag">Skill</div>
+      </div>
+      <div class="node skills-node" onclick="showInfo('poll-skill', 'skills/telegram-poll/', 'Native Telegram poll creation. Sends polls to groups, gathers votes, surveys members. Supports anonymous and public polls.')">
+        <div class="node-badge">📊</div>
+        <div class="node-icon">📊</div>
+        <div class="node-name">telegram-poll/</div>
+        <div class="node-desc">Native polls · Group surveys · Vote tracking</div>
+        <div class="node-tag">Skill</div>
+      </div>
+      <div class="node skills-node" onclick="showInfo('shared-skill', 'skills/shared-knowledge/', 'Cross-bot knowledge sharing. Reads from shared-knowledge/ folder. Allows knowledge to flow between different RCC bots.')">
+        <div class="node-badge">🔗</div>
+        <div class="node-icon">🔗</div>
+        <div class="node-name">shared-knowledge/</div>
+        <div class="node-desc">Cross-bot knowledge transfer</div>
+        <div class="node-tag">Skill</div>
+      </div>
+      <div class="node skills-node" onclick="showInfo('media-skill', 'skills/send-media-group/', 'Telegram album sender. Sends 2-10 images/videos as a media group in one message. Used for report charts and dashboard bundles.')">
+        <div class="node-badge">📸</div>
+        <div class="node-icon">📸</div>
+        <div class="node-name">send-media-group/</div>
+        <div class="node-desc">Telegram albums · Multi-image reports</div>
+        <div class="node-tag">Skill</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 7: OUTPUT -->
+  <div class="category-section">
+    <div class="section-label">⚫ Output Files (output/ + workspace root)</div>
+    <div class="row">
+      <div class="node output-node" onclick="showInfo('png-out', 'PNG Dashboards', '100+ PNG dashboard files. LV gaming charts, sales dashboards, LMSG reports, yield analysis, room occupancy charts. Generated by Python/Puppeteer scripts.')">
+        <div class="node-badge">PNG</div>
+        <div class="node-icon">📊</div>
+        <div class="node-name">*.png (100+)</div>
+        <div class="node-desc">LV gaming, sales, LMSG, yield dashboards</div>
+        <div class="node-tag">Output</div>
+      </div>
+      <div class="node output-node" onclick="showInfo('html-out', 'HTML Reports', 'Interactive HTML reports: Leroy investment analysis, Barson/Park90 analysis, LV interval reports, win/loss dashboards. GitHub Pages-ready.')">
+        <div class="node-badge">HTML</div>
+        <div class="node-icon">🌐</div>
+        <div class="node-name">*.html (20+)</div>
+        <div class="node-desc">Investment memos, dashboards, wine reports</div>
+        <div class="node-tag">Output</div>
+      </div>
+      <div class="node output-node" onclick="showInfo('excel-out', 'Excel Files', 'Operational Excel files: Tiger BCC proposals, Tuân Châu project files, LV baccarat activation models, financial models.')">
+        <div class="node-badge">XLS</div>
+        <div class="node-icon">📊</div>
+        <div class="node-name">*.xlsx / *.docx</div>
+        <div class="node-desc">Proposals, financial models, briefings</div>
+        <div class="node-tag">Output</div>
+      </div>
+      <div class="node output-node" onclick="showInfo('pdf-out', 'PDF Research', 'External PDF briefings: Cloudstreet Singapore, Etcha Bangkok, VEA Hong Kong, Phu Quoc legal, TungLok corporate summary.')">
+        <div class="node-badge">PDF</div>
+        <div class="node-icon">📄</div>
+        <div class="node-name">*.pdf (10+)</div>
+        <div class="node-desc">Venue briefs, legal docs, research PDFs</div>
+        <div class="node-tag">Research</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW DIAGRAM -->
+  <div class="flow-section">
+    <h2>⚡ Session Startup Flow</h2>
+    <svg viewBox="0 0 900 120" style="width:100%;max-width:900px;display:block;margin:0 auto;">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+        </marker>
+      </defs>
+      <!-- Step boxes -->
+      <rect x="10" y="35" width="120" height="50" rx="10" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5"/>
+      <text x="70" y="56" text-anchor="middle" fill="#f87171" font-size="11" font-weight="600">SOUL.md</text>
+      <text x="70" y="72" text-anchor="middle" fill="#9ca3af" font-size="9">Identity + Rules</text>
+
+      <line x1="130" y1="60" x2="155" y2="60" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <rect x="158" y="35" width="120" height="50" rx="10" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.4)" stroke-width="1.5"/>
+      <text x="218" y="56" text-anchor="middle" fill="#f87171" font-size="11" font-weight="600">USER.md</text>
+      <text x="218" y="72" text-anchor="middle" fill="#9ca3af" font-size="9">Owner Profile</text>
+
+      <line x1="278" y1="60" x2="303" y2="60" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <rect x="306" y="35" width="130" height="50" rx="10" fill="rgba(234,179,8,0.1)" stroke="rgba(234,179,8,0.4)" stroke-width="1.5"/>
+      <text x="371" y="56" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="600">SHARED-CONTEXT</text>
+      <text x="371" y="72" text-anchor="middle" fill="#9ca3af" font-size="9">Group Registry</text>
+
+      <line x1="436" y1="60" x2="461" y2="60" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <rect x="464" y="35" width="130" height="50" rx="10" fill="rgba(251,146,60,0.1)" stroke="rgba(251,146,60,0.4)" stroke-width="1.5"/>
+      <text x="529" y="56" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="600">Daily Memory</text>
+      <text x="529" y="72" text-anchor="middle" fill="#9ca3af" font-size="9">Today + Yesterday</text>
+
+      <line x1="594" y1="60" x2="619" y2="60" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <rect x="622" y="35" width="110" height="50" rx="10" fill="rgba(234,179,8,0.1)" stroke="rgba(234,179,8,0.4)" stroke-width="1.5"/>
+      <text x="677" y="56" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="600">MEMORY.md</text>
+      <text x="677" y="72" text-anchor="middle" fill="#9ca3af" font-size="9">Long-term facts</text>
+
+      <line x1="732" y1="60" x2="757" y2="60" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <rect x="760" y="30" width="120" height="60" rx="10" fill="rgba(167,139,250,0.15)" stroke="rgba(167,139,250,0.5)" stroke-width="2"/>
+      <text x="820" y="55" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">🌟 ZERA</text>
+      <text x="820" y="70" text-anchor="middle" fill="#8b9cf0" font-size="9">Ready to serve</text>
+
+      <!-- Labels -->
+      <text x="70" y="100" text-anchor="middle" fill="#4b5563" font-size="8">Step 1</text>
+      <text x="218" y="100" text-anchor="middle" fill="#4b5563" font-size="8">Step 2</text>
+      <text x="371" y="100" text-anchor="middle" fill="#4b5563" font-size="8">Step 3</text>
+      <text x="529" y="100" text-anchor="middle" fill="#4b5563" font-size="8">Step 4</text>
+      <text x="677" y="100" text-anchor="middle" fill="#4b5563" font-size="8">Step 5</text>
+      <text x="820" y="100" text-anchor="middle" fill="#4b5563" font-size="8">Active</text>
+    </svg>
+  </div>
+
+  <!-- AUTOMATED SCHEDULES -->
+  <div class="flow-section" style="margin-top:20px;">
+    <h2>⏰ Automated Schedules (Cron Jobs)</h2>
+    <div class="row">
+      <div class="node knowledge" style="min-width: 180px; flex: 1;" onclick="showInfo('ma-cron', 'M&A Daily Scan', 'Runs every morning at 07:00 VN time. Scans luxury hospitality M&A news and deal flow. Sends briefing DM to Bach (423467217).')">
+        <div class="node-icon">🏢</div>
+        <div class="node-name">M&A Scan</div>
+        <div class="node-desc">07:00 VN · Daily · DM Bach</div>
+        <div class="node-tag">Cron</div>
+      </div>
+      <div class="node knowledge" style="min-width: 180px; flex: 1;" onclick="showInfo('sp-cron', 'SharePoint Check', 'Runs at 09:00 VN time daily. Checks for new files/changes in SharePoint. Alerts Bach if new content detected.')">
+        <div class="node-icon">📁</div>
+        <div class="node-name">SharePoint Check</div>
+        <div class="node-desc">09:00 VN · Daily · Alert Bach</div>
+        <div class="node-tag">Cron</div>
+      </div>
+      <div class="node knowledge" style="min-width: 180px; flex: 1;" onclick="showInfo('lv-cron', 'LV Dashboard', 'Automated LV gaming dashboard updates. Triggered when new gaming data is available. Sends to LV groups.')">
+        <div class="node-icon">🎰</div>
+        <div class="node-name">LV Dashboard</div>
+        <div class="node-desc">Trigger-based · LV Groups</div>
+        <div class="node-tag">Cron</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Info Panel -->
+<div class="info-panel" id="infoPanel">
+  <span class="close-btn" onclick="closeInfo()">✕</span>
+  <h3 id="infoTitle">—</h3>
+  <p id="infoBody">—</p>
+</div>
+
+<!-- Tooltip -->
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+function showInfo(id, title, body) {
+  const panel = document.getElementById('infoPanel');
+  document.getElementById('infoTitle').textContent = title;
+  document.getElementById('infoBody').textContent = body;
+  panel.classList.add('visible');
+}
+function closeInfo() {
+  document.getElementById('infoPanel').classList.remove('visible');
+}
+
+// Close on outside click
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('infoPanel');
+  if (!e.target.closest('.node') && !e.target.closest('.info-panel')) {
+    panel.classList.remove('visible');
+  }
+});
+
+// Keyboard shortcut
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeInfo();
+});
+
+// Animate nodes on load
+window.addEventListener('load', () => {
+  const nodes = document.querySelectorAll('.node');
+  nodes.forEach((node, i) => {
+    node.style.opacity = '0';
+    node.style.transform = 'translateY(10px)';
+    setTimeout(() => {
+      node.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      node.style.opacity = '';
+      node.style.transform = '';
+    }, i * 40);
+  });
+});
+</script>
+</body>
+</html>
