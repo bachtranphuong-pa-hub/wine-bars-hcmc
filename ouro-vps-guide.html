@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Ouro VPS Installation Guide</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 900px; margin: 0 auto; padding: 24px; background: #0d1117; color: #e6edf3; line-height: 1.6; }
+  h1 { font-size: 24px; color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+  h2 { font-size: 18px; color: #79c0ff; margin-top: 32px; border-left: 3px solid #1f6feb; padding-left: 10px; }
+  h3 { font-size: 15px; color: #d2a8ff; }
+  code { background: #161b22; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; color: #f0883e; }
+  pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; overflow-x: auto; }
+  pre code { background: none; padding: 0; color: #e6edf3; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  th { background: #21262d; color: #79c0ff; padding: 10px 14px; text-align: left; font-size: 13px; }
+  td { padding: 9px 14px; border-bottom: 1px solid #21262d; font-size: 13px; }
+  tr:hover td { background: #161b22; }
+  strong { color: #f0883e; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+  .badge-green { background: #1a4731; color: #3fb950; }
+  .badge-blue { background: #1c3a6e; color: #58a6ff; }
+  .meta { font-size: 12px; color: #8b949e; margin-bottom: 24px; }
+  hr { border: none; border-top: 1px solid #30363d; margin: 24px 0; }
+  blockquote { border-left: 3px solid #30363d; margin: 0; padding-left: 16px; color: #8b949e; }
+</style>
+</head>
+<body>
+<h1>Ouro LLM — VPS Installation Guide</h1>
+<h2>Devil's Advocate AI for RCC</h2>
+<strong>Model:</strong> ByteDance/Ouro-2.6B-Thinking | <strong>License:</strong> Apache-2.0
+<strong>Prepared by:</strong> Zera | <strong>Date:</strong> 2026-04-12</p><p><hr></p><p><h2>1. VPS Requirements</h2></p><p><h3>Minimum (Ouro-2.6B-Thinking)</h3>
+<tr><td>Component</td><td>Minimum</td><td>Recommended</td></tr>
+|---|---|---|
+<tr><td>CPU</td><td>4 vCPU</td><td>8 vCPU</td></tr>
+<tr><td>RAM</td><td>16GB</td><td>32GB</td></tr>
+<tr><td>GPU VRAM</td><td>6GB (T4)</td><td>16GB (A10/T4×2)</td></tr>
+<tr><td>Disk</td><td>20GB SSD</td><td>50GB SSD</td></tr>
+<tr><td>OS</td><td>Ubuntu 22.04 LTS</td><td>Ubuntu 22.04 LTS</td></tr></p><p><h3>GCP Instance gợi ý</h3>
+- <code>n1-standard-4</code> + <strong>1× NVIDIA T4</strong> (~$0.35/hr = ~$250/tháng nếu chạy 24/7)
+- Hoặc <strong>spot/preemptible</strong> (~$0.10/hr) nếu không cần uptime 100%
+- Region: <code>asia-southeast1</code> (Singapore) — latency thấp từ VN</p><p><hr></p><p><h2>2. Setup VPS</h2></p><p><pre><code><h1>Update system</h1>
+sudo apt update && sudo apt upgrade -y</p><p><h1>Install Python 3.11</h1>
+sudo apt install -y python3.11 python3.11-venv python3-pip git curl</p><p><h1>Install CUDA 12.1 (cho T4 GPU)</h1>
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt update
+sudo apt install -y cuda-toolkit-12-1
+echo 'export PATH=/usr/local/cuda-12.1/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64:$PATH' >> ~/.bashrc
+source ~/.bashrc</p><p><h1>Verify GPU</h1>
+nvidia-smi
+</code></pre></p><p><hr></p><p><h2>3. Install Ouro</h2></p><p><pre><code><h1>Create working directory</h1>
+mkdir -p ~/ouro && cd ~/ouro</p><p><h1>Create virtual environment</h1>
+python3.11 -m venv venv
+source venv/bin/activate</p><p><h1>Install dependencies</h1>
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install transformers>=4.56.0 accelerate huggingface_hub
+pip install fastapi uvicorn pydantic  # for API server</p><p><h1>Download model (2.6B-Thinking ~5.5GB)</h1>
+python3 -c "
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id='ByteDance/Ouro-2.6B-Thinking',
+    local_dir='./models/ouro-2.6b-thinking',
+    ignore_patterns=['*.msgpack', '*.h5']
+)
+print('✅ Model downloaded')
+"
+</code></pre></p><p><hr></p><p><h2>4. Test inference</h2></p><p><pre><code><h1>test_ouro.py</h1>
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import torch</p><p>model_path = "./models/ouro-2.6b-thinking"
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    torch_dtype=torch.float16,
+    device_map="auto"
+)</p><p><h1>Devil's Advocate prompt</h1>
+system_prompt = """You are a Devil's Advocate AI for RCC (Royal Canary Corp).
+Your role: challenge assumptions, find flaws in reasoning, stress-test investment decisions.
+Be direct, critical, and analytical. Point out risks others miss.
+Always respond in Vietnamese unless asked otherwise."""</p><p>def ask(question):
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": question}
+    ]
+    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    inputs = tokenizer([text], return_tensors="pt").to(model.device)
+    
+    with torch.no_grad():
+        output = model.generate(
+            **inputs,
+            max_new_tokens=512,
+            temperature=0.7,
+            do_sample=True,
+            pad_token_id=tokenizer.eos_token_id
+        )
+    
+    response = tokenizer.decode(output[0][len(inputs.input_ids[0]):], skip_special_tokens=True)
+    return response</p><p><h1>Test</h1>
+print(ask("RCC đang xem xét mua Tuần Châu Resort với giá $25M. Phân tích rủi ro."))
+</code></pre></p><p><pre><code>python3 test_ouro.py
+</code></pre></p><p><hr></p><p><h2>5. Deploy API Server (FastAPI)</h2></p><p><pre><code><h1>server.py — REST API cho Telegram bot hoặc internal tools</h1>
+from fastapi import FastAPI
+from pydantic import BaseModel
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import torch, uvicorn</p><p>app = FastAPI(title="Ouro Devil's Advocate API")</p><p><h1>Load model once at startup</h1>
+model_path = "./models/ouro-2.6b-thinking"
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+model = AutoModelForCausalLM.from_pretrained(
+    model_path, torch_dtype=torch.float16, device_map="auto"
+)</p><p>SYSTEM_PROMPT = """Bạn là Devil's Advocate AI của RCC (Royal Canary Corp).
+Nhiệm vụ: phản biện giả định, tìm lỗ hổng trong logic, stress-test quyết định đầu tư.
+Trả lời trực tiếp, phân tích sắc bén, chỉ ra rủi ro mà người khác bỏ qua.
+Trả lời bằng tiếng Việt trừ khi được yêu cầu khác."""</p><p>class Query(BaseModel):
+    question: str
+    context: str = ""  # Optional: paste deal memo, financial model, etc.</p><p>@app.post("/ask")
+async def ask_devil(query: Query):
+    user_msg = query.question
+    if query.context:
+        user_msg = f"Context:\n{query.context}\n\nCâu hỏi: {query.question}"
+    
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": user_msg}
+    ]
+    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    inputs = tokenizer([text], return_tensors="pt").to(model.device)
+    
+    with torch.no_grad():
+        output = model.generate(
+            **inputs, max_new_tokens=768, temperature=0.7,
+            do_sample=True, pad_token_id=tokenizer.eos_token_id
+        )
+    
+    response = tokenizer.decode(output[0][len(inputs.input_ids[0]):], skip_special_tokens=True)
+    return {"response": response, "model": "Ouro-2.6B-Thinking"}</p><p>@app.get("/health")
+async def health():
+    return {"status": "ok", "model_loaded": True}</p><p>if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8080)
+</code></pre></p><p><pre><code><h1>Run server</h1>
+python3 server.py</p><p><h1>Test</h1>
+curl -X POST http://localhost:8080/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "Deal này có rủi ro gì?", "context": "Mua resort 25M USD, ROI dự kiến 15%/năm"}'
+</code></pre></p><p><hr></p><p><h2>6. Systemd service (auto-restart)</h2></p><p><pre><code>sudo tee /etc/systemd/system/ouro.service > /dev/null <<EOF
+[Unit]
+Description=Ouro Devil's Advocate API
+After=network.target</p><p>[Service]
+Type=simple
+User=$USER
+WorkingDirectory=/home/$USER/ouro
+Environment="PATH=/home/$USER/ouro/venv/bin"
+ExecStart=/home/$USER/ouro/venv/bin/python3 server.py
+Restart=always
+RestartSec=10</p><p>[Install]
+WantedBy=multi-user.default
+EOF</p><p>sudo systemctl daemon-reload
+sudo systemctl enable ouro
+sudo systemctl start ouro
+sudo systemctl status ouro
+</code></pre></p><p><hr></p><p><h2>7. Security (firewall + basic auth)</h2></p><p><pre><code><h1>Chỉ cho phép internal IP access (không expose public)</h1>
+sudo ufw allow 22/tcp      # SSH
+sudo ufw deny 8080/tcp     # Block public access to API
+sudo ufw enable</p><p><h1>Hoặc nếu muốn Zera gọi từ agent server:</h1>
+sudo ufw allow from <AGENT_SERVER_IP> to any port 8080
+</code></pre></p><p><hr></p><p><h2>8. Integration với Zera</h2></p><p>Sau khi server chạy, em có thể gọi Ouro như một tool:</p><p><pre><code>// Trong workspace scripts — ouro-advocate.js
+const response = await fetch('http://<VPS_IP>:8080/ask', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    question: userQuestion,
+    context: dealMemo  // paste investment memo, term sheet, etc.
+  })
+});
+const { response: analysis } = await response.json();
+</code></pre></p><p><strong>Workflow:</strong>
+1. Anh paste deal memo/investment proposal vào chat
+2. Em gửi sang Ouro Devil's Advocate
+3. Ouro trả về phản biện + rủi ro
+4. Em tổng hợp và present cho anh</p><p><hr></p><p><h2>9. Cost estimate</h2></p><p><tr><td>Scenario</td><td>Instance</td><td>Est. cost</td></tr>
+|---|---|---|
+<tr><td>On-demand 8h/ngày</td><td>T4 spot</td><td>~$25/tháng</td></tr>
+<tr><td>On-demand 24/7</td><td>T4 spot</td><td>~$75/tháng</td></tr>
+<tr><td>Always-on</td><td>T4 on-demand</td><td>~$250/tháng</td></tr>
+<tr><td><strong>Recommended</strong></td><td><strong>T4 spot + auto-start</strong></td><td><strong>~$50/tháng</strong></td></tr></p><p><hr></p><p><h2>10. Estimated setup time</h2></p><p><tr><td>Bước</td><td>Thời gian</td></tr>
+|---|---|
+<tr><td>VPS provisioning</td><td>15 phút</td></tr>
+<tr><td>CUDA + dependencies</td><td>30 phút</td></tr>
+<tr><td>Model download</td><td>20 phút (5.5GB)</td></tr>
+<tr><td>Test + API setup</td><td>30 phút</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>~1.5 giờ</strong></td></tr></p><p><hr></p><p><h2>Next Steps</h2></p><p>1. Anh confirm VPS spec (GCP/Azure/existing server?)
+2. Matt setup GPU instance
+3. Em remote install hoặc anh Matt follow guide
+4. Test với 1-2 deal scenarios thực tế
+5. Integrate vào Zera workflow</p><p><hr>
+*Guide prepared by Zera — 2026-04-12*
+*Model: ByteDance/Ouro-2.6B-Thinking | License: Apache-2.0*
+
+</body>
+</html>
