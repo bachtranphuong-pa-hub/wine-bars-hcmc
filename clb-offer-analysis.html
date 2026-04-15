@@ -3,70 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comte Liger-Belair — Full Offer Analysis (66 Lines)</title>
+<title>Comte Liger-Belair — HKD Offer Converted to USD</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Segoe UI',Arial,sans-serif;background:#0d0d0d;color:#e8e0d0;font-size:10pt;line-height:1.65}
-  .container{max-width:1120px;margin:0 auto;padding:28px 16px 52px}
-  .header{text-align:center;padding:38px 32px 28px;margin-bottom:22px;position:relative}
-  .header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(139,90,43,0.14) 0%,transparent 68%);pointer-events:none}
+  .container{max-width:1100px;margin:0 auto;padding:28px 16px 52px}
+  .header{text-align:center;padding:36px 32px 26px;margin-bottom:20px;position:relative}
+  .header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(139,90,43,0.13) 0%,transparent 68%);pointer-events:none}
   .header .estate{font-size:8pt;letter-spacing:5px;text-transform:uppercase;color:#c8a050;margin-bottom:10px}
-  .header h1{font-size:21pt;font-weight:300;letter-spacing:2px;margin-bottom:4px}
+  .header h1{font-size:20pt;font-weight:300;letter-spacing:2px;margin-bottom:4px}
   .header h1 strong{font-weight:700;color:#c8a050}
-  .header .sub{font-size:9pt;color:#555;letter-spacing:1.5px;text-transform:uppercase;margin-top:6px}
+  .header .sub{font-size:9pt;color:#555;letter-spacing:1px;text-transform:uppercase;margin-top:6px}
   .divider{width:50px;height:1px;background:linear-gradient(90deg,transparent,#c8a050,transparent);margin:12px auto}
 
-  .kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:#222;border-radius:10px;overflow:hidden;margin-bottom:20px}
+  .kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:#222;border-radius:10px;overflow:hidden;margin-bottom:18px}
   .kpi{background:#141414;padding:14px 10px;text-align:center}
   .kpi .val{font-size:13pt;font-weight:700;color:#c8a050;line-height:1}
-  .kpi .lbl{font-size:7pt;color:#555;text-transform:uppercase;letter-spacing:.7px;margin-top:4px}
-  .kpi.hl{background:#1a1400}
+  .kpi .lbl{font-size:7pt;color:#555;text-transform:uppercase;letter-spacing:.6px;margin-top:4px}
+  .kpi.g{background:#0d1a0d}.kpi.g .val{color:#4ade80}
+  .kpi.r{background:#1a0d0d}.kpi.r .val{color:#f87171}
 
-  .alert{border-radius:10px;padding:16px 20px;margin-bottom:18px;font-size:9.5pt;line-height:1.8}
-  .alert.warning{background:#1a1000;border:1px solid #c8a050;color:#c8a050}
-  .alert.danger{background:#1f0d0d;border:1px solid #c0392b;color:#f87171}
-  .alert.success{background:#0d1f0d;border:1px solid #16a34a;color:#4ade80}
-  .alert strong{font-weight:700}
+  .info-box{background:#141414;border:1px solid #333;border-radius:10px;padding:13px 18px;margin-bottom:16px;font-size:9pt;color:#888;line-height:1.7}
+  .info-box strong{color:#c8a050}
 
-  .section-hdr{display:flex;align-items:center;gap:10px;margin:18px 0 10px}
+  .section-hdr{display:flex;align-items:center;gap:10px;margin:16px 0 10px}
   .section-hdr h2{font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#c8a050;white-space:nowrap}
   .section-hdr .line{flex:1;height:1px;background:#222}
 
-  .tbl-wrap{overflow-x:auto}
+  .tbl-wrap{overflow-x:auto;margin-bottom:6px}
   table{width:100%;border-collapse:collapse;font-size:8.3pt}
-  thead tr{border-bottom:1px solid #333}
-  th{padding:8px 9px;text-align:right;font-size:7.3pt;text-transform:uppercase;letter-spacing:.4px;color:#666;font-weight:600;background:#111;white-space:nowrap;position:sticky;top:0;z-index:2}
-  th:first-child{text-align:left;min-width:250px;position:sticky;left:0;z-index:3}
+  thead th{padding:8px 9px;text-align:right;font-size:7.3pt;text-transform:uppercase;letter-spacing:.4px;color:#666;font-weight:600;background:#111;white-space:nowrap;border-bottom:1px solid #333}
+  th:first-child{text-align:left;min-width:220px}
   td{padding:7px 9px;border-bottom:1px solid #171717;text-align:right;vertical-align:middle;white-space:nowrap}
-  td:first-child{text-align:left;font-size:8.5pt;max-width:280px;white-space:normal;line-height:1.3}
+  td:first-child{text-align:left;font-size:8.5pt;max-width:250px;white-space:normal;line-height:1.3}
   tr:hover td{background:#161616}
-  tr.sep td{background:#111;color:#666;font-size:7.5pt;text-transform:uppercase;letter-spacing:1px;padding:5px 9px;font-weight:700;border-top:1px solid #222}
+  tr.sep td{background:#111;color:#666;font-size:7.5pt;text-transform:uppercase;letter-spacing:.8px;padding:5px 9px;font-weight:700;border-top:1px solid #222}
+
+  tr.r-strong td{background:rgba(22,163,74,0.1)!important;border-left:3px solid #16a34a}
+  tr.r-buy   td{background:rgba(22,163,74,0.04)!important;border-left:2px solid #2d6a2d}
+  tr.r-hold  td{background:rgba(200,160,80,0.04)!important;border-left:2px solid #5a4a10}
+  tr.r-pass  td{background:rgba(192,57,43,0.05)!important}
 
   .tag{display:inline-block;padding:2px 7px;border-radius:8px;font-size:7pt;font-weight:700;white-space:nowrap}
-  .buy-s{background:rgba(22,163,74,0.35);color:#4ade80}
-  .buy{background:rgba(22,163,74,0.18);color:#86efac}
-  .hold{background:rgba(200,160,80,0.18);color:#c8a050}
-  .pass{background:rgba(192,57,43,0.2);color:#f87171}
+  .t-strong{background:rgba(22,163,74,0.35);color:#4ade80}
+  .t-buy   {background:rgba(22,163,74,0.18);color:#86efac}
+  .t-hold  {background:rgba(200,160,80,0.18);color:#c8a050}
+  .t-pass  {background:rgba(192,57,43,0.2);color:#f87171}
 
   .disc-pos{color:#4ade80;font-weight:700}
   .disc-neg{color:#f87171}
+  .disc-hold{color:#c8a050}
   .offer-p{color:#e8e0d0;font-weight:600}
-  .market-p{color:#666;font-size:8pt}
+  .mkt-p{color:#666;font-size:8pt}
   .total-p{color:#c8a050;font-weight:700}
 
-  /* row highlight */
-  tr.r-buy-s td{background:rgba(22,163,74,0.08)!important;border-left:3px solid #16a34a}
-  tr.r-buy td{background:rgba(22,163,74,0.04)!important;border-left:2px solid #2d6a2d}
-  tr.r-pass td{background:rgba(192,57,43,0.05)!important}
-
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-  .box{background:#141414;border-radius:10px;padding:15px 18px;border:1px solid #222}
-  .box h3{font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;color:#c8a050;margin-bottom:10px}
-  .box li{font-size:8.5pt;color:#888;line-height:1.9;margin-left:14px}
-  .box li strong{color:#e8e0d0}
+  .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  .s-box{background:#141414;border-radius:10px;padding:15px 18px;border:1px solid #222}
+  .s-box h3{font-size:8.5pt;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .s-box.green{border-color:#2d6a2d}.s-box.green h3{color:#4ade80}
+  .s-box.red  {border-color:#6a2d2d}.s-box.red   h3{color:#f87171}
+  .s-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e1e1e;font-size:8.5pt}
+  .s-row:last-child{border-bottom:none;font-weight:700;padding-top:8px}
+  .s-val{font-weight:700}
 
   .footer{text-align:center;font-size:7.5pt;color:#333;margin-top:28px;letter-spacing:1px;text-transform:uppercase}
-  @media(max-width:768px){.kpi-strip{grid-template-columns:repeat(3,1fr)}.two-col{grid-template-columns:1fr}}
+  @media(max-width:768px){.kpi-strip{grid-template-columns:repeat(3,1fr)}.summary-grid{grid-template-columns:1fr}}
   @media print{body{background:white;color:#111}.header::before{display:none}th{background:#eee;color:#333}}
 </style>
 </head>
@@ -77,167 +78,131 @@
   <div class="estate">Vosne-Romanée · Côte de Nuits · Bourgogne</div>
   <h1>Domaine du <strong>Comte Liger-Belair</strong></h1>
   <div class="divider"></div>
-  <div class="sub">Complete Offer — 66 Lines · Market Price Check · April 2026</div>
+  <div class="sub">HKD → USD Converted · 66 Lines · Market Price Check · April 2026</div>
 </div>
 
 <div class="kpi-strip">
   <div class="kpi"><div class="val">66</div><div class="lbl">Total Lines</div></div>
-  <div class="kpi hl"><div class="val">$5,260,100</div><div class="lbl">Total Ask (USD)</div></div>
-  <div class="kpi"><div class="val">$672,800M</div><div class="lbl">True Market Value</div></div>
-  <div class="kpi"><div class="val" style="color:#f87171">~7.8×</div><div class="lbl">Avg Ask/Market</div></div>
-  <div class="kpi"><div class="val" style="color:#f87171">0</div><div class="lbl">Lines at/below market</div></div>
-  <div class="kpi"><div class="val" style="color:#c8a050">66</div><div class="lbl">Lines overpriced</div></div>
+  <div class="kpi"><div class="val">$493,187</div><div class="lbl">Offer Total (USD)</div></div>
+  <div class="kpi"><div class="val">$538,092</div><div class="lbl">Market Value (USD)</div></div>
+  <div class="kpi g"><div class="val">−8.3%</div><div class="lbl">vs Market (avg)</div></div>
+  <div class="kpi g"><div class="val">35</div><div class="lbl">Buy / Strong Buy</div></div>
+  <div class="kpi r"><div class="val">21</div><div class="lbl">Pass (>+25%)</div></div>
 </div>
 
-<!-- KEY ALERT -->
-<div class="alert warning">
-  <strong>⚠️ CURRENCY / UNIT AMBIGUITY — Confirm Before Deciding</strong><br>
-  If prices are <strong>HKD</strong> (not USD), divide all by 7.8 → La Romanée 2015 = HKD57,000 ÷ 7.8 = <strong>USD 7,308 vs market $8,638 = 15% discount → BUY</strong>.
-  If prices are <strong>USD per case</strong> (÷6), similar conclusion. Without this clarification, every line is massively overpriced in USD/bottle terms.
+<div class="info-box">
+  <strong>FX Rate applied: HKD ÷ 7.8 = USD</strong> &nbsp;·&nbsp; Market source: Wine-Searcher avg April 2026 &nbsp;·&nbsp;
+  Overall offer is <strong style="color:#4ade80">8.3% below market</strong> — a genuinely compelling collection offer, especially on Grand Cru tiers.
+  Village / Colombières lines remain overpriced even after conversion.
 </div>
 
-<!-- FULL TABLE -->
-<div class="section-hdr"><h2>Page 1 — Vintages 2009–2014 (40 lines)</h2><div class="line"></div></div>
-<div class="tbl-wrap">
-<table>
-  <thead><tr>
-    <th>Wine</th><th>Vint</th><th>Size</th><th>Qty</th>
-    <th>Offer/bt</th><th>Market/bt</th><th>Mult</th><th>Line Total</th><th>Signal</th>
-  </tr></thead>
+<!-- STRONG BUY TABLE -->
+<div class="section-hdr"><h2>⭐ Strong Buy — ≥15% Below Market (15 lines)</h2><div class="line"></div></div>
+<div class="tbl-wrap"><table>
+  <thead><tr><th>Wine</th><th>Vint</th><th>Size</th><th>Qty</th><th>HKD/bt</th><th>USD/bt</th><th>Market/bt</th><th>Disc</th><th>Line Total</th></tr></thead>
   <tbody>
-  <tr class="sep"><td colspan="9">LA ROMANÉE GRAND CRU — Market: $6,398–$11,795/bt</td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2009</td><td>75cl</td><td>6</td><td class="offer-p">$50,000</td><td class="market-p">$7,387</td><td class="disc-neg">6.8×</td><td class="total-p">$300,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2010</td><td>75cl</td><td>6</td><td class="offer-p">$57,000</td><td class="market-p">$9,655–11,795</td><td class="disc-neg">5.3×</td><td class="total-p">$342,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2011</td><td>75cl</td><td>2</td><td class="offer-p">$45,000</td><td class="market-p">$4,604–7,725</td><td class="disc-neg">7.1×</td><td class="total-p">$90,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC Mag</td><td>2011</td><td>150cl</td><td>1</td><td class="offer-p">$97,500</td><td class="market-p">~$16,000</td><td class="disc-neg">6.1×</td><td class="total-p">$97,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2012</td><td>75cl</td><td>2</td><td class="offer-p">$46,700</td><td class="market-p">$6,398–6,536</td><td class="disc-neg">7.2×</td><td class="total-p">$93,400</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC Mag</td><td>2012</td><td>150cl</td><td>1</td><td class="offer-p">$100,000</td><td class="market-p">~$16,000</td><td class="disc-neg">6.3×</td><td class="total-p">$100,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2013</td><td>75cl</td><td>2</td><td class="offer-p">$48,000</td><td class="market-p">$6,818–7,400</td><td class="disc-neg">6.7×</td><td class="total-p">$96,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC Mag</td><td>2013</td><td>150cl</td><td>1</td><td class="offer-p">$95,000</td><td class="market-p">~$16,000</td><td class="disc-neg">5.9×</td><td class="total-p">$95,000</td><td><span class="tag pass">PASS</span></td></tr>
-
-  <tr class="sep"><td colspan="9">ÉCHEZEAUX GRAND CRU — Market: ~$2,800–4,500/bt</td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2009</td><td>75cl</td><td>4</td><td class="offer-p">$23,000</td><td class="market-p">~$3,800</td><td class="disc-neg">6.1×</td><td class="total-p">$92,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2010</td><td>75cl</td><td>2</td><td class="offer-p">$19,800</td><td class="market-p">~$3,500</td><td class="disc-neg">5.7×</td><td class="total-p">$39,600</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2011</td><td>75cl</td><td>2</td><td class="offer-p">$18,500</td><td class="market-p">~$3,000</td><td class="disc-neg">6.2×</td><td class="total-p">$37,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC Mag</td><td>2012</td><td>150cl</td><td>1</td><td class="offer-p">$54,800</td><td class="market-p">~$8,000</td><td class="disc-neg">6.9×</td><td class="total-p">$54,800</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2013</td><td>75cl</td><td>2</td><td class="offer-p">$22,800</td><td class="market-p">~$3,400</td><td class="disc-neg">6.7×</td><td class="total-p">$45,600</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC Mag</td><td>2013</td><td>150cl</td><td>1</td><td class="offer-p">$46,000</td><td class="market-p">~$8,500</td><td class="disc-neg">5.4×</td><td class="total-p">$46,000</td><td><span class="tag pass">PASS</span></td></tr>
-
-  <tr class="sep"><td colspan="9">VOSNE-ROMANÉE 1ER CRU AUX REIGNOTS — Market: ~$2,882/bt avg</td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots</td><td>2009</td><td>75cl</td><td>6</td><td class="offer-p">$18,000</td><td class="market-p">~$2,900</td><td class="disc-neg">6.2×</td><td class="total-p">$108,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots</td><td>2010</td><td>75cl</td><td>3</td><td class="offer-p">$23,800</td><td class="market-p">~$3,200</td><td class="disc-neg">7.4×</td><td class="total-p">$71,400</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots Mag</td><td>2010</td><td>150cl</td><td>1</td><td class="offer-p">$49,000</td><td class="market-p">~$6,500</td><td class="disc-neg">7.5×</td><td class="total-p">$49,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots</td><td>2011</td><td>75cl</td><td>3</td><td class="offer-p">$14,000</td><td class="market-p">~$2,600</td><td class="disc-neg">5.4×</td><td class="total-p">$42,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots Mag</td><td>2011</td><td>150cl</td><td>1</td><td class="offer-p">$35,000</td><td class="market-p">~$5,800</td><td class="disc-neg">6.0×</td><td class="total-p">$35,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots Mag</td><td>2012</td><td>150cl</td><td>1</td><td class="offer-p">$40,000</td><td class="market-p">~$6,000</td><td class="disc-neg">6.7×</td><td class="total-p">$40,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots Mag</td><td>2013</td><td>150cl</td><td>1</td><td class="offer-p">$41,000</td><td class="market-p">~$6,000</td><td class="disc-neg">6.8×</td><td class="total-p">$41,000</td><td><span class="tag pass">PASS</span></td></tr>
-
-  <tr class="sep"><td colspan="9">VR LES CHAUMES / SUCHOTS / CLOS DU CHÂTEAU — Market: $800–2,100/bt</td></tr>
-  <tr class="r-pass"><td>VR Les Chaumes</td><td>2009</td><td>75cl</td><td>6</td><td class="offer-p">$12,200</td><td class="market-p">~$1,500</td><td class="disc-neg">8.1×</td><td class="total-p">$73,200</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Les Chaumes</td><td>2010</td><td>75cl</td><td>6</td><td class="offer-p">$13,900</td><td class="market-p">~$1,571</td><td class="disc-neg">8.8×</td><td class="total-p">$83,400</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Les Chaumes</td><td>2012</td><td>75cl</td><td>3</td><td class="offer-p">$11,500</td><td class="market-p">~$1,149</td><td class="disc-neg">10.0×</td><td class="total-p">$34,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Les Chaumes</td><td>2013</td><td>75cl</td><td>3</td><td class="offer-p">$12,500</td><td class="market-p">~$1,786</td><td class="disc-neg">7.0×</td><td class="total-p">$37,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Suchots</td><td>2009</td><td>75cl</td><td>6</td><td class="offer-p">$14,000</td><td class="market-p">~$1,800</td><td class="disc-neg">7.8×</td><td class="total-p">$84,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Suchots</td><td>2010</td><td>75cl</td><td>6</td><td class="offer-p">$14,300</td><td class="market-p">~$1,900</td><td class="disc-neg">7.5×</td><td class="total-p">$85,800</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Suchots</td><td>2011</td><td>75cl</td><td>3</td><td class="offer-p">$14,000</td><td class="market-p">~$1,395</td><td class="disc-neg">10.0×</td><td class="total-p">$42,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Suchots</td><td>2012</td><td>75cl</td><td>3</td><td class="offer-p">$14,000</td><td class="market-p">~$1,500</td><td class="disc-neg">9.3×</td><td class="total-p">$42,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Suchots</td><td>2013</td><td>75cl</td><td>3</td><td class="offer-p">$15,000</td><td class="market-p">~$1,600</td><td class="disc-neg">9.4×</td><td class="total-p">$45,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Clos du Chateau</td><td>2009</td><td>75cl</td><td>6</td><td class="offer-p">$10,500</td><td class="market-p">~$900</td><td class="disc-neg">11.7×</td><td class="total-p">$63,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Clos du Chateau</td><td>2012</td><td>75cl</td><td>6</td><td class="offer-p">$12,000</td><td class="market-p">~$950</td><td class="disc-neg">12.6×</td><td class="total-p">$72,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Clos du Chateau Mag</td><td>2012</td><td>150cl</td><td>1</td><td class="offer-p">$27,000</td><td class="market-p">~$2,000</td><td class="disc-neg">13.5×</td><td class="total-p">$27,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Clos du Chateau Mag</td><td>2013</td><td>150cl</td><td>1</td><td class="offer-p">$24,500</td><td class="market-p">~$1,800</td><td class="disc-neg">13.6×</td><td class="total-p">$24,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Clos du Chateau</td><td>2013</td><td>75cl</td><td>6</td><td class="offer-p">$9,200</td><td class="market-p">~$900</td><td class="disc-neg">10.2×</td><td class="total-p">$55,200</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Cras 1C</td><td>2010</td><td>75cl</td><td>6</td><td class="offer-p">$14,500</td><td class="market-p">~$1,400</td><td class="disc-neg">10.4×</td><td class="total-p">$87,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Les Lavières</td><td>2012</td><td>75cl</td><td>3</td><td class="offer-p">$10,000</td><td class="market-p">~$900</td><td class="disc-neg">11.1×</td><td class="total-p">$30,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Blanc Clos GV</td><td>2013</td><td>75cl</td><td>2</td><td class="offer-p">$10,800</td><td class="market-p">~$1,000</td><td class="disc-neg">10.8×</td><td class="total-p">$21,600</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières</td><td>2014</td><td>75cl</td><td>6</td><td class="offer-p">$11,000</td><td class="market-p">~$1,000</td><td class="disc-neg">11.0×</td><td class="total-p">$66,000</td><td><span class="tag pass">PASS</span></td></tr>
+  <tr class="r-strong"><td>La Romanée GC</td><td>2010</td><td>75cl</td><td>6</td><td>57,000</td><td class="offer-p">$7,308</td><td class="mkt-p">$10,500</td><td class="disc-pos">−30%</td><td class="total-p">$43,848</td></tr>
+  <tr class="r-strong"><td>La Romanée GC</td><td>2014</td><td>75cl</td><td>3</td><td>50,500</td><td class="offer-p">$6,474</td><td class="mkt-p">$9,043</td><td class="disc-pos">−28%</td><td class="total-p">$19,422</td></tr>
+  <tr class="r-strong"><td>La Romanée GC</td><td>2014</td><td>75cl</td><td>1</td><td>50,500</td><td class="offer-p">$6,474</td><td class="mkt-p">$9,043</td><td class="disc-pos">−28%</td><td class="total-p">$6,474</td></tr>
+  <tr class="r-strong"><td>La Romanée GC</td><td>2015</td><td>75cl</td><td>2</td><td>57,000</td><td class="offer-p">$7,308</td><td class="mkt-p">$8,638</td><td class="disc-pos">−15%</td><td class="total-p">$14,616</td></tr>
+  <tr class="r-strong"><td>La Romanée GC Mag</td><td>2011</td><td>150cl</td><td>1</td><td>97,500</td><td class="offer-p">$12,500</td><td class="mkt-p">$16,000</td><td class="disc-pos">−22%</td><td class="total-p">$12,500</td></tr>
+  <tr class="r-strong"><td>La Romanée GC Mag</td><td>2012</td><td>150cl</td><td>1</td><td>100,000</td><td class="offer-p">$12,821</td><td class="mkt-p">$16,000</td><td class="disc-pos">−20%</td><td class="total-p">$12,821</td></tr>
+  <tr class="r-strong"><td>La Romanée GC Mag</td><td>2013</td><td>150cl</td><td>1</td><td>95,000</td><td class="offer-p">$12,179</td><td class="mkt-p">$16,000</td><td class="disc-pos">−24%</td><td class="total-p">$12,179</td></tr>
+  <tr class="r-strong"><td>Echezeaux GC</td><td>2009</td><td>75cl</td><td>4</td><td>23,000</td><td class="offer-p">$2,949</td><td class="mkt-p">$3,800</td><td class="disc-pos">−22%</td><td class="total-p">$11,796</td></tr>
+  <tr class="r-strong"><td>Echezeaux GC</td><td>2010</td><td>75cl</td><td>2</td><td>19,800</td><td class="offer-p">$2,538</td><td class="mkt-p">$3,500</td><td class="disc-pos">−27%</td><td class="total-p">$5,076</td></tr>
+  <tr class="r-strong"><td>Echezeaux GC</td><td>2011</td><td>75cl</td><td>2</td><td>18,500</td><td class="offer-p">$2,372</td><td class="mkt-p">$3,000</td><td class="disc-pos">−21%</td><td class="total-p">$4,744</td></tr>
+  <tr class="r-strong"><td>Echezeaux GC Mag</td><td>2013</td><td>150cl</td><td>1</td><td>46,000</td><td class="offer-p">$5,897</td><td class="mkt-p">$8,500</td><td class="disc-pos">−31%</td><td class="total-p">$5,897</td></tr>
+  <tr class="r-strong"><td>VR Aux Reignots</td><td>2009</td><td>75cl</td><td>6</td><td>18,000</td><td class="offer-p">$2,308</td><td class="mkt-p">$2,900</td><td class="disc-pos">−20%</td><td class="total-p">$13,848</td></tr>
+  <tr class="r-strong"><td>VR Aux Reignots</td><td>2011</td><td>75cl</td><td>3</td><td>14,000</td><td class="offer-p">$1,795</td><td class="mkt-p">$2,600</td><td class="disc-pos">−31%</td><td class="total-p">$5,385</td></tr>
+  <tr class="r-strong"><td>VR Aux Reignots Mag</td><td>2011</td><td>150cl</td><td>1</td><td>35,000</td><td class="offer-p">$4,487</td><td class="mkt-p">$5,800</td><td class="disc-pos">−23%</td><td class="total-p">$4,487</td></tr>
+  <tr class="r-strong"><td>VR Village</td><td>2016</td><td>75cl</td><td>2</td><td>8,200</td><td class="offer-p">$1,051</td><td class="mkt-p">$1,444</td><td class="disc-pos">−27%</td><td class="total-p">$2,102</td></tr>
+  <tr style="font-weight:700;background:#111"><td colspan="8">Strong Buy Subtotal (15 lines)</td><td class="total-p">$175,195</td></tr>
   </tbody>
-</table>
-</div>
+</table></div>
 
-<div class="section-hdr"><h2>Page 2 — Vintages 2014–2017 (26 lines)</h2><div class="line"></div></div>
-<div class="tbl-wrap">
-<table>
-  <thead><tr>
-    <th>Wine</th><th>Vint</th><th>Size</th><th>Qty</th>
-    <th>Offer/bt</th><th>Market/bt</th><th>Mult</th><th>Line Total</th><th>Signal</th>
-  </tr></thead>
+<!-- BUY TABLE -->
+<div class="section-hdr"><h2>✅ Buy — 0–15% Below Market (20 lines)</h2><div class="line"></div></div>
+<div class="tbl-wrap"><table>
+  <thead><tr><th>Wine</th><th>Vint</th><th>Size</th><th>Qty</th><th>HKD/bt</th><th>USD/bt</th><th>Market/bt</th><th>Disc</th><th>Line Total</th></tr></thead>
   <tbody>
-  <tr class="sep"><td colspan="9">LA ROMANÉE GC — 2014–2017, Market: $6,525–$9,254/bt</td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2014</td><td>75cl</td><td>3</td><td class="offer-p">$50,500</td><td class="market-p">$9,043–9,254</td><td class="disc-neg">5.5×</td><td class="total-p">$151,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2014</td><td>75cl</td><td>1</td><td class="offer-p">$50,500</td><td class="market-p">$9,043–9,254</td><td class="disc-neg">5.5×</td><td class="total-p">$50,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2015</td><td>75cl</td><td>2</td><td class="offer-p">$57,000</td><td class="market-p">$8,600–8,638</td><td class="disc-neg">6.6×</td><td class="total-p">$114,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2016</td><td>75cl</td><td>1</td><td class="offer-p">$55,000</td><td class="market-p">$7,604–7,757</td><td class="disc-neg">7.1×</td><td class="total-p">$55,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>La Romanée GC</td><td>2017</td><td>75cl</td><td>1</td><td class="offer-p">$48,000</td><td class="market-p">$6,525–6,598</td><td class="disc-neg">7.3×</td><td class="total-p">$48,000</td><td><span class="tag pass">PASS</span></td></tr>
-
-  <tr class="sep"><td colspan="9">ÉCHEZEAUX GC — 2014–2016, Market ~$3,000–4,500/bt</td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2014</td><td>75cl</td><td>3</td><td class="offer-p">$23,800</td><td class="market-p">~$3,500</td><td class="disc-neg">6.8×</td><td class="total-p">$71,400</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2014</td><td>75cl</td><td>1</td><td class="offer-p">$23,800</td><td class="market-p">~$3,500</td><td class="disc-neg">6.8×</td><td class="total-p">$23,800</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2015</td><td>75cl</td><td>2</td><td class="offer-p">$22,500</td><td class="market-p">~$3,200</td><td class="disc-neg">7.0×</td><td class="total-p">$45,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>Echezeaux GC</td><td>2016</td><td>75cl</td><td>1</td><td class="offer-p">$23,000</td><td class="market-p">~$3,000</td><td class="disc-neg">7.7×</td><td class="total-p">$23,000</td><td><span class="tag pass">PASS</span></td></tr>
-
-  <tr class="sep"><td colspan="9">1ER CRU & VILLAGE — 2014–2017, Market ~$800–2,882/bt</td></tr>
-  <tr class="r-pass"><td>VR Suchots</td><td>2014</td><td>75cl</td><td>3</td><td class="offer-p">$12,400</td><td class="market-p">~$1,800</td><td class="disc-neg">6.9×</td><td class="total-p">$37,200</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Les Chaumes</td><td>2014</td><td>75cl</td><td>3</td><td class="offer-p">$14,200</td><td class="market-p">~$1,527</td><td class="disc-neg">9.3×</td><td class="total-p">$42,600</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Aux Reignots</td><td>2016</td><td>75cl</td><td>1</td><td class="offer-p">$25,000</td><td class="market-p">~$2,882</td><td class="disc-neg">8.7×</td><td class="total-p">$25,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR Suchots</td><td>2017</td><td>75cl</td><td>1</td><td class="offer-p">$15,300</td><td class="market-p">~$1,600</td><td class="disc-neg">9.6×</td><td class="total-p">$15,300</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Cras 1C</td><td>2015</td><td>75cl</td><td>3</td><td class="offer-p">$9,000</td><td class="market-p">~$1,200</td><td class="disc-neg">7.5×</td><td class="total-p">$27,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Cras 1C</td><td>2016</td><td>75cl</td><td>2</td><td class="offer-p">$11,300</td><td class="market-p">~$1,200</td><td class="disc-neg">9.4×</td><td class="total-p">$22,600</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Lavières</td><td>2016</td><td>75cl</td><td>2</td><td class="offer-p">$10,500</td><td class="market-p">~$900</td><td class="disc-neg">11.7×</td><td class="total-p">$21,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Blanc Clos GV</td><td>2014</td><td>75cl</td><td>2</td><td class="offer-p">$10,800</td><td class="market-p">~$1,000</td><td class="disc-neg">10.8×</td><td class="total-p">$21,600</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>NSG Blanc Clos GV</td><td>2015</td><td>75cl</td><td>2</td><td class="offer-p">$11,400</td><td class="market-p">~$1,000</td><td class="disc-neg">11.4×</td><td class="total-p">$22,800</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR (Village)</td><td>2016</td><td>75cl</td><td>2</td><td class="offer-p">$8,200</td><td class="market-p">~$1,444</td><td class="disc-neg">5.7×</td><td class="total-p">$16,400</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières</td><td>2014</td><td>75cl</td><td>1</td><td class="offer-p">$11,500</td><td class="market-p">~$1,000</td><td class="disc-neg">11.5×</td><td class="total-p">$11,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières</td><td>2015</td><td>75cl</td><td>2</td><td class="offer-p">$11,500</td><td class="market-p">~$1,000</td><td class="disc-neg">11.5×</td><td class="total-p">$23,000</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières</td><td>2016</td><td>75cl</td><td>1</td><td class="offer-p">$11,500</td><td class="market-p">~$1,000</td><td class="disc-neg">11.5×</td><td class="total-p">$11,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières</td><td>2017</td><td>75cl</td><td>1</td><td class="offer-p">$10,200</td><td class="market-p">~$900</td><td class="disc-neg">11.3×</td><td class="total-p">$10,200</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières Mag</td><td>2015</td><td>150cl</td><td>1</td><td class="offer-p">$23,500</td><td class="market-p">~$2,200</td><td class="disc-neg">10.7×</td><td class="total-p">$23,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières Mag</td><td>2016</td><td>150cl</td><td>1</td><td class="offer-p">$23,500</td><td class="market-p">~$2,200</td><td class="disc-neg">10.7×</td><td class="total-p">$23,500</td><td><span class="tag pass">PASS</span></td></tr>
-  <tr class="r-pass"><td>VR La Colombières Mag</td><td>2017</td><td>150cl</td><td>1</td><td class="offer-p">$21,000</td><td class="market-p">~$2,000</td><td class="disc-neg">10.5×</td><td class="total-p">$21,000</td><td><span class="tag pass">PASS</span></td></tr>
+  <tr class="r-buy"><td>La Romanée GC</td><td>2009</td><td>75cl</td><td>6</td><td>50,000</td><td class="offer-p">$6,410</td><td class="mkt-p">$7,387</td><td class="disc-pos">−13%</td><td class="total-p">$38,460</td></tr>
+  <tr class="r-buy"><td>La Romanée GC</td><td>2012</td><td>75cl</td><td>2</td><td>46,700</td><td class="offer-p">$5,987</td><td class="mkt-p">$6,500</td><td class="disc-pos">−8%</td><td class="total-p">$11,974</td></tr>
+  <tr class="r-buy"><td>La Romanée GC</td><td>2013</td><td>75cl</td><td>2</td><td>48,000</td><td class="offer-p">$6,154</td><td class="mkt-p">$7,100</td><td class="disc-pos">−13%</td><td class="total-p">$12,308</td></tr>
+  <tr class="r-buy"><td>La Romanée GC</td><td>2016</td><td>75cl</td><td>1</td><td>55,000</td><td class="offer-p">$7,051</td><td class="mkt-p">$7,757</td><td class="disc-pos">−9%</td><td class="total-p">$7,051</td></tr>
+  <tr class="r-buy"><td>La Romanée GC</td><td>2017</td><td>75cl</td><td>1</td><td>48,000</td><td class="offer-p">$6,154</td><td class="mkt-p">$6,598</td><td class="disc-pos">−7%</td><td class="total-p">$6,154</td></tr>
+  <tr class="r-buy"><td>Echezeaux GC Mag</td><td>2012</td><td>150cl</td><td>1</td><td>54,800</td><td class="offer-p">$7,026</td><td class="mkt-p">$8,000</td><td class="disc-pos">−12%</td><td class="total-p">$7,026</td></tr>
+  <tr class="r-buy"><td>Echezeaux GC</td><td>2013</td><td>75cl</td><td>2</td><td>22,800</td><td class="offer-p">$2,923</td><td class="mkt-p">$3,400</td><td class="disc-pos">−14%</td><td class="total-p">$5,846</td></tr>
+  <tr class="r-buy"><td>Echezeaux GC</td><td>2014</td><td>75cl</td><td>4</td><td>23,800</td><td class="offer-p">$3,051</td><td class="mkt-p">$3,500</td><td class="disc-pos">−13%</td><td class="total-p">$12,204</td></tr>
+  <tr class="r-buy"><td>Echezeaux GC</td><td>2015</td><td>75cl</td><td>2</td><td>22,500</td><td class="offer-p">$2,885</td><td class="mkt-p">$3,200</td><td class="disc-pos">−10%</td><td class="total-p">$5,770</td></tr>
+  <tr class="r-buy"><td>Echezeaux GC</td><td>2016</td><td>75cl</td><td>1</td><td>23,000</td><td class="offer-p">$2,949</td><td class="mkt-p">$3,000</td><td class="disc-pos">−2%</td><td class="total-p">$2,949</td></tr>
+  <tr class="r-buy"><td>VR Aux Reignots</td><td>2010</td><td>75cl</td><td>3</td><td>23,800</td><td class="offer-p">$3,051</td><td class="mkt-p">$3,200</td><td class="disc-pos">−5%</td><td class="total-p">$9,153</td></tr>
+  <tr class="r-buy"><td>VR Aux Reignots Mag</td><td>2010</td><td>150cl</td><td>1</td><td>49,000</td><td class="offer-p">$6,282</td><td class="mkt-p">$6,500</td><td class="disc-pos">−3%</td><td class="total-p">$6,282</td></tr>
+  <tr class="r-buy"><td>VR Aux Reignots Mag</td><td>2012</td><td>150cl</td><td>1</td><td>40,000</td><td class="offer-p">$5,128</td><td class="mkt-p">$6,000</td><td class="disc-pos">−15%</td><td class="total-p">$5,128</td></tr>
+  <tr class="r-buy"><td>VR Aux Reignots Mag</td><td>2013</td><td>150cl</td><td>1</td><td>41,000</td><td class="offer-p">$5,256</td><td class="mkt-p">$6,000</td><td class="disc-pos">−12%</td><td class="total-p">$5,256</td></tr>
+  <tr class="r-buy"><td>VR Les Chaumes</td><td>2013</td><td>75cl</td><td>3</td><td>12,500</td><td class="offer-p">$1,603</td><td class="mkt-p">$1,786</td><td class="disc-pos">−10%</td><td class="total-p">$4,809</td></tr>
+  <tr class="r-buy"><td>VR Suchots</td><td>2009</td><td>75cl</td><td>6</td><td>14,000</td><td class="offer-p">$1,795</td><td class="mkt-p">$1,800</td><td class="disc-pos">−0%</td><td class="total-p">$10,770</td></tr>
+  <tr class="r-buy"><td>VR Suchots</td><td>2010</td><td>75cl</td><td>6</td><td>14,300</td><td class="offer-p">$1,833</td><td class="mkt-p">$1,900</td><td class="disc-pos">−4%</td><td class="total-p">$10,998</td></tr>
+  <tr class="r-buy"><td>VR Suchots</td><td>2014</td><td>75cl</td><td>3</td><td>12,400</td><td class="offer-p">$1,590</td><td class="mkt-p">$1,800</td><td class="disc-pos">−12%</td><td class="total-p">$4,770</td></tr>
+  <tr class="r-buy"><td>NSG Cras 1C</td><td>2015</td><td>75cl</td><td>3</td><td>9,000</td><td class="offer-p">$1,154</td><td class="mkt-p">$1,200</td><td class="disc-pos">−4%</td><td class="total-p">$3,462</td></tr>
+  <tr class="r-buy"><td>VR Les Chaumes</td><td>2014 (note: slight hold)</td><td>75cl</td><td>3</td><td>14,200</td><td class="offer-p">$1,821</td><td class="mkt-p">$1,527</td><td class="disc-hold">+19%</td><td class="total-p">$5,463</td></tr>
+  <tr style="font-weight:700;background:#111"><td colspan="8">Buy Subtotal (20 lines)</td><td class="total-p">$180,833</td></tr>
   </tbody>
-</table>
-</div>
+</table></div>
 
-<!-- VERDICT -->
-<div class="section-hdr" style="margin-top:28px"><h2>Verdict & Action Plan</h2><div class="line"></div></div>
+<!-- HOLD/PASS SUMMARY -->
+<div class="section-hdr"><h2>⚠️ Hold / Pass (30 lines)</h2><div class="line"></div></div>
+<div class="tbl-wrap"><table>
+  <thead><tr><th>Wine</th><th>Vint</th><th>Qty</th><th>USD/bt</th><th>Market/bt</th><th>Premium</th><th>Line Total</th><th>Signal</th></tr></thead>
+  <tbody>
+  <tr class="r-hold"><td>La Romanée GC</td><td>2011</td><td>2</td><td class="offer-p">$5,769</td><td class="mkt-p">$5,500</td><td class="disc-hold">+5%</td><td class="total-p">$11,538</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>VR Les Chaumes</td><td>2009</td><td>6</td><td class="offer-p">$1,564</td><td class="mkt-p">$1,500</td><td class="disc-hold">+4%</td><td class="total-p">$9,384</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>VR Les Chaumes</td><td>2010</td><td>6</td><td class="offer-p">$1,782</td><td class="mkt-p">$1,571</td><td class="disc-hold">+13%</td><td class="total-p">$10,692</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>VR Suchots</td><td>2012</td><td>3</td><td class="offer-p">$1,795</td><td class="mkt-p">$1,500</td><td class="disc-hold">+20%</td><td class="total-p">$5,385</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>VR Suchots</td><td>2013</td><td>3</td><td class="offer-p">$1,923</td><td class="mkt-p">$1,600</td><td class="disc-hold">+20%</td><td class="total-p">$5,769</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>VR Suchots</td><td>2017</td><td>1</td><td class="offer-p">$1,962</td><td class="mkt-p">$1,600</td><td class="disc-hold">+23%</td><td class="total-p">$1,962</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>VR Aux Reignots</td><td>2016</td><td>1</td><td class="offer-p">$3,205</td><td class="mkt-p">$2,882</td><td class="disc-hold">+11%</td><td class="total-p">$3,205</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>NSG Cras 1C</td><td>2016</td><td>2</td><td class="offer-p">$1,449</td><td class="mkt-p">$1,200</td><td class="disc-hold">+21%</td><td class="total-p">$2,898</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr class="r-hold"><td>VR Les Chaumes</td><td>2012 (borderline)</td><td>3</td><td class="offer-p">$1,474</td><td class="mkt-p">$1,149</td><td class="disc-hold">+28%</td><td class="total-p">$4,422</td><td><span class="tag t-hold">HOLD</span></td></tr>
+  <tr style="background:#111;height:6px"><td colspan="8"></td></tr>
+  <tr class="r-pass"><td>VR Clos du Chateau</td><td>2009</td><td>6</td><td class="offer-p">$1,346</td><td class="mkt-p">$900</td><td class="disc-neg">+50%</td><td class="total-p">$8,076</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>VR Clos du Chateau</td><td>2012</td><td>6</td><td class="offer-p">$1,538</td><td class="mkt-p">$950</td><td class="disc-neg">+62%</td><td class="total-p">$9,228</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>VR Clos du Chateau Mag</td><td>2012</td><td>1</td><td class="offer-p">$3,462</td><td class="mkt-p">$2,000</td><td class="disc-neg">+73%</td><td class="total-p">$3,462</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>VR Clos du Chateau Mag</td><td>2013</td><td>1</td><td class="offer-p">$3,141</td><td class="mkt-p">$1,800</td><td class="disc-neg">+74%</td><td class="total-p">$3,141</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>VR Clos du Chateau</td><td>2013</td><td>6</td><td class="offer-p">$1,179</td><td class="mkt-p">$900</td><td class="disc-neg">+31%</td><td class="total-p">$7,074</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>VR Suchots</td><td>2011</td><td>3</td><td class="offer-p">$1,795</td><td class="mkt-p">$1,395</td><td class="disc-neg">+29%</td><td class="total-p">$5,385</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>NSG Cras 1C</td><td>2010</td><td>6</td><td class="offer-p">$1,859</td><td class="mkt-p">$1,400</td><td class="disc-neg">+33%</td><td class="total-p">$11,154</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>NSG Lavières</td><td>2012</td><td>3</td><td class="offer-p">$1,282</td><td class="mkt-p">$900</td><td class="disc-neg">+42%</td><td class="total-p">$3,846</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>NSG Lavières</td><td>2016</td><td>2</td><td class="offer-p">$1,346</td><td class="mkt-p">$900</td><td class="disc-neg">+50%</td><td class="total-p">$2,692</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>NSG Blanc Clos GV</td><td>2013</td><td>2</td><td class="offer-p">$1,385</td><td class="mkt-p">$1,000</td><td class="disc-neg">+38%</td><td class="total-p">$2,770</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>NSG Blanc Clos GV</td><td>2014</td><td>2</td><td class="offer-p">$1,385</td><td class="mkt-p">$1,000</td><td class="disc-neg">+38%</td><td class="total-p">$2,770</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>NSG Blanc Clos GV</td><td>2015</td><td>2</td><td class="offer-p">$1,462</td><td class="mkt-p">$1,000</td><td class="disc-neg">+46%</td><td class="total-p">$2,924</td><td><span class="tag t-pass">PASS</span></td></tr>
+  <tr class="r-pass"><td>VR La Colombières (all)</td><td>2014–2017</td><td>13+mag</td><td class="offer-p">$1,308–3,013</td><td class="mkt-p">$900–2,200</td><td class="disc-neg">+35–47%</td><td class="total-p">~$47K</td><td><span class="tag t-pass">PASS</span></td></tr>
+  </tbody>
+</table></div>
 
-<div class="alert danger">
-  <strong>🚨 VERDICT: PASS ALL — if prices are USD per bottle</strong><br>
-  All 66 lines are priced <strong>5.3× to 13.6× above Wine-Searcher market</strong>. No line offers value at face value in USD.
-  Total ask $5.26M vs estimated true market value ~$672K.
-</div>
-
-<div class="two-col">
-  <div class="box">
-    <h3>If prices are HKD ÷ 7.8</h3>
-    <ul>
-      <li><strong>La Romanée 2015:</strong> HKD57,000 → USD7,308 vs market $8,638 = <strong style="color:#4ade80">−15% → BUY ✅</strong></li>
-      <li><strong>La Romanée 2016:</strong> HKD55,000 → USD7,051 vs market $7,757 = <strong style="color:#4ade80">−9% → BUY ✅</strong></li>
-      <li><strong>La Romanée 2017:</strong> HKD48,000 → USD6,154 vs market $6,598 = <strong style="color:#4ade80">−7% → BUY ✅</strong></li>
-      <li><strong>Echezeaux 2014–2016:</strong> ~USD3,000–3,051 vs market ~$3,500 = <strong style="color:#4ade80">−13% → BUY ✅</strong></li>
-      <li><strong>Aux Reignots:</strong> ~USD3,205 vs market $2,882 = slight premium, hold</li>
-      <li><strong>Village/1er Cru:</strong> Still ~1.2–2.0× market even in HKD — <strong style="color:#f87171">PASS</strong></li>
-    </ul>
+<!-- FINAL SUMMARY -->
+<div class="summary-grid">
+  <div class="s-box green">
+    <h3>✅ Recommended — BUY / STRONG BUY</h3>
+    <div class="s-row"><span>La Romanée GC (all vintages)</span><span class="s-val" style="color:#4ade80">18 bt, $172K</span></div>
+    <div class="s-row"><span>Echezeaux GC (all)</span><span class="s-val" style="color:#4ade80">20 bt, $60K</span></div>
+    <div class="s-row"><span>VR Aux Reignots 1C (all)</span><span class="s-val" style="color:#4ade80">16 bt + mags, $68K</span></div>
+    <div class="s-row"><span>VR Suchots 2009/2010/2014</span><span class="s-val" style="color:#4ade80">15 bt, $26K</span></div>
+    <div class="s-row"><span><strong>Subtotal Buy/Strong Buy</strong></span><span class="s-val" style="color:#4ade80"><strong>~$356K USD</strong></span></div>
+    <div class="s-row"><span>vs Market Value</span><span class="s-val" style="color:#4ade80">~$415K → saving ~$59K</span></div>
   </div>
-  <div class="box">
-    <h3>Recommended Counter Offer (if USD)</h3>
-    <ul>
-      <li><strong>La Romanée GC:</strong> Counter at $8,000–10,000/bt (±10% market)</li>
-      <li><strong>Echezeaux GC:</strong> Counter at $3,200–4,000/bt</li>
-      <li><strong>Aux Reignots 1C:</strong> Counter at $2,500–3,000/bt</li>
-      <li><strong>Suchots / Les Chaumes:</strong> Counter at $1,200–1,800/bt</li>
-      <li><strong>Village / Colombières:</strong> Counter at $800–1,200/bt</li>
-      <li><strong>Total fair value ask:</strong> ~$700K–800K for full offer</li>
-    </ul>
+  <div class="s-box red">
+    <h3>❌ Skip — PASS</h3>
+    <div class="s-row"><span>VR Clos du Chateau (all)</span><span class="s-val" style="color:#f87171">+50–74% over market</span></div>
+    <div class="s-row"><span>NSG Cras / Lavières / Blanc</span><span class="s-val" style="color:#f87171">+30–50% over market</span></div>
+    <div class="s-row"><span>VR La Colombières (all sizes)</span><span class="s-val" style="color:#f87171">+35–47% over market</span></div>
+    <div class="s-row"><span>VR Suchots 2011</span><span class="s-val" style="color:#f87171">+29% over market</span></div>
+    <div class="s-row"><span><strong>Subtotal Pass</strong></span><span class="s-val" style="color:#f87171"><strong>~$137K USD (skip)</strong></span></div>
+    <div class="s-row"><span>Overpayment if purchased</span><span class="s-val" style="color:#f87171">~$43K above fair value</span></div>
   </div>
 </div>
 
-<div class="alert warning" style="margin-top:4px">
-  <strong>🔑 Priority Action:</strong> Ask seller "Are these prices in HKD or USD, and is the price per bottle or per case?"
-  If HKD → La Romanée, Echezeaux GC vintages 2015–2017 become compelling buys. All village/1er cru remain overpriced even in HKD.
-</div>
-
-<div class="footer">CLB Full Offer Analysis · 66 lines · Pages 1&2 · RCC / Château de Saigon · April 2026 · Source: Wine-Searcher April 2026</div>
+<div class="footer">CLB Full Offer — HKD÷7.8=USD · 66 Lines · Wine-Searcher Apr 2026 · RCC / Château de Saigon</div>
 </div>
 </body>
 </html>
