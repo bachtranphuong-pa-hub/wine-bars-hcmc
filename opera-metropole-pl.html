@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opera Metropole Thu Thiem — P&L Analysis</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:11pt; line-height:1.6; }
+  .container { max-width:860px; margin:0 auto; padding:24px 16px 48px; }
+
+  .header {
+    background:linear-gradient(140deg,#0d1b2a,#1a1a2e);
+    border-radius:14px; padding:28px 36px; color:white; margin-bottom:20px;
+  }
+  .header .tag { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:8px; }
+  .header h1 { font-size:20pt; font-weight:700; margin-bottom:4px; }
+  .header h1 em { color:#c8a050; font-style:normal; }
+  .header .sub { font-size:10pt; color:rgba(255,255,255,0.5); }
+
+  .card { background:white; border-radius:12px; padding:22px 24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .card h2 { font-size:12pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.5px; }
+
+  table { width:100%; border-collapse:collapse; font-size:10.5pt; }
+  th { background:#0d1b2a; color:#c8a050; padding:9px 12px; text-align:left; font-size:9pt; letter-spacing:0.5px; }
+  td { padding:9px 12px; border-bottom:1px solid #f0f0f0; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#fafafa; }
+  .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .label { color:#555; font-size:9.5pt; }
+
+  .total-row td { font-weight:700; background:#f8f4ec; color:#0d1b2a; border-top:2px solid #c8a050; border-bottom:2px solid #c8a050; }
+  .neg { color:#c0392b; }
+  .pos { color:#16a34a; font-weight:700; }
+  .gold { color:#c8a050; font-weight:700; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:16px; }
+  .kpi { background:white; border-radius:12px; padding:18px 20px; box-shadow:0 2px 8px rgba(0,0,0,0.06); text-align:center; }
+  .kpi .val { font-size:20pt; font-weight:700; color:#c8a050; }
+  .kpi .lbl { font-size:8.5pt; color:#888; text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
+
+  .badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:8.5pt; font-weight:700; }
+  .badge-green { background:#d1fae5; color:#065f46; }
+  .badge-gold { background:#fef3c7; color:#92400e; }
+
+  .footer { text-align:center; font-size:8.5pt; color:#aaa; margin-top:24px; }
+
+  @media (max-width:600px) {
+    .kpi-grid { grid-template-columns:repeat(2,1fr); }
+    .header { padding:20px; }
+    .header h1 { font-size:15pt; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="tag">RCC Investment Analysis · Private</div>
+    <h1>Opera Metropole <em>Thu Thiem</em></h1>
+    <div class="sub">Scenario: Bán 225 tỷ · Nắm giữ ~5 tháng (11/2025 → 4/2026)</div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="val">42.27 tỷ</div>
+      <div class="lbl">Lợi Nhuận Ròng</div>
+    </div>
+    <div class="kpi">
+      <div class="val">65.9%</div>
+      <div class="lbl">ROI (5 tháng)</div>
+    </div>
+    <div class="kpi">
+      <div class="val">~158%</div>
+      <div class="lbl">IRR Annualized</div>
+    </div>
+  </div>
+
+  <!-- P&L -->
+  <div class="card">
+    <h2>📊 P&L — Bán 225 Tỷ</h2>
+    <table>
+      <thead>
+        <tr><th>Hạng Mục</th><th class="num">Số Tiền</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Giá bán</td><td class="num gold">225.00 tỷ</td></tr>
+        <tr><td class="label">− Chi phí bán (1%)</td><td class="num neg">−2.25 tỷ</td></tr>
+        <tr><td class="label">− Giá mua</td><td class="num neg">−177.50 tỷ</td></tr>
+        <tr><td class="label">− Lãi vay (113.38 tỷ × 6.3% × 5/12)</td><td class="num neg">−2.98 tỷ</td></tr>
+        <tr class="total-row"><td>Lợi Nhuận Ròng</td><td class="num pos">42.27 tỷ</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px; font-size:9pt; color:#888;">
+      ROI Project: <strong>65.9%</strong> trên vốn góp 64.12 tỷ &nbsp;|&nbsp;
+      So với mục tiêu 240 tỷ: thấp hơn ~17 điểm % — vẫn là return rất tốt với 5 tháng nắm giữ
+    </div>
+  </div>
+
+  <!-- Member breakdown -->
+  <div class="card">
+    <h2>👥 Phân Bổ Từng Thành Viên</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Thành Viên</th>
+          <th class="num">%</th>
+          <th class="num">Vốn Góp</th>
+          <th class="num">Lãi Vay</th>
+          <th class="num">LN Ròng</th>
+          <th class="num">Tổng Nhận Về</th>
+          <th class="num">ROI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Anh Quang (NDQ)</strong></td>
+          <td class="num">53.17%</td>
+          <td class="num">34.10 tỷ</td>
+          <td class="num neg">1.58 tỷ</td>
+          <td class="num pos">22.47 tỷ</td>
+          <td class="num gold">56.57 tỷ</td>
+          <td class="num"><span class="badge badge-green">65.9%</span></td>
+        </tr>
+        <tr>
+          <td>NHY</td>
+          <td class="num">24.02%</td>
+          <td class="num">15.40 tỷ</td>
+          <td class="num neg">0.71 tỷ</td>
+          <td class="num pos">10.15 tỷ</td>
+          <td class="num gold">25.55 tỷ</td>
+          <td class="num"><span class="badge badge-green">65.9%</span></td>
+        </tr>
+        <tr>
+          <td>Yến Linh + Steve</td>
+          <td class="num">8.58%</td>
+          <td class="num">5.50 tỷ</td>
+          <td class="num neg">0.26 tỷ</td>
+          <td class="num pos">3.62 tỷ</td>
+          <td class="num gold">9.12 tỷ</td>
+          <td class="num"><span class="badge badge-green">65.9%</span></td>
+        </tr>
+        <tr style="background:#fef9ee;">
+          <td><strong>Bach Tran (anh)</strong></td>
+          <td class="num">7.80%</td>
+          <td class="num">5.00 tỷ</td>
+          <td class="num neg">0.23 tỷ</td>
+          <td class="num pos">3.30 tỷ</td>
+          <td class="num gold"><strong>8.30 tỷ</strong></td>
+          <td class="num"><span class="badge badge-gold">65.9%</span></td>
+        </tr>
+        <tr>
+          <td>Thùy Linh</td>
+          <td class="num">4.29%</td>
+          <td class="num">2.75 tỷ</td>
+          <td class="num neg">0.13 tỷ</td>
+          <td class="num pos">1.81 tỷ</td>
+          <td class="num gold">4.56 tỷ</td>
+          <td class="num"><span class="badge badge-green">65.9%</span></td>
+        </tr>
+        <tr>
+          <td>DG</td>
+          <td class="num">2.14%</td>
+          <td class="num">1.375 tỷ</td>
+          <td class="num neg">0.06 tỷ</td>
+          <td class="num pos">0.91 tỷ</td>
+          <td class="num gold">2.28 tỷ</td>
+          <td class="num"><span class="badge badge-green">65.9%</span></td>
+        </tr>
+        <tr class="total-row">
+          <td>TỔNG</td>
+          <td class="num">100%</td>
+          <td class="num">64.125 tỷ</td>
+          <td class="num">2.97 tỷ</td>
+          <td class="num">42.26 tỷ</td>
+          <td class="num">106.38 tỷ</td>
+          <td class="num">65.9%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    RCC Internal · Confidential · April 2026
+  </div>
+</div>
+</body>
+</html>
