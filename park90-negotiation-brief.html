@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Park90 × RCC — Negotiation Brief</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:10.5pt; line-height:1.65; }
+  .container { max-width:900px; margin:0 auto; padding:24px 16px 48px; }
+
+  .header { background:linear-gradient(140deg,#0d1b2a,#1a1a2e); border-radius:14px; padding:28px 36px; color:white; margin-bottom:20px; }
+  .header .tag { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:8px; }
+  .header h1 { font-size:19pt; font-weight:700; margin-bottom:4px; }
+  .header h1 em { color:#c8a050; font-style:normal; }
+  .header .sub { font-size:9.5pt; color:rgba(255,255,255,0.5); }
+
+  .card { background:white; border-radius:12px; padding:22px 26px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .card h2 { font-size:11pt; font-weight:700; color:#0d1b2a; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.5px; padding-bottom:8px; border-bottom:2px solid #f0f0f0; }
+
+  /* Issue cards */
+  .issue { border-left:4px solid #e5e7eb; padding:14px 16px; margin-bottom:14px; border-radius:0 8px 8px 0; background:#fafafa; }
+  .issue.red    { border-left-color:#c0392b; background:#fff8f8; }
+  .issue.orange { border-left-color:#d97706; background:#fffbf0; }
+  .issue.green  { border-left-color:#16a34a; background:#f0fdf4; }
+  .issue .issue-hdr { font-weight:700; font-size:10pt; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+  .issue .current { font-size:9pt; color:#666; margin-bottom:8px; }
+  .issue .current strong { color:#c0392b; }
+
+  /* Proposal boxes */
+  .proposals { display:flex; flex-direction:column; gap:8px; }
+  .prop { border-radius:8px; padding:11px 14px; }
+  .prop.p1 { background:#e0f2fe; border-left:3px solid #0284c7; }
+  .prop.p2 { background:#dcfce7; border-left:3px solid #16a34a; }
+  .prop.p3 { background:#fef9c3; border-left:3px solid #ca8a04; }
+  .prop .prop-label { font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#555; margin-bottom:4px; }
+  .prop .prop-text { font-size:10pt; }
+  .prop .prop-rationale { font-size:9pt; color:#666; margin-top:4px; font-style:italic; }
+  .prop .prop-ask { font-weight:700; color:#0d1b2a; }
+
+  /* Cash flow impact table */
+  table { width:100%; border-collapse:collapse; font-size:9.5pt; }
+  th { background:#0d1b2a; color:#c8a050; padding:8px 12px; text-align:left; font-size:8.5pt; }
+  th.r { text-align:right; }
+  td { padding:8px 12px; border-bottom:1px solid #f0f0f0; }
+  td.r { text-align:right; font-variant-numeric:tabular-nums; }
+  tr.total td { font-weight:700; background:#f8f4ec; border-top:2px solid #c8a050; }
+  tr:hover td { background:#fafafa; }
+  .neg { color:#c0392b; font-weight:600; }
+  .pos { color:#16a34a; font-weight:600; }
+  .gold { color:#c8a050; font-weight:700; }
+
+  /* Priority badges */
+  .badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:7.5pt; font-weight:700; margin-left:6px; }
+  .badge-red    { background:#fee2e2; color:#991b1b; }
+  .badge-orange { background:#fef3c7; color:#92400e; }
+  .badge-green  { background:#d1fae5; color:#065f46; }
+  .badge-blue   { background:#dbeafe; color:#1e40af; }
+
+  /* Walk-away box */
+  .walkaway { background:#0d1b2a; border-radius:10px; padding:18px 22px; color:white; margin-top:16px; }
+  .walkaway h3 { color:#c8a050; font-size:10.5pt; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; }
+  .walkaway ul { padding-left:18px; }
+  .walkaway li { font-size:10pt; color:rgba(255,255,255,0.85); margin-bottom:6px; }
+
+  .summary-box { background:#f8f4ec; border:2px solid #c8a050; border-radius:10px; padding:16px 20px; margin-top:16px; }
+  .summary-box h3 { color:#0d1b2a; font-size:10.5pt; font-weight:700; margin-bottom:10px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .note { font-size:8.5pt; color:#888; font-style:italic; margin-top:8px; }
+
+  .footer { text-align:center; font-size:8pt; color:#aaa; margin-top:24px; }
+
+  @media (max-width:640px) {
+    .two-col { grid-template-columns:1fr; }
+    .header { padding:20px; }
+    .header h1 { font-size:15pt; }
+  }
+  @media print {
+    body { background:white; }
+    .card { box-shadow:none; page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="tag">RCC Internal · Confidential · April 2026</div>
+    <h1>Park90 × <em>RCC Saigon</em></h1>
+    <div style="font-size:12pt; color:#c8a050; font-weight:600; margin-bottom:4px;">Term Sheet — Negotiation Brief & Counter-Proposals</div>
+    <div class="sub">Mục tiêu: Giảm cash outflow M1–M6 · Tăng alignment với Park90 · Protect downside</div>
+  </div>
+
+  <!-- CURRENT TERMS SUMMARY -->
+  <div class="card">
+    <h2>📋 Current Draft Terms — Cash Flow Pressure Points</h2>
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Draft Term</th><th class="r">Cash Out (tỷ VND)</th><th>Timing</th><th>Risk Level</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>One-Off License Fee</strong></td>
+          <td>USD 250,000 — lump sum</td>
+          <td class="r neg">6.55</td>
+          <td>M1 (signing)</td>
+          <td><span class="badge badge-red">HIGH</span></td>
+        </tr>
+        <tr>
+          <td><strong>Initial Inventory (Phase 1)</strong></td>
+          <td>Full payment before pick-up</td>
+          <td class="r neg">3.93</td>
+          <td>M1</td>
+          <td><span class="badge badge-red">HIGH</span></td>
+        </tr>
+        <tr>
+          <td><strong>Initial Inventory (Phase 2)</strong></td>
+          <td>Full payment before pick-up</td>
+          <td class="r neg">3.93</td>
+          <td>M3</td>
+          <td><span class="badge badge-orange">MED</span></td>
+        </tr>
+        <tr>
+          <td><strong>Annual License Fee (ongoing)</strong></td>
+          <td>2.5% GTO, min $2,500/mo</td>
+          <td class="r">0.066/tháng min</td>
+          <td>Monthly</td>
+          <td><span class="badge badge-green">LOW</span></td>
+        </tr>
+        <tr>
+          <td><strong>Subsequent inventory</strong></td>
+          <td>Full prepay (high value) OR 30/60 days</td>
+          <td class="r">Variable</td>
+          <td>Ongoing</td>
+          <td><span class="badge badge-orange">MED</span></td>
+        </tr>
+        <tr class="total">
+          <td>Total M1 Cash Out (worst case)</td>
+          <td></td>
+          <td class="r neg">10.48 tỷ (~$400K)</td>
+          <td>M1</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">⚠️ M1 cash requirement ~$400K là áp lực lớn trước khi venue generate bất kỳ revenue nào. Break-even EBITDA dự kiến M6 (Base Case).</p>
+  </div>
+
+  <!-- NEGOTIATION PROPOSALS -->
+  <div class="card">
+    <h2>🤝 Đề Xuất Đàm Phán — 4 Điểm Ưu Tiên</h2>
+
+    <!-- ISSUE 1: LICENSE FEE -->
+    <div class="issue red">
+      <div class="issue-hdr">
+        1️⃣ One-Off License Fee (USD 250K)
+        <span class="badge badge-red">Priority: HIGH</span>
+      </div>
+      <div class="current">Draft: <strong>Lump sum $250K tại thời điểm ký hợp đồng</strong> — không có điều kiện hoàn trả nếu venue không khai trương được.</div>
+      <div class="proposals">
+        <div class="prop p1">
+          <div class="prop-label">Phương án 1 — Stage Payment (Ưu tiên)</div>
+          <div class="prop-text"><span class="prop-ask">$50K ký hợp đồng → $100K khi khai trương → $100K tại M12 (sau 1 năm hoạt động)</span></div>
+          <div class="prop-rationale">Rationale: Gắn payment với milestone thực tế. Nếu venue delay hoặc không đạt KPI, RCC không mất toàn bộ upfront. Park90 vẫn nhận đủ $250K nhưng theo tiến độ thực tế.</div>
+        </div>
+        <div class="prop p2">
+          <div class="prop-label">Phương án 2 — Giảm Fee + Revenue Kicker</div>
+          <div class="prop-text"><span class="prop-ask">Giảm upfront fee xuống $150K + thêm 0.5% GTO (total 3%) trong 3 năm đầu thay vì lấy thêm upfront</span></div>
+          <div class="prop-rationale">Rationale: Park90 nhận nhiều hơn nếu venue thành công (aligned interests), RCC giảm được rủi ro upfront. Tổng value tương đương nếu revenue đạt $2M+/năm.</div>
+        </div>
+        <div class="prop p3">
+          <div class="prop-label">Phương án 3 — Refundable Escrow</div>
+          <div class="prop-text"><span class="prop-ask">$250K vào escrow account, Park90 draw-down theo milestone: design approval → soft opening → 6 tháng KPI đạt</span></div>
+          <div class="prop-rationale">Rationale: Bảo vệ RCC nếu Park90 không deliver cam kết (training, wine supply, activations). Phổ biến trong franchise F&B.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ISSUE 2: INITIAL INVENTORY -->
+    <div class="issue red">
+      <div class="issue-hdr">
+        2️⃣ Initial Inventory — Full Prepayment Before Pick-up
+        <span class="badge badge-red">Priority: HIGH</span>
+      </div>
+      <div class="current">Draft: <strong>Full payment trước khi nhận hàng</strong> — $150K M1 + $150K M3 = $300K tied up trong wine trước khi bán được 1 chai.</div>
+      <div class="proposals">
+        <div class="prop p1">
+          <div class="prop-label">Phương án 1 — Consignment Model (Tốt nhất)</div>
+          <div class="prop-text"><span class="prop-ask">Park90 consign 30–40% inventory (entry-level & BTG wines). RCC chỉ thanh toán khi sold. Phần premium/rare vẫn prepay.</span></div>
+          <div class="prop-rationale">Rationale: Giảm ~$90–120K cash locked-up. BTG wines (daily movers) phù hợp nhất với consignment vì sell-through nhanh và Park90 có incentive đẩy sales. Precedent: nhiều wine distributors SG đang làm model này với MICE hotels.</div>
+        </div>
+        <div class="prop p2">
+          <div class="prop-label">Phương án 2 — Extended Credit 90 Days</div>
+          <div class="prop-text"><span class="prop-ask">Negotiate 90-day credit term cho initial loading thay vì prepay. Draw-down $100K/tháng trong 3 tháng đầu.</span></div>
+          <div class="prop-rationale">Rationale: Phù hợp với ramp-up revenue. M3 đã có ~1.5–2 tỷ GTO tích lũy → đủ cash flow để trả inventory. Park90 vẫn secure vì inventory là collateral.</div>
+        </div>
+        <div class="prop p3">
+          <div class="prop-label">Phương án 3 — Phased Loading Nhỏ Hơn</div>
+          <div class="prop-text"><span class="prop-ask">Start với 500 bottles (~$50K) thay vì 1,500 bottles. Scale mỗi quarter dựa trên sell-through rate thực tế.</span></div>
+          <div class="prop-rationale">Rationale: Giảm capital at risk, validate demand trước khi commit full $300K. SKU target giảm từ 300–500 xuống 100–150 references đầu tiên.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ISSUE 3: ANNUAL LICENSE FEE -->
+    <div class="issue orange">
+      <div class="issue-hdr">
+        3️⃣ Annual License Fee — Minimum Floor $30K/year
+        <span class="badge badge-orange">Priority: MEDIUM</span>
+      </div>
+      <div class="current">Draft: <strong>2.5% GTO, minimum $30K/yr ($2,500/mo)</strong> — payable from M1 kể cả trước khi khai trương.</div>
+      <div class="proposals">
+        <div class="prop p1">
+          <div class="prop-label">Phương án 1 — Fee Holiday 6 Tháng Đầu (Ưu tiên)</div>
+          <div class="prop-text"><span class="prop-ask">Waive minimum fee trong 6 tháng đầu từ ngày khai trương. Chỉ trả 2.5% GTO thực tế (no floor) trong ramp-up period.</span></div>
+          <div class="prop-rationale">Rationale: Standard trong franchise F&B — licensor waive minimum trong ramp-up để licensee không bị choked trước khi venue establish. Saves RCC ~$15K ($393M VND) trong 6 tháng đầu.</div>
+        </div>
+        <div class="prop p2">
+          <div class="prop-label">Phương án 2 — Giảm Minimum Year 1</div>
+          <div class="prop-text"><span class="prop-ask">Min fee: Year 1 = $15K, Year 2 = $22.5K, Year 3 = $30K (step-up)</span></div>
+          <div class="prop-rationale">Rationale: Aligned với revenue ramp. Dễ accept hơn cho Park90 vì vẫn có guaranteed minimum — chỉ là scaled theo thực tế.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ISSUE 4: PROFIT SHARE -->
+    <div class="issue orange">
+      <div class="issue-hdr">
+        4️⃣ RCC Profit Share — Chưa Có Trong Term Sheet
+        <span class="badge badge-orange">Priority: MEDIUM — Cần Insert</span>
+      </div>
+      <div class="current">Draft: <strong>Không mention % profit về cho RCC</strong> sau khi Barson nhận 20% revenue share. RCC chỉ thấy: license fees + COGS — không có explicit return mechanism.</div>
+      <div class="proposals">
+        <div class="prop p1">
+          <div class="prop-label">Phương án 1 — Insert Profit Participation Clause</div>
+          <div class="prop-text"><span class="prop-ask">RCC nhận: (a) 80% net revenue sau COGS, trừ license fees và opex. Hoặc rõ hơn: RCC = operator, lấy full EBITDA sau các deductions đã thỏa thuận.</span></div>
+          <div class="prop-rationale">Rationale: Termsheet hiện tại không explicit. Cần insert clause: "Licensee retains 100% of net operating profit after payment of License Fees, Wine Supply costs, and agreed operating expenses." — để tránh tranh chấp sau này.</div>
+        </div>
+        <div class="prop p2">
+          <div class="prop-label">Phương án 2 — Management Fee Structure</div>
+          <div class="prop-text"><span class="prop-ask">Nếu Barson là co-operator: RCC nhận management fee 5% GTO + 30% EBITDA split sau break-even</span></div>
+          <div class="prop-rationale">Rationale: Phù hợp nếu Barson đóng vai trò nhiều hơn (staff, ops). Cần clarify Barson's role ngoài việc cung cấp mặt bằng.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASH FLOW COMPARISON -->
+  <div class="card">
+    <h2>💰 Cash Flow Impact — Draft vs. Đề Xuất Tốt Nhất</h2>
+    <table>
+      <thead>
+        <tr><th>Tháng</th><th>Draft Terms (tỷ VND)</th><th>Proposed Terms (tỷ VND)</th><th class="r">Saving</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>M1</strong></td>
+          <td class="neg">−10.48 (license $250K + inventory $150K)</td>
+          <td>−2.62 (license $50K stage + inventory $50K consign)</td>
+          <td class="r pos">+7.86</td>
+        </tr>
+        <tr>
+          <td><strong>M2</strong></td>
+          <td>−0.066 (min license fee)</td>
+          <td>0 (fee holiday)</td>
+          <td class="r pos">+0.066</td>
+        </tr>
+        <tr>
+          <td><strong>M3</strong></td>
+          <td class="neg">−3.93 (inventory phase 2 prepay)</td>
+          <td>−1.31 (consignment + 90-day credit)</td>
+          <td class="r pos">+2.62</td>
+        </tr>
+        <tr>
+          <td><strong>M4–M6</strong></td>
+          <td>−0.20 (license fees × 3)</td>
+          <td>0 (fee holiday)</td>
+          <td class="r pos">+0.20</td>
+        </tr>
+        <tr>
+          <td><strong>Opening (est. M4–M5)</strong></td>
+          <td>−6.55 nếu chưa pay đủ</td>
+          <td>−2.62 (stage 2 of license)</td>
+          <td class="r pos">+3.93</td>
+        </tr>
+        <tr class="total">
+          <td>Total Cash Saved M1–M6</td>
+          <td class="neg">Draft: −21.2 tỷ (~$810K)</td>
+          <td class="pos">Proposed: −6.55 tỷ (~$250K)</td>
+          <td class="r pos">+14.65 tỷ</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">* Proposed scenario dùng: License stage payment + Consignment 40% inventory + 90-day credit + Fee holiday 6 tháng đầu.</p>
+  </div>
+
+  <!-- NEGOTIATION STRATEGY -->
+  <div class="card">
+    <h2>🎯 Chiến Lược Đàm Phán</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="font-size:10pt; font-weight:700; color:#0d1b2a; margin-bottom:10px;">Leverage của RCC</h3>
+        <ul style="padding-left:16px; font-size:9.5pt; line-height:1.8;">
+          <li>Vietnam là <strong>new market cho Park90</strong> — cần local partner credible</li>
+          <li>RCC cung cấp <strong>access qua Barson venue đã established</strong> — không phải greenfield</li>
+          <li>Barson Q1/2026 avg 1.43 tỷ/tháng = <strong>~$65K/mo existing GTO</strong> — Park90 immediately gets 2.5% trên số này</li>
+          <li>RCC network: LMSG, other properties = <strong>pipeline cho Park90 Vietnam expansion</strong></li>
+          <li>$250K upfront fee là <strong>high ask cho market-entry deal</strong> — comparable: most F&B franchises in VN take $50–100K initial fee</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:10pt; font-weight:700; color:#0d1b2a; margin-bottom:10px;">Concessions RCC Có Thể Offer</h3>
+        <ul style="padding-left:16px; font-size:9.5pt; line-height:1.8;">
+          <li><strong>ROFR cho Park90</strong> mở rộng sang property thứ 2 của RCC nếu Saigon đạt KPI</li>
+          <li><strong>Tăng minimum inventory commitment</strong> nếu có credit terms (e.g., commit $400K total nếu Park90 cho 90-day)</li>
+          <li><strong>Exclusive territory</strong> rights cho Park90 model trong RCC portfolio</li>
+          <li><strong>Co-marketing commitment</strong>: RCC đưa Park90 vào LMSG member benefits</li>
+          <li>Chấp nhận <strong>annual audit rights</strong> cho Park90 (đã có trong draft)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="summary-box" style="margin-top:16px;">
+      <h3>🎯 Recommended Opening Position</h3>
+      <table style="margin-top:8px;">
+        <thead>
+          <tr><th>Term</th><th>Draft</th><th>RCC Counter</th><th>Likely Settlement</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>One-off License Fee</td>
+            <td class="neg">$250K lump sum at signing</td>
+            <td><strong>$50K sign + $100K open + $100K M12</strong></td>
+            <td>$75K sign + $175K open</td>
+          </tr>
+          <tr>
+            <td>Initial Inventory</td>
+            <td class="neg">100% prepay before pick-up</td>
+            <td><strong>40% consignment + 60% 90-day credit</strong></td>
+            <td>30% consignment + 70% 60-day credit</td>
+          </tr>
+          <tr>
+            <td>Annual Min Fee</td>
+            <td class="neg">$30K/yr from M1</td>
+            <td><strong>Fee holiday 6 tháng + step-up Year 1 $15K</strong></td>
+            <td>Fee holiday 3 tháng + $20K Year 1 min</td>
+          </tr>
+          <tr>
+            <td>RCC Profit Retention</td>
+            <td class="neg">Not specified</td>
+            <td><strong>Insert: "Licensee retains 100% net op. profit"</strong></td>
+            <td>Should be accepted — just a clarification</td>
+          </tr>
+          <tr>
+            <td>Subsequent Inventory</td>
+            <td>30/60 days (some items)</td>
+            <td><strong>90 days standard, 30 days only for Grand Cru+</strong></td>
+            <td>60 days standard</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="walkaway" style="margin-top:14px;">
+      <h3>🚫 Walk-Away Conditions</h3>
+      <ul>
+        <li>Park90 insists on <strong>full $250K upfront tại signing</strong> AND full inventory prepay → total M1 outflow >$400K không acceptable</li>
+        <li>Không có <strong>exit clause rõ ràng</strong> nếu venue không đạt KPI sau 12 tháng (cần put/call option hoặc early termination right)</li>
+        <li>Park90 không chấp nhận <strong>refund bất kỳ phần nào của license fee</strong> nếu họ không deliver cam kết trong term sheet (training, activations, wine supply)</li>
+        <li>Không có <strong>exclusivity</strong> cho RCC — Park90 sign thêm competitor venue trong 5km trong năm 1</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    Park90 × RCC Negotiation Brief · RCC Internal · Confidential · April 2026<br>
+    Source: P90_Saigon_draft_terms_clean.docx · Analysis: Zera / RCC
+  </div>
+
+</div>
+</body>
+</html>
