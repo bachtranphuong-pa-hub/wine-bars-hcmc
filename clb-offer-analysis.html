@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comte Liger-Belair — Offer vs Market Analysis</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#0d0d0d;color:#e8e0d0;font-size:10pt;line-height:1.65}
+  .container{max-width:1100px;margin:0 auto;padding:28px 16px 52px}
+
+  .header{text-align:center;padding:40px 32px 32px;margin-bottom:24px;position:relative}
+  .header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(139,90,43,0.15) 0%,transparent 70%);pointer-events:none}
+  .header .estate{font-size:8pt;letter-spacing:5px;text-transform:uppercase;color:#c8a050;margin-bottom:10px}
+  .header h1{font-size:22pt;font-weight:300;letter-spacing:2px;margin-bottom:4px}
+  .header h1 strong{font-weight:700;color:#c8a050}
+  .header .sub{font-size:9pt;color:#666;letter-spacing:1.5px;text-transform:uppercase;margin-top:6px}
+  .divider{width:50px;height:1px;background:linear-gradient(90deg,transparent,#c8a050,transparent);margin:14px auto}
+
+  .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#222;border-radius:10px;overflow:hidden;margin-bottom:22px}
+  .kpi{background:#141414;padding:16px 14px;text-align:center}
+  .kpi .val{font-size:14pt;font-weight:700;color:#c8a050;line-height:1}
+  .kpi .lbl{font-size:7pt;color:#666;text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
+  .kpi.hl{background:#1a1400}
+  .kpi.good{background:#0d1f0d}
+  .kpi.bad{background:#1f0d0d}
+
+  .section-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;margin-top:20px}
+  .section-hdr h2{font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#c8a050;white-space:nowrap}
+  .section-hdr .line{flex:1;height:1px;background:#2a2a2a}
+
+  .tbl-wrap{overflow-x:auto;margin-bottom:8px}
+  table{width:100%;border-collapse:collapse;font-size:8.5pt}
+  thead tr{border-bottom:1px solid #c8a050}
+  th{padding:9px 10px;text-align:right;font-size:7.5pt;text-transform:uppercase;letter-spacing:.5px;color:#888;font-weight:600;background:#111;white-space:nowrap}
+  th:first-child{text-align:left;min-width:260px}
+  th.c{text-align:center}
+  td{padding:8px 10px;border-bottom:1px solid #1a1a1a;text-align:right;vertical-align:middle}
+  td:first-child{text-align:left;font-size:9pt}
+  tr:hover td{background:#161616}
+  tr.section-sep td{background:#111;color:#888;font-size:8pt;text-transform:uppercase;letter-spacing:1px;padding:6px 10px;font-weight:700}
+
+  .buy{background:rgba(22,163,74,0.18)!important;border-left:3px solid #16a34a}
+  .hold{background:rgba(200,160,80,0.1)!important;border-left:3px solid #c8a050}
+  .pass{background:rgba(192,57,43,0.12)!important;border-left:3px solid #c0392b}
+
+  .tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:7pt;font-weight:700;white-space:nowrap}
+  .tag-buy{background:rgba(22,163,74,0.25);color:#4ade80}
+  .tag-hold{background:rgba(200,160,80,0.2);color:#c8a050}
+  .tag-pass{background:rgba(192,57,43,0.2);color:#f87171}
+  .tag-strong{background:rgba(22,163,74,0.4);color:#4ade80;font-size:8pt}
+
+  .disc-pos{color:#4ade80;font-weight:700}
+  .disc-neg{color:#f87171;font-weight:700}
+  .offer-price{color:#e8e0d0;font-weight:600}
+  .market-price{color:#888}
+  .total-col{color:#c8a050;font-weight:700}
+
+  .rec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+  .rec-box{border-radius:10px;padding:16px 18px}
+  .rec-box.strong-buy{background:#0d1f0d;border:1px solid #16a34a}
+  .rec-box.buy-box{background:#101a10;border:1px solid #2d6a2d}
+  .rec-box.pass-box{background:#1f0d0d;border:1px solid #6a2d2d}
+  .rec-box h3{font-size:8pt;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .rec-box.strong-buy h3{color:#4ade80}
+  .rec-box.buy-box h3{color:#86efac}
+  .rec-box.pass-box h3{color:#f87171}
+  .rec-item{font-size:8.5pt;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:#aaa}
+  .rec-item:last-child{border-bottom:none}
+  .rec-item .wine{color:#e8e0d0}
+  .rec-item .disc{font-weight:700;margin-left:4px}
+
+  .note{font-size:8pt;color:#444;font-style:italic;text-align:center;margin-top:12px}
+  .footer{text-align:center;font-size:7.5pt;color:#333;margin-top:28px;letter-spacing:1px;text-transform:uppercase}
+
+  @media(max-width:768px){
+    .kpi-strip{grid-template-columns:repeat(2,1fr)}
+    .rec-grid{grid-template-columns:1fr}
+  }
+  @media print{body{background:white;color:#111}.header::before{display:none}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="estate">Vosne-Romanée · Côte de Nuits · Bourgogne</div>
+  <h1>Domaine du <strong>Comte Liger-Belair</strong></h1>
+  <div class="divider"></div>
+  <div class="sub">Offer vs. Market Price Analysis · April 2026 · 40 Lines · USD</div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="val">40</div>
+    <div class="lbl">Offer Lines</div>
+  </div>
+  <div class="kpi hl">
+    <div class="val">$3,632,600</div>
+    <div class="lbl">Total Offer Value</div>
+  </div>
+  <div class="kpi good">
+    <div class="val">16</div>
+    <div class="lbl">Strong Buy (≥20% disc)</div>
+  </div>
+  <div class="kpi">
+    <div class="val">14</div>
+    <div class="lbl">Buy (0–20% disc)</div>
+  </div>
+  <div class="kpi bad">
+    <div class="val">10</div>
+    <div class="lbl">Pass (above market)</div>
+  </div>
+</div>
+
+<!-- MAIN TABLE -->
+<div class="section-hdr"><h2>Full Offer — Price Check</h2><div class="line"></div></div>
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Wine</th>
+      <th>Vint.</th>
+      <th>Size</th>
+      <th>Qty</th>
+      <th>Offer/bt</th>
+      <th>Market/bt</th>
+      <th>Disc %</th>
+      <th>Line Total</th>
+      <th class="c">Signal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- LA ROMANEE GC -->
+    <tr class="section-sep"><td colspan="9">LA ROMANÉE GRAND CRU — Monopole · Most exclusive Burgundy after DRC Romanée-Conti</td></tr>
+    <tr class="buy">
+      <td>La Romanée GC</td><td>2009</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$50,000</td><td class="market-price">$7,387</td>
+      <td class="disc-neg">+577%</td><td class="total-col">$300,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>La Romanée GC</td><td>2010</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$57,000</td><td class="market-price">$9,655–$11,795</td>
+      <td class="disc-neg">+383%</td><td class="total-col">$342,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>La Romanée GC</td><td>2011</td><td>75cl</td><td>2</td>
+      <td class="offer-price">$45,000</td><td class="market-price">$4,604–$7,725</td>
+      <td class="disc-neg">+482%</td><td class="total-col">$90,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>La Romanée GC Mag</td><td>2011</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$97,500</td><td class="market-price">~$20,000</td>
+      <td class="disc-neg">+388%</td><td class="total-col">$97,500</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>La Romanée GC</td><td>2012</td><td>75cl</td><td>2</td>
+      <td class="offer-price">$46,700</td><td class="market-price">$6,398–$6,536</td>
+      <td class="disc-neg">+617%</td><td class="total-col">$93,400</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>La Romanée GC Mag</td><td>2012</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$100,000</td><td class="market-price">~$18,000</td>
+      <td class="disc-neg">+456%</td><td class="total-col">$100,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>La Romanée GC</td><td>2013</td><td>75cl</td><td>2</td>
+      <td class="offer-price">$48,000</td><td class="market-price">$6,818–$7,400</td>
+      <td class="disc-neg">+549%</td><td class="total-col">$96,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>La Romanée GC Mag</td><td>2013</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$95,000</td><td class="market-price">~$20,000</td>
+      <td class="disc-neg">+375%</td><td class="total-col">$95,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+
+    <!-- ECHEZEAUX GC -->
+    <tr class="section-sep"><td colspan="9">ÉCHEZEAUX GRAND CRU</td></tr>
+    <tr class="buy">
+      <td>Echezeaux GC</td><td>2009</td><td>75cl</td><td>4</td>
+      <td class="offer-price">$23,000</td><td class="market-price">~$3,500–4,500</td>
+      <td class="disc-neg">+411%</td><td class="total-col">$92,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Echezeaux GC</td><td>2010</td><td>75cl</td><td>2</td>
+      <td class="offer-price">$19,800</td><td class="market-price">~$3,200–4,000</td>
+      <td class="disc-neg">+395%</td><td class="total-col">$39,600</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Echezeaux GC</td><td>2011</td><td>75cl</td><td>2</td>
+      <td class="offer-price">$18,500</td><td class="market-price">~$2,800–3,500</td>
+      <td class="disc-neg">+428%</td><td class="total-col">$37,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Echezeaux GC Mag</td><td>2012</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$54,800</td><td class="market-price">~$8,000</td>
+      <td class="disc-neg">+585%</td><td class="total-col">$54,800</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Echezeaux GC</td><td>2013</td><td>75cl</td><td>2</td>
+      <td class="offer-price">$22,800</td><td class="market-price">~$3,000–3,800</td>
+      <td class="disc-neg">+500%</td><td class="total-col">$45,600</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Echezeaux GC Mag</td><td>2013</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$46,000</td><td class="market-price">~$8,500</td>
+      <td class="disc-neg">+441%</td><td class="total-col">$46,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+
+    <!-- AUX REIGNOTS 1ER CRU -->
+    <tr class="section-sep"><td colspan="9">VOSNE-ROMANÉE 1ER CRU AUX REIGNOTS — avg market ~$2,882/bt</td></tr>
+    <tr class="buy">
+      <td>Vosne Romanée Aux Reignots</td><td>2009</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$18,000</td><td class="market-price">~$2,882</td>
+      <td class="disc-neg">+524%</td><td class="total-col">$108,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Vosne Romanée Aux Reignots</td><td>2010</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$23,800</td><td class="market-price">~$3,200</td>
+      <td class="disc-neg">+644%</td><td class="total-col">$71,400</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Vosne Romanée Aux Reignots Mag</td><td>2010</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$49,000</td><td class="market-price">~$6,500</td>
+      <td class="disc-neg">+654%</td><td class="total-col">$49,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Vosne Romanée Aux Reignots</td><td>2011</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$14,000</td><td class="market-price">~$2,600</td>
+      <td class="disc-neg">+438%</td><td class="total-col">$42,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Vosne Romanée Aux Reignots Mag</td><td>2011</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$35,000</td><td class="market-price">~$5,800</td>
+      <td class="disc-neg">+503%</td><td class="total-col">$35,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Vosne Romanée Aux Reignots Mag</td><td>2012</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$40,000</td><td class="market-price">~$6,000</td>
+      <td class="disc-neg">+567%</td><td class="total-col">$40,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="pass">
+      <td>Vosne Romanée Aux Reignots Mag</td><td>2013</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$41,000</td><td class="market-price">~$6,000</td>
+      <td class="disc-neg">+583%</td><td class="total-col">$41,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+
+    <!-- LES CHAUMES -->
+    <tr class="section-sep"><td colspan="9">VOSNE-ROMANÉE 1ER CRU LES CHAUMES — avg market ~$1,149–1,786/bt</td></tr>
+    <tr class="hold">
+      <td>Vosne Romanée Les Chaumes</td><td>2009</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$12,200</td><td class="market-price">~$1,500</td>
+      <td class="disc-neg">+713%</td><td class="total-col">$73,200</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Les Chaumes</td><td>2010</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$13,900</td><td class="market-price">~$1,571</td>
+      <td class="disc-neg">+785%</td><td class="total-col">$83,400</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Les Chaumes</td><td>2012</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$11,500</td><td class="market-price">~$1,149</td>
+      <td class="disc-neg">+901%</td><td class="total-col">$34,500</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Les Chaumes</td><td>2013</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$12,500</td><td class="market-price">~$1,786</td>
+      <td class="disc-neg">+600%</td><td class="total-col">$37,500</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+
+    <!-- SUCHOTS -->
+    <tr class="section-sep"><td colspan="9">VOSNE-ROMANÉE 1ER CRU LES SUCHOTS — avg market ~$1,395–2,100/bt</td></tr>
+    <tr class="hold">
+      <td>Vosne Romanée Suchots</td><td>2009</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$14,000</td><td class="market-price">~$1,800</td>
+      <td class="disc-neg">+678%</td><td class="total-col">$84,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Suchots</td><td>2010</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$14,300</td><td class="market-price">~$1,900</td>
+      <td class="disc-neg">+653%</td><td class="total-col">$85,800</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Suchots</td><td>2011</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$14,000</td><td class="market-price">~$1,395</td>
+      <td class="disc-neg">+904%</td><td class="total-col">$42,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Suchots</td><td>2012</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$14,000</td><td class="market-price">~$1,500</td>
+      <td class="disc-neg">+833%</td><td class="total-col">$42,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Suchots</td><td>2013</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$15,000</td><td class="market-price">~$1,600</td>
+      <td class="disc-neg">+838%</td><td class="total-col">$45,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+
+    <!-- CLOS DU CHATEAU -->
+    <tr class="section-sep"><td colspan="9">VOSNE-ROMANÉE CLOS DU CHÂTEAU — Village/monopole ~$800–1,200/bt</td></tr>
+    <tr class="hold">
+      <td>Vosne Romanée Clos du Chateau</td><td>2009</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$10,500</td><td class="market-price">~$900</td>
+      <td class="disc-neg">+1,067%</td><td class="total-col">$63,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Clos du Chateau</td><td>2012</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$12,000</td><td class="market-price">~$950</td>
+      <td class="disc-neg">+1,163%</td><td class="total-col">$72,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Clos du Chateau Mag</td><td>2012</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$27,000</td><td class="market-price">~$2,000</td>
+      <td class="disc-neg">+1,250%</td><td class="total-col">$27,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Clos du Chateau Mag</td><td>2013</td><td>150cl</td><td>1</td>
+      <td class="offer-price">$24,500</td><td class="market-price">~$1,800</td>
+      <td class="disc-neg">+1,261%</td><td class="total-col">$24,500</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée Clos du Chateau</td><td>2013</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$9,200</td><td class="market-price">~$900</td>
+      <td class="disc-neg">+922%</td><td class="total-col">$55,200</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+
+    <!-- OTHERS -->
+    <tr class="section-sep"><td colspan="9">OTHERS — NSG Cras, NSG Lavières, NSG Blanc, La Colombières</td></tr>
+    <tr class="hold">
+      <td>Nuits St Georges 1C Cras</td><td>2010</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$14,500</td><td class="market-price">~$1,200–1,600</td>
+      <td class="disc-neg">+806%</td><td class="total-col">$87,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Nuits St Georges Les Lavières</td><td>2012</td><td>75cl</td><td>3</td>
+      <td class="offer-price">$10,000</td><td class="market-price">~$800–1,000</td>
+      <td class="disc-neg">+900%</td><td class="total-col">$30,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>NSG Blanc Clos des Grandes Vignes</td><td>2013</td><td>75cl</td><td>2</td>
+      <td class="offer-price">$10,800</td><td class="market-price">~$800–1,200</td>
+      <td class="disc-neg">+800%</td><td class="total-col">$21,600</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+    <tr class="hold">
+      <td>Vosne Romanée La Colombières</td><td>2014</td><td>75cl</td><td>6</td>
+      <td class="offer-price">$11,000</td><td class="market-price">~$900–1,100</td>
+      <td class="disc-neg">+900%</td><td class="total-col">$66,000</td>
+      <td><span class="tag tag-pass">PASS</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- RECOMMENDATION -->
+<div class="section-hdr" style="margin-top:28px"><h2>⚠️ Analysis & Recommendation</h2><div class="line"></div></div>
+
+<div style="background:#1a1a1a;border-radius:12px;padding:20px 24px;margin-bottom:20px;border:1px solid #333">
+  <div style="font-size:12pt;font-weight:700;color:#f87171;margin-bottom:12px">🚨 VERDICT: PASS ON ENTIRE OFFER</div>
+  <p style="font-size:9.5pt;color:#aaa;line-height:1.8;margin-bottom:12px">
+    Every single line in this offer is priced <strong style="color:#f87171">4× to 13× above current market value</strong> on Wine-Searcher.
+    This is not a "premium" offer — the pricing is disconnected from reality for all tiers:
+  </p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-size:9pt">
+    <div>
+      <div style="color:#c8a050;font-weight:700;margin-bottom:8px">La Romanée GC (most egregious)</div>
+      <div style="color:#888;line-height:1.9">
+        Market: $6,400–$11,800/bottle<br>
+        Offered at: $45,000–$57,000/bottle<br>
+        <strong style="color:#f87171">Premium: 375–617% above market</strong><br>
+        Even as DRC Romanée-Conti trades ~$20–25K, La Romanée at $50K+ is unjustifiable
+      </div>
+    </div>
+    <div>
+      <div style="color:#c8a050;font-weight:700;margin-bottom:8px">Village / 1er Cru (worst value)</div>
+      <div style="color:#888;line-height:1.9">
+        Les Chaumes, Suchots, Clos du Chateau market: $800–$2,100/bt<br>
+        Offered at: $9,200–$15,000/bottle<br>
+        <strong style="color:#f87171">Premium: 600–1,261% above market</strong><br>
+        Village-tier wines priced higher than some Grand Cru competitors
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#111;border-radius:10px;padding:16px 20px;border:1px solid #2a2a2a;margin-bottom:20px">
+  <div style="font-size:10pt;font-weight:700;color:#c8a050;margin-bottom:10px">💡 Possible Explanations</div>
+  <div style="font-size:9pt;color:#888;line-height:1.9">
+    1. <strong style="color:#e8e0d0">HKD pricing mislabeled as USD</strong> — If these are HKD prices, divide by ~7.8 to get USD → La Romanée would be ~$6,400–$7,300, which aligns with market<br>
+    2. <strong style="color:#e8e0d0">Jeroboam/case pricing</strong> — If "Offer" column is per-case (6×75cl), not per bottle, all prices immediately make sense<br>
+    3. <strong style="color:#e8e0d0">Grey market Asia premium</strong> — HK/SG premium collectors sometimes pay 2–3× for ex-cellar allocation, but not 10×<br>
+    4. <strong style="color:#e8e0d0">Intentional markup for negotiation</strong> — Seller expecting 50–70% counter-offer
+  </div>
+</div>
+
+<div style="background:#0d1f0d;border-radius:10px;padding:16px 20px;border:1px solid #16a34a;margin-bottom:12px">
+  <div style="font-size:10pt;font-weight:700;color:#4ade80;margin-bottom:10px">✅ Action Items Before Deciding</div>
+  <div style="font-size:9pt;color:#86efac;line-height:1.9">
+    1. <strong>Confirm currency</strong> — Ask seller if offer is USD or HKD (if HKD, divide all by 7.8 → entire offer becomes market-reasonable)<br>
+    2. <strong>Confirm unit</strong> — Is "Offer" price per bottle or per case (6 bottles)?<br>
+    3. <strong>If HKD:</strong> La Romanée 2009 @ HKD 50,000 = USD 6,410 → <span style="color:#4ade80">STRONG BUY</span> vs market $7,387<br>
+    4. <strong>If USD per bottle:</strong> Counter at 10–15% of asking price — this entire offer should be $800–$11,000/bt range
+  </div>
+</div>
+
+<p class="note">Market data: Wine-Searcher avg April 2026. Prices ex-tax, ex-delivery. CLB La Romanée is monopole — ~4,000–5,000 bottles/year total production.</p>
+<div class="footer">Comte Liger-Belair Offer Analysis · RCC / Château de Saigon · April 2026</div>
+</div>
+</body>
+</html>
