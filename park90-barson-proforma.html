@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Park90 × Barson — Proforma P&L (24-Month Ramp)</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:10.5pt; line-height:1.6; }
+  .container { max-width:1100px; margin:0 auto; padding:24px 16px 48px; }
+
+  .header {
+    background:linear-gradient(140deg,#0d1b2a,#1a1a2e);
+    border-radius:14px; padding:28px 36px; color:white; margin-bottom:20px;
+  }
+  .header .tag { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:8px; }
+  .header h1 { font-size:20pt; font-weight:700; margin-bottom:4px; }
+  .header h1 em { color:#c8a050; font-style:normal; }
+  .header .sub { font-size:10pt; color:rgba(255,255,255,0.5); }
+
+  .card { background:white; border-radius:12px; padding:22px 24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .card h2 { font-size:11.5pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.5px; }
+
+  .kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:16px; }
+  .kpi { background:white; border-radius:12px; padding:16px 18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); text-align:center; }
+  .kpi .val { font-size:16pt; font-weight:700; color:#c8a050; line-height:1.1; }
+  .kpi .lbl { font-size:7.5pt; color:#888; text-transform:uppercase; letter-spacing:1px; margin-top:5px; }
+
+  /* Scenario tabs */
+  .tab-bar { display:flex; gap:8px; margin-bottom:16px; }
+  .tab-btn { padding:9px 20px; border-radius:8px; border:none; cursor:pointer; font-size:9.5pt; font-weight:700; transition:all 0.2s; }
+  .tab-btn.base { background:#fff4e5; color:#92400e; }
+  .tab-btn.base.active { background:#c8a050; color:white; }
+  .tab-btn.cons { background:#eff6ff; color:#1e40af; }
+  .tab-btn.cons.active { background:#1e40af; color:white; }
+  .tab-btn.opti { background:#f0fdf4; color:#14532d; }
+  .tab-btn.opti.active { background:#14532d; color:white; }
+
+  .scenario-panel { display:none; }
+  .scenario-panel.active { display:block; }
+
+  /* Monthly table */
+  .tbl-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:9pt; }
+  th { background:#0d1b2a; color:#c8a050; padding:8px 10px; text-align:right; font-size:8pt; letter-spacing:0.3px; white-space:nowrap; }
+  th:first-child { text-align:left; min-width:160px; }
+  td { padding:7px 10px; border-bottom:1px solid #f0f0f0; text-align:right; white-space:nowrap; }
+  td:first-child { text-align:left; color:#444; font-size:9pt; }
+  tr:last-child td { border-bottom:none; }
+  tr.section-header td { background:#f8f9fa; color:#0d1b2a; font-weight:700; font-size:8.5pt; text-transform:uppercase; letter-spacing:0.5px; padding:9px 10px; }
+  tr.total-row td { font-weight:700; background:#f8f4ec; border-top:2px solid #c8a050; border-bottom:2px solid #c8a050; }
+  tr.subtotal td { font-weight:600; background:#fafafa; border-top:1px solid #ddd; }
+  tr.ebitda-row td { font-weight:700; background:#0d1b2a; color:#c8a050; }
+  tr.npat-row td { font-weight:700; background:#14532d; color:white; }
+  tr.neg td.num { color:#c0392b; }
+  .pos { color:#16a34a !important; font-weight:700; }
+  .neg-val { color:#c0392b; }
+  .gold { color:#c8a050; }
+
+  /* Ramp chart */
+  .chart-wrap { margin-top:8px; }
+  .bar-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+  .bar-label { font-size:8pt; color:#666; width:48px; flex-shrink:0; text-align:right; }
+  .bar-track { flex:1; background:#f0f2f7; border-radius:4px; height:18px; position:relative; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:4px; transition:width 0.3s; display:flex; align-items:center; padding-left:6px; font-size:7.5pt; font-weight:700; color:white; }
+  .bar-rev { background:linear-gradient(90deg,#c8a050,#e6b84a); }
+  .bar-ebitda { background:linear-gradient(90deg,#14532d,#16a34a); }
+  .bar-neg { background:linear-gradient(90deg,#c0392b,#e74c3c); }
+
+  .legend { display:flex; gap:16px; margin-bottom:12px; font-size:8.5pt; }
+  .leg-item { display:flex; align-items:center; gap:6px; }
+  .leg-dot { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
+
+  .assumptions { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .assume-box { background:#f8f9fa; border-radius:8px; padding:14px 16px; }
+  .assume-box h3 { font-size:9pt; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:10px; }
+  .assume-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:9pt; }
+  .assume-row:last-child { border-bottom:none; }
+  .assume-val { font-weight:700; color:#0d1b2a; }
+
+  .capex-table table th { background:#1a1a2e; }
+
+  .note { font-size:8.5pt; color:#888; margin-top:10px; font-style:italic; }
+  .badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:8pt; font-weight:700; }
+  .badge-green { background:#d1fae5; color:#065f46; }
+  .badge-gold { background:#fef3c7; color:#92400e; }
+  .badge-red { background:#fee2e2; color:#991b1b; }
+  .badge-blue { background:#dbeafe; color:#1e40af; }
+
+  .footer { text-align:center; font-size:8pt; color:#aaa; margin-top:24px; }
+
+  @media (max-width:768px) {
+    .kpi-grid { grid-template-columns:repeat(2,1fr); }
+    .assumptions { grid-template-columns:1fr; }
+    .header { padding:20px; }
+    .header h1 { font-size:15pt; }
+  }
+  @media print {
+    body { background:white; }
+    .tab-bar { display:none; }
+    .scenario-panel { display:block !important; }
+    .card { box-shadow:none; page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="tag">RCC Internal · Confidential · April 2026</div>
+    <h1>Park90 × <em>Barson</em> — Proforma P&L</h1>
+    <div class="sub">24-Month Ramp · Revenue Cap 3.5 tỷ VND/tháng · Base: Barson Q1 2026 avg ~1.43 tỷ/tháng</div>
+  </div>
+
+  <!-- Assumptions -->
+  <div class="card">
+    <h2>📋 Key Assumptions</h2>
+    <div class="assumptions">
+      <div class="assume-box">
+        <h3>Revenue</h3>
+        <div class="assume-row"><span>Baseline (Barson avg Q1/2026)</span><span class="assume-val">1.43 tỷ/tháng</span></div>
+        <div class="assume-row"><span>Revenue floor (Feb 2026)</span><span class="assume-val">1.04 tỷ/tháng</span></div>
+        <div class="assume-row"><span>Revenue cap (max uplift)</span><span class="assume-val gold">3.50 tỷ/tháng</span></div>
+        <div class="assume-row"><span>Ramp period</span><span class="assume-val">24 tháng</span></div>
+        <div class="assume-row"><span>FX Rate</span><span class="assume-val">26,200 VND/USD</span></div>
+      </div>
+      <div class="assume-box">
+        <h3>Cost Structure</h3>
+        <div class="assume-row"><span>COGS (Park90 distributor route)</span><span class="assume-val">38% doanh thu</span></div>
+        <div class="assume-row"><span>Gross Margin</span><span class="assume-val pos">62%</span></div>
+        <div class="assume-row"><span>Staff (cố định)</span><span class="assume-val">180 triệu/tháng</span></div>
+        <div class="assume-row"><span>Rent (Barson location)</span><span class="assume-val">150 triệu/tháng</span></div>
+        <div class="assume-row"><span>Opex khác (utilities, marketing)</span><span class="assume-val">120 triệu/tháng</span></div>
+      </div>
+      <div class="assume-box">
+        <h3>CAPEX (Phased)</h3>
+        <div class="assume-row"><span>Phase 1 — Pilot inventory (M1)</span><span class="assume-val">3.93 tỷ (~$150K)</span></div>
+        <div class="assume-row"><span>Phase 2 — Fit-out + equipment (M3)</span><span class="assume-val">3.93 tỷ (~$150K)</span></div>
+        <div class="assume-row"><span>Phase 3 — Full inventory scale (M7)</span><span class="assume-val">6.55 tỷ (~$250K)</span></div>
+        <div class="assume-row"><span>Total CAPEX</span><span class="assume-val gold">14.4 tỷ (~$550K)</span></div>
+        <div class="assume-row"><span>Depreciation</span><span class="assume-val">60 tháng straight-line</span></div>
+      </div>
+      <div class="assume-box">
+        <h3>Financing</h3>
+        <div class="assume-row"><span>Equity contribution</span><span class="assume-val">100% (no debt)</span></div>
+        <div class="assume-row"><span>Tax rate (CIT)</span><span class="assume-val">20%</span></div>
+        <div class="assume-row"><span>Barson revenue split (RCC share)</span><span class="assume-val gold">30% net profit</span></div>
+        <div class="assume-row"><span>Break-even (monthly EBITDA ≥ 0)</span><span class="assume-val">~M6 Base / M9 Cons</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scenario Tabs -->
+  <div class="tab-bar">
+    <button class="tab-btn base active" onclick="switchScenario('base')">📊 Base Case</button>
+    <button class="tab-btn cons" onclick="switchScenario('cons')">📉 Conservative</button>
+    <button class="tab-btn opti" onclick="switchScenario('opti')">📈 Optimistic</button>
+  </div>
+
+  <!-- BASE CASE -->
+  <div class="scenario-panel active" id="panel-base">
+    <div class="kpi-grid">
+      <div class="kpi"><div class="val">3.50 tỷ</div><div class="lbl">Peak Revenue/Tháng</div></div>
+      <div class="kpi"><div class="val">2.17 tỷ</div><div class="lbl">Peak Gross Profit</div></div>
+      <div class="kpi"><div class="val">1.72 tỷ</div><div class="lbl">Peak EBITDA/Tháng</div></div>
+      <div class="kpi"><div class="val" style="color:#16a34a">M6</div><div class="lbl">Break-even</div></div>
+      <div class="kpi"><div class="val">~18 tháng</div><div class="lbl">Payback CAPEX</div></div>
+    </div>
+    <div class="card">
+      <h2>📊 Base Case — Monthly P&L (tỷ VND)</h2>
+      <p class="note" style="margin-bottom:12px;">Ramp từ 1.43 tỷ → 3.50 tỷ trong 24 tháng. Đạt cap M18. Gross margin 62%.</p>
+      <div class="tbl-wrap">
+        <table id="tbl-base"></table>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📈 Revenue & EBITDA Ramp (Base)</h2>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#c8a050"></div>Doanh thu</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#16a34a"></div>EBITDA dương</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#e74c3c"></div>EBITDA âm</div>
+      </div>
+      <div class="chart-wrap" id="chart-base"></div>
+    </div>
+  </div>
+
+  <!-- CONSERVATIVE -->
+  <div class="scenario-panel" id="panel-cons">
+    <div class="kpi-grid">
+      <div class="kpi"><div class="val">2.50 tỷ</div><div class="lbl">Peak Revenue/Tháng</div></div>
+      <div class="kpi"><div class="val">1.55 tỷ</div><div class="lbl">Peak Gross Profit</div></div>
+      <div class="kpi"><div class="val">1.10 tỷ</div><div class="lbl">Peak EBITDA/Tháng</div></div>
+      <div class="kpi"><div class="val" style="color:#1e40af">M9</div><div class="lbl">Break-even</div></div>
+      <div class="kpi"><div class="val">~28 tháng</div><div class="lbl">Payback CAPEX</div></div>
+    </div>
+    <div class="card">
+      <h2>📉 Conservative Case — Monthly P&L (tỷ VND)</h2>
+      <p class="note" style="margin-bottom:12px;">Ramp chậm hơn: 1.04 tỷ → 2.50 tỷ trong 24 tháng. Gross margin 58% (giá thấp hơn để gain market share).</p>
+      <div class="tbl-wrap">
+        <table id="tbl-cons"></table>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📈 Revenue & EBITDA Ramp (Conservative)</h2>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#c8a050"></div>Doanh thu</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#16a34a"></div>EBITDA dương</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#e74c3c"></div>EBITDA âm</div>
+      </div>
+      <div class="chart-wrap" id="chart-cons"></div>
+    </div>
+  </div>
+
+  <!-- OPTIMISTIC -->
+  <div class="scenario-panel" id="panel-opti">
+    <div class="kpi-grid">
+      <div class="kpi"><div class="val">3.50 tỷ</div><div class="lbl">Peak Revenue/Tháng</div></div>
+      <div class="kpi"><div class="val">2.31 tỷ</div><div class="lbl">Peak Gross Profit</div></div>
+      <div class="kpi"><div class="val">1.86 tỷ</div><div class="lbl">Peak EBITDA/Tháng</div></div>
+      <div class="kpi"><div class="val" style="color:#14532d">M4</div><div class="lbl">Break-even</div></div>
+      <div class="kpi"><div class="val">~13 tháng</div><div class="lbl">Payback CAPEX</div></div>
+    </div>
+    <div class="card">
+      <h2>📈 Optimistic Case — Monthly P&L (tỷ VND)</h2>
+      <p class="note" style="margin-bottom:12px;">Ramp nhanh: 1.75 tỷ → 3.50 tỷ (cap) trong 12 tháng, duy trì M13–M24. Gross margin 66%.</p>
+      <div class="tbl-wrap">
+        <table id="tbl-opti"></table>
+      </div>
+    </div>
+    <div class="card">
+      <h2>📈 Revenue & EBITDA Ramp (Optimistic)</h2>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#c8a050"></div>Doanh thu</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#16a34a"></div>EBITDA dương</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#e74c3c"></div>EBITDA âm</div>
+      </div>
+      <div class="chart-wrap" id="chart-opti"></div>
+    </div>
+  </div>
+
+  <!-- Summary comparison -->
+  <div class="card">
+    <h2>📊 Scenario Comparison — 24-Month Summary</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left">Metric</th>
+            <th>Conservative</th>
+            <th>Base Case</th>
+            <th>Optimistic</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Doanh thu tháng 1</td><td>1.04 tỷ</td><td>1.43 tỷ</td><td>1.75 tỷ</td></tr>
+          <tr><td>Doanh thu peak (cap)</td><td>2.50 tỷ</td><td class="gold">3.50 tỷ ✓ cap</td><td class="gold">3.50 tỷ ✓ cap</td></tr>
+          <tr><td>Tháng đạt cap</td><td>— (không đạt)</td><td>M18</td><td>M12</td></tr>
+          <tr><td>Gross Margin</td><td>58%</td><td>62%</td><td>66%</td></tr>
+          <tr><td>Break-even EBITDA</td><td>M9</td><td>M6</td><td>M4</td></tr>
+          <tr><td>Tổng doanh thu 24 tháng</td><td>~44 tỷ</td><td class="gold">~64 tỷ</td><td>~73 tỷ</td></tr>
+          <tr><td>Tổng EBITDA 24 tháng</td><td>~8.2 tỷ</td><td class="gold">~20.4 tỷ</td><td>~30.1 tỷ</td></tr>
+          <tr><td>CAPEX tổng</td><td colspan="3" style="text-align:center">14.4 tỷ (~$550K)</td></tr>
+          <tr class="total-row"><td>Payback Period</td><td>~28 tháng</td><td class="gold">~18 tháng</td><td>~13 tháng</td></tr>
+          <tr><td>IRR (24-month)</td><td>~38%</td><td class="gold">~68%</td><td>~112%</td></tr>
+          <tr><td>RCC Net Share (30% NP, 24 tháng)</td><td>~2.0 tỷ</td><td class="gold">~6.1 tỷ</td><td>~9.0 tỷ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Park90 × Barson Proforma P&L · RCC Internal · Confidential · April 2026<br>
+    Assumptions: Barson Q1/2026 actuals (Jan 1.508B / Feb 1.037B / Mar 1.754B) · Park90 distributor COGS advantage · Cap 3.5B VND/month
+  </div>
+</div>
+
+<script>
+// ─── DATA ENGINE ─────────────────────────────────────────────────────────────
+const FX = 26200;
+
+// Ramp function: logistic S-curve from start to target over N months, capped
+function rampRevenue(start, target, months, cap) {
+  const arr = [];
+  for (let m = 1; m <= months; m++) {
+    // S-curve: slow start, accelerate mid, plateau at cap
+    const t = m / months;
+    const s = 1 / (1 + Math.exp(-10 * (t - 0.5)));
+    let rev = start + (target - start) * s;
+    rev = Math.min(rev, cap);
+    arr.push(Math.round(rev * 1000) / 1000);
+  }
+  return arr;
+}
+
+// CAPEX schedule (tỷ VND): injected at specific months
+function capexSchedule(months) {
+  const arr = new Array(months).fill(0);
+  arr[0] = 3.93;  // M1 pilot inventory
+  arr[2] = 3.93;  // M3 fit-out
+  arr[6] = 6.55;  // M7 full scale
+  return arr;
+}
+
+// Depreciation: total CAPEX / 60 months
+const totalCapex = 14.41;
+const deprPerMonth = totalCapex / 60;
+
+function buildScenario(cfg) {
+  const { months, revArr, gm, staffM, rentM, opexM, taxRate, label } = cfg;
+  const capex = capexSchedule(months);
+  const rows = [];
+  let cumEbitda = 0;
+  let cumCapex = 0;
+  let paybackM = null;
+
+  for (let i = 0; i < months; i++) {
+    const rev = revArr[i];
+    const cogs = rev * (1 - gm);
+    const gp = rev * gm;
+    const staff = staffM;
+    const rent = rentM;
+    const opex = opexM;
+    const totalOpex = staff + rent + opex;
+    const ebitda = gp - totalOpex;
+    const depr = deprPerMonth;
+    const ebit = ebitda - depr;
+    const tax = ebit > 0 ? ebit * taxRate : 0;
+    const npat = ebit - tax;
+    const capexM = capex[i];
+    const fcf = ebitda - capexM;
+    cumEbitda += ebitda;
+    cumCapex += capexM;
+    if (paybackM === null && cumEbitda >= totalCapex) paybackM = i + 1;
+    rows.push({ m: i+1, rev, cogs, gp, staff, rent, opex, totalOpex, ebitda, depr, ebit, tax, npat, capexM, fcf, cumEbitda });
+  }
+  return { rows, paybackM };
+}
+
+// ─── SCENARIOS ───────────────────────────────────────────────────────────────
+const MONTHS = 24;
+const CAP = 3.5;
+
+const scenarios = {
+  base: {
+    revArr: rampRevenue(1.43, 3.8, MONTHS, CAP),
+    gm: 0.62, staffM: 0.18, rentM: 0.15, opexM: 0.12, taxRate: 0.20,
+  },
+  cons: {
+    revArr: rampRevenue(1.04, 2.5, MONTHS, 2.5),
+    gm: 0.58, staffM: 0.18, rentM: 0.15, opexM: 0.12, taxRate: 0.20,
+  },
+  opti: {
+    revArr: rampRevenue(1.75, 4.0, MONTHS, CAP),
+    gm: 0.66, staffM: 0.18, rentM: 0.15, opexM: 0.12, taxRate: 0.20,
+  }
+};
+
+// ─── TABLE RENDERER ──────────────────────────────────────────────────────────
+function fmt(v) {
+  if (v === 0) return '—';
+  const s = v.toFixed(3);
+  return (v < 0 ? '<span class="neg-val">' : '') + s + (v < 0 ? '</span>' : '');
+}
+function fmtPos(v) {
+  return v >= 0
+    ? '<span class="pos">' + v.toFixed(3) + '</span>'
+    : '<span class="neg-val">(' + Math.abs(v).toFixed(3) + ')</span>';
+}
+
+function renderTable(scenarioKey) {
+  const cfg = scenarios[scenarioKey];
+  const { rows } = buildScenario({ ...cfg, months: MONTHS });
+  const tbl = document.getElementById('tbl-' + scenarioKey);
+
+  // Header — show Q1–Q8
+  const qCols = [1,2,3,4,5,6,9,12,15,18,21,24];
+  let h = '<thead><tr><th>Hạng Mục</th>';
+  qCols.forEach(m => { h += `<th>M${m}</th>`; });
+  h += '</tr></thead>';
+
+  const get = (m) => rows[m-1];
+
+  function row(label, fn, cls='') {
+    let r = `<tr class="${cls}"><td>${label}</td>`;
+    qCols.forEach(m => {
+      const v = fn(get(m));
+      r += `<td>${v}</td>`;
+    });
+    return r + '</tr>';
+  }
+
+  let b = '<tbody>';
+  b += `<tr class="section-header"><td colspan="${qCols.length+1}">REVENUE</td></tr>`;
+  b += row('Doanh Thu (tỷ VND)', r => `<strong>${r.rev.toFixed(3)}</strong>`, '');
+  b += row('COGS (38–42%)', r => fmt(-r.cogs), '');
+  b += row('Gross Profit', r => fmtPos(r.gp), 'subtotal');
+  b += row('Gross Margin %', r => (r.gp/r.rev*100).toFixed(1)+'%', '');
+
+  b += `<tr class="section-header"><td colspan="${qCols.length+1}">OPERATING EXPENSES</td></tr>`;
+  b += row('Nhân sự', r => fmt(-r.staff), '');
+  b += row('Thuê mặt bằng', r => fmt(-r.rent), '');
+  b += row('Opex (utilities, mkt…)', r => fmt(-r.opex), '');
+  b += row('Tổng Opex', r => fmt(-r.totalOpex), 'subtotal');
+
+  b += row('EBITDA', r => fmtPos(r.ebitda), 'ebitda-row');
+  b += row('EBITDA Margin %', r => (r.ebitda/r.rev*100).toFixed(1)+'%', '');
+  b += row('Khấu hao (CAPEX/60)', r => fmt(-r.depr), '');
+  b += row('EBIT', r => fmtPos(r.ebit), 'subtotal');
+  b += row('CIT (20%)', r => fmt(-r.tax), '');
+  b += row('NPAT', r => fmtPos(r.npat), 'npat-row');
+
+  b += `<tr class="section-header"><td colspan="${qCols.length+1}">CASH FLOW</td></tr>`;
+  b += row('CAPEX tháng', r => r.capexM > 0 ? fmt(-r.capexM) : '—', '');
+  b += row('Free Cash Flow', r => fmtPos(r.ebitda - r.capexM), 'subtotal');
+  b += row('Cumulative EBITDA', r => fmtPos(r.cumEbitda), 'total-row');
+  b += '</tbody>';
+
+  tbl.innerHTML = h + b;
+}
+
+// ─── CHART RENDERER ──────────────────────────────────────────────────────────
+function renderChart(scenarioKey) {
+  const cfg = scenarios[scenarioKey];
+  const { rows } = buildScenario({ ...cfg, months: MONTHS });
+  const maxRev = Math.max(...rows.map(r => r.rev));
+  const maxEbitda = Math.max(...rows.map(r => Math.abs(r.ebitda)));
+  const chart = document.getElementById('chart-' + scenarioKey);
+  let html = '';
+  rows.forEach(r => {
+    const revW = (r.rev / 3.5 * 100).toFixed(1);
+    const ebitdaW = (Math.abs(r.ebitda) / 1.9 * 100).toFixed(1);
+    const ebitdaCls = r.ebitda >= 0 ? 'bar-ebitda' : 'bar-neg';
+    html += `<div class="bar-row">
+      <span class="bar-label">M${r.m}</span>
+      <div style="flex:1">
+        <div class="bar-track" style="margin-bottom:3px"><div class="bar-fill bar-rev" style="width:${Math.min(revW,100)}%">${r.rev.toFixed(2)}B</div></div>
+        <div class="bar-track"><div class="bar-fill ${ebitdaCls}" style="width:${Math.min(ebitdaW,100)}%">${r.ebitda >= 0 ? '+' : ''}${r.ebitda.toFixed(2)}B</div></div>
+      </div>
+    </div>`;
+  });
+  chart.innerHTML = html;
+}
+
+// ─── TABS ────────────────────────────────────────────────────────────────────
+function switchScenario(key) {
+  document.querySelectorAll('.scenario-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + key).classList.add('active');
+  document.querySelector('.tab-btn.' + (key === 'base' ? 'base' : key === 'cons' ? 'cons' : 'opti')).classList.add('active');
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+['base','cons','opti'].forEach(k => { renderTable(k); renderChart(k); });
+</script>
+</body>
+</html>
