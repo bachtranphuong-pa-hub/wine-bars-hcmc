@@ -3,208 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LMSG Brand Scoring Tool</title>
+<title>LMSG F&B Concept Scoring Tool</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:11pt; line-height:1.6; }
-  .container { max-width:960px; margin:0 auto; padding:24px 16px; }
+  .container { max-width:980px; margin:0 auto; padding:24px 16px 48px; }
 
   /* HEADER */
   .header {
     background:linear-gradient(140deg,#0d1b2a,#1a1a2e);
-    border-radius:14px; padding:28px 32px; color:white; margin-bottom:20px;
+    border-radius:14px; padding:28px 36px; color:white; margin-bottom:20px;
   }
   .header .tag { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:8px; }
-  .header h1 { font-size:20pt; font-weight:700; line-height:1.2; margin-bottom:6px; }
+  .header h1 { font-size:20pt; font-weight:700; margin-bottom:6px; }
   .header h1 em { color:#c8a050; font-style:normal; }
-  .header .sub { font-size:10pt; color:rgba(255,255,255,0.55); }
+  .header .sub { font-size:10pt; color:rgba(255,255,255,0.5); }
 
-  /* IDENTITY FORM */
-  .id-card { background:white; border-radius:12px; padding:22px 24px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .id-card h2 { font-size:13pt; font-weight:700; color:#0d1b2a; margin-bottom:14px; }
+  /* IDENTITY */
+  .card { background:white; border-radius:12px; padding:22px 24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .card h2 { font-size:13pt; font-weight:700; color:#0d1b2a; margin-bottom:14px; }
   .id-row { display:flex; gap:14px; flex-wrap:wrap; }
   .id-field { flex:1; min-width:160px; }
-  .id-field label { font-size:9pt; text-transform:uppercase; letter-spacing:1px; color:#888; display:block; margin-bottom:5px; font-weight:600; }
+  .id-field label { font-size:8.5pt; text-transform:uppercase; letter-spacing:1px; color:#888; display:block; margin-bottom:5px; font-weight:600; }
   .id-field input, .id-field select {
     width:100%; padding:9px 12px; border:2px solid #e5e7eb; border-radius:8px;
     font-size:11pt; color:#1a1a2e; outline:none; transition:border-color 0.2s;
+    background:white;
   }
   .id-field input:focus, .id-field select:focus { border-color:#c8a050; }
 
-  /* INSTRUCTIONS */
-  .instr { background:#eff6ff; border-left:4px solid #3b82f6; border-radius:0 10px 10px 0; padding:14px 18px; margin-bottom:18px; }
-  .instr h4 { color:#1d4ed8; font-size:10pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-  .scale-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
-  .scale-pill { padding:4px 12px; border-radius:12px; font-size:9pt; font-weight:700; }
-  .sp1 { background:#fee2e2; color:#dc2626; }
-  .sp2 { background:#fef3c7; color:#b45309; }
-  .sp3 { background:#dbeafe; color:#1d4ed8; }
-  .sp4 { background:#d1fae5; color:#059669; }
-  .sp5 { background:#ede9fe; color:#6d28d9; }
-  .spna { background:#f3f4f6; color:#9ca3af; }
-
-  /* BRAND TABS */
-  .brand-tabs { display:flex; gap:8px; margin-bottom:0; flex-wrap:wrap; }
-  .brand-tab {
-    padding:9px 16px; border-radius:10px 10px 0 0; cursor:pointer; font-size:10pt; font-weight:700;
-    border:2px solid transparent; border-bottom:none; transition:all 0.2s; user-select:none;
+  /* CATEGORY TABS */
+  .tab-bar { display:flex; gap:0; margin-bottom:0; overflow-x:auto; }
+  .tab-btn {
+    flex:1; min-width:120px; padding:11px 10px; border:none; cursor:pointer;
+    font-size:9pt; font-weight:700; letter-spacing:0.5px;
+    border-radius:10px 10px 0 0; transition:all 0.2s; white-space:nowrap;
+    border-bottom:3px solid transparent;
   }
-  .brand-tab.active { color:white; }
-  .brand-tab[data-brand="hakkasan"] { background:#fff8f0; color:#c2410c; }
-  .brand-tab[data-brand="hakkasan"].active { background:#c2410c; color:white; }
-  .brand-tab[data-brand="ling"] { background:#faf5ff; color:#7c3aed; }
-  .brand-tab[data-brand="ling"].active { background:#7c3aed; color:white; }
-  .brand-tab[data-brand="dishoom"] { background:#eff6ff; color:#1d4ed8; }
-  .brand-tab[data-brand="dishoom"].active { background:#1d4ed8; color:white; }
-  .brand-tab[data-brand="barbaard"] { background:#f0fdf4; color:#15803d; }
-  .brand-tab[data-brand="barbaard"].active { background:#15803d; color:white; }
-  .brand-tab[data-brand="madison"] { background:#fdf8ef; color:#b45309; }
-  .brand-tab[data-brand="madison"].active { background:#b45309; color:white; }
-  .brand-tab[data-brand="park90"] { background:#fff1f1; color:#7f1d1d; }
-  .brand-tab[data-brand="park90"].active { background:#7f1d1d; color:white; }
+  .tab-btn.t-cn { background:#fff4f0; color:#9a1800; }
+  .tab-btn.t-cn.active { background:#9a1800; color:white; border-bottom-color:#9a1800; }
+  .tab-btn.t-in { background:#eff6ff; color:#1e3a8a; }
+  .tab-btn.t-in.active { background:#1e3a8a; color:white; }
+  .tab-btn.t-we { background:#f0fdf4; color:#14532d; }
+  .tab-btn.t-we.active { background:#14532d; color:white; }
+  .tab-btn.t-jp { background:#fdf4ff; color:#581c87; }
+  .tab-btn.t-jp.active { background:#581c87; color:white; }
+  .tab-btn.t-wt { background:#fefce8; color:#713f12; }
+  .tab-btn.t-wt.active { background:#713f12; color:white; }
 
-  /* SCORING PANELS */
-  .scoring-wrap { background:white; border-radius:0 12px 12px 12px; padding:24px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .brand-panel { display:none; }
-  .brand-panel.active { display:block; }
+  /* SCORING PANEL */
+  .panel-wrap { background:white; border-radius:0 0 12px 12px; padding:24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .cat-panel { display:none; }
+  .cat-panel.active { display:block; }
 
-  .brand-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:12px; }
-  .brand-title { }
-  .brand-title h3 { font-size:15pt; font-weight:700; margin-bottom:4px; }
-  .brand-title .btype { font-size:9pt; text-transform:uppercase; letter-spacing:1.5px; font-weight:700; padding:3px 10px; border-radius:10px; }
-  .brand-score-display {
-    background:#f8f5ff; border:2px solid #8b5cf6; border-radius:12px;
-    padding:12px 20px; text-align:center; min-width:120px;
+  .cat-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+  .cat-title h3 { font-size:15pt; font-weight:700; margin-bottom:3px; }
+  .cat-title .examples { font-size:8.5pt; color:#888; font-style:italic; }
+  .score-display {
+    text-align:center; padding:12px 20px; border-radius:12px; min-width:110px;
+    border:2px solid #e5e7eb;
   }
-  .bsd-label { font-size:8pt; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:4px; }
-  .bsd-score { font-size:26pt; font-weight:700; color:#8b5cf6; line-height:1; }
-  .bsd-max { font-size:9pt; color:#aaa; }
+  .sd-label { font-size:8pt; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:4px; }
+  .sd-val { font-size:26pt; font-weight:700; line-height:1; }
+  .sd-max { font-size:9pt; color:#aaa; }
 
-  /* CRITERION ROW */
-  .crit-section { margin-bottom:20px; }
-  .crit-section-title {
+  /* GROUP HEADER */
+  .grp-header {
     background:#f8f5ff; border-radius:8px; padding:8px 14px;
     font-size:9pt; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:#6d28d9;
-    margin-bottom:12px;
+    margin:18px 0 12px;
   }
-  .crit-row {
-    display:flex; gap:14px; align-items:flex-start; padding:12px 0;
-    border-bottom:1px solid #f0f0f0;
-  }
+
+  /* CRITERION ROW */
+  .crit-row { padding:14px 0; border-bottom:1px solid #f0f0f0; }
   .crit-row:last-child { border-bottom:none; }
-  .crit-info { flex:1; }
-  .crit-name { font-size:11pt; font-weight:700; color:#0d1b2a; margin-bottom:3px; }
-  .crit-desc { font-size:9.5pt; color:#666; line-height:1.5; }
-  .crit-guide { margin-top:8px; }
-  .crit-guide details summary {
-    font-size:9pt; color:#3b82f6; cursor:pointer; font-weight:600;
-    list-style:none; display:flex; align-items:center; gap:4px;
+  .crit-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+  .crit-info { flex:1; min-width:200px; }
+  .crit-name { font-size:11pt; font-weight:700; color:#0d1b2a; margin-bottom:2px; }
+  .crit-code { font-size:8pt; text-transform:uppercase; letter-spacing:1px; color:#c8a050; font-weight:700; margin-right:8px; }
+  .crit-wt { font-size:8pt; color:#aaa; }
+  .crit-desc { font-size:9.5pt; color:#666; line-height:1.5; margin-top:3px; }
+  .zera-ref { font-size:8.5pt; margin-top:6px; display:flex; align-items:center; gap:6px; }
+  .zera-badge { display:inline-block; padding:1px 7px; border-radius:5px; font-size:7.5pt; font-weight:700; background:#1a1a2e; color:#c8a050; }
+  .zera-note { color:#888; font-style:italic; }
+
+  /* STAR RATING */
+  .star-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:4px; min-width:160px; }
+  .stars { display:flex; gap:4px; direction:rtl; }
+  .stars input[type=radio] { display:none; }
+  .stars label {
+    font-size:24pt; cursor:pointer; color:#e5e7eb; transition:color 0.15s;
+    line-height:1; padding:0 2px;
   }
-  .crit-guide details summary::before { content:'▸'; transition:transform 0.2s; }
-  .crit-guide details[open] summary::before { content:'▾'; }
-  .guide-table { margin-top:8px; font-size:9pt; width:100%; border-collapse:collapse; }
-  .guide-table td { padding:4px 8px; border-bottom:1px solid #f5f5f5; }
-  .guide-table td:first-child { font-weight:700; width:30px; text-align:center; border-radius:4px; }
-  .g1 { background:#fee2e2; color:#dc2626; }
-  .g2 { background:#fef3c7; color:#b45309; }
-  .g3 { background:#dbeafe; color:#1d4ed8; }
-  .g4 { background:#d1fae5; color:#059669; }
-  .g5 { background:#ede9fe; color:#6d28d9; }
+  .stars input:checked ~ label,
+  .stars label:hover,
+  .stars label:hover ~ label { color:#f59e0b; }
+  .star-val { font-size:9pt; color:#aaa; text-align:right; min-height:16px; }
 
-  .crit-input { flex-shrink:0; width:140px; }
-  .crit-weight { font-size:8.5pt; color:#c8a050; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-  .star-row { display:flex; gap:4px; justify-content:center; margin-bottom:6px; }
-  .star {
-    width:28px; height:28px; border-radius:6px; cursor:pointer; font-size:12pt;
-    display:flex; align-items:center; justify-content:center;
-    border:2px solid #e5e7eb; background:#f9fafb;
-    transition:all 0.15s; user-select:none;
+  /* COMMENT */
+  .crit-comment { margin-top:10px; }
+  .crit-comment textarea {
+    width:100%; padding:8px 12px; border:1.5px solid #e5e7eb; border-radius:8px;
+    font-size:9.5pt; color:#333; resize:vertical; min-height:50px; outline:none;
+    font-family:inherit; transition:border-color 0.2s;
   }
-  .star:hover { transform:scale(1.1); }
-  .star.s1.active { background:#fee2e2; border-color:#dc2626; color:#dc2626; }
-  .star.s2.active { background:#fef3c7; border-color:#b45309; color:#b45309; }
-  .star.s3.active { background:#dbeafe; border-color:#1d4ed8; color:#1d4ed8; }
-  .star.s4.active { background:#d1fae5; border-color:#059669; color:#059669; }
-  .star.s5.active { background:#ede9fe; border-color:#6d28d9; color:#6d28d9; }
-  .score-label { text-align:center; font-size:9pt; font-weight:600; height:18px; }
-  .sl1 { color:#dc2626; } .sl2 { color:#b45309; } .sl3 { color:#1d4ed8; } .sl4 { color:#059669; } .sl5 { color:#6d28d9; }
+  .crit-comment textarea:focus { border-color:#c8a050; }
+  .cmt-label { font-size:8pt; text-transform:uppercase; letter-spacing:1px; color:#bbb; margin-bottom:4px; }
 
-  .crit-comment { width:100%; padding:6px 10px; border:2px solid #e5e7eb; border-radius:6px; font-size:9.5pt; color:#333; resize:vertical; min-height:50px; margin-top:6px; outline:none; font-family:inherit; }
-  .crit-comment:focus { border-color:#c8a050; }
-  .crit-comment::placeholder { color:#ccc; }
-
-  /* SUMMARY CARD */
-  .summary-section { background:white; border-radius:12px; padding:24px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .summary-section h2 { font-size:14pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; }
-  .summary-bars { display:flex; flex-direction:column; gap:10px; }
-  .summary-bar-row { display:flex; align-items:center; gap:12px; }
-  .sb-label { font-size:10pt; font-weight:700; width:140px; flex-shrink:0; }
-  .sb-track { flex:1; height:32px; background:#f0f0f0; border-radius:8px; overflow:hidden; position:relative; }
-  .sb-fill { height:100%; border-radius:8px; transition:width 0.4s; display:flex; align-items:center; padding-left:10px; }
-  .sb-fill span { font-size:10pt; font-weight:700; color:white; }
-  .sb-score { width:50px; text-align:right; font-size:13pt; font-weight:700; flex-shrink:0; }
-  .fill-hakkasan { background:linear-gradient(to right,#c2410c,#ea580c); }
-  .fill-ling { background:linear-gradient(to right,#7c3aed,#a855f7); }
-  .fill-dishoom { background:linear-gradient(to right,#1d4ed8,#3b82f6); }
-  .fill-barbaard { background:linear-gradient(to right,#15803d,#22c55e); }
-  .fill-madison { background:linear-gradient(to right,#b45309,#f59e0b); }
-  .fill-park90 { background:linear-gradient(to right,#7f1d1d,#dc2626); }
-
-  /* ZERA SCORE BADGE */
-  .zera-badge-row { display:flex; align-items:center; gap:6px; margin-bottom:4px; font-size:8.5pt; color:#888; }
-  .zera-badge { background:#1a1a2e; color:#c8a050; border-radius:6px; padding:2px 8px; font-size:8pt; font-weight:700; letter-spacing:0.5px; }
-  .bsd-dual { display:flex; flex-direction:column; gap:4px; }
-  .bsd-dual-row { display:flex; align-items:baseline; gap:4px; }
-  .bsd-dual-label { font-size:7.5pt; text-transform:uppercase; letter-spacing:1px; color:#aaa; width:32px; }
+  /* SUMMARY PANEL */
+  .summary-card { background:white; border-radius:12px; padding:24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .summary-card h2 { font-size:14pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; }
+  .summary-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
+  .sum-box { border-radius:10px; padding:14px 10px; text-align:center; border:2px solid; }
+  .sum-box .sb-cat { font-size:8pt; text-transform:uppercase; letter-spacing:1px; font-weight:700; margin-bottom:6px; }
+  .sum-box .sb-score { font-size:22pt; font-weight:700; line-height:1; margin-bottom:3px; }
+  .sum-box .sb-max { font-size:9pt; opacity:0.6; }
+  .sum-box .sb-rank { font-size:8pt; margin-top:6px; font-weight:700; }
+  .sum-box.cn { background:#fff4f0; border-color:#f87171; color:#9a1800; }
+  .sum-box.in { background:#eff6ff; border-color:#60a5fa; color:#1e3a8a; }
+  .sum-box.we { background:#f0fdf4; border-color:#4ade80; color:#14532d; }
+  .sum-box.jp { background:#fdf4ff; border-color:#c084fc; color:#581c87; }
+  .sum-box.wt { background:#fefce8; border-color:#fbbf24; color:#713f12; }
+  .sum-box.winner { outline:3px solid #c8a050; outline-offset:2px; }
 
   /* ACTIONS */
-  .action-row { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+  .action-bar { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
   .btn {
-    padding:11px 22px; border-radius:10px; font-size:11pt; font-weight:700; cursor:pointer;
-    border:none; transition:all 0.2s; display:flex; align-items:center; gap:6px;
+    padding:11px 22px; border-radius:10px; font-size:10.5pt; font-weight:700;
+    cursor:pointer; border:none; transition:all 0.2s; letter-spacing:0.3px;
   }
-  .btn-primary { background:#0d1b2a; color:#c8a050; }
-  .btn-primary:hover { background:#1a2a3a; }
+  .btn-save { background:#0d1b2a; color:#c8a050; }
+  .btn-save:hover { background:#1a2a3a; }
+  .btn-sharepoint { background:#0078d4; color:white; }
+  .btn-sharepoint:hover { background:#106ebe; }
+  .btn-reset { background:#f3f4f6; color:#666; }
+  .btn-reset:hover { background:#e5e7eb; }
   .btn-export { background:#059669; color:white; }
   .btn-export:hover { background:#047857; }
-  .btn-reset { background:#f3f4f6; color:#dc2626; border:2px solid #fecaca; }
-  .btn-reset:hover { background:#fee2e2; }
-  .btn-compare { background:#7c3aed; color:white; }
-  .btn-compare:hover { background:#6d28d9; }
-  .save-status { font-size:9pt; color:#059669; display:none; align-items:center; gap:4px; }
-  .save-status.show { display:flex; }
+  .btn:disabled { opacity:0.5; cursor:not-allowed; }
 
-  /* PROGRESS */
-  .progress-row { display:flex; gap:8px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
-  .prog-brand { font-size:9pt; padding:4px 10px; border-radius:8px; font-weight:600; }
-  .prog-done { background:#d1fae5; color:#059669; }
-  .prog-partial { background:#fef3c7; color:#d97706; }
-  .prog-empty { background:#f3f4f6; color:#9ca3af; }
+  /* STATUS */
+  .status-bar { margin-top:12px; padding:10px 16px; border-radius:8px; font-size:10pt; display:none; }
+  .status-bar.ok { background:#d1fae5; color:#065f46; display:block; }
+  .status-bar.err { background:#fee2e2; color:#991b1b; display:block; }
+  .status-bar.info { background:#dbeafe; color:#1e40af; display:block; }
 
-  /* EXPORT MODAL */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:center; justify-content:center; }
-  .modal-overlay.show { display:flex; }
-  .modal { background:white; border-radius:14px; padding:28px; max-width:600px; width:90%; max-height:80vh; overflow-y:auto; }
-  .modal h3 { font-size:15pt; font-weight:700; color:#0d1b2a; margin-bottom:14px; }
-  .modal textarea { width:100%; min-height:200px; font-family:monospace; font-size:9.5pt; border:2px solid #e5e7eb; border-radius:8px; padding:12px; resize:vertical; }
-  .modal-actions { display:flex; gap:10px; margin-top:14px; }
-  .btn-copy { background:#0d1b2a; color:white; }
-  .btn-close { background:#f3f4f6; color:#333; border:2px solid #e5e7eb; }
+  /* PROGRESS BAR */
+  .progress-wrap { margin-bottom:16px; }
+  .progress-label { display:flex; justify-content:space-between; font-size:9pt; color:#888; margin-bottom:5px; }
+  .progress-bar { height:6px; background:#e5e7eb; border-radius:4px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,#c8a050,#f59e0b); border-radius:4px; transition:width 0.4s; }
 
+  /* FOOTER */
   .footer { text-align:center; font-size:8.5pt; color:#aaa; padding:14px 0; }
 
-  @media (max-width:600px) {
-    .header { padding:20px 16px; }
-    .header h1 { font-size:16pt; }
-    .crit-row { flex-direction:column; }
-    .crit-input { width:100%; }
-    .star-row { justify-content:flex-start; }
-    .brand-tabs { gap:6px; }
-    .brand-tab { padding:7px 10px; font-size:9.5pt; }
-    .id-row { flex-direction:column; }
-    .action-row { flex-direction:column; }
-    .summary-bar-row { flex-wrap:wrap; }
-    .sb-label { width:100%; }
+  /* SAVED SESSIONS */
+  .sessions-list { margin-top:12px; }
+  .session-item { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:#f9fafb; border-radius:8px; margin-bottom:6px; font-size:9.5pt; }
+  .session-item .si-name { font-weight:700; color:#0d1b2a; }
+  .session-item .si-date { color:#888; font-size:8.5pt; }
+  .session-item .si-load { cursor:pointer; color:#3b82f6; font-weight:700; font-size:8.5pt; }
+  .session-item .si-del { cursor:pointer; color:#ef4444; font-size:8.5pt; margin-left:8px; }
+
+  @media (max-width:640px) {
+    .container { padding:14px 10px 40px; }
+    .tab-btn { min-width:80px; font-size:8pt; padding:9px 6px; }
+    .crit-top { flex-direction:column; }
+    .star-wrap { align-items:flex-start; }
+    .summary-grid { grid-template-columns:1fr 1fr; }
   }
 </style>
 </head>
@@ -213,678 +179,653 @@
 
 <!-- HEADER -->
 <div class="header">
-  <div class="tag">Le Méridien Saigon · F&B Ecosystem Strategy · Interactive Scoring Tool</div>
-  <h1>Brand Ecosystem <em>Scoring Tool</em></h1>
-  <div class="sub">Complete your team's assessment independently — scores will be compared against RCC's baseline analysis.</div>
+  <div class="tag">Le Méridien Saigon · F&B Strategy · RCC Internal Tool</div>
+  <h1>LMSG <em>Concept Scoring</em> Tool</h1>
+  <div class="sub">Rate 5 F&B concept categories across 10 criteria. Results auto-saved locally and can be uploaded to SharePoint.</div>
 </div>
 
 <!-- IDENTITY -->
-<div class="id-card">
-  <h2>👤 Your Details</h2>
+<div class="card">
+  <h2>📋 Session Info</h2>
   <div class="id-row">
     <div class="id-field">
       <label>Your Name</label>
-      <input type="text" id="scorer-name" placeholder="e.g. Nguyen Van A" />
+      <input type="text" id="inp-name" placeholder="e.g. Bach Tran" />
     </div>
     <div class="id-field">
-      <label>Role / Department</label>
-      <input type="text" id="scorer-role" placeholder="e.g. F&B Director" />
+      <label>Your Role</label>
+      <select id="inp-role">
+        <option value="">-- Select Role --</option>
+        <option value="RCC Owner/Board">RCC Owner / Board</option>
+        <option value="RCC Strategy">RCC Strategy</option>
+        <option value="Marriott GM">Marriott GM</option>
+        <option value="Marriott F&B Director">Marriott F&B Director</option>
+        <option value="Marriott Revenue">Marriott Revenue</option>
+        <option value="External Advisor">External Advisor</option>
+        <option value="Other">Other</option>
+      </select>
     </div>
     <div class="id-field">
-      <label>Date</label>
-      <input type="date" id="scorer-date" />
+      <label>Property Context</label>
+      <select id="inp-prop">
+        <option value="Le Méridien Saigon">Le Méridien Saigon</option>
+        <option value="3C Tôn Đức Thắng">3C Tôn Đức Thắng</option>
+        <option value="General HCMC D1">General HCMC D1</option>
+      </select>
     </div>
     <div class="id-field">
-      <label>LMSG Top Nationality #1</label>
-      <input type="text" id="nat1" placeholder="e.g. Chinese 35%" />
+      <label>Session Label</label>
+      <input type="text" id="inp-session" placeholder="e.g. April 2026 team review" />
     </div>
-    <div class="id-field">
-      <label>LMSG Top Nationality #2</label>
-      <input type="text" id="nat2" placeholder="e.g. Korean 18%" />
-    </div>
-  </div>
-</div>
-
-<!-- INSTRUCTIONS -->
-<div class="instr">
-  <h4>📋 How to Score</h4>
-  <p style="font-size:10.5pt; color:#333; margin-bottom:8px;">For each brand, rate every criterion from 1–5 based on your knowledge of LMSG's guest profile and operational context. Click the scoring guide (▸) under each criterion for detailed descriptions. Add comments where useful — these will appear in the comparison report.</p>
-  <div class="scale-row">
-    <span class="scale-pill sp1">1 — Poor Fit</span>
-    <span class="scale-pill sp2">2 — Weak Fit</span>
-    <span class="scale-pill sp3">3 — Moderate Fit</span>
-    <span class="scale-pill sp4">4 — Strong Fit</span>
-    <span class="scale-pill sp5">5 — Exceptional Fit</span>
-    <span class="scale-pill spna">N/A — Skip</span>
   </div>
 </div>
 
 <!-- PROGRESS -->
-<div style="background:white; border-radius:12px; padding:16px 20px; margin-bottom:4px; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-  <div style="font-size:9pt; text-transform:uppercase; letter-spacing:1.5px; color:#888; font-weight:700; margin-bottom:10px;">Scoring Progress</div>
-  <div class="progress-row" id="progress-row">
-    <span class="prog-brand prog-empty" id="prog-hakkasan">🔴 Hakkasan — 0/9</span>
-    <span class="prog-brand prog-empty" id="prog-ling">🟣 Ling Ling — 0/9</span>
-    <span class="prog-brand prog-empty" id="prog-dishoom">🔵 Dishoom — 0/9</span>
-    <span class="prog-brand prog-empty" id="prog-barbaard">🟢 Barbaard — 0/9</span>
-    <span class="prog-brand prog-empty" id="prog-madison">⭐ Madison — 0/9</span>
-    <span class="prog-brand prog-empty" id="prog-park90">🍷 Park90 — 0/9</span>
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Scoring Progress</span>
+    <span id="progress-count">0 / 50 criteria scored</span>
   </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
 </div>
 
-<!-- BRAND TABS + PANELS -->
-<div class="brand-tabs" id="brand-tabs">
-  <div class="brand-tab active" data-brand="hakkasan">🔴 Hakkasan</div>
-  <div class="brand-tab" data-brand="ling">🟣 Ling Ling</div>
-  <div class="brand-tab" data-brand="dishoom">🔵 Dishoom</div>
-  <div class="brand-tab" data-brand="barbaard">🟢 Barbaard</div>
-  <div class="brand-tab" data-brand="madison">⭐ Madison House</div>
-  <div class="brand-tab" data-brand="park90">🍷 Park90</div>
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn t-cn active" onclick="switchCat('cn')">🥢 Modern Premium Chinese</button>
+  <button class="tab-btn t-in" onclick="switchCat('in')">🪔 Modern Premium Indian</button>
+  <button class="tab-btn t-we" onclick="switchCat('we')">🧘 Wellness Service</button>
+  <button class="tab-btn t-jp" onclick="switchCat('jp')">🍱 Premium Japanese</button>
+  <button class="tab-btn t-wt" onclick="switchCat('wt')">🥩 Premium Western</button>
 </div>
 
-<div class="scoring-wrap">
+<!-- SCORING PANELS -->
+<div class="panel-wrap">
 
-  <!-- HAKKASAN -->
-  <div class="brand-panel active" id="panel-hakkasan">
-    <div class="brand-header">
-      <div class="brand-title">
-        <h3 style="color:#c2410c;">🔴 Hakkasan</h3>
-        <span class="btype" style="background:#fee2e2; color:#c2410c;">Modern Cantonese Fine Dining · F&B Anchor</span>
-        <p style="font-size:9.5pt; color:#666; margin-top:8px; max-width:580px;">Michelin-starred Cantonese concept (London 2001) — opulent design, dim sum, private dining rooms. 22 locations: London, Dubai, Miami, Shanghai, Abu Dhabi, Jakarta. Acquired by Mohari/Tao Group 2025. Active SEA expansion.</p>
-      </div>
-      <div class="brand-score-display">
-        <div class="bsd-label">Weighted Score</div>
-        <div class="bsd-score" id="total-hakkasan">—</div>
-        <div class="bsd-max">/ 5.00</div>
-      </div>
+<!-- ────────────────── CHINESE ────────────────── -->
+<div class="cat-panel active" id="panel-cn">
+  <div class="cat-header">
+    <div class="cat-title">
+      <h3 style="color:#9a1800;">🥢 Modern Premium Chinese</h3>
+      <div class="examples">Representative brands: Hakkasan · Ling Ling · Mott 32 · Crystal Jade</div>
     </div>
-    <div id="criteria-hakkasan"></div>
-  </div>
-
-  <!-- LING LING -->
-  <div class="brand-panel" id="panel-ling">
-    <div class="brand-header">
-      <div class="brand-title">
-        <h3 style="color:#7c3aed;">🟣 Ling Ling</h3>
-        <span class="btype" style="background:#ede9fe; color:#7c3aed;">Asian Infusion · Social Bar · Late Night</span>
-        <p style="font-size:9.5pt; color:#666; margin-top:8px; max-width:580px;">Hakkasan Group sub-brand — izakaya-inspired small plates + craft cocktails + DJ. Evolves from dinner to late-night social. Locations: Atlantis Dubai, Mandarin Oriental Marrakesh, Mexico City, Oslo. Design by Gilles & Boissier.</p>
-      </div>
-      <div class="brand-score-display">
-        <div class="bsd-label">Weighted Score</div>
-        <div class="bsd-score" id="total-ling">—</div>
-        <div class="bsd-max">/ 5.00</div>
-      </div>
+    <div class="score-display" style="border-color:#f87171; color:#9a1800;">
+      <div class="sd-label">Your Score</div>
+      <div class="sd-val" id="live-cn">—</div>
+      <div class="sd-max">/ 5.0</div>
     </div>
-    <div id="criteria-ling"></div>
   </div>
-
-  <!-- DISHOOM -->
-  <div class="brand-panel" id="panel-dishoom">
-    <div class="brand-header">
-      <div class="brand-title">
-        <h3 style="color:#1d4ed8;">🔵 Dishoom</h3>
-        <span class="btype" style="background:#dbeafe; color:#1d4ed8;">Bombay Comfort Food · All-Day · Brand Story</span>
-        <p style="font-size:9.5pt; color:#666; margin-top:8px; max-width:580px;">Cult UK brand (£300M valuation, LVMH-backed) — 1940s Bombay Irani café aesthetic. All-day: breakfast naan rolls → chai → biryani → cocktails. 11 UK sites; NYC expansion 2026. Immersive storytelling, charity model (20M+ meals donated).</p>
-      </div>
-      <div class="brand-score-display">
-        <div class="bsd-label">Weighted Score</div>
-        <div class="bsd-score" id="total-dishoom">—</div>
-        <div class="bsd-max">/ 5.00</div>
-      </div>
-    </div>
-    <div id="criteria-dishoom"></div>
-  </div>
-
-  <!-- BARBAARD -->
-  <div class="brand-panel" id="panel-barbaard">
-    <div class="brand-header">
-      <div class="brand-title">
-        <h3 style="color:#15803d;">🟢 House of Barbaard</h3>
-        <span class="btype" style="background:#d1fae5; color:#15803d;">Barbershop + Cocktail Lounge · Vietnam-Born · Lifestyle</span>
-        <p style="font-size:9.5pt; color:#666; margin-top:8px; max-width:580px;">Dutch-founded, Vietnam-born (2015) — premium barbershop + cocktail lounge + men's boutique. 1920s Amsterdam speakeasy aesthetic. Currently: Sofitel Saigon Plaza + Meliá Hanoi. All-day 09:00–midnight. Not a restaurant — lifestyle/grooming hybrid.</p>
-      </div>
-      <div class="brand-score-display">
-        <div class="bsd-label">Weighted Score</div>
-        <div class="bsd-score" id="total-barbaard">—</div>
-        <div class="bsd-max">/ 5.00</div>
-      </div>
-    </div>
-    <div id="criteria-barbaard"></div>
-  </div>
-
-  <!-- MADISON HOUSE -->
-  <div class="brand-panel" id="panel-madison">
-    <div class="brand-header">
-      <div class="brand-title">
-        <h3 style="color:#b45309;">⭐ Madison House</h3>
-        <span class="btype" style="background:#fef3c7; color:#b45309;">Private Members Club · Wellness + Fitness + Dining + Social</span>
-        <p style="font-size:9.5pt; color:#666; margin-top:8px; max-width:580px;">Sunset Hospitality Group (Goldman Sachs-backed) — first private members club, debuting Fort Canning Singapore Q4 2025, then Milan. 37,000 sqft: luxury gym, cold plunge, sauna, steam, padel courts, 2 pools, dining concepts, Longevity Suite (biohacking). Vietnam in SHG pipeline.</p>
-      </div>
-      <div class="brand-score-display">
-        <div class="bsd-label">Weighted Score</div>
-        <div class="bsd-score" id="total-madison">—</div>
-        <div class="bsd-max">/ 5.00</div>
-      </div>
-    </div>
-    <div id="criteria-madison"></div>
-  </div>
-
-  <!-- PARK90 -->
-  <div class="brand-panel" id="panel-park90">
-    <div class="brand-header">
-      <div class="brand-title">
-        <h3 style="color:#7f1d1d;">🍷 Park90 — Vietnam Premium Wine Bar</h3>
-        <span class="btype" style="background:#fee2e2; color:#7f1d1d;">Wine Bar · Beverage-First · Social · Active LMSG Partner</span>
-        <p style="font-size:9.5pt; color:#666; margin-top:8px; max-width:580px;">Vietnam's rising premium wine bar operator — active BARSON partnership at LMSG (term sheet in negotiation). Curated wine list with 70% SKU control, tasting events, bottle locker membership, light bites. Q1 2026 revenue ~1.1–1.75B VND/month. Simplest and fastest to deploy of all 6 brands — no complex kitchen, no international negotiation.</p>
-      </div>
-      <div class="brand-score-display">
-        <div class="bsd-label">Your Score</div>
-        <div class="bsd-score" id="total-park90" style="color:#7f1d1d;">—</div>
-        <div class="bsd-max">/ 5.00</div>
-        <div style="margin-top:6px; font-size:8.5pt; color:#7f1d1d; font-weight:700;">Zera: <span id="zera-total-park90">4.00</span></div>
-      </div>
-    </div>
-    <div id="criteria-park90"></div>
-  </div>
+  <!-- criteria injected by JS -->
+  <div id="crits-cn"></div>
 </div>
+
+<!-- ────────────────── INDIAN ────────────────── -->
+<div class="cat-panel" id="panel-in">
+  <div class="cat-header">
+    <div class="cat-title">
+      <h3 style="color:#1e3a8a;">🪔 Modern Premium Indian</h3>
+      <div class="examples">Representative brands: Dishoom · Farzi Café · Jamavar · Gymkhana</div>
+    </div>
+    <div class="score-display" style="border-color:#60a5fa; color:#1e3a8a;">
+      <div class="sd-label">Your Score</div>
+      <div class="sd-val" id="live-in">—</div>
+      <div class="sd-max">/ 5.0</div>
+    </div>
+  </div>
+  <div id="crits-in"></div>
+</div>
+
+<!-- ────────────────── WELLNESS ────────────────── -->
+<div class="cat-panel" id="panel-we">
+  <div class="cat-header">
+    <div class="cat-title">
+      <h3 style="color:#14532d;">🧘 Wellness Service</h3>
+      <div class="examples">Representative brands: Barbaard · Madison House · Aman Spa · Aire Ancient Baths</div>
+    </div>
+    <div class="score-display" style="border-color:#4ade80; color:#14532d;">
+      <div class="sd-label">Your Score</div>
+      <div class="sd-val" id="live-we">—</div>
+      <div class="sd-max">/ 5.0</div>
+    </div>
+  </div>
+  <div id="crits-we"></div>
+</div>
+
+<!-- ────────────────── JAPANESE ────────────────── -->
+<div class="cat-panel" id="panel-jp">
+  <div class="cat-header">
+    <div class="cat-title">
+      <h3 style="color:#581c87;">🍱 Premium Japanese</h3>
+      <div class="examples">Representative brands: Nobu · Zuma · Sushisamba · Roka · Yakimono</div>
+    </div>
+    <div class="score-display" style="border-color:#c084fc; color:#581c87;">
+      <div class="sd-label">Your Score</div>
+      <div class="sd-val" id="live-jp">—</div>
+      <div class="sd-max">/ 5.0</div>
+    </div>
+  </div>
+  <div id="crits-jp"></div>
+</div>
+
+<!-- ────────────────── WESTERN ────────────────── -->
+<div class="cat-panel" id="panel-wt">
+  <div class="cat-header">
+    <div class="cat-title">
+      <h3 style="color:#713f12;">🥩 Premium Western</h3>
+      <div class="examples">Representative brands: Hawksmoor · Park90 Wine Bar · Sexy Fish · The Capital Grille</div>
+    </div>
+    <div class="score-display" style="border-color:#fbbf24; color:#713f12;">
+      <div class="sd-label">Your Score</div>
+      <div class="sd-val" id="live-wt">—</div>
+      <div class="sd-max">/ 5.0</div>
+    </div>
+  </div>
+  <div id="crits-wt"></div>
+</div>
+
+</div><!-- end panel-wrap -->
 
 <!-- SUMMARY -->
-<div class="summary-section">
-  <h2>📊 Live Score Summary</h2>
-  <div style="font-size:9pt; color:#888; margin-bottom:12px;">🎯 Zera Score = RCC initial analysis · Your Score = Hotel team override · Both shown per brand</div>
-  <div class="summary-bars" id="summary-bars">
-    <div class="summary-bar-row">
-      <div class="sb-label" style="color:#c2410c;">🔴 Hakkasan</div>
-      <div class="sb-track"><div class="sb-fill fill-hakkasan" id="bar-hakkasan" style="width:68%"><span id="bar-txt-hakkasan">Z:3.4</span></div></div>
-      <div class="sb-score" style="color:#c2410c;" id="score-hakkasan">—</div>
+<div class="summary-card">
+  <h2>📊 Score Summary</h2>
+  <div class="summary-grid">
+    <div class="sum-box cn" id="sum-cn">
+      <div class="sb-cat">🥢 Chinese</div>
+      <div class="sb-score" id="sum-val-cn">—</div>
+      <div class="sb-max">/ 5.0</div>
+      <div class="sb-rank" id="sum-rank-cn"></div>
     </div>
-    <div class="summary-bar-row">
-      <div class="sb-label" style="color:#7c3aed;">🟣 Ling Ling</div>
-      <div class="sb-track"><div class="sb-fill fill-ling" id="bar-ling" style="width:74%"><span id="bar-txt-ling">Z:3.7</span></div></div>
-      <div class="sb-score" style="color:#7c3aed;" id="score-ling">—</div>
+    <div class="sum-box in" id="sum-in">
+      <div class="sb-cat">🪔 Indian</div>
+      <div class="sb-score" id="sum-val-in">—</div>
+      <div class="sb-max">/ 5.0</div>
+      <div class="sb-rank" id="sum-rank-in"></div>
     </div>
-    <div class="summary-bar-row">
-      <div class="sb-label" style="color:#1d4ed8;">🔵 Dishoom</div>
-      <div class="sb-track"><div class="sb-fill fill-dishoom" id="bar-dishoom" style="width:58%"><span id="bar-txt-dishoom">Z:2.9</span></div></div>
-      <div class="sb-score" style="color:#1d4ed8;" id="score-dishoom">—</div>
+    <div class="sum-box we" id="sum-we">
+      <div class="sb-cat">🧘 Wellness</div>
+      <div class="sb-score" id="sum-val-we">—</div>
+      <div class="sb-max">/ 5.0</div>
+      <div class="sb-rank" id="sum-rank-we"></div>
     </div>
-    <div class="summary-bar-row">
-      <div class="sb-label" style="color:#15803d;">🟢 Barbaard</div>
-      <div class="sb-track"><div class="sb-fill fill-barbaard" id="bar-barbaard" style="width:80%"><span id="bar-txt-barbaard">Z:4.0</span></div></div>
-      <div class="sb-score" style="color:#15803d;" id="score-barbaard">—</div>
+    <div class="sum-box jp" id="sum-jp">
+      <div class="sb-cat">🍱 Japanese</div>
+      <div class="sb-score" id="sum-val-jp">—</div>
+      <div class="sb-max">/ 5.0</div>
+      <div class="sb-rank" id="sum-rank-jp"></div>
     </div>
-    <div class="summary-bar-row">
-      <div class="sb-label" style="color:#b45309;">⭐ Madison</div>
-      <div class="sb-track"><div class="sb-fill fill-madison" id="bar-madison" style="width:82%"><span id="bar-txt-madison">Z:4.1</span></div></div>
-      <div class="sb-score" style="color:#b45309;" id="score-madison">—</div>
-    </div>
-    <div class="summary-bar-row">
-      <div class="sb-label" style="color:#7f1d1d;">🍷 Park90</div>
-      <div class="sb-track"><div class="sb-fill fill-park90" id="bar-park90" style="width:80%"><span id="bar-txt-park90">Z:4.0</span></div></div>
-      <div class="sb-score" style="color:#7f1d1d;" id="score-park90">—</div>
-    </div>
-  </div>
-</div>
-
-<!-- ACTIONS -->
-<div class="action-row">
-  <button class="btn btn-primary" onclick="saveAll()">💾 Save Progress</button>
-  <button class="btn btn-export" onclick="exportJSON()">📤 Export for Comparison</button>
-  <button class="btn btn-compare" onclick="copyLink()">🔗 Copy Share Link</button>
-  <button class="btn btn-reset" onclick="resetAll()">🗑 Reset All</button>
-  <div class="save-status" id="save-status">✅ Saved!</div>
-</div>
-
-<!-- EXPORT MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <h3>📤 Export — Send to RCC for Comparison</h3>
-    <p style="font-size:10pt; color:#555; margin-bottom:12px;">Copy the JSON below and send to RCC team. This will be overlaid against the RCC baseline scoring table.</p>
-    <textarea id="export-text" readonly></textarea>
-    <div class="modal-actions">
-      <button class="btn btn-copy" onclick="copyExport()">📋 Copy to Clipboard</button>
-      <button class="btn btn-close" onclick="closeModal()">Close</button>
+    <div class="sum-box wt" id="sum-wt">
+      <div class="sb-cat">🥩 Western</div>
+      <div class="sb-score" id="sum-val-wt">—</div>
+      <div class="sb-max">/ 5.0</div>
+      <div class="sb-rank" id="sum-rank-wt"></div>
     </div>
   </div>
+
+  <div class="action-bar">
+    <button class="btn btn-save" onclick="saveLocal()">💾 Save Draft (Local)</button>
+    <button class="btn btn-export" onclick="exportJSON()">📤 Export JSON</button>
+    <button class="btn btn-sharepoint" onclick="uploadSharePoint()" id="btn-sp">☁️ Upload to SharePoint</button>
+    <button class="btn btn-reset" onclick="resetAll()">🔄 Reset</button>
+  </div>
+  <div class="status-bar" id="status-bar"></div>
 </div>
 
-<div class="footer">LMSG Brand Scoring Tool · Le Méridien Saigon × RCC · April 2026 · Data saved locally in your browser</div>
+<!-- SAVED SESSIONS -->
+<div class="card" id="sessions-card" style="display:none;">
+  <h2>📂 Saved Sessions</h2>
+  <div class="sessions-list" id="sessions-list"></div>
+</div>
+
+<div class="footer">
+  LMSG F&B Concept Scoring Tool · RCC Internal · April 2026<br>
+  Scores saved locally (localStorage) and to RCC SharePoint when uploaded
+</div>
+
+</div><!-- end container -->
 
 <script>
-// ═══ CRITERIA DEFINITION ═══
-const CRITERIA = [
-  {
-    id: 'a1', group: 'A. F&B Performance', name: 'Group Dining Revenue Potential',
-    desc: 'Capacity for large group bookings (15–100 pax), average spend per head, private dining rooms, menu format for groups.',
-    weight: 0.15,
-    guide: [
-      [1, 'No group dining capability — bar/lounge only, no private rooms'],
-      [2, 'Limited: small tables only, no private space, single-cover format'],
-      [3, 'Moderate: groups up to 20, some sharing plates, limited private options'],
-      [4, 'Good: private rooms, sharing format, groups up to 50+ manageable'],
-      [5, 'Exceptional: dim sum / sharing menu purpose-built for groups, multiple private rooms, 100+ pax capacity']
-    ]
-  },
-  {
-    id: 'a2', group: 'A. F&B Performance', name: 'Bar & Beverage Revenue',
-    desc: 'Strength of bar program — cocktail culture, wine list, late-night potential, beverage upsell.',
-    weight: 0.10,
-    guide: [
-      [1, 'Minimal bar — beer/wine/spirits only, no signature program'],
-      [2, 'Basic bar — standard cocktail list, no distinctive identity'],
-      [3, 'Solid bar — curated cocktails, decent wine list, moderate late-night'],
-      [4, 'Strong — signature cocktails, extensive spirits, late-night programming'],
-      [5, 'Bar-first concept — award-winning program, sake/whisky specialists, cocktails as hero product']
-    ]
-  },
-  {
-    id: 'b1', group: 'B. Guest & Lifestyle Fit', name: 'Nationality Group Alignment',
-    desc: 'How well does this brand resonate with LMSG\'s actual top guest nationality groups? Consider cuisine familiarity, brand awareness, and lifestyle affinity.',
-    weight: 0.10,
-    guide: [
-      [1, 'Very niche — only relevant to 1 specific nationality group (&lt;10% of LMSG guest mix)'],
-      [2, 'Limited — resonates with 1–2 nationality groups but alienates majority'],
-      [3, 'Moderate — neutral appeal across nationalities, no strong positive or negative'],
-      [4, 'Broad — resonates well with 3–4 major nationality groups at LMSG'],
-      [5, 'Universal — strong appeal across all major nationality groups, luxury positioning transcends cuisine preference']
-    ]
-  },
-  {
-    id: 'b2', group: 'B. Guest & Lifestyle Fit', name: 'Le Méridien Brand DNA Fit',
-    desc: '"Unlock the Destination" — LM attracts the cosmopolitan, culturally curious traveler. Does this brand feel like it belongs at an LM property?',
-    weight: 0.10,
-    guide: [
-      [1, 'Cultural mismatch — feels wrong for a cosmopolitan luxury hotel'],
-      [2, 'Weak — could be at any hotel, no distinctive brand personality match'],
-      [3, 'Neutral — acceptable fit but not differentiated for LM specifically'],
-      [4, 'Good — design-led, premium, cosmopolitan energy aligns with LM guest'],
-      [5, 'Perfect — concept amplifies what LM stands for; feels custom-made for the property']
-    ]
-  },
-  {
-    id: 'b3', group: 'B. Guest & Lifestyle Fit', name: 'Wellness & Longevity Alignment',
-    desc: 'Does the brand reinforce a health/wellness/longevity narrative? How well does it synergize with LMSG\'s spa, potential banya/thermal concept, and fitness amenities?',
-    weight: 0.10,
-    guide: [
-      [1, 'No wellness dimension — comfort/indulgence focus conflicts with wellness narrative'],
-      [2, 'Tangential — some healthier menu options but no wellness identity'],
-      [3, 'Neutral — can coexist with wellness but doesn\'t reinforce it'],
-      [4, 'Wellness-adjacent — self-care ritual (grooming, movement, recovery) within the concept'],
-      [5, 'Wellness is the product — cold plunge, sauna, longevity protocols, biohacking built-in']
-    ]
-  },
-  {
-    id: 'c1', group: 'C. Ecosystem & Strategic Value', name: 'Banya / Thermal Wellness Synergy',
-    desc: 'If LMSG develops a Taiga Banya or Nordic thermal wellness concept — how naturally does this brand complement the pre/post-banya guest journey?',
-    weight: 0.10,
-    guide: [
-      [1, 'Cultural mismatch — formal fine dining or food-focused concept clashes with thermal ritual informality'],
-      [2, 'Weak link — possible cross-referral but no natural guest journey connection'],
-      [3, 'Moderate — post-banya cocktails or light dining possible but shallow integration'],
-      [4, 'Strong — grooming + steam + drink creates coherent male self-care journey; same demographic'],
-      [5, 'Native synergy — cold plunge/sauna/steam already core to the brand; longevity and thermal are the same offering']
-    ]
-  },
-  {
-    id: 'c2', group: 'C. Ecosystem & Strategic Value', name: 'Membership / Loyalty Mechanics',
-    desc: 'Does the brand introduce a membership model creating recurring revenue, guest loyalty, and a captive LMSG community?',
-    weight: 0.10,
-    guide: [
-      [1, 'No membership concept — pure transactional F&B'],
-      [2, 'Informal regulars only — no structured loyalty program'],
-      [3, 'Basic loyalty — Marriott Bonvoy cross-sell possible but no brand-specific membership'],
-      [4, 'Informal community — loyal following, events programming, but no formal membership fees'],
-      [5, 'Membership is the model — annual fees, application-only, curated community, recurring revenue stream']
-    ]
-  },
-  {
-    id: 'c3', group: 'C. Ecosystem & Strategic Value', name: 'Vietnam / HCMC Market White Space',
-    desc: 'Is this concept already well-represented in HCMC? Does deploying it at LMSG fill a gap or add to an already crowded market?',
-    weight: 0.10,
-    guide: [
-      [1, 'Saturated — multiple strong competitors already in D1 hotel corridor'],
-      [2, 'Competitive — some competitors, LMSG entry would face established players'],
-      [3, 'Moderate space — some competition but premium hotel positioning differentiates'],
-      [4, 'Limited competition — few or no comparable venues in same tier in D1'],
-      [5, 'First-mover — concept type does not exist in HCMC hotel market; genuine white space']
-    ]
-  },
-  {
-    id: 'd1', group: 'D. Partnership & Operations', name: 'Partnership Readiness & Timeline',
-    desc: 'How ready is this brand to partner with LMSG in Vietnam? Contractual complexity, speed to deployment, local presence.',
-    weight: 0.15,
-    guide: [
-      [1, 'Not ready — brand has no Asia/Vietnam interest; 3+ years to deploy at best'],
-      [2, 'Slow — international negotiations, no VN precedent; 18–24 months minimum'],
-      [3, 'Moderate — brand has Asia pipeline but VN not priority; 12–18 months'],
-      [4, 'Active — brand actively seeking VN/SEA partners; hotel precedent exists; 6–12 months'],
-      [5, 'Immediate — Vietnam-based or in active VN negotiations; can deploy within 6 months']
-    ]
-  }
+// ─── CRITERIA DEFINITION ────────────────────────────────────────────────────
+const GROUPS = [
+  { id:'A', label:'A. F&B PERFORMANCE (25% Weight)', crits:[
+    { id:'A1', name:'Group Dining Revenue Potential', wt:15,
+      desc:'Covers capacity, ASP, private dining, group booking suitability',
+      zera:{ cn:5, in:4, we:1, jp:4, wt:3 },
+      zeraNote:{
+        cn:'Dim sum + banquet format = highest group ceiling',
+        in:'Sharing plates; good volume, lower ASP than Chinese/Japanese',
+        we:'Not a group dining concept by nature',
+        jp:'Private dining + omakase counter; strong corporate entertainment',
+        wt:'Steakhouse moderate; wine bar is social not large-group'
+      }
+    },
+    { id:'A2', name:'Beverage / Bar Revenue', wt:10,
+      desc:'Bar program strength, cocktail culture, wine list, late-night potential',
+      zera:{ cn:4, in:3, we:3, jp:5, wt:5 },
+      zeraNote:{
+        cn:'Premium cognac, wine pairing menus — strong beverage spend',
+        in:'Competent cocktail/chai program; food-led not beverage-led',
+        we:'Barbaard cocktail lounge = 4; Madison health shots = 2; avg 3',
+        jp:'Japanese whisky + sake = destination bar; Zuma/Nobu are bar icons',
+        wt:'Wine bar is 5/5 for beverage; steakhouse also strong — top of all categories'
+      }
+    }
+  ]},
+  { id:'B', label:'B. GUEST & LIFESTYLE FIT (30% Weight)', crits:[
+    { id:'B1', name:'Nationality Group Alignment', wt:10,
+      desc:'Resonance with LMSG guest mix: CN, KR, JP, EU, AU, US, domestic VN',
+      zera:{ cn:5, in:2, we:4, jp:5, wt:4 },
+      zeraNote:{
+        cn:'Chinese, Vietnamese, Korean, SEA — widest natural appeal',
+        in:'Strong for UK + South Asian; limited fit for HCMC guest mix',
+        we:'Universal; wellness coded for all nationalities 30–50',
+        jp:'Most universally loved luxury cuisine globally — everyone loves Japanese',
+        wt:'Strong EU, AU, US; growing Korean + urban Vietnamese professional'
+      }
+    },
+    { id:'B2', name:'Le Méridien Brand DNA Fit', wt:10,
+      desc:'"Unlock the Destination" — cosmopolitan, creative, culturally curious',
+      zera:{ cn:4, in:3, we:4, jp:5, wt:4 },
+      zeraNote:{
+        cn:'Modern Chinese = cosmopolitan + design-forward; strong LM fit',
+        in:'Culturally rich storytelling; limited HCMC guest resonance',
+        we:'Barbaard Vietnam heritage = local "unlock"; Madison = modern lifestyle',
+        jp:'Aesthetic precision + cultural discovery = perfect LM positioning',
+        wt:'Wine culture + social dining = cosmopolitan; strong but not unique'
+      }
+    },
+    { id:'B3', name:'Wellness & Longevity Alignment', wt:10,
+      desc:'Reinforces health/wellness narrative — synergy with spa, banya, fitness',
+      zera:{ cn:2, in:2, we:5, jp:3, wt:2 },
+      zeraNote:{
+        cn:'TCM ingredient overlay possible; secondary to dining occasion',
+        in:'Ayurvedic credentials but comfort-food format; not wellness-coded',
+        we:'Wellness IS the product — cold plunge, sauna, longevity, grooming',
+        jp:'Omakase + clean eating has wellness narrative; not as direct as wellness service',
+        wt:'Indulgence-forward; wine is social not biohacking'
+      }
+    }
+  ]},
+  { id:'C', label:'C. ECOSYSTEM & STRATEGIC VALUE (30% Weight)', crits:[
+    { id:'C1', name:'Banya / Thermal Wellness Synergy', wt:10,
+      desc:'Cultural + experiential fit with a Taiga Banya-style thermal concept at LMSG',
+      zera:{ cn:2, in:1, we:5, jp:3, wt:3 },
+      zeraNote:{
+        cn:'Formality of fine dining clashes with barefoot banya culture',
+        in:'No natural cultural or experiential link',
+        we:'Cold plunge + sauna CORE to Madison. "Groom+Steam+Drink" arc for Barbaard',
+        jp:'Onsen = banya analog; post-sauna sake is culturally coherent',
+        wt:'Wine + steam = comfortable social ritual; less culturally specific'
+      }
+    },
+    { id:'C2', name:'Membership / Loyalty Mechanics', wt:10,
+      desc:'Does the category enable formal membership → recurring revenue + sticky loyalty?',
+      zera:{ cn:3, in:2, we:5, jp:3, wt:4 },
+      zeraNote:{
+        cn:'Private dining key accounts; no formal membership in category norm',
+        in:'All-day casual format; no membership model',
+        we:'Madison = application-only prepaid membership. Barbaard = regular grooming cadence',
+        jp:'Omakase builds chef-guest loyalty; no formal program unless structured as counter membership',
+        wt:'Wine bar bottle locker = recurring storage fee + community — unique loyalty mechanic'
+      }
+    },
+    { id:'C3', name:'Vietnam / HCMC Market White Space', wt:10,
+      desc:'Is this concept type absent from HCMC D1? First-mover advantage?',
+      zera:{ cn:3, in:5, we:5, jp:3, wt:4 },
+      zeraNote:{
+        cn:'Competitive — Crystal Jade, Mott 32, Shang Palace all present in D1',
+        in:'Near-zero presence — modern premium Indian effectively absent from HCMC',
+        we:'Private members club + longevity does NOT exist in HCMC. Barbaard unique in hotel setting.',
+        jp:'Growing competitive — Nobu at Park Hyatt; Zuma incoming; white space closing',
+        wt:'Premium wine bar high opportunity; Hawksmoor-caliber steakhouse absent from D1'
+      }
+    }
+  ]},
+  { id:'D', label:'D. OPERATIONAL & PARTNERSHIP (15% Weight)', crits:[
+    { id:'D1', name:'Ease of Partnership & Timeline', wt:8,
+      desc:'Contract complexity, international negotiation, local operator readiness, Vietnam pipeline',
+      zera:{ cn:4, in:2, we:5, jp:3, wt:4 },
+      zeraNote:{
+        cn:'Hakkasan/Mott 32 SEA pipelines active; Jakarta + Singapore precedents',
+        in:'Dishoom US-first (NYC 2026); Asia 2027+ at earliest',
+        we:'Barbaard = Vietnam-native, fastest. Madison via SHG + Maximal VN local infra',
+        jp:'Large groups (Nobu/Zuma) have SEA teams; boutique chef-driven slower',
+        wt:'Park90 already at BARSON with term sheet; Hawksmoor requires international deal'
+      }
+    },
+    { id:'D2', name:'Operational Complexity', wt:7,
+      desc:'Kitchen requirements, specialist staffing, supply chain, space — lower = better',
+      zera:{ cn:2, in:3, we:4, jp:2, wt:4 },
+      zeraNote:{
+        cn:'Specialist dim sum chefs hard to source in HCMC; dedicated wok kitchen required',
+        in:'Tandoor + spice chain; manageable but complex; no HCMC ops model yet',
+        we:'Barbaard = simple (barbers + bar). Madison = very high (37k sqft). Avg 4.',
+        jp:'Most operationally demanding — itamae chefs, daily fish import, Japan-grade hygiene',
+        wt:'Wine bar = lowest complexity of any category; steakhouse moderate'
+      }
+    }
+  ]}
 ];
 
-const BRANDS = ['hakkasan','ling','dishoom','barbaard','madison','park90'];
-const BRAND_NAMES = { hakkasan:'Hakkasan', ling:'Ling Ling', dishoom:'Dishoom', barbaard:'Barbaard', madison:'Madison House', park90:'Park90' };
+const CATS = ['cn','in','we','jp','wt'];
+const WEIGHTS = { A1:15, A2:10, B1:10, B2:10, B3:10, C1:10, C2:10, C3:10, D1:8, D2:7 };
+const ZERA = {}; // populated below
 
-// Zera's pre-analysis scores for all 6 brands
-const ZERA_SCORES = {
-  hakkasan: {a1:5,a2:4,b1:4,b2:4,b3:1,c1:2,c2:2,c3:3,d1:4,d2:3},
-  ling:     {a1:4,a2:5,b1:4,b2:5,b3:2,c1:3,c2:2,c3:4,d1:4,d2:4},
-  dishoom:  {a1:4,a2:3,b1:2,b2:3,b3:1,c1:1,c2:2,c3:5,d1:2,d2:4},
-  barbaard: {a1:1,a2:4,b1:4,b2:5,b3:4,c1:4,c2:3,c3:5,d1:5,d2:5},
-  madison:  {a1:3,a2:4,b1:5,b2:4,b3:5,c1:5,c2:5,c3:5,d1:4,d2:2},
-  park90:   {a1:3,a2:5,b1:4,b2:5,b3:2,c1:3,c2:4,c3:4,d1:5,d2:5},
-};
+// Populate ZERA scores
+GROUPS.forEach(g => g.crits.forEach(c => {
+  ZERA[c.id] = c.zera;
+}));
 
-function calcZeraWeighted(brand) {
-  const zs = ZERA_SCORES[brand];
-  if (!zs) return null;
-  let total = 0;
-  CRITERIA.forEach(c => { if (zs[c.id] !== undefined) total += zs[c.id] * c.weight; });
-  return total.toFixed(2);
-}
-const SCORE_LABELS = ['','Poor Fit','Weak Fit','Moderate Fit','Strong Fit','Exceptional Fit'];
-const SCORE_CLASSES = ['','sl1','sl2','sl3','sl4','sl5'];
+// Current user scores: scores[cat][critId] = 1-5 or null
+const scores = {};
+const comments = {};
+CATS.forEach(cat => { scores[cat] = {}; comments[cat] = {}; });
 
-// ═══ BUILD CRITERIA UI ═══
+// ─── BUILD CRITERIA HTML ─────────────────────────────────────────────────────
 function buildCriteria() {
-  BRANDS.forEach(brand => {
-    const container = document.getElementById(`criteria-${brand}`);
-    let currentGroup = '';
+  CATS.forEach(cat => {
+    const container = document.getElementById('crits-' + cat);
     let html = '';
-
-    CRITERIA.forEach(crit => {
-      if (crit.group !== currentGroup) {
-        if (currentGroup) html += '</div>';
-        currentGroup = crit.group;
-        html += `<div class="crit-section"><div class="crit-section-title">${crit.group}</div>`;
-      }
-
-      const guideRows = crit.guide.map(([n, text]) =>
-        `<tr><td class="g${n}">${n}</td><td>${text}</td></tr>`
-      ).join('');
-
-      html += `
-        <div class="crit-row" id="row-${brand}-${crit.id}">
-          <div class="crit-info">
-            <div class="crit-name">${crit.name} <span style="font-size:9pt;color:#c8a050;font-weight:700;">(${Math.round(crit.weight*100)}%)</span></div>
-            <div class="crit-desc">${crit.desc}</div>
-            <div class="crit-guide">
-              <details>
-                <summary>Scoring Guide</summary>
-                <table class="guide-table">${guideRows}</table>
-              </details>
+    GROUPS.forEach(g => {
+      html += `<div class="grp-header">${g.label}</div>`;
+      g.crits.forEach(c => {
+        const z = c.zera[cat];
+        const zNote = c.zeraNote[cat];
+        html += `
+        <div class="crit-row" id="row-${cat}-${c.id}">
+          <div class="crit-top">
+            <div class="crit-info">
+              <div class="crit-name">
+                <span class="crit-code">${c.id}</span>${c.name}
+                <span class="crit-wt">(${c.wt}%)</span>
+              </div>
+              <div class="crit-desc">${c.desc}</div>
+              <div class="zera-ref">
+                <span class="zera-badge">Zera</span>
+                <span style="font-size:9pt;font-weight:700;color:#c8a050;">${z}/5</span>
+                <span class="zera-note">— ${zNote}</span>
+              </div>
             </div>
-            <textarea class="crit-comment" id="comment-${brand}-${crit.id}" placeholder="Add your comment here (optional)..." oninput="autoSave()"></textarea>
+            <div class="star-wrap">
+              <div class="stars" id="stars-${cat}-${c.id}">
+                ${[5,4,3,2,1].map(v => `
+                  <input type="radio" name="sc-${cat}-${c.id}" id="sc-${cat}-${c.id}-${v}" value="${v}" onchange="onScore('${cat}','${c.id}',${v})">
+                  <label for="sc-${cat}-${c.id}-${v}" title="${v}/5">★</label>
+                `).join('')}
+              </div>
+              <div class="star-val" id="starval-${cat}-${c.id}">Not scored</div>
+            </div>
           </div>
-          <div class="crit-input">
-            <div class="crit-weight">Weight: ${Math.round(crit.weight*100)}%</div>
-            <div class="zera-badge-row">
-              <span style="color:#888;font-size:8pt;">Zera:</span>
-              <span class="zera-badge">Z:${ZERA_SCORES[brand]?.[crit.id] ?? '—'}</span>
-            </div>
-            <div class="star-row" id="stars-${brand}-${crit.id}">
-              ${[1,2,3,4,5].map(n => `<div class="star s${n}" data-brand="${brand}" data-crit="${crit.id}" data-val="${n}" onclick="setScore('${brand}','${crit.id}',${n})">${n}</div>`).join('')}
-            </div>
-            <div class="score-label" id="label-${brand}-${crit.id}"></div>
+          <div class="crit-comment">
+            <div class="cmt-label">Your note / rationale</div>
+            <textarea id="cmt-${cat}-${c.id}" placeholder="Add context for this score..." 
+              oninput="comments['${cat}']['${c.id}']=this.value; autosave()"></textarea>
           </div>
         </div>`;
+      });
     });
-    if (currentGroup) html += '</div>';
     container.innerHTML = html;
   });
 }
 
-// ═══ SCORING LOGIC ═══
-const scores = {};
-const comments = {};
-BRANDS.forEach(b => { scores[b] = {}; comments[b] = {}; });
+// ─── SCORE HANDLER ───────────────────────────────────────────────────────────
+const STAR_LABELS = { 1:'Poor', 2:'Below avg', 3:'Average', 4:'Good', 5:'Excellent' };
 
-function setScore(brand, critId, val) {
-  scores[brand][critId] = val;
-  // Update stars
-  const stars = document.querySelectorAll(`#stars-${brand}-${critId} .star`);
-  stars.forEach(s => {
-    s.classList.remove('active');
-    if (parseInt(s.dataset.val) === val) s.classList.add('active');
-  });
-  // Update label
-  const label = document.getElementById(`label-${brand}-${critId}`);
-  label.textContent = SCORE_LABELS[val];
-  label.className = `score-label ${SCORE_CLASSES[val]}`;
-  updateTotals();
+function onScore(cat, critId, val) {
+  scores[cat][critId] = val;
+  document.getElementById('starval-' + cat + '-' + critId).textContent = `${val}/5 — ${STAR_LABELS[val]}`;
+  updateLive(cat);
+  updateSummary();
   updateProgress();
-  autoSave();
+  autosave();
 }
 
-function calcWeighted(brand) {
-  let total = 0; let wTotal = 0;
-  CRITERIA.forEach(c => {
-    if (scores[brand][c.id] !== undefined) {
-      total += scores[brand][c.id] * c.weight;
-      wTotal += c.weight;
-    }
+// ─── WEIGHTED SCORE ──────────────────────────────────────────────────────────
+function calcWeighted(cat) {
+  let totalWt = 0, totalScore = 0, count = 0;
+  GROUPS.forEach(g => g.crits.forEach(c => {
+    const s = scores[cat][c.id];
+    if (s != null) { totalScore += s * c.wt; totalWt += c.wt; count++; }
+  }));
+  return { score: totalWt > 0 ? totalScore / totalWt : null, count, totalCrits: 10 };
+}
+
+function updateLive(cat) {
+  const { score } = calcWeighted(cat);
+  const el = document.getElementById('live-' + cat);
+  el.textContent = score != null ? score.toFixed(1) : '—';
+}
+
+function updateSummary() {
+  const results = {};
+  CATS.forEach(cat => {
+    const { score, count } = calcWeighted(cat);
+    results[cat] = { score, count };
+    const valEl = document.getElementById('sum-val-' + cat);
+    valEl.textContent = score != null ? score.toFixed(1) : '—';
   });
-  if (wTotal === 0) return null;
-  return (total / wTotal).toFixed(2);
-}
 
-const BRAND_EMOJIS = { hakkasan:'🔴', ling:'🟣', dishoom:'🔵', barbaard:'🟢', madison:'⭐', park90:'🍷' };
-
-function updateTotals() {
-  BRANDS.forEach(brand => {
-    const ws = calcWeighted(brand);
-    const zs = calcZeraWeighted(brand);
-    const el = document.getElementById(`total-${brand}`);
-    const bar = document.getElementById(`bar-${brand}`);
-    const barTxt = document.getElementById(`bar-txt-${brand}`);
-    const scoreEl = document.getElementById(`score-${brand}`);
-    const zeraEl = document.getElementById(`zera-total-${brand}`);
-    if (zeraEl && zs) zeraEl.textContent = zs;
-    if (ws !== null) {
-      el.textContent = ws;
-      const pct = (parseFloat(ws) / 5 * 100).toFixed(0);
-      bar.style.width = pct + '%';
-      barTxt.textContent = `You:${ws}`;
-      scoreEl.textContent = ws;
-    } else {
-      // Show Zera score on bar if user hasn't scored yet
-      el.textContent = '—';
-      if (zs) {
-        const pct = (parseFloat(zs) / 5 * 100).toFixed(0);
-        bar.style.width = pct + '%';
-        if (barTxt) barTxt.textContent = `Z:${zs}`;
-      } else {
-        if (bar) bar.style.width = '0%';
-        if (barTxt) barTxt.textContent = '';
-      }
-      if (scoreEl) scoreEl.textContent = zs ? `(Z:${zs})` : '—';
-    }
+  // Rank
+  const sorted = CATS.filter(c => results[c].score != null)
+    .sort((a,b) => results[b].score - results[a].score);
+  CATS.forEach(cat => {
+    const rankEl = document.getElementById('sum-rank-' + cat);
+    const box = document.getElementById('sum-' + cat);
+    box.classList.remove('winner');
+    if (results[cat].score == null) { rankEl.textContent = ''; return; }
+    const rank = sorted.indexOf(cat) + 1;
+    const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+    rankEl.textContent = medals[rank-1] + ' Rank #' + rank;
+    if (rank === 1) box.classList.add('winner');
   });
 }
 
 function updateProgress() {
-  BRANDS.forEach(brand => {
-    const filled = CRITERIA.filter(c => scores[brand][c.id] !== undefined).length;
-    const total = CRITERIA.length;
-    const el = document.getElementById(`prog-${brand}`);
-    if (!el) return;
-    const name = BRAND_NAMES[brand];
-    const emoji = BRAND_EMOJIS[brand] || '•';
-    el.textContent = `${emoji} ${name} — ${filled}/${total}`;
-    el.className = 'prog-brand ' + (filled === total ? 'prog-done' : filled > 0 ? 'prog-partial' : 'prog-empty');
-  });
+  let done = 0, total = CATS.length * 10;
+  CATS.forEach(cat => GROUPS.forEach(g => g.crits.forEach(c => {
+    if (scores[cat][c.id] != null) done++;
+  })));
+  const pct = Math.round(done / total * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-count').textContent = `${done} / ${total} criteria scored`;
 }
 
-// ═══ TABS ═══
-document.getElementById('brand-tabs').addEventListener('click', e => {
-  const tab = e.target.closest('.brand-tab');
-  if (!tab) return;
-  const brand = tab.dataset.brand;
-  document.querySelectorAll('.brand-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.brand-panel').forEach(p => p.classList.remove('active'));
-  tab.classList.add('active');
-  document.getElementById(`panel-${brand}`).classList.add('active');
-});
-
-// ═══ SAVE / LOAD ═══
-function gatherComments() {
-  BRANDS.forEach(brand => {
-    CRITERIA.forEach(c => {
-      const el = document.getElementById(`comment-${brand}-${c.id}`);
-      if (el) comments[brand][c.id] = el.value;
-    });
+// ─── TAB SWITCH ──────────────────────────────────────────────────────────────
+function switchCat(cat) {
+  CATS.forEach(c => {
+    document.getElementById('panel-' + c).classList.remove('active');
   });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + cat).classList.add('active');
+  event.currentTarget.classList.add('active');
 }
 
-function saveAll() {
-  gatherComments();
-  const data = {
-    scorer: {
-      name: document.getElementById('scorer-name').value,
-      role: document.getElementById('scorer-role').value,
-      date: document.getElementById('scorer-date').value,
-      nat1: document.getElementById('nat1').value,
-      nat2: document.getElementById('nat2').value,
+// ─── LOCAL SAVE / LOAD ───────────────────────────────────────────────────────
+function getSessionData() {
+  const result = {};
+  CATS.forEach(cat => {
+    result[cat] = { scores: {}, comments: {}, weighted: calcWeighted(cat).score };
+    GROUPS.forEach(g => g.crits.forEach(c => {
+      result[cat].scores[c.id] = scores[cat][c.id] || null;
+      result[cat].comments[c.id] = comments[cat][c.id] || '';
+    }));
+  });
+  return {
+    meta: {
+      name: document.getElementById('inp-name').value,
+      role: document.getElementById('inp-role').value,
+      property: document.getElementById('inp-prop').value,
+      session: document.getElementById('inp-session').value,
+      savedAt: new Date().toISOString(),
+      tool: 'LMSG F&B Concept Scoring Tool v1'
     },
-    scores, comments,
-    weighted: {}
+    scores: result
   };
-  BRANDS.forEach(b => { data.weighted[b] = calcWeighted(b); });
-  localStorage.setItem('lmsg-scoring-v2', JSON.stringify(data));
-  const st = document.getElementById('save-status');
-  st.classList.add('show');
-  setTimeout(() => st.classList.remove('show'), 2000);
 }
 
-function autoSave() {
-  gatherComments();
-  const data = { scores, comments };
-  localStorage.setItem('lmsg-scoring-draft', JSON.stringify(data));
-}
-
-function loadSaved() {
-  const raw = localStorage.getItem('lmsg-scoring-v2') || localStorage.getItem('lmsg-scoring-draft');
-  if (!raw) return;
+function autosave() {
   try {
-    const data = JSON.parse(raw);
-    if (data.scorer) {
-      if (data.scorer.name) document.getElementById('scorer-name').value = data.scorer.name;
-      if (data.scorer.role) document.getElementById('scorer-role').value = data.scorer.role;
-      if (data.scorer.date) document.getElementById('scorer-date').value = data.scorer.date;
-      if (data.scorer.nat1) document.getElementById('nat1').value = data.scorer.nat1;
-      if (data.scorer.nat2) document.getElementById('nat2').value = data.scorer.nat2;
-    }
-    if (data.scores) {
-      BRANDS.forEach(b => {
-        if (data.scores[b]) {
-          Object.entries(data.scores[b]).forEach(([cid, val]) => {
-            scores[b][cid] = val;
-            const stars = document.querySelectorAll(`#stars-${b}-${cid} .star`);
-            stars.forEach(s => {
-              s.classList.remove('active');
-              if (parseInt(s.dataset.val) === val) s.classList.add('active');
-            });
-            const label = document.getElementById(`label-${b}-${cid}`);
-            if (label) { label.textContent = SCORE_LABELS[val]; label.className = `score-label ${SCORE_CLASSES[val]}`; }
-          });
-        }
-      });
-    }
-    if (data.comments) {
-      BRANDS.forEach(b => {
-        if (data.comments[b]) {
-          Object.entries(data.comments[b]).forEach(([cid, val]) => {
-            const el = document.getElementById(`comment-${b}-${cid}`);
-            if (el) el.value = val;
-          });
-        }
-      });
-    }
-    updateTotals(); updateProgress();
-  } catch(e) { console.log('Load error', e); }
+    localStorage.setItem('lmsg_scoring_draft', JSON.stringify(getSessionData()));
+  } catch(e) {}
+}
+
+function saveLocal() {
+  const data = getSessionData();
+  const key = 'lmsg_scoring_' + Date.now();
+  const sessions = JSON.parse(localStorage.getItem('lmsg_scoring_sessions') || '{}');
+  sessions[key] = data;
+  localStorage.setItem('lmsg_scoring_sessions', JSON.stringify(sessions));
+  localStorage.setItem('lmsg_scoring_draft', JSON.stringify(data));
+  showStatus('✅ Draft saved locally. You can close and return anytime.', 'ok');
+  renderSessions();
+}
+
+function loadDraft() {
+  try {
+    const draft = JSON.parse(localStorage.getItem('lmsg_scoring_draft'));
+    if (!draft) return;
+    loadData(draft);
+    showStatus('📂 Previous draft restored.', 'info');
+  } catch(e) {}
+}
+
+function loadData(data) {
+  if (data.meta) {
+    document.getElementById('inp-name').value = data.meta.name || '';
+    document.getElementById('inp-role').value = data.meta.role || '';
+    document.getElementById('inp-prop').value = data.meta.property || 'Le Méridien Saigon';
+    document.getElementById('inp-session').value = data.meta.session || '';
+  }
+  CATS.forEach(cat => {
+    if (!data.scores || !data.scores[cat]) return;
+    GROUPS.forEach(g => g.crits.forEach(c => {
+      const s = data.scores[cat].scores[c.id];
+      const cmt = data.scores[cat].comments[c.id];
+      if (s) {
+        scores[cat][c.id] = s;
+        const radio = document.getElementById(`sc-${cat}-${c.id}-${s}`);
+        if (radio) radio.checked = true;
+        const valEl = document.getElementById(`starval-${cat}-${c.id}`);
+        if (valEl) valEl.textContent = `${s}/5 — ${STAR_LABELS[s]}`;
+      }
+      if (cmt) {
+        comments[cat][c.id] = cmt;
+        const ta = document.getElementById(`cmt-${cat}-${c.id}`);
+        if (ta) ta.value = cmt;
+      }
+    }));
+    updateLive(cat);
+  });
+  updateSummary();
+  updateProgress();
+}
+
+function renderSessions() {
+  try {
+    const sessions = JSON.parse(localStorage.getItem('lmsg_scoring_sessions') || '{}');
+    const keys = Object.keys(sessions).sort().reverse();
+    const card = document.getElementById('sessions-card');
+    const list = document.getElementById('sessions-list');
+    if (keys.length === 0) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+    list.innerHTML = keys.map(k => {
+      const s = sessions[k];
+      const name = s.meta?.name || 'Unnamed';
+      const date = s.meta?.savedAt ? new Date(s.meta.savedAt).toLocaleString() : '';
+      return `<div class="session-item">
+        <div>
+          <div class="si-name">${name} — ${s.meta?.role || ''}</div>
+          <div class="si-date">${date} · ${s.meta?.session || ''}</div>
+        </div>
+        <div>
+          <span class="si-load" onclick="loadSession('${k}')">Load</span>
+          <span class="si-del" onclick="deleteSession('${k}')">✕</span>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+function loadSession(key) {
+  const sessions = JSON.parse(localStorage.getItem('lmsg_scoring_sessions') || '{}');
+  if (sessions[key]) { loadData(sessions[key]); showStatus('✅ Session loaded.', 'ok'); }
+}
+
+function deleteSession(key) {
+  const sessions = JSON.parse(localStorage.getItem('lmsg_scoring_sessions') || '{}');
+  delete sessions[key];
+  localStorage.setItem('lmsg_scoring_sessions', JSON.stringify(sessions));
+  renderSessions();
 }
 
 function resetAll() {
   if (!confirm('Reset all scores? This cannot be undone.')) return;
-  BRANDS.forEach(b => { scores[b] = {}; comments[b] = {}; });
-  document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.score-label').forEach(l => { l.textContent = ''; l.className = 'score-label'; });
-  document.querySelectorAll('.crit-comment').forEach(t => t.value = '');
-  ['scorer-name','scorer-role','scorer-date','nat1','nat2'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  localStorage.removeItem('lmsg-scoring-v2');
-  localStorage.removeItem('lmsg-scoring-draft');
-  updateTotals(); updateProgress();
+  CATS.forEach(cat => { scores[cat] = {}; comments[cat] = {}; });
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  document.querySelectorAll('.star-val').forEach(el => el.textContent = 'Not scored');
+  document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+  CATS.forEach(cat => { document.getElementById('live-' + cat).textContent = '—'; });
+  updateSummary(); updateProgress();
+  showStatus('🔄 Reset complete.', 'info');
 }
 
-// ═══ EXPORT ═══
+// ─── EXPORT JSON ─────────────────────────────────────────────────────────────
 function exportJSON() {
-  gatherComments();
-  const data = {
-    meta: { tool: 'LMSG Brand Ecosystem Scoring', version: '2.0', brands: 6, generated: new Date().toISOString() },
-    zera_scores: ZERA_SCORES,
-    zera_weighted: Object.fromEntries(BRANDS.map(b => [b, calcZeraWeighted(b)])),
-    scorer: {
-      name: document.getElementById('scorer-name').value || '(not provided)',
-      role: document.getElementById('scorer-role').value || '(not provided)',
-      date: document.getElementById('scorer-date').value || '(not provided)',
-      nat1: document.getElementById('nat1').value || '(not provided)',
-      nat2: document.getElementById('nat2').value || '(not provided)',
-    },
-    scores, comments,
-    weighted: {},
-    criteria_weights: {}
-  };
-  BRANDS.forEach(b => { data.weighted[b] = calcWeighted(b) || 'incomplete'; });
-  CRITERIA.forEach(c => { data.criteria_weights[c.id] = { name: c.name, weight: c.weight }; });
-  document.getElementById('export-text').value = JSON.stringify(data, null, 2);
-  document.getElementById('modal').classList.add('show');
+  const data = getSessionData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const name = (data.meta.name || 'scoring').replace(/\s+/g,'-').toLowerCase();
+  a.download = `lmsg-scoring-${name}-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
 }
 
-function copyExport() {
-  const ta = document.getElementById('export-text');
-  ta.select(); document.execCommand('copy');
-  const btn = event.target;
-  btn.textContent = '✅ Copied!';
-  setTimeout(() => btn.textContent = '📋 Copy to Clipboard', 2000);
-}
+// ─── SHAREPOINT UPLOAD ───────────────────────────────────────────────────────
+// Calls backend proxy endpoint. Zera will deploy a small Node.js relay on the server.
+async function uploadSharePoint() {
+  const name = document.getElementById('inp-name').value;
+  if (!name) { showStatus('⚠️ Please enter your name before uploading.', 'err'); return; }
+  
+  const data = getSessionData();
+  const btn = document.getElementById('btn-sp');
+  btn.disabled = true;
+  btn.textContent = '☁️ Uploading...';
+  showStatus('⏳ Uploading to SharePoint...', 'info');
 
-function closeModal() { document.getElementById('modal').classList.remove('show'); }
-
-function copyLink() {
-  gatherComments();
-  const data = { scores, comments };
-  const encoded = btoa(JSON.stringify(data));
-  const url = window.location.href.split('?')[0] + '?d=' + encoded;
-  if (url.length < 8000) {
-    navigator.clipboard.writeText(url).then(() => {
-      alert('Link copied! Share with RCC team.');
-    }).catch(() => { alert('URL: ' + url); });
-  } else {
-    alert('Too much data for URL — please use Export JSON instead.');
+  try {
+    const res = await fetch('/api/lmsg-scoring-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      const r = await res.json();
+      showStatus(`✅ Uploaded to SharePoint: ${r.path || 'RCC-Data/Scoring'}`, 'ok');
+    } else {
+      // Fallback: export JSON with instructions
+      exportJSON();
+      showStatus('⚠️ Direct upload not available. JSON exported — send to Zera to upload.', 'err');
+    }
+  } catch(e) {
+    // Fallback when no backend
+    exportJSON();
+    showStatus('📤 JSON exported. Send file to Zera to upload to SharePoint (RCC-Data/LMSG-Scoring/).', 'info');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '☁️ Upload to SharePoint';
   }
 }
 
-// ═══ INIT ═══
-document.getElementById('scorer-date').value = new Date().toISOString().split('T')[0];
-
-// Load URL params
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('d')) {
-  try {
-    const data = JSON.parse(atob(urlParams.get('d')));
-    if (data.scores) { BRANDS.forEach(b => { if(data.scores[b]) Object.assign(scores[b], data.scores[b]); }); }
-    if (data.comments) { BRANDS.forEach(b => { if(data.comments[b]) Object.assign(comments[b], data.comments[b]); }); }
-  } catch(e) {}
+// ─── STATUS ──────────────────────────────────────────────────────────────────
+function showStatus(msg, type) {
+  const el = document.getElementById('status-bar');
+  el.textContent = msg;
+  el.className = 'status-bar ' + type;
+  if (type === 'ok') setTimeout(() => { el.style.display = 'none'; }, 5000);
 }
 
+// ─── INIT ────────────────────────────────────────────────────────────────────
 buildCriteria();
-loadSaved();
-
-// Keyboard shortcuts
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.key === 's') { e.preventDefault(); saveAll(); }
-});
+loadDraft();
+renderSessions();
 </script>
 </body>
 </html>
