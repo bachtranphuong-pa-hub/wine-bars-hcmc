@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LMSG Lifestyle & Ecosystem Brand Scoring</title>
+<title>LMSG F&B Concept Category Scoring</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f6fa; color:#1a1a2e; font-size:11pt; line-height:1.6; }
-  .container { max-width:1200px; margin:0 auto; padding:28px 20px; }
+  .container { max-width:1300px; margin:0 auto; padding:28px 20px; }
 
   .header {
     background:linear-gradient(140deg,#0d1b2a 0%,#1a1a2e 50%,#16213e 100%);
@@ -24,116 +24,81 @@
   .section { background:white; border-radius:12px; padding:24px 28px; margin-bottom:18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
   .section-label { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:5px; font-weight:700; }
   h2 { font-size:16pt; font-weight:700; color:#0d1b2a; margin-bottom:14px; }
-  h3 { font-size:12pt; font-weight:700; color:#0d1b2a; margin-bottom:10px; margin-top:18px; }
-  h3:first-of-type { margin-top:0; }
   p.body { font-size:10.5pt; color:#555; line-height:1.7; margin-bottom:12px; }
 
-  /* ECOSYSTEM CATEGORY BADGES */
-  .cat-badges { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
-  .cat-badge { padding:5px 14px; border-radius:20px; font-size:9pt; font-weight:700; letter-spacing:0.5px; }
-  .cat-badge.fnb { background:#fff8f0; color:#c2410c; border:1.5px solid #fbd38d; }
-  .cat-badge.wellness { background:#f0fdf4; color:#15803d; border:1.5px solid #86efac; }
-  .cat-badge.lifestyle { background:#f5f0ff; color:#6d28d9; border:1.5px solid #c4b5fd; }
-  .cat-badge.social { background:#eff6ff; color:#1e40af; border:1.5px solid #93c5fd; }
-  .cat-badge.nightlife { background:#1a0a2e; color:#c8a050; border:1.5px solid #c8a050; }
-
-  /* BRAND GRID */
-  .brand-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:22px; }
-  .brand-card { border-radius:12px; padding:20px 20px; border:2px solid; }
-  .brand-card.hakkasan { background:#fff8f0; border-color:#c2410c; }
-  .brand-card.ling { background:#faf5ff; border-color:#7c3aed; }
-  .brand-card.dishoom { background:#eff6ff; border-color:#1d4ed8; }
-  .brand-card.barbaard { background:#f0fdf4; border-color:#15803d; }
-  .brand-card.madison { background:linear-gradient(135deg,#fdf8ef,#f5f0ff); border-color:#c8a050; border-style:dashed; }
-  .brand-card.park90 { background:#fff1f1; border-color:#7f1d1d; border-style:dashed; }
-  .brand-card h4 { font-size:11.5pt; font-weight:700; margin-bottom:3px; }
-  .brand-card.hakkasan h4 { color:#c2410c; }
-  .brand-card.ling h4 { color:#7c3aed; }
-  .brand-card.dishoom h4 { color:#1d4ed8; }
-  .brand-card.barbaard h4 { color:#15803d; }
-  .brand-card.madison h4 { color:#c8a050; }
-  .brand-card.park90 h4 { color:#7f1d1d; }
-  .bc-type { font-size:8pt; text-transform:uppercase; letter-spacing:1.5px; font-weight:700; margin-bottom:10px; padding:2px 8px; border-radius:8px; display:inline-block; }
-  .brand-card.hakkasan .bc-type { background:#fee2e2; color:#c2410c; }
-  .brand-card.ling .bc-type { background:#ede9fe; color:#7c3aed; }
-  .brand-card.dishoom .bc-type { background:#dbeafe; color:#1d4ed8; }
-  .brand-card.barbaard .bc-type { background:#d1fae5; color:#15803d; }
-  .brand-card.madison .bc-type { background:#fef3c7; color:#c8a050; }
-  .brand-card.park90 .bc-type { background:#fee2e2; color:#7f1d1d; }
-  .brand-card ul { list-style:none; padding:0; }
-  .brand-card ul li { font-size:9.5pt; color:#333; padding:3px 0; display:flex; gap:6px; line-height:1.4; border-bottom:1px solid rgba(0,0,0,0.04); }
-  .brand-card ul li:last-child { border-bottom:none; }
-  .brand-card.hakkasan ul li::before { content:'·'; color:#c2410c; font-weight:900; flex-shrink:0; }
-  .brand-card.ling ul li::before { content:'·'; color:#7c3aed; font-weight:900; flex-shrink:0; }
-  .brand-card.dishoom ul li::before { content:'·'; color:#1d4ed8; font-weight:900; flex-shrink:0; }
-  .brand-card.barbaard ul li::before { content:'·'; color:#15803d; font-weight:900; flex-shrink:0; }
-  .brand-card.madison ul li::before { content:'·'; color:#c8a050; font-weight:900; flex-shrink:0; }
-  .brand-card.park90 ul li::before { content:'·'; color:#7f1d1d; font-weight:900; flex-shrink:0; }
-  .brand-card.madison { grid-column: 1 / -1; }
-  .brand-card.park90 { grid-column: 1 / -1; }
-
-  /* BANYA FIT BOX */
-  .banya-box {
-    background:linear-gradient(135deg,#f0fdf4,#f5f0ff);
-    border:2px solid #059669; border-radius:12px; padding:22px 24px; margin-bottom:18px;
+  /* CATEGORY LEGEND */
+  .cat-legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
+  .cat-pill {
+    display:flex; align-items:center; gap:8px;
+    padding:7px 16px; border-radius:20px; font-size:9.5pt; font-weight:700;
+    border:2px solid;
   }
-  .banya-box h3 { color:#059669; font-size:13pt; margin-bottom:14px; }
-  .banya-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
-  .banya-item { background:white; border-radius:8px; padding:14px; border:1px solid #a7f3d0; }
-  .banya-item .bi-brand { font-size:9pt; text-transform:uppercase; letter-spacing:1.5px; font-weight:700; color:#059669; margin-bottom:6px; }
-  .banya-item .bi-synergy { font-size:11.5pt; font-weight:700; margin-bottom:6px; }
-  .banya-item .bi-text { font-size:9.5pt; color:#555; line-height:1.5; }
-  .banya-item .synergy-score { display:inline-block; padding:2px 10px; border-radius:10px; font-size:9pt; font-weight:700; margin-top:8px; }
-  .ss-high { background:#d1fae5; color:#059669; }
-  .ss-med { background:#fef3c7; color:#d97706; }
-  .ss-low { background:#fee2e2; color:#dc2626; }
+  .cat-pill .dot { width:10px; height:10px; border-radius:50%; }
+  .cp-chinese   { background:#fff4f0; color:#9a1800; border-color:#f87171; }
+  .cp-indian    { background:#eff6ff; color:#1e3a8a; border-color:#60a5fa; }
+  .cp-wellness  { background:#f0fdf4; color:#14532d; border-color:#4ade80; }
+  .cp-japanese  { background:#fdf4ff; color:#581c87; border-color:#c084fc; }
+  .cp-western   { background:#fefce8; color:#713f12; border-color:#fbbf24; }
 
   /* SCORING TABLE */
   .tbl-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:10px; margin-bottom:16px; }
-  table.score-table { width:100%; border-collapse:collapse; font-size:10pt; min-width:1400px; }
-  table.score-table th { background:#0d1b2a; color:white; padding:10px 8px; text-align:center; font-size:7.5pt; letter-spacing:1px; text-transform:uppercase; font-weight:600; white-space:nowrap; }
-  table.score-table th.th-crit { text-align:left; min-width:190px; background:#0d1b2a; }
-  table.score-table th.th-wt { background:#1a2a3a; min-width:45px; }
-  table.score-table th.h1 { background:#c2410c; }
-  table.score-table th.h2 { background:#7c3aed; }
-  table.score-table th.h3 { background:#1d4ed8; }
-  table.score-table th.h4 { background:#15803d; }
-  table.score-table th.h5 { background:#b45309; }
-  table.score-table th.h6 { background:#7f1d1d; }
+  table.score-table { width:100%; border-collapse:collapse; font-size:9.5pt; min-width:1100px; }
+
+  /* Header rows */
+  table.score-table th { padding:10px 8px; text-align:center; font-size:7.5pt; letter-spacing:1px; text-transform:uppercase; font-weight:600; white-space:nowrap; }
+  table.score-table th.th-crit { text-align:left; min-width:200px; background:#0d1b2a; color:white; }
+  table.score-table th.th-wt { background:#1a2a3a; color:#c8a050; min-width:42px; }
+
+  /* Category header bg */
+  table.score-table th.h-cn { background:#9a1800; color:white; }
+  table.score-table th.h-in { background:#1e3a8a; color:white; }
+  table.score-table th.h-we { background:#14532d; color:white; }
+  table.score-table th.h-jp { background:#581c87; color:white; }
+  table.score-table th.h-wt2 { background:#713f12; color:white; }
+
+  /* Sub-headers */
+  table.score-table th.sh-cn { background:#b91c1c; color:white; }
+  table.score-table th.sh-in { background:#1d4ed8; color:white; }
+  table.score-table th.sh-we { background:#15803d; color:white; }
+  table.score-table th.sh-jp { background:#7e22ce; color:white; }
+  table.score-table th.sh-wt2 { background:#92400e; color:white; }
+  table.score-table th.sh-note { font-size:6.5pt; min-width:100px; }
+
+  /* Body cells */
   table.score-table td { padding:8px 8px; border-bottom:1px solid #f0ebff; vertical-align:top; }
   table.score-table tr:nth-child(even) td { background:#fafaf8; }
   table.score-table td.crit { font-weight:600; color:#0d1b2a; font-size:10.5pt; }
   table.score-table td.crit .sub { font-size:8.5pt; color:#888; font-weight:400; margin-top:2px; line-height:1.4; }
-  table.score-table td.wt { text-align:center; font-weight:700; color:#c8a050; font-size:10.5pt; }
+  table.score-table td.wt { text-align:center; font-weight:700; color:#c8a050; font-size:10pt; }
   table.score-table td.sc { text-align:center; padding:6px 4px; }
   table.score-table td.self-cell { text-align:center; padding:6px 4px; font-size:9pt; color:#aaa; font-style:italic; }
-  table.score-table td.note-cell { font-size:8.5pt; color:#888; font-style:italic; padding:6px 6px; vertical-align:middle; }
+  table.score-table td.note-cell { font-size:8.5pt; color:#777; font-style:italic; padding:6px 8px; vertical-align:middle; line-height:1.4; }
+
+  /* Score pill */
   .sc-pill { display:flex; flex-direction:column; align-items:center; gap:2px; }
-  .sb { width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13pt; font-weight:700; margin:0 auto; }
+  .sb { width:32px; height:32px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:12pt; font-weight:700; margin:0 auto; }
   .sb.s1 { background:#fee2e2; color:#dc2626; }
   .sb.s2 { background:#fef3c7; color:#b45309; }
   .sb.s3 { background:#dbeafe; color:#1d4ed8; }
   .sb.s4 { background:#d1fae5; color:#059669; }
   .sb.s5 { background:#ede9fe; color:#6d28d9; }
   .sb.sna { background:#f3f4f6; color:#9ca3af; font-size:9pt; }
-  /* Zera badge pill */
-  .zera-badge { display:inline-block; padding:2px 7px; border-radius:8px; font-size:8pt; font-weight:700; background:#1a1a2e; color:#c8a050; letter-spacing:0.5px; }
-  .sn { font-size:7pt; color:#888; font-style:italic; text-align:center; line-height:1.3; max-width:75px; }
-  /* Sub-header labels */
-  .sub-th-zera { font-size:6.5pt; letter-spacing:0.5px; text-transform:uppercase; opacity:0.9; }
-  .sub-th-self { font-size:6.5pt; letter-spacing:0.5px; text-transform:uppercase; opacity:0.75; }
-  .sub-th-note { font-size:6.5pt; letter-spacing:0.5px; text-transform:uppercase; opacity:0.75; }
+  .zera-badge { display:inline-block; padding:2px 6px; border-radius:6px; font-size:7.5pt; font-weight:700; background:#1a1a2e; color:#c8a050; }
+  .sn { font-size:7pt; color:#888; font-style:italic; text-align:center; line-height:1.3; max-width:70px; }
+
+  /* Sample brands under category header */
+  .cat-brands { font-size:7pt; opacity:0.8; font-style:italic; font-weight:400; display:block; margin-top:2px; }
+
+  /* Group rows */
   tr.grp td { background:#f8f5ff !important; font-weight:700; font-size:9pt; letter-spacing:1px; text-transform:uppercase; color:#6d28d9; padding:8px 12px; }
   tr.sub td { background:#f0fdf4 !important; font-weight:700; font-size:10.5pt; border-top:2px solid #a7f3d0; }
   tr.tot td { background:#0d1b2a !important; color:white; font-weight:700; font-size:12pt; }
-  tr.tot .v1 { color:#fbd38d; } tr.tot .v2 { color:#c4b5fd; } tr.tot .v3 { color:#93c5fd; }
-  tr.tot .v4 { color:#86efac; } tr.tot .v5 { color:#fde68a; } tr.tot .v6 { color:#fca5a5; }
+  tr.tot .v-cn { color:#fca5a5; }
+  tr.tot .v-in { color:#93c5fd; }
+  tr.tot .v-we { color:#86efac; }
+  tr.tot .v-jp { color:#d8b4fe; }
+  tr.tot .v-wt { color:#fde68a; }
 
-  /* BOXES */
-  .instr { background:#eff6ff; border:2px solid #93c5fd; border-radius:10px; padding:18px 20px; margin-bottom:18px; }
-  .instr h4 { color:#1d4ed8; font-size:10pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
-  .instr ol { padding-left:18px; }
-  .instr ol li { padding:4px 0; font-size:10.5pt; color:#333; line-height:1.5; }
   .note { background:#f5f0ff; border-left:4px solid #7c3aed; border-radius:0 8px 8px 0; padding:12px 16px; margin:12px 0; font-size:10pt; color:#444; line-height:1.6; }
   .key-box { background:linear-gradient(135deg,#fdf8ef,#fef9f3); border:2px solid #c8a050; border-radius:10px; padding:20px 24px; margin-top:16px; }
   .key-box h4 { color:#c8a050; font-size:9.5pt; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:12px; }
@@ -149,11 +114,6 @@
     .header { padding:22px 18px; }
     .header h1 { font-size:17pt; }
     .section { padding:18px 16px; }
-    .brand-grid { grid-template-columns:1fr; }
-    .brand-card.madison { grid-column:auto; }
-    .brand-card.park90 { grid-column:auto; }
-    .banya-grid { grid-template-columns:1fr; }
-    table.score-table { display:block; overflow-x:auto; }
   }
 </style>
 </head>
@@ -162,516 +122,422 @@
 
 <!-- HEADER -->
 <div class="header">
-  <div class="tag">Le Méridien Saigon · Lifestyle Ecosystem Strategy · Internal Working Document</div>
-  <h1>LMSG <em>Ecosystem Brand</em> Scoring<br>F&B, Wellness, Lifestyle & Social</h1>
-  <div class="sub">Expanded framework — evaluating brands as ecosystem anchors, not just F&B outlets. Includes Madison House (Sunset HG) and Park90 (premium wine bar, active BARSON partner) as new entrants. Dual Zera/Self scoring system.</div>
+  <div class="tag">Le Méridien Saigon · F&B Strategy · Internal Working Document</div>
+  <h1>LMSG <em>F&B Concept Category</em> Scoring</h1>
+  <div class="sub">Generic category framework — evaluate concept types, not individual brands. Each category scored against 10 criteria (A1→D2). Brands listed as representative examples only.</div>
   <div class="meta-row">
     <div class="meta-item"><label>Property</label><span>Le Méridien Saigon (LMSG)</span></div>
-    <div class="meta-item"><label>Brands Evaluated</label><span>Hakkasan · Ling Ling · Dishoom · Barbaard · Madison House · Park90</span></div>
-    <div class="meta-item"><label>Framework</label><span>Ecosystem Fit — F&B + Wellness + Lifestyle + Social</span></div>
+    <div class="meta-item"><label>Categories</label><span>Modern Premium Chinese · Modern Premium Indian · Wellness Service · Premium Japanese · Premium Western</span></div>
+    <div class="meta-item"><label>Framework</label><span>10 criteria · A1→D2 · Weighted scoring (1–5)</span></div>
     <div class="meta-item"><label>Prepared by</label><span>RCC — April 2026</span></div>
   </div>
 </div>
 
-<!-- SECTION 0: PHILOSOPHY -->
+<!-- CATEGORY LEGEND -->
 <div class="section">
-  <div class="section-label">Framework</div>
-  <h2>Ecosystem Thinking — Not Just F&B</h2>
-  <p class="body">The traditional hotel F&B evaluation asks: "Which restaurant will fill the most covers?" But LMSG's strategic opportunity is broader. The right brand partner doesn't just generate F&B revenue — it <strong>defines the lifestyle identity of the property</strong>, attracts a specific guest demographic, and creates cross-sell synergies with other hotel assets (spa, rooms, events, loyalty).</p>
-  <p class="body">This scoring framework evaluates brands across <strong>four ecosystem dimensions</strong>, recognizing that some brands (e.g., Barbaard, Madison House) contribute more to lifestyle identity and loyalty than to raw F&B covers — and that's a legitimate strategic value.</p>
-  <p class="body">Scores are shown in <strong>dual columns</strong>: <span style="background:#1a1a2e;color:#c8a050;padding:1px 7px;border-radius:6px;font-size:9pt;font-weight:700;">Zera</span> = RCC pre-filled baseline analysis · <strong>Self</strong> = Hotel team override field.</p>
+  <div class="section-label">Categories</div>
+  <h2>Concept Category Overview</h2>
+  <p class="body">Scoring is by <strong>concept category</strong>, not by individual brand. The right brand within a winning category can be identified in a second stage. Example brands are listed for reference only.</p>
 
-  <div class="cat-badges">
-    <span class="cat-badge fnb">🍽 F&B Anchor</span>
-    <span class="cat-badge wellness">🧘 Wellness Hub</span>
-    <span class="cat-badge lifestyle">🎩 Lifestyle Identity</span>
-    <span class="cat-badge social">🥂 Social Scene</span>
-    <span class="cat-badge nightlife">🌙 Nightlife / Late Night</span>
+  <div class="cat-legend">
+    <div class="cat-pill cp-chinese">
+      <div class="dot" style="background:#9a1800;"></div>
+      🥢 Modern Premium Chinese
+      <span style="font-size:8pt;font-weight:400;opacity:0.75;">(e.g. Hakkasan, Ling Ling)</span>
+    </div>
+    <div class="cat-pill cp-indian">
+      <div class="dot" style="background:#1e3a8a;"></div>
+      🪔 Modern Premium Indian
+      <span style="font-size:8pt;font-weight:400;opacity:0.75;">(e.g. Dishoom)</span>
+    </div>
+    <div class="cat-pill cp-wellness">
+      <div class="dot" style="background:#14532d;"></div>
+      🧘 Wellness Service
+      <span style="font-size:8pt;font-weight:400;opacity:0.75;">(e.g. Barbaard, Madison House)</span>
+    </div>
+    <div class="cat-pill cp-japanese">
+      <div class="dot" style="background:#581c87;"></div>
+      🍱 Premium Japanese
+      <span style="font-size:8pt;font-weight:400;opacity:0.75;">(e.g. Nobu, Zuma, Sushisamba)</span>
+    </div>
+    <div class="cat-pill cp-western">
+      <div class="dot" style="background:#713f12;"></div>
+      🥩 Premium Western
+      <span style="font-size:8pt;font-weight:400;opacity:0.75;">(e.g. Hawksmoor, Sexy Fish, Park90 wine bar)</span>
+    </div>
   </div>
 
-  <div class="instr">
-    <h4>📋 How to Use This Table</h4>
-    <ol>
-      <li>Review brand profiles — note that <strong>Madison House is a private members club concept</strong>, not a traditional F&B brand. It should be evaluated as a potential <em>anchor lifestyle amenity</em> for LMSG.</li>
-      <li><strong>Park90</strong> is already in an active BARSON partnership with LMSG — it is the simplest path to immediate revenue, with a term sheet already in negotiation.</li>
-      <li>Consider how each brand fills gaps in LMSG's <em>current</em> ecosystem: AKUNA (Michelin fine dining) + Latest Recipe (all-day international) + BARSON (lobby bar). What is still missing?</li>
-      <li>The <span style="background:#1a1a2e;color:#c8a050;padding:1px 6px;border-radius:5px;font-size:9pt;font-weight:700;">Zera</span> column shows RCC's baseline score. The <strong>Self</strong> column is blank — fill with local hotel team knowledge.</li>
-      <li>Pay particular attention to the <strong>Banya Synergy</strong> row — this is a new strategic angle specific to LMSG's planned banya/wellness concept.</li>
-    </ol>
-  </div>
-</div>
-
-<!-- SECTION 1: BRAND PROFILES -->
-<div class="section">
-  <div class="section-label">Section 01</div>
-  <h2>Brand Profiles — At a Glance</h2>
-
-  <div class="brand-grid">
-    <div class="brand-card hakkasan">
-      <h4>🔴 Hakkasan</h4>
-      <div class="bc-type">F&B Anchor · Fine Dining</div>
-      <ul>
-        <li>Modern Cantonese fine dining — Michelin-starred London heritage (2001)</li>
-        <li>Dark opulent interiors, private dining rooms, exclusive atmosphere</li>
-        <li>22 locations: London, Dubai, Miami, Shanghai, Abu Dhabi, Jakarta</li>
-        <li>Dim sum + luxury seafood + Peking duck — strong group dining format</li>
-        <li>Owner: Mohari/Tao Group — active Asia expansion pipeline</li>
-        <li>Primary guest: Chinese diaspora, luxury traveler, corporate celebration</li>
-        <li>Ecosystem role: Premium F&B anchor, group dining engine</li>
-      </ul>
-    </div>
-    <div class="brand-card ling">
-      <h4>🟣 Ling Ling</h4>
-      <div class="bc-type">Social Scene · Asian Fusion Bar</div>
-      <ul>
-        <li>Hakkasan sub-brand — Asian infusion small plates + craft cocktails + DJ</li>
-        <li>Izakaya-inspired: evolves from dinner → late-night social → dancing</li>
-        <li>Locations: Atlantis Dubai, Mandarin Oriental Marrakesh, Mexico City, Oslo</li>
-        <li>Design by Parisian duo Gilles & Boissier — always in premium setting</li>
-        <li>Cocktail program: award-winning London team, rotational menus</li>
-        <li>Primary guest: Affluent young professionals, social connectors, internationals</li>
-        <li>Ecosystem role: Social/nightlife anchor, late-night revenue driver</li>
-      </ul>
-    </div>
-    <div class="brand-card dishoom">
-      <h4>🔵 Dishoom</h4>
-      <div class="bc-type">All-Day F&B · Brand Story</div>
-      <ul>
-        <li>Bombay Irani café concept — cult UK brand (£300M valuation, LVMH-backed)</li>
-        <li>All-day: breakfast naan rolls → chai → biryani lunch → cocktail dinner</li>
-        <li>11 UK sites — announced NYC expansion 2026 (first international move)</li>
-        <li>Immersive 1940s Bombay aesthetic — extraordinary brand storytelling</li>
-        <li>Charity model: 1 meal served = 1 meal donated (20M+ meals)</li>
-        <li>Primary guest: British travelers, South Asian diaspora, food-curious tourists</li>
-        <li>Ecosystem role: All-day traffic driver; replaces Latest Recipe-type concept</li>
-      </ul>
-    </div>
-    <div class="brand-card barbaard">
-      <h4>🟢 House of Barbaard</h4>
-      <div class="bc-type">Lifestyle Identity · Grooming + Bar</div>
-      <ul>
-        <li>Dutch-founded, Vietnam-born (2015) — premium barbershop + cocktail lounge + boutique</li>
-        <li>Currently: Sofitel Saigon Plaza + Meliá Hanoi — hotel-native DNA proven</li>
-        <li>1920s Amsterdam speakeasy aesthetic — Great Gatsby meets old-school barber</li>
-        <li>All-day: coffee 09:00 → cocktails until midnight; bar open 17:00+</li>
-        <li>Cocktails named after historic figures; live jazz/blues programming</li>
-        <li>Primary guest: Male business traveler, European expat, Vietnamese aspirational</li>
-        <li>Ecosystem role: Male lifestyle anchor; complements spa/wellness; loyalty touchpoint</li>
-      </ul>
-    </div>
-    <!-- MADISON HOUSE — full width -->
-    <div class="brand-card madison">
-      <h4>⭐ Madison House — by Sunset Hospitality Group</h4>
-      <div class="bc-type">Private Members Club · Wellness + Fitness + Social + Dining</div>
-      <ul>
-        <li><strong>New:</strong> SHG's first members club division — debuts Singapore Q4 2025, then Milan early 2026; Vietnam in SHG pipeline</li>
-        <li><strong>37,000 sqft, 4 floors:</strong> Luxury gym (TechnoGym), Reformer Pilates, HIIT studio, 2× swimming pools, padel/pickleball courts</li>
-        <li><strong>Recovery suite:</strong> Cold plunge, sauna, steam room — premium wellness circuit</li>
-        <li><strong>Longevity Suite (Europe's leading biohacking network):</strong> Cryotherapy, precision diagnostics, anti-aging protocols — Asia debut inside Madison House Singapore</li>
-        <li><strong>Culinary:</strong> Multiple dining concepts, Members Lounge, outdoor terrace — "best-in-class culinary offering"</li>
-        <li><strong>Social programming:</strong> Breakfast clubs, wine tastings, industry talks, live music, padel socials, winemaker dinners</li>
-        <li><strong>Membership:</strong> Application-only, curated community; Singapore next → Milan; Vietnam in medium-term pipeline</li>
-        <li><strong>Goldman Sachs-backed:</strong> SHG received increased Goldman Sachs investment April 2025; acquired Maximal Concepts (HK/SG/Korea/Vietnam) Aug 2024</li>
-        <li><strong>Primary member:</strong> Urban professional 30–50, health-conscious, high net worth, socially connected — male and female</li>
-        <li><strong>Ecosystem role:</strong> Full lifestyle ecosystem anchor — replaces the need for multiple separate vendors (gym, spa, dining, bar, social events) under one branded membership</li>
-        <li>⭐ <strong>Banya synergy:</strong> Cold plunge + sauna already core to Madison House offering — direct complement to a Taiga Banya-style concept at LMSG</li>
-      </ul>
-    </div>
-    <!-- PARK90 — full width -->
-    <div class="brand-card park90">
-      <h4>🍷 Park90 — Vietnam Premium Wine Bar</h4>
-      <div class="bc-type">Wine Bar · Social · Beverage-First</div>
-      <ul>
-        <li><strong>Already active:</strong> BARSON partnership with LMSG — term sheet in active negotiation. Simplest and most immediate partnership path of all 6 brands.</li>
-        <li>Vietnam's rising premium wine bar operator — curated wine list, tasting events, bottle locker membership, light bites</li>
-        <li>70% SKU control — strong beverage identity and curation ability</li>
-        <li>Q1 2026 revenue ~1.1–1.75B VND/month — proven commercial viability</li>
-        <li><strong>Primary guest:</strong> Vietnamese urban professional, expat community, wine-curious millennials, corporate social</li>
-        <li><strong>Ecosystem role:</strong> Beverage-first social anchor at BARSON — curated wine programming, tasting events, bottle locker community</li>
-        <li>🍷 <strong>Banya synergy:</strong> Wine after a steam session is a natural ritual — less aligned with cold plunge/biohacking culture but a comfortable social pairing. 3/5.</li>
-      </ul>
-    </div>
+  <div class="note">
+    <strong>How to read:</strong> <span style="background:#1a1a2e;color:#c8a050;padding:1px 7px;border-radius:5px;font-size:9pt;font-weight:700;">Zera</span> = RCC pre-filled baseline score for each category &nbsp;|&nbsp; <strong>Self</strong> = hotel team override &nbsp;|&nbsp; <em>Note</em> = rationale. Criteria weight (Wt.) reflects strategic priority for LMSG's F&B ecosystem.
   </div>
 </div>
 
-<!-- SECTION 2: BANYA SYNERGY ANALYSIS -->
+<!-- MAIN SCORING TABLE -->
 <div class="section">
-  <div class="section-label">Section 02 — Strategic Angle</div>
-  <h2>Banya Synergy — Which Brand Complements a Thermal Wellness Concept?</h2>
-  <p class="body">If LMSG proceeds with a Taiga Banya or similar Russian/Nordic thermal wellness concept, the F&B/lifestyle brand partner needs to be culturally and experientially compatible. A Michelin Chinese restaurant pairs very differently with a banya than a biohacking members club does.</p>
-
-  <div class="banya-grid">
-    <div class="banya-item">
-      <div class="bi-brand">🔴 Hakkasan</div>
-      <div class="bi-synergy">Low Synergy</div>
-      <div class="bi-text">Formal Cantonese fine dining aesthetic clashes with the barefoot, steamy informality of banya culture. Different guest occasion — luxury dinner vs. thermal ritual. Cross-sell possible but unnatural.</div>
-      <span class="synergy-score ss-low">Synergy: 2/5</span>
-    </div>
-    <div class="banya-item">
-      <div class="bi-brand">🟣 Ling Ling</div>
-      <div class="bi-synergy">Moderate Synergy</div>
-      <div class="bi-text">Post-banya cocktails are very natural — guests emerging from sauna seeking social drinks. Ling Ling's social/lounge atmosphere complements the relaxed post-thermal state well. Weak on wellness narrative though.</div>
-      <span class="synergy-score ss-med">Synergy: 3.5/5</span>
-    </div>
-    <div class="banya-item">
-      <div class="bi-brand">🔵 Dishoom</div>
-      <div class="bi-synergy">Low Synergy</div>
-      <div class="bi-text">Bombay comfort food and Russian/Nordic thermal wellness occupy very different cultural spaces. Chai after sauna is a stretch. Guest occasions do not naturally overlap. No wellness narrative in Dishoom DNA.</div>
-      <span class="synergy-score ss-low">Synergy: 1.5/5</span>
-    </div>
-    <div class="banya-item">
-      <div class="bi-brand">🟢 Barbaard</div>
-      <div class="bi-synergy">Strong Synergy</div>
-      <div class="bi-text">Natural pairing — both are male-oriented rituals of self-care. Barbaard's 1920s grooming aesthetic and cocktail lounge flow naturally after a banya session. Both attract the same male business traveler demographic. "Groom + Steam + Drink" is a coherent premium experience arc.</div>
-      <span class="synergy-score ss-high">Synergy: 4.5/5</span>
-    </div>
-    <div class="banya-item">
-      <div class="bi-brand">⭐ Madison House</div>
-      <div class="bi-synergy">Exceptional Synergy</div>
-      <div class="bi-text">Cold plunge + sauna + steam are CORE components of Madison House's offering — not an add-on. The Longevity Suite integration (biohacking, cryotherapy) is conceptually identical to what a premium banya offers. Madison House could position LMSG's banya as its "heat" anchor while Madison House provides the longevity/recovery programming overlay. Strongest strategic fit of all 6 brands.</div>
-      <span class="synergy-score ss-high">Synergy: 5/5</span>
-    </div>
-    <div class="banya-item">
-      <div class="bi-brand">🍷 Park90</div>
-      <div class="bi-synergy">Moderate Synergy — Wine + Steam</div>
-      <div class="bi-text">Wine after a steam session is a natural ritual — guests emerging from the banya seeking a curated glass of wine is a comfortable and elegant pairing. Less aligned with cold plunge/biohacking culture than Madison House or the Barbaard grooming ritual, but Park90's social-first format and bottle locker community create a relaxed post-thermal destination. Already at LMSG via BARSON — simplest activation.</div>
-      <span class="synergy-score ss-med">Synergy: 3/5</span>
-    </div>
-    <div class="banya-item" style="background:linear-gradient(135deg,#fdf8ef,#fef9f3); border-color:#c8a050;">
-      <div class="bi-brand" style="color:#c8a050;">💡 Hypothetical Combo</div>
-      <div class="bi-synergy">Barbaard + Banya</div>
-      <div class="bi-text">A "Gentleman's Circuit" — steam/banya → cold plunge → haircut/shave → whisky cocktail. All within LMSG. This creates a 3–4 hour premium male experience loop that no other D1 hotel can replicate. Extremely differentiated and Instagram-worthy.</div>
-      <span class="synergy-score ss-high">Concept Score: 5/5</span>
-    </div>
-  </div>
-</div>
-
-<!-- SECTION 3: MAIN SCORING TABLE -->
-<div class="section">
-  <div class="section-label">Section 03 — Hotel Team to Score</div>
-  <h2>Ecosystem Brand Scoring (1–5 Scale)</h2>
-  <p class="body" style="margin-bottom:10px;">Each brand has 3 sub-columns: <span style="background:#1a1a2e;color:#c8a050;padding:1px 7px;border-radius:5px;font-size:8.5pt;font-weight:700;">Zera</span> = RCC pre-filled baseline score &nbsp;|&nbsp; <strong>Self</strong> = hotel team override &nbsp;|&nbsp; <em>Note</em> = context/rationale</p>
+  <div class="section-label">Section 01 — Scoring Matrix</div>
+  <h2>Concept Category Scoring (1–5 Scale)</h2>
 
   <div class="tbl-wrap">
   <table class="score-table">
+    <!-- ROW 1: Category headers -->
     <tr>
       <th class="th-crit" rowspan="2">Criteria</th>
       <th class="th-wt" rowspan="2">Wt.</th>
-      <th colspan="3" class="h1">🔴 Hakkasan</th>
-      <th colspan="3" class="h2">🟣 Ling Ling</th>
-      <th colspan="3" class="h3">🔵 Dishoom</th>
-      <th colspan="3" class="h4">🟢 Barbaard</th>
-      <th colspan="3" class="h5">⭐ Madison House</th>
-      <th colspan="3" class="h6">🍷 Park90</th>
+      <th colspan="3" class="h-cn">🥢 Modern Premium Chinese<span class="cat-brands">Hakkasan · Ling Ling</span></th>
+      <th colspan="3" class="h-in">🪔 Modern Premium Indian<span class="cat-brands">Dishoom · Farzi Café</span></th>
+      <th colspan="3" class="h-we">🧘 Wellness Service<span class="cat-brands">Barbaard · Madison House</span></th>
+      <th colspan="3" class="h-jp">🍱 Premium Japanese<span class="cat-brands">Nobu · Zuma · Sushisamba</span></th>
+      <th colspan="3" class="h-wt2">🥩 Premium Western<span class="cat-brands">Hawksmoor · Park90 · Sexy Fish</span></th>
     </tr>
+    <!-- ROW 2: Sub-headers -->
     <tr>
-      <!-- Hakkasan sub-headers -->
-      <th class="h1" style="background:#b83208;"><span class="sub-th-zera">Zera</span></th>
-      <th class="h1" style="background:#b83208;"><span class="sub-th-self">Self</span></th>
-      <th class="h1" style="background:#b83208; min-width:80px;"><span class="sub-th-note">Note</span></th>
-      <!-- Ling Ling sub-headers -->
-      <th class="h2" style="background:#6d28d9;"><span class="sub-th-zera">Zera</span></th>
-      <th class="h2" style="background:#6d28d9;"><span class="sub-th-self">Self</span></th>
-      <th class="h2" style="background:#6d28d9; min-width:80px;"><span class="sub-th-note">Note</span></th>
-      <!-- Dishoom sub-headers -->
-      <th class="h3" style="background:#1e40af;"><span class="sub-th-zera">Zera</span></th>
-      <th class="h3" style="background:#1e40af;"><span class="sub-th-self">Self</span></th>
-      <th class="h3" style="background:#1e40af; min-width:80px;"><span class="sub-th-note">Note</span></th>
-      <!-- Barbaard sub-headers -->
-      <th class="h4" style="background:#166534;"><span class="sub-th-zera">Zera</span></th>
-      <th class="h4" style="background:#166534;"><span class="sub-th-self">Self</span></th>
-      <th class="h4" style="background:#166534; min-width:80px;"><span class="sub-th-note">Note</span></th>
-      <!-- Madison sub-headers -->
-      <th class="h5" style="background:#92400e;"><span class="sub-th-zera">Zera</span></th>
-      <th class="h5" style="background:#92400e;"><span class="sub-th-self">Self</span></th>
-      <th class="h5" style="background:#92400e; min-width:80px;"><span class="sub-th-note">Note</span></th>
-      <!-- Park90 sub-headers -->
-      <th class="h6" style="background:#6b1717;"><span class="sub-th-zera">Zera</span></th>
-      <th class="h6" style="background:#6b1717;"><span class="sub-th-self">Self</span></th>
-      <th class="h6" style="background:#6b1717; min-width:80px;"><span class="sub-th-note">Note</span></th>
+      <th class="sh-cn"><span style="font-size:6.5pt">Zera</span></th>
+      <th class="sh-cn"><span style="font-size:6.5pt">Self</span></th>
+      <th class="sh-cn sh-note"><span style="font-size:6.5pt">Note</span></th>
+      <th class="sh-in"><span style="font-size:6.5pt">Zera</span></th>
+      <th class="sh-in"><span style="font-size:6.5pt">Self</span></th>
+      <th class="sh-in sh-note"><span style="font-size:6.5pt">Note</span></th>
+      <th class="sh-we"><span style="font-size:6.5pt">Zera</span></th>
+      <th class="sh-we"><span style="font-size:6.5pt">Self</span></th>
+      <th class="sh-we sh-note"><span style="font-size:6.5pt">Note</span></th>
+      <th class="sh-jp"><span style="font-size:6.5pt">Zera</span></th>
+      <th class="sh-jp"><span style="font-size:6.5pt">Self</span></th>
+      <th class="sh-jp sh-note"><span style="font-size:6.5pt">Note</span></th>
+      <th class="sh-wt2"><span style="font-size:6.5pt">Zera</span></th>
+      <th class="sh-wt2"><span style="font-size:6.5pt">Self</span></th>
+      <th class="sh-wt2 sh-note"><span style="font-size:6.5pt">Note</span></th>
     </tr>
 
-    <!-- GROUP A: F&B PERFORMANCE -->
-    <tr class="grp"><td colspan="20">A. F&B PERFORMANCE (25% Total Weight)</td></tr>
+    <!-- GROUP A -->
+    <tr class="grp"><td colspan="17">A. F&amp;B PERFORMANCE (25% Total Weight)</td></tr>
+
     <tr>
-      <td class="crit">A1. Group Dining Revenue Potential<div class="sub">Covers capacity, ASP, private dining, group booking suitability</div></td>
+      <td class="crit">A1. Group Dining Revenue Potential
+        <div class="sub">Covers capacity, ASP, private dining, group booking suitability</div>
+      </td>
       <td class="wt">15%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Dim sum + private rooms ideal</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Small plates, social format</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">All-day, high-volume format</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Dim sum, banquet + private rooms ideal</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Highest group dining ceiling of all categories. Dim sum format naturally drives table turns and group spend.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">All-day high-volume; thali/sharing format</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Good covers volume; sharing-plate format works well for groups. ASP lower than Chinese/Japanese.</td>
+      <!-- Wellness -->
       <td class="sc"><div class="sc-pill"><div class="sb s1">1</div><div class="sn">Not a group dining concept</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Structural limitation</td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Members dining — not large group</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Members-only; no large group covers</td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Wine events &amp; tasting groups</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Wine tasting + bottle locker events; not a large-format dining concept</td>
-    </tr>
-    <tr>
-      <td class="crit">A2. Beverage / Bar Revenue<div class="sub">Bar program strength, cocktail culture, wine list, late-night potential</div></td>
-      <td class="wt">10%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">400+ wine list, sake program</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Cocktail-first; bar IS the concept</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Colonial cocktails, chai; solid not exceptional</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Signature cocktails 09:00–midnight</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Members bar + wine tastings events</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Wine IS the hero product — 70% SKU control</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Curated wine list, bottle locker membership, tasting events — strongest pure beverage play</td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Wellness/grooming concepts are individual or small-group by nature. Not suitable for large group dining metrics.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Omakase + robata; private dining strong</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Japanese excels in private dining and corporate entertainment. Omakase counter limits group covers but premium robata expands.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Steakhouse/wine bar — moderate group fit</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Varies by sub-format. Steakhouse can do group; wine bar is social but not large-group F&B. ASP strong.</td>
     </tr>
 
-    <!-- GROUP B: GUEST & LIFESTYLE FIT -->
-    <tr class="grp"><td colspan="20">B. GUEST &amp; LIFESTYLE FIT (30% Total Weight)</td></tr>
     <tr>
-      <td class="crit">B1. Nationality Group Alignment<div class="sub">Resonance with LMSG's top guest nationalities</div></td>
+      <td class="crit">A2. Beverage / Bar Revenue
+        <div class="sub">Bar program strength, cocktail culture, wine list, late-night potential</div>
+      </td>
       <td class="wt">10%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Strong: Chinese, SEA, global luxury</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Broad: international, cosmopolitan</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Niche: British + Indian segments</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Male traveler universal — EU, KR, JP, US, AU high</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Universal — affluent 30-50 across all nationalities</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Wine culture: EU, AU, urban VN professional</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Strong for European, Australian, Korean and urban Vietnamese — wine culture growing fast in HCMC</td>
-    </tr>
-    <tr>
-      <td class="crit">B2. Le Méridien Brand DNA Fit<div class="sub">"Unlock the Destination" — cosmopolitan, creative, culturally curious traveler</div></td>
-      <td class="wt">10%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Luxury, design-led — strong fit</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Social, creative, cosmopolitan = perfect LM DNA</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Narrative-rich but culturally narrow</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Vietnam-born, heritage craftsmanship — authentic LM narrative</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Modern lifestyle club = cosmopolitan fit, slightly upscale of LM</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Wine + culture = core LM aesthetic. Tasting events align perfectly.</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Curated wine culture, tasting events and artisan narrative align with LM's "cosmopolitan discovery" positioning</td>
-    </tr>
-    <tr>
-      <td class="crit">B3. Wellness &amp; Longevity Alignment<div class="sub">Does the brand reinforce a health/wellness narrative? Synergy with spa, banya, fitness?</div></td>
-      <td class="wt">10%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s1">1</div><div class="sn">No wellness dimension</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Post-dinner cocktails ≠ wellness</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s1">1</div><div class="sn">Comfort food — opposite of wellness</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Male grooming as self-care ritual — wellness-adjacent</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Cold plunge + sauna + biohacking = wellness IS the product</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Longevity Suite, cryotherapy built-in</td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Light bites; wine-forward — indulgence not wellness</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Beverage-first; limited wellness narrative — social relaxation vs. active wellness</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Strong wine + sake programs; premium cognac</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Chinese fine dining drives significant beverage spend — premium cognac, wine pairing menus. Late-night limited.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Colonial cocktails, chai, lassi — solid not exceptional</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Beverage program competent but F&B revenue is food-led. Chai culture interesting but low ASP on beverage.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Members bar; specialty coffee; cocktails (Barbaard); health drinks (Madison)</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Varies by format: Barbaard cocktail lounge is 4/5; Madison health shots/smoothie bar is 2/5. Average ~3.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Whisky, sake, craft cocktail — bar IS a destination</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Japanese (Zuma, Nobu) have some of the highest bar spends in hotel F&B globally. Japanese whisky + sake programs distinctive.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Wine-first (wine bar) or craft cocktail (steakhouse bar) — top tier</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Western wine bars drive the strongest pure beverage revenue. Wine list depth, bottle locker mechanics, and cocktail programs all strong.</td>
     </tr>
 
-    <!-- GROUP C: ECOSYSTEM STRATEGY -->
-    <tr class="grp"><td colspan="20">C. ECOSYSTEM &amp; STRATEGIC VALUE (30% Total Weight)</td></tr>
+    <!-- GROUP B -->
+    <tr class="grp"><td colspan="17">B. GUEST &amp; LIFESTYLE FIT (30% Total Weight)</td></tr>
+
     <tr>
-      <td class="crit">C1. Banya / Thermal Wellness Synergy<div class="sub">Direct cultural + experiential compatibility with a Taiga Banya-style concept at LMSG</div></td>
+      <td class="crit">B1. Nationality Group Alignment
+        <div class="sub">Resonance with LMSG's top guest nationalities (CN, KR, JP, EU, AU, US, domestic VN)</div>
+      </td>
       <td class="wt">10%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Clash of formality levels</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Post-banya cocktails natural but shallow</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s1">1</div><div class="sn">Cultural mismatch</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">"Groom+Steam+Drink" — coherent male ritual arc</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Cold plunge + sauna CORE to concept. Longevity = banya+</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Strongest complement to banya of all 6 brands</td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Wine + steam = natural social ritual</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Wine post-banya is a comfortable pairing — less transformative than Barbaard or Madison House but already on-site at BARSON</td>
-    </tr>
-    <tr>
-      <td class="crit">C2. Membership / Loyalty Mechanics<div class="sub">Does the brand introduce a membership model that builds long-term guest loyalty and recurring revenue?</div></td>
-      <td class="wt">10%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Reservation-only, no membership</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">No membership model</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">No membership in current model</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Informal community; regulars but no formal membership</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Membership IS the model — prepaid, application-only, curated</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Recurring annual fee, member events, community — highest loyalty of all 6</td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Bottle locker membership — recurring revenue + loyalty</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Bottle locker membership creates genuine recurring revenue and sticky community — unique in F&B loyalty mechanics</td>
-    </tr>
-    <tr>
-      <td class="crit">C3. Vietnam / HCMC Market White Space<div class="sub">Is this concept type already present in HCMC? Does it fill a gap vs. add competition?</div></td>
-      <td class="wt">10%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Chinese fine dining competitive (Crystal Jade, Mott 32)</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Asian fusion social bar — limited hotel competitors</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Bombay comfort food — zero presence in VN</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Premium barbershop+bar — unique in D1 hotel setting</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Private members club with longevity — does NOT exist in HCMC</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">First-mover advantage; SHG Vietnam pipeline active</td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Premium wine bar growing — Park90 is a leader, not follower</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Wine bar segment growing in HCMC but Park90 is among the most curated — positioned above standard wine bars</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Chinese, SEA, global luxury — widest appeal</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Chinese, Vietnamese, Korean all index high for premium Chinese cuisine. Also strong with international luxury travelers.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Niche: British + South Asian diaspora</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Strong for UK visitors and South Asian diaspora but limited broader resonance in HCMC guest mix. Dishoom specifically very UK-branded.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Universal — male traveler (Barbaard); affluent 30–50 all nationalities (Madison)</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Wellness is cross-cultural. Korean, Japanese, European all value premium grooming and wellness. Less specific nationality dependence.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Japanese cuisine loved universally — widest luxury dining appeal</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Japanese is arguably the most universally loved luxury dining category globally — Korean, Chinese, Western, domestic VN all index very high.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">EU, AU, US core; growing KR + urban VN professional</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Wine culture strongest with European, Australian, American guests. Growing fast with Korean expats and urban Vietnamese professionals 28–42.</td>
     </tr>
 
-    <!-- GROUP D: OPERATIONAL -->
-    <tr class="grp"><td colspan="20">D. OPERATIONAL &amp; PARTNERSHIP (15% Total Weight)</td></tr>
     <tr>
-      <td class="crit">D1. Ease of Partnership &amp; Timeline<div class="sub">Contractual complexity, international negotiations, readiness to deploy Vietnam</div></td>
+      <td class="crit">B2. Le Méridien Brand DNA Fit
+        <div class="sub">"Unlock the Destination" — cosmopolitan, creative, culturally curious traveler</div>
+      </td>
+      <td class="wt">10%</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Luxury, design-forward — strong LM fit</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Modern Chinese (not traditional) is cosmopolitan and design-led — fits LM's creative positioning well. Ling Ling specifically is 5/5 DNA fit.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Narrative-rich but culturally narrow for HCMC</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">LM values cultural storytelling — Indian heritage food does this well. But HCMC is not a natural Indian food market; guest resonance limited.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Grooming-as-craft (Barbaard) + longevity lifestyle (Madison) = modern cosmopolitan</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Both wellness formats fit LM's modern cosmopolitan traveler. Barbaard's Vietnam heritage adds a local "unlock" element. Madison slightly premium of LM tier.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Aesthetic precision + cultural discovery = perfect LM DNA</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Japanese cuisine's aesthetic philosophy (wabi-sabi, omakase ritual, ingredient obsession) maps perfectly onto LM's "culturally curious" positioning.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Wine culture + social dining = cosmopolitan discovery</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Curated wine + social dining aligns with LM's cosmopolitan aesthetic. A strong wine destination positions LMSG as a cultural F&B hub in D1.</td>
+    </tr>
+
+    <tr>
+      <td class="crit">B3. Wellness &amp; Longevity Alignment
+        <div class="sub">Reinforces health/wellness narrative — synergy with spa, banya, fitness</div>
+      </td>
+      <td class="wt">10%</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">TCM overlap possible but secondary</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Chinese can reference TCM ingredients (goji, lotus, bird's nest) but wellness narrative is secondary to dining occasion.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Ayurvedic link possible; comfort-food forward in practice</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Dishoom-style comfort food is not wellness-coded. Indian cuisine has Ayurvedic credentials but they are not activated in modern casual formats.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Wellness IS the product — grooming, cold plunge, longevity, sauna</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Highest wellness alignment of all categories by definition. Madison House's Longevity Suite + cold plunge is cutting-edge biohacking. Barbaard is male self-care ritual.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Omakase ritual + clean eating — moderate wellness fit</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Japanese cuisine has a strong wellness narrative (clean ingredients, portion discipline, longevity diet). Not as direct as wellness services but credible.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Indulgence-forward; wine/steak not wellness-coded</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Western fine dining is celebration and indulgence — does not reinforce wellness narrative. Wine in moderation is social; not biohacking.</td>
+    </tr>
+
+    <!-- GROUP C -->
+    <tr class="grp"><td colspan="17">C. ECOSYSTEM &amp; STRATEGIC VALUE (30% Total Weight)</td></tr>
+
+    <tr>
+      <td class="crit">C1. Banya / Thermal Wellness Synergy
+        <div class="sub">Cultural + experiential compatibility with Taiga Banya-style concept at LMSG</div>
+      </td>
+      <td class="wt">10%</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Formality clash; different guest occasion</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Formal Cantonese dining clashes with the relaxed, barefoot informality of banya culture. Cross-sell possible but unnatural occasion link.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s1">1</div><div class="sn">Cultural mismatch — no natural pairing</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Bombay/Indian comfort food and Nordic/Russian thermal wellness have no natural synergy. Guest journeys don't overlap.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Cold plunge + sauna CORE to category (Madison). Grooming + steam = male ritual arc (Barbaard)</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Strongest banya synergy of all 5 categories. Madison House cold plunge + sauna is identical to banya offering. Barbaard "groom + steam + drink" creates a coherent male experience circuit.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Onsen culture analog — natural thermal wellness link</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Japan's onsen tradition is directly analogous to banya culture. Post-banya sake/whisky pairing is culturally coherent. Natural narrative bridge.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Wine + steam = social relaxation; comfortable pairing</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Post-banya wine is a comfortable social ritual. Less culturally specific than the Japanese onsen analog but natural as a relaxation pairing.</td>
+    </tr>
+
+    <tr>
+      <td class="crit">C2. Membership / Loyalty Mechanics
+        <div class="sub">Does the category introduce membership models for recurring revenue and long-term guest loyalty?</div>
+      </td>
+      <td class="wt">10%</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Private dining rooms as informal loyalty; no formal membership</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Chinese drives loyalty through private dining relationships and key account management but lacks formal membership mechanics.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">No membership model in category norm</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Indian dining concepts generally do not have membership mechanics. All-day casual format does not lend itself to formal loyalty.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Membership IS the model (Madison); grooming regulars (Barbaard) — highest loyalty of all categories</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Madison House is application-only prepaid annual membership — strongest possible loyalty mechanic. Barbaard builds regular grooming cadence. Both create sticky community.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Omakase counter creates loyalty via chef relationship; no formal program</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Omakase format naturally builds chef-guest relationships and repeat visits but lacks formal membership mechanics unless structured as a counter membership.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Bottle locker membership (wine bar) — recurring revenue + community</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Wine bar bottle locker model (Park90 style) creates genuine membership mechanics — recurring storage fees, first access to events, member community. Strong and differentiated.</td>
+    </tr>
+
+    <tr>
+      <td class="crit">C3. Vietnam / HCMC Market White Space
+        <div class="sub">Is this concept type already present in HCMC? First-mover or late-entry?</div>
+      </td>
+      <td class="wt">10%</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Competitive — Crystal Jade, Mott 32, Shang Palace</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Chinese fine dining is the most represented international cuisine category in D1 HCMC luxury hotels. Execution quality is the differentiator, not white space.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Near-zero — modern premium Indian effectively absent from HCMC</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">HCMC has very limited quality Indian dining. A Dishoom-caliber concept would be a genuine first-mover in the premium segment. High white space score despite low guest alignment.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Private members club + longevity — does NOT exist in HCMC</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">No Madison House-equivalent in HCMC. Barbaard is already differentiated in hotel settings (only Sofitel SG + Meliá HN currently). Both formats have genuine first-mover advantage.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Growing competitive — Nobu at Park Hyatt; Zuma incoming; multiple sushi-yas</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Japanese is increasingly competitive in HCMC D1. Nobu at Park Hyatt is established. Zuma reportedly looking at Vietnam. White space closing.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Premium wine bar growing but still high opportunity in D1 hotel context</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Western wine bars are growing but the hotel-embedded curated wine destination format is still underserved. A Hawksmoor-quality steakhouse is effectively absent from HCMC D1.</td>
+    </tr>
+
+    <!-- GROUP D -->
+    <tr class="grp"><td colspan="17">D. OPERATIONAL &amp; PARTNERSHIP (15% Total Weight)</td></tr>
+
+    <tr>
+      <td class="crit">D1. Ease of Partnership &amp; Timeline
+        <div class="sub">Contractual complexity, international negotiations, local operator availability, readiness for Vietnam</div>
+      </td>
       <td class="wt">8%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Active SEA expansion; Jakarta precedent</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Through Hakkasan Group Asia pipeline</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">US expansion first; Asia 2027+ at earliest</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Vietnam-based; proven Sofitel/Meliá model; fastest to deploy</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">No international negotiation needed</td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">SHG Vietnam pipeline active (Phu Quoc+Sun Group); Singapore just opened</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">SHG acquired Maximal Concepts (Vietnam) — local presence growing</td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Already at LMSG — BARSON active partner, term sheet in negotiation</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Simplest partnership of all 6 brands — already operating, no new negotiation required</td>
-    </tr>
-    <tr>
-      <td class="crit">D2. Operational Complexity<div class="sub">Kitchen requirements, specialist staffing, supply chain, space needs</div></td>
-      <td class="wt">7%</td>
-      <!-- Hakkasan -->
-      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">High: specialist dim sum team, complex kitchen</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Ling Ling -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Moderate: bar-forward, simpler kitchen</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Dishoom -->
-      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Moderate kitchen; no VN ops model yet</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Barbaard -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">No complex kitchen; hotel-native; barbers + bar only</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell"></td>
-      <!-- Madison -->
-      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">High complexity: gym, wellness, dining, membership — requires large dedicated space</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">37,000 sqft in Singapore — space requirement is significant</td>
-      <!-- Park90 -->
-      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Beverage-first; light bites only; minimal kitchen complexity</div></div></td>
-      <td class="self-cell">[—]</td><td class="note-cell">Wine bar model — lowest operational complexity of all 6; no specialist kitchen team required</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Active SEA expansion pipelines (Hakkasan Jakarta, Mott 32 HCM)</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Multiple premium Chinese brands already in SEA expansion mode. Jakarta, Singapore, and Bangkok precedents exist. Partnership path is established if not fast.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">Limited SEA pipeline; Dishoom US-first (2026); Asia 2027+ at earliest</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Most premium Indian brands are UK-centric and cautious about Asia. Dishoom specifically is doing NYC first. HCMC would be a long-lead partnership requiring significant advance work.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s5">5</div><div class="sn">Barbaard: Vietnam-native, fastest deploy. Madison: SHG VN pipeline active via Maximal acquisition.</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Highest partnership ease of all categories. Barbaard is already in Vietnam — no international negotiation. Madison House via SHG (which owns Maximal Concepts Vietnam) has local infrastructure.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Depends on brand — Nobu/Zuma have Asia infrastructure; boutique chef-driven slower</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Large groups (Nobu, Zuma) have SEA expansion teams but competition for Vietnam spots is high. Independent chef-driven concepts require longer relationship building.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Park90 already at LMSG (BARSON active); other Western brands via JV/lease possible</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Wine bar sub-category: Park90 already has term sheet in negotiation at BARSON — fastest path. Broader Western fine dining (Hawksmoor etc.) requires international negotiation.</td>
     </tr>
 
-    <!-- TOTALS -->
+    <tr>
+      <td class="crit">D2. Operational Complexity
+        <div class="sub">Kitchen requirements, specialist staffing, supply chain, space needs, training overhead</div>
+      </td>
+      <td class="wt">7%</td>
+      <!-- Chinese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">High: specialist dim sum team, dedicated wok kitchen, complex supply chain</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Authentic premium Chinese requires specialist dim sum chefs (difficult to source in HCMC), dedicated kitchen infrastructure, and complex ingredient sourcing. High complexity.</td>
+      <!-- Indian -->
+      <td class="sc"><div class="sc-pill"><div class="sb s3">3</div><div class="sn">Moderate: tandoor + curry infrastructure; spice supply chain manageable</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Indian kitchen is complex (tandoor, multiple spice chains) but not as specialist as dim sum. Spice sourcing well-established in HCMC. Moderate overall complexity.</td>
+      <!-- Wellness -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Barbaard: simple (barbers + bar, no complex kitchen). Madison: high (37k sqft gym + dining + spa)</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Bimodal: Barbaard is very low complexity (4/5 ease). Madison House is very high complexity due to space, equipment, and multi-format operation. Average ~3, but brand-dependent.</td>
+      <!-- Japanese -->
+      <td class="sc"><div class="sc-pill"><div class="sb s2">2</div><div class="sn">High: sushi-ya hygiene standards, specialist itamae, import fish logistics</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Premium Japanese is the most operationally demanding cuisine category — requires master sushi chefs (itamae), live fish sourcing, Japan-standard hygiene protocols, and daily fish imports.</td>
+      <!-- Western -->
+      <td class="sc"><div class="sc-pill"><div class="sb s4">4</div><div class="sn">Wine bar: very low (beverage-first, light bites). Steakhouse: moderate (grill + supply chain)</div></div></td>
+      <td class="self-cell">[—]</td>
+      <td class="note-cell">Wine bar sub-format has the lowest operational complexity of any concept evaluated — beverage-first, no specialist kitchen. Hawksmoor-style steakhouse is moderate.</td>
+    </tr>
+
+    <!-- TOTALS ROW -->
     <tr class="sub">
-      <td class="crit">ZERA INITIAL SCORE (Weighted Avg)</td>
-      <td class="wt">—</td>
-      <td colspan="3" style="text-align:center; color:#c2410c; font-size:13pt; font-weight:700;">3.4 / 5</td>
-      <td colspan="3" style="text-align:center; color:#7c3aed; font-size:13pt; font-weight:700;">3.7 / 5</td>
-      <td colspan="3" style="text-align:center; color:#1d4ed8; font-size:13pt; font-weight:700;">2.9 / 5</td>
-      <td colspan="3" style="text-align:center; color:#15803d; font-size:13pt; font-weight:700;">4.0 / 5</td>
-      <td colspan="3" style="text-align:center; color:#b45309; font-size:13pt; font-weight:700;">4.1 / 5</td>
-      <td colspan="3" style="text-align:center; color:#7f1d1d; font-size:13pt; font-weight:700;">4.0 / 5</td>
+      <td class="crit" colspan="2">ZERA WEIGHTED SCORE (Indicative)</td>
+      <td colspan="3" style="text-align:center; color:#9a1800; font-size:14pt; font-weight:700;">3.6 / 5</td>
+      <td colspan="3" style="text-align:center; color:#1e3a8a; font-size:14pt; font-weight:700;">2.8 / 5</td>
+      <td colspan="3" style="text-align:center; color:#14532d; font-size:14pt; font-weight:700;">4.1 / 5</td>
+      <td colspan="3" style="text-align:center; color:#581c87; font-size:14pt; font-weight:700;">3.8 / 5</td>
+      <td colspan="3" style="text-align:center; color:#713f12; font-size:14pt; font-weight:700;">3.7 / 5</td>
     </tr>
     <tr class="tot">
-      <td colspan="2" style="color:#c8a050; font-size:10pt; letter-spacing:1px; text-transform:uppercase;">WEIGHTED TOTAL (Hotel Team — Self Score)</td>
-      <td colspan="3" class="v1" style="text-align:center; font-size:16pt;">[___]</td>
-      <td colspan="3" class="v2" style="text-align:center; font-size:16pt;">[___]</td>
-      <td colspan="3" class="v3" style="text-align:center; font-size:16pt;">[___]</td>
-      <td colspan="3" class="v4" style="text-align:center; font-size:16pt;">[___]</td>
-      <td colspan="3" class="v5" style="text-align:center; font-size:16pt;">[___]</td>
-      <td colspan="3" class="v6" style="text-align:center; font-size:16pt;">[___]</td>
+      <td colspan="2" style="color:#c8a050; font-size:10pt; letter-spacing:1px; text-transform:uppercase;">HOTEL TEAM — SELF SCORE</td>
+      <td colspan="3" class="v-cn" style="text-align:center; font-size:16pt;">[___]</td>
+      <td colspan="3" class="v-in" style="text-align:center; font-size:16pt;">[___]</td>
+      <td colspan="3" class="v-we" style="text-align:center; font-size:16pt;">[___]</td>
+      <td colspan="3" class="v-jp" style="text-align:center; font-size:16pt;">[___]</td>
+      <td colspan="3" class="v-wt" style="text-align:center; font-size:16pt;">[___]</td>
     </tr>
   </table>
   </div>
 
   <div class="note">
-    <strong>Interpretation:</strong> Madison House scores highest on <em>ecosystem</em> criteria (wellness, membership, banya synergy, white space) but lowest on operational simplicity. Barbaard scores highest on ease-of-execution. Hakkasan/Ling Ling remain strongest for pure F&B group dining revenue. <strong>Park90</strong> scores highest on operational simplicity and partnership ease — it is already active at LMSG via BARSON, with the term sheet in negotiation. Its bottle locker membership model is a unique loyalty mechanic. The "right answer" depends on which strategic gap LMSG most needs to fill.
+    <strong>Interpretation:</strong> Wellness Service scores highest overall — driven by banya synergy, membership mechanics, and white space. Premium Japanese scores highest on guest alignment + DNA fit but faces supply chain complexity and rising competition. Modern Premium Chinese has the strongest group dining revenue ceiling. Modern Premium Indian has the best white space but weakest overall market fit for HCMC. Premium Western (wine bar sub-format) is the easiest and fastest to execute with existing BARSON infrastructure.
   </div>
 </div>
 
-<!-- SECTION 4: STRATEGIC COMBOS -->
+<!-- SECTION 2: CATEGORY RANKING -->
 <div class="section">
-  <div class="section-label">Section 04 — Recommendation</div>
-  <h2>Recommended Ecosystem Combinations</h2>
+  <div class="section-label">Section 02 — Recommendation</div>
+  <h2>Category Priority Ranking for LMSG</h2>
 
   <div class="key-box">
-    <h4>🎯 Strategic Scenarios for LMSG Team Consideration</h4>
+    <h4>🎯 RCC Category Recommendation (Zera Score Order)</h4>
     <ul>
-      <li><strong>Scenario A — F&B Revenue Maximization:</strong> Hakkasan (anchor restaurant) + Ling Ling (social bar/lounge). Highest F&B revenue ceiling, strongest for group dining covers. Best if LMSG's primary gap is cuisine F&B.</li>
-      <li><strong>Scenario B — Lifestyle Differentiation:</strong> Barbaard (grooming+bar lounge) + Taiga Banya (thermal wellness). "Gentleman's Circuit" — steam → shave → cocktail. Unique in D1, no direct competitors, cohesive male traveler narrative. Lower F&B revenue but highest brand distinctiveness.</li>
-      <li><strong>Scenario C — Full Ecosystem Anchor:</strong> Madison House (members club) as the overarching lifestyle brand, with Taiga Banya positioned as the thermal ritual arm of the wellness offer. Madison House's Longevity Suite + cold plunge naturally integrate. Requires largest space and SHG partnership negotiation, but creates the most defensible long-term moat.</li>
-      <li><strong>Scenario D — Hybrid (Recommended):</strong> Hakkasan/Ling Ling for F&B group dining → Barbaard for male lifestyle lounge → Taiga Banya as wellness anchor → <strong>Park90 as immediate beverage revenue</strong> via existing BARSON partnership (term sheet already in negotiation — can activate fastest of all 6 brands). Madison House as future Phase 2 if space allows. Full-day arc: business lunch (Hakkasan) → banya (thermal wellness) → grooming (Barbaard) → curated wine (Park90 / BARSON) → late cocktails (Ling Ling).</li>
-      <li><strong>Key question for hotel team:</strong> Is LMSG's biggest gap (a) more F&B restaurant covers, (b) a lifestyle identity that attracts a specific high-value demographic, or (c) a wellness/longevity platform? The answer determines which scenario to prioritize. Note that Park90 can be activated immediately regardless of the scenario chosen.</li>
+      <li><strong>#1 Wellness Service (4.1/5):</strong> Highest strategic score. Madison House-style private club or Barbaard grooming lounge both fill a genuine market gap and have natural banya synergy. Barbaard is fastest to deploy (Vietnam-native). Madison House is highest impact but requires space and SHG negotiation.</li>
+      <li><strong>#2 Premium Japanese (3.8/5):</strong> Strongest guest alignment and LM DNA fit. Japanese cuisine is the most universally loved premium category and LMSG has no Japanese anchor. Risk: supply chain complexity + rising competition (Nobu established, Zuma incoming).</li>
+      <li><strong>#3 Premium Western (3.7/5):</strong> Fastest path to revenue — Park90 wine bar already active at BARSON with term sheet in negotiation. Bottle locker membership creates recurring revenue. A Hawksmoor-caliber steakhouse is also absent from D1.</li>
+      <li><strong>#4 Modern Premium Chinese (3.6/5):</strong> Strongest group dining revenue ceiling but most competitive category in D1 HCMC. Execution quality is the differentiator. Hakkasan or Ling Ling bring proven international brand equity.</li>
+      <li><strong>#5 Modern Premium Indian (2.8/5):</strong> Highest white space but weakest overall fit for LMSG's guest mix. A medium-term consideration if HCMC's Indian expat and Indian-tourism segment grows. Not recommended as near-term priority.</li>
+      <li><strong>Recommended Phase 1 Portfolio:</strong> Activate Premium Western (Park90 / BARSON — immediate) + Wellness Service (Barbaard — fast follow). Then evaluate Premium Japanese as the major F&B anchor for the next available space.</li>
     </ul>
   </div>
 </div>
 
 <div class="footer">
-  LMSG Ecosystem Brand Scoring · Le Méridien Saigon × RCC · April 2026 · Internal Working Document<br>
-  Sources: Brand research (Hakkasan Group, Barbaard, Dishoom, Sunset Hospitality Group / Madison House, Park90) + LMSG operational data
+  LMSG F&B Concept Category Scoring · Le Méridien Saigon × RCC · April 2026 · Internal Working Document<br>
+  Framework: 10 criteria (A1→D2) · Weighted scoring · Category-level analysis for concept selection
 </div>
+
 </div>
 </body>
 </html>
