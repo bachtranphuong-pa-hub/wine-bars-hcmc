@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Park90 — Draft vs Negotiated Terms</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f7;color:#1a1a2e;font-size:10pt;line-height:1.6}
+  .container{max-width:1200px;margin:0 auto;padding:24px 16px 48px}
+  .header{background:linear-gradient(140deg,#0d1b2a,#1a1a2e);border-radius:14px;padding:26px 34px;color:white;margin-bottom:18px}
+  .header .tag{font-size:8pt;letter-spacing:3px;text-transform:uppercase;color:#c8a050;margin-bottom:7px}
+  .header h1{font-size:18pt;font-weight:700;margin-bottom:3px}
+  .header h1 em{color:#c8a050;font-style:normal}
+  .header .sub{font-size:9pt;color:rgba(255,255,255,0.5)}
+  .card{background:white;border-radius:12px;padding:20px 24px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+  .card h2{font-size:10.5pt;font-weight:700;color:#0d1b2a;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px;padding-bottom:7px;border-bottom:2px solid #f0f0f0}
+
+  /* KPI grid */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+  .kpi{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+  .kpi .val{font-size:15pt;font-weight:700;line-height:1.1;margin-bottom:3px}
+  .kpi .lbl{font-size:7.5pt;color:#888;text-transform:uppercase;letter-spacing:.8px}
+  .kpi.draft .val{color:#c0392b}
+  .kpi.nego .val{color:#16a34a}
+  .kpi.diff .val{color:#c8a050}
+
+  /* Compare cards */
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px}
+  .comp-box{border-radius:10px;padding:16px 18px}
+  .comp-box.draft{background:#fff8f8;border:2px solid #fca5a5}
+  .comp-box.nego{background:#f0fdf4;border:2px solid #86efac}
+  .comp-box h3{font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+  .comp-box.draft h3{color:#c0392b}
+  .comp-box.nego h3{color:#16a34a}
+  .comp-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(0,0,0,0.06);font-size:9pt}
+  .comp-row:last-child{border-bottom:none}
+  .comp-val{font-weight:700}
+
+  /* Main comparison table */
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:8.5pt}
+  th{background:#0d1b2a;color:#c8a050;padding:7px 8px;text-align:right;font-size:7.5pt;white-space:nowrap}
+  th:first-child,th.m{text-align:left}
+  th.draft-hdr{background:#7f1d1d;color:#fca5a5}
+  th.nego-hdr{background:#14532d;color:#86efac}
+  th.diff-hdr{background:#1a1a2e;color:#c8a050}
+  th.divider{background:#e5e7eb;width:4px;padding:0}
+  td{padding:6px 8px;border-bottom:1px solid #f5f5f5;text-align:right;white-space:nowrap}
+  td.m{text-align:left;font-weight:600;color:#555}
+  td.r{text-align:right}
+  td.divider{background:#f0f0f0;padding:0;width:4px}
+  td.pos-cell{color:#16a34a;font-weight:600}
+  td.neg-cell{color:#c0392b}
+  tr:hover td{background:#fafafa}
+  tr.total-row td{font-weight:700;background:#f8f4ec;border-top:2px solid #c8a050;border-bottom:2px solid #c8a050}
+  .pos{color:#16a34a;font-weight:700}
+  .neg{color:#c0392b}
+
+  /* Cash waterfall */
+  .wfall{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .wf-row{display:flex;align-items:center;gap:8px}
+  .wf-label{font-size:8pt;color:#666;width:40px;text-align:right;flex-shrink:0}
+  .wf-bars{flex:1;display:flex;gap:4px;height:20px}
+  .wf-bar{height:100%;border-radius:3px;display:flex;align-items:center;padding:0 6px;font-size:7.5pt;font-weight:700;color:white;min-width:2px}
+  .wf-draft{background:#c0392b}
+  .wf-nego{background:#16a34a}
+  .wf-neutral{background:#94a3b8}
+
+  .legend{display:flex;gap:16px;font-size:8.5pt;margin-bottom:10px}
+  .leg{display:flex;align-items:center;gap:5px}
+  .leg-dot{width:12px;height:12px;border-radius:3px}
+
+  /* Change tags */
+  .tag-change{display:inline-block;padding:1px 7px;border-radius:12px;font-size:7.5pt;font-weight:700}
+  .tag-up{background:#d1fae5;color:#065f46}
+  .tag-dn{background:#fee2e2;color:#991b1b}
+  .tag-same{background:#f1f5f9;color:#64748b}
+
+  .footer{text-align:center;font-size:8pt;color:#aaa;margin-top:20px}
+  @media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.compare-grid{grid-template-columns:1fr}}
+  @media print{body{background:white}.card{box-shadow:none;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="tag">RCC Internal · Confidential · April 2026</div>
+  <h1>Park90 × Barson — <em>Draft vs Negotiated</em></h1>
+  <div style="color:#c8a050;font-weight:600;font-size:11pt;margin-bottom:3px">Base Case · 24-Month Impact Analysis</div>
+  <div class="sub">Negotiated terms: Inventory 60% pay + 40% 90-day credit · Special SKU consignment 10 bottles · Fee holiday 6M → step $20K/$25K/$30K yr1/2/3</div>
+</div>
+
+<!-- KPI COMPARISON -->
+<div class="kpi-grid">
+  <div class="kpi draft">
+    <div class="val">10.48 tỷ</div>
+    <div class="lbl">M1 Cash Out — Draft</div>
+  </div>
+  <div class="kpi nego">
+    <div class="val">8.91 tỷ</div>
+    <div class="lbl">M1 Cash Out — Negotiated</div>
+  </div>
+  <div class="kpi diff">
+    <div class="val">+1.57 tỷ</div>
+    <div class="lbl">M1 Cash Saved (~$60K deferred)</div>
+  </div>
+  <div class="kpi nego">
+    <div class="val">0.24 tỷ</div>
+    <div class="lbl">EBITDA Uplift 24M (lower min fees)</div>
+  </div>
+</div>
+
+<!-- TERM COMPARISON -->
+<div class="card">
+  <h2>📋 Terms Comparison</h2>
+  <div class="compare-grid">
+    <div class="comp-box draft">
+      <h3>⚠️ Draft Terms</h3>
+      <div class="comp-row"><span>One-off License Fee</span><span class="comp-val">$250K lump sum at signing</span></div>
+      <div class="comp-row"><span>Inventory M1</span><span class="comp-val">$150K — 100% prepay</span></div>
+      <div class="comp-row"><span>Inventory M3</span><span class="comp-val">$150K — 100% prepay</span></div>
+      <div class="comp-row"><span>Special SKUs</span><span class="comp-val">Full prepay</span></div>
+      <div class="comp-row"><span>Annual Min Fee</span><span class="comp-val">$30K/yr from M1</span></div>
+      <div class="comp-row"><span>M1 Total Cash Out</span><span class="comp-val" style="color:#c0392b">10.48 tỷ (~$400K)</span></div>
+      <div class="comp-row"><span>M1–M6 Total Cash Out</span><span class="comp-val" style="color:#c0392b">14.41 tỷ</span></div>
+      <div class="comp-row"><span>Break-even EBITDA</span><span class="comp-val">M1</span></div>
+      <div class="comp-row"><span>CAPEX Payback</span><span class="comp-val">M17</span></div>
+      <div class="comp-row"><span>Total EBITDA 24M</span><span class="comp-val">24.78 tỷ</span></div>
+      <div class="comp-row"><span>Total License Fees Paid</span><span class="comp-val">1.80 tỷ</span></div>
+    </div>
+    <div class="comp-box nego">
+      <h3>✅ Negotiated Terms</h3>
+      <div class="comp-row"><span>One-off License Fee</span><span class="comp-val">$250K — kept as draft</span></div>
+      <div class="comp-row"><span>Inventory M1</span><span class="comp-val">$90K pay + $60K → 90 days (M4)</span></div>
+      <div class="comp-row"><span>Inventory M3</span><span class="comp-val">$90K pay + $60K → 90 days (M6)</span></div>
+      <div class="comp-row"><span>Special SKUs</span><span class="comp-val">Consignment, max 10 bottles (~$15K)</span></div>
+      <div class="comp-row"><span>Annual Min Fee</span><span class="comp-val">Holiday M1–M6 → $20K/$25K/$30K yr1/2/3</span></div>
+      <div class="comp-row"><span>M1 Total Cash Out</span><span class="comp-val" style="color:#16a34a">8.91 tỷ (~$340K)</span></div>
+      <div class="comp-row"><span>M1–M6 Total Cash Out</span><span class="comp-val" style="color:#16a34a">14.41 tỷ (same total, spread)</span></div>
+      <div class="comp-row"><span>Break-even EBITDA</span><span class="comp-val">M1</span></div>
+      <div class="comp-row"><span>CAPEX Payback</span><span class="comp-val">M17</span></div>
+      <div class="comp-row"><span>Total EBITDA 24M</span><span class="comp-val" style="color:#16a34a">25.02 tỷ</span></div>
+      <div class="comp-row"><span>Total License Fees Paid</span><span class="comp-val" style="color:#16a34a">1.56 tỷ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- M1-M6 WATERFALL -->
+<div class="card">
+  <h2>💰 M1–M12 Cash Flow — Draft vs Negotiated (tỷ VND)</h2>
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#c0392b"></div>Draft Cash Out</div>
+    <div class="leg"><div class="leg-dot" style="background:#16a34a"></div>Negotiated Cash Out</div>
+  </div>
+  <div class="wfall">
+    <div class="wf-row">
+        <span class="wf-label">M1</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:100.0%">-10.00</div>
+          <div class="wf-bar wf-nego" style="width:100.0%">-8.40</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M2</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:24.1%">+0.48</div>
+          <div class="wf-bar wf-nego" style="width:25.5%">+0.51</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M3</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:100.0%">-3.44</div>
+          <div class="wf-bar wf-nego" style="width:91.9%">-1.84</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M4</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:25.2%">+0.50</div>
+          <div class="wf-bar wf-nego" style="width:52.0%">-1.04</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M5</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:26.2%">+0.52</div>
+          <div class="wf-bar wf-nego" style="width:27.5%">+0.55</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M6</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:27.6%">+0.55</div>
+          <div class="wf-bar wf-nego" style="width:49.7%">-0.99</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M7</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:29.7%">+0.59</div>
+          <div class="wf-bar wf-nego" style="width:30.8%">+0.62</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M8</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:32.5%">+0.65</div>
+          <div class="wf-bar wf-nego" style="width:33.5%">+0.67</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M9</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:36.3%">+0.73</div>
+          <div class="wf-bar wf-nego" style="width:37.1%">+0.74</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M10</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:41.0%">+0.82</div>
+          <div class="wf-bar wf-nego" style="width:41.6%">+0.83</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M11</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:46.5%">+0.93</div>
+          <div class="wf-bar wf-nego" style="width:46.9%">+0.94</div>
+        </div>
+      </div><div class="wf-row">
+        <span class="wf-label">M12</span>
+        <div class="wf-bars">
+          <div class="wf-bar wf-draft" style="width:52.6%">+1.05</div>
+          <div class="wf-bar wf-nego" style="width:52.6%">+1.05</div>
+        </div>
+      </div>
+  </div>
+  <p style="font-size:8pt;color:#888;margin-top:8px;font-style:italic">Bar = net cash impact (CAPEX out − EBITDA generated). Red = Draft, Green = Negotiated.</p>
+</div>
+
+<!-- MONTHLY TABLE -->
+<div class="card">
+  <h2>📊 Monthly Comparison Table — Base Case (tỷ VND)</h2>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2" class="m">Tháng</th>
+          <th rowspan="2">GTO Rev</th>
+          <th colspan="4" class="draft-hdr">DRAFT TERMS</th>
+          <th class="divider" rowspan="2"></th>
+          <th colspan="4" class="nego-hdr">NEGOTIATED TERMS</th>
+          <th rowspan="2" class="diff-hdr">EBITDA Δ</th>
+        </tr>
+        <tr>
+          <th class="draft-hdr">CAPEX</th>
+          <th class="draft-hdr">EBITDA</th>
+          <th class="draft-hdr">FCF</th>
+          <th class="draft-hdr">Cum FCF</th>
+          <th class="nego-hdr">CAPEX</th>
+          <th class="nego-hdr">EBITDA</th>
+          <th class="nego-hdr">FCF</th>
+          <th class="nego-hdr">Cum FCF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+      <td class="m">M1</td>
+      <td class="r">1.454</td>
+      <td class="r neg-cell">-10.480</td>
+      <td class="r pos-cell">0.476</td>
+      <td class="r neg-cell">-10.004</td>
+      <td class="r neg-cell">-10.004</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">-8.908</td>
+      <td class="r pos-cell">0.505</td>
+      <td class="r neg-cell">-8.403</td>
+      <td class="r neg-cell">-8.403</td>
+      <td class="r pos-cell">+0.029</td>
+    </tr><tr>
+      <td class="m">M2</td>
+      <td class="r">1.466</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.482</td>
+      <td class="r pos-cell">0.482</td>
+      <td class="r neg-cell">-9.523</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.511</td>
+      <td class="r pos-cell">0.511</td>
+      <td class="r neg-cell">-7.893</td>
+      <td class="r pos-cell">+0.029</td>
+    </tr><tr>
+      <td class="m">M3</td>
+      <td class="r">1.484</td>
+      <td class="r neg-cell">-3.930</td>
+      <td class="r pos-cell">0.491</td>
+      <td class="r neg-cell">-3.439</td>
+      <td class="r neg-cell">-12.962</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">-2.358</td>
+      <td class="r pos-cell">0.519</td>
+      <td class="r neg-cell">-1.839</td>
+      <td class="r neg-cell">-9.731</td>
+      <td class="r pos-cell">+0.028</td>
+    </tr><tr>
+      <td class="m">M4</td>
+      <td class="r">1.512</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.504</td>
+      <td class="r pos-cell">0.504</td>
+      <td class="r neg-cell">-12.458</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">-1.572</td>
+      <td class="r pos-cell">0.532</td>
+      <td class="r neg-cell">-1.040</td>
+      <td class="r neg-cell">-10.771</td>
+      <td class="r pos-cell">+0.028</td>
+    </tr><tr>
+      <td class="m">M5</td>
+      <td class="r">1.552</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.524</td>
+      <td class="r pos-cell">0.524</td>
+      <td class="r neg-cell">-11.933</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.551</td>
+      <td class="r pos-cell">0.551</td>
+      <td class="r neg-cell">-10.221</td>
+      <td class="r pos-cell">+0.027</td>
+    </tr><tr>
+      <td class="m">M6</td>
+      <td class="r">1.610</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.553</td>
+      <td class="r pos-cell">0.553</td>
+      <td class="r neg-cell">-11.380</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">-1.572</td>
+      <td class="r pos-cell">0.578</td>
+      <td class="r neg-cell">-0.994</td>
+      <td class="r neg-cell">-11.214</td>
+      <td class="r pos-cell">+0.025</td>
+    </tr><tr>
+      <td class="m">M7</td>
+      <td class="r">1.692</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.594</td>
+      <td class="r pos-cell">0.594</td>
+      <td class="r neg-cell">-10.787</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.616</td>
+      <td class="r pos-cell">0.616</td>
+      <td class="r neg-cell">-10.599</td>
+      <td class="r pos-cell">+0.022</td>
+    </tr><tr>
+      <td class="m">M8</td>
+      <td class="r">1.807</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.651</td>
+      <td class="r pos-cell">0.651</td>
+      <td class="r neg-cell">-10.136</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.671</td>
+      <td class="r pos-cell">0.671</td>
+      <td class="r neg-cell">-9.928</td>
+      <td class="r pos-cell">+0.020</td>
+    </tr><tr>
+      <td class="m">M9</td>
+      <td class="r">1.958</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.726</td>
+      <td class="r pos-cell">0.726</td>
+      <td class="r neg-cell">-9.410</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.742</td>
+      <td class="r pos-cell">0.742</td>
+      <td class="r neg-cell">-9.186</td>
+      <td class="r pos-cell">+0.017</td>
+    </tr><tr>
+      <td class="m">M10</td>
+      <td class="r">2.148</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.820</td>
+      <td class="r pos-cell">0.820</td>
+      <td class="r neg-cell">-8.591</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.832</td>
+      <td class="r pos-cell">0.832</td>
+      <td class="r neg-cell">-8.354</td>
+      <td class="r pos-cell">+0.012</td>
+    </tr><tr>
+      <td class="m">M11</td>
+      <td class="r">2.372</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.931</td>
+      <td class="r pos-cell">0.931</td>
+      <td class="r neg-cell">-7.660</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">0.937</td>
+      <td class="r pos-cell">0.937</td>
+      <td class="r neg-cell">-7.417</td>
+      <td class="r pos-cell">+0.006</td>
+    </tr><tr>
+      <td class="m">M12</td>
+      <td class="r">2.615</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.052</td>
+      <td class="r pos-cell">1.052</td>
+      <td class="r neg-cell">-6.608</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.052</td>
+      <td class="r pos-cell">1.052</td>
+      <td class="r neg-cell">-6.365</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M13</td>
+      <td class="r">2.858</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.166</td>
+      <td class="r pos-cell">1.166</td>
+      <td class="r neg-cell">-5.442</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.166</td>
+      <td class="r pos-cell">1.166</td>
+      <td class="r neg-cell">-5.199</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M14</td>
+      <td class="r">3.082</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.272</td>
+      <td class="r pos-cell">1.272</td>
+      <td class="r neg-cell">-4.170</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.272</td>
+      <td class="r pos-cell">1.272</td>
+      <td class="r neg-cell">-3.927</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M15</td>
+      <td class="r">3.272</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.361</td>
+      <td class="r pos-cell">1.361</td>
+      <td class="r neg-cell">-2.809</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.361</td>
+      <td class="r pos-cell">1.361</td>
+      <td class="r neg-cell">-2.566</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M16</td>
+      <td class="r">3.423</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.432</td>
+      <td class="r pos-cell">1.432</td>
+      <td class="r neg-cell">-1.377</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.432</td>
+      <td class="r pos-cell">1.432</td>
+      <td class="r neg-cell">-1.134</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M17</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">0.092</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">0.335</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M18</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.560</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.803</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M19</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">3.029</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">3.272</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M20</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">4.497</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">4.740</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M21</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">5.966</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">6.209</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M22</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">7.434</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">7.677</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M23</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">8.903</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">9.146</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr><tr>
+      <td class="m">M24</td>
+      <td class="r">3.500</td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">10.371</td>
+      <td class="divider"></td>
+      <td class="r neg-cell">0.000</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">1.469</td>
+      <td class="r pos-cell">10.614</td>
+      <td class="r pos-cell">+0.000</td>
+    </tr>
+        <tr class="total-row">
+          <td class="m">TOTAL</td>
+          <td class="r">62.31</td>
+          <td class="r neg-cell">-14.41</td>
+          <td class="r pos-cell">24.78</td>
+          <td class="r">10.37</td>
+          <td class="r">10.37</td>
+          <td class="divider"></td>
+          <td class="r neg-cell">-14.41</td>
+          <td class="r pos-cell">25.02</td>
+          <td class="r">10.61</td>
+          <td class="r">10.61</td>
+          <td class="r pos-cell">+0.24</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- IMPACT SUMMARY -->
+<div class="card">
+  <h2>📈 Impact Summary — What Negotiation Achieves</h2>
+  <table>
+    <thead>
+      <tr><th style="text-align:left">Metric</th><th class="draft-hdr">Draft</th><th class="nego-hdr">Negotiated</th><th class="diff-hdr">Change</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>M1 Cash Out (tỷ VND)</td>
+        <td class="r neg-cell">10.48</td>
+        <td class="r pos-cell">8.91</td>
+        <td class="r"><span class="tag-change tag-up">−1.57 tỷ</span></td>
+      </tr>
+      <tr>
+        <td>License Fees Total 24M (tỷ VND)</td>
+        <td class="r neg-cell">1.80</td>
+        <td class="r pos-cell">1.56</td>
+        <td class="r"><span class="tag-change tag-up">−0.24 tỷ saved</span></td>
+      </tr>
+      <tr>
+        <td>Total EBITDA 24M (tỷ VND)</td>
+        <td class="r neg-cell">24.78</td>
+        <td class="r pos-cell">25.02</td>
+        <td class="r"><span class="tag-change tag-up">+0.24 tỷ</span></td>
+      </tr>
+      <tr>
+        <td>Break-even Month</td>
+        <td class="r">M1</td>
+        <td class="r">M1</td>
+        <td class="r"><span class="tag-change tag-same">Same</span></td>
+      </tr>
+      <tr>
+        <td>CAPEX Payback</td>
+        <td class="r">M17</td>
+        <td class="r">M17</td>
+        <td class="r"><span class="tag-change tag-same">Similar</span></td>
+      </tr>
+      <tr>
+        <td>Total NPAT 24M (tỷ VND)</td>
+        <td class="r neg-cell">15.21</td>
+        <td class="r pos-cell">15.41</td>
+        <td class="r"><span class="tag-change tag-up">+0.19 tỷ</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:14px;padding:14px 16px;background:#f8f4ec;border:2px solid #c8a050;border-radius:8px;font-size:9.5pt;">
+    <strong>Bottom line:</strong> Negotiated terms giải phóng <strong style="color:#16a34a">1.57 tỷ (~$60K)</strong> cash trong M1 nhờ defer inventory payment. 
+    Fee holiday 6 tháng tiết kiệm thêm <strong style="color:#16a34a">0.24 tỷ</strong> license fees trong 24 tháng.
+    Total cash advantage: <strong style="color:#c8a050">1.81 tỷ</strong> — 
+    nhưng payback và break-even thực chất <strong>không thay đổi nhiều</strong> vì CAPEX total vẫn như nhau, chỉ khác timing.
+    <br><br>
+    <strong>Giá trị thực sự của negotiation:</strong> Giảm rủi ro vốn M1 trong giai đoạn pre-revenue. Nếu venue delay khai trương hoặc ramp-up chậm hơn dự kiến, RCC có <strong>1.57 tỷ buffer</strong> thay vì đã lock hết vào inventory.
+  </div>
+</div>
+
+<div class="footer">Park90 × Barson Comparison · Base Case · RCC Internal · Confidential · April 2026</div>
+</div>
+</body>
+</html>
