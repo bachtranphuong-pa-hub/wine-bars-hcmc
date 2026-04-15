@@ -134,12 +134,22 @@
   }
   .btn-save { background:#0d1b2a; color:#c8a050; }
   .btn-save:hover { background:#1a2a3a; }
-  .btn-sharepoint { background:#0078d4; color:white; }
-  .btn-sharepoint:hover { background:#106ebe; }
   .btn-reset { background:#f3f4f6; color:#666; }
   .btn-reset:hover { background:#e5e7eb; }
   .btn-export { background:#059669; color:white; }
   .btn-export:hover { background:#047857; }
+
+  /* PRINT / PDF */
+  @media print {
+    body { background:white; font-size:10pt; }
+    .container { max-width:100%; padding:10px; }
+    .header { background:#0d1b2a !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; border-radius:8px; padding:16px 20px; }
+    .action-bar, .sessions-card, #sessions-card, .tab-bar, .status-bar { display:none !important; }
+    .card { box-shadow:none; page-break-inside:avoid; }
+    .tab-panel { display:block !important; }
+    .criteria-table { page-break-inside:avoid; }
+    .summary-row { page-break-inside:avoid; }
+  }
   .btn:disabled { opacity:0.5; cursor:not-allowed; }
 
   /* STATUS */
@@ -362,8 +372,7 @@
 
   <div class="action-bar">
     <button class="btn btn-save" onclick="saveLocal()">💾 Save Draft (Local)</button>
-    <button class="btn btn-export" onclick="exportJSON()">📤 Export JSON</button>
-    <button class="btn btn-sharepoint" onclick="uploadSharePoint()" id="btn-sp">☁️ Upload to SharePoint</button>
+    <button class="btn btn-export" onclick="exportPDF()">📄 Export PDF</button>
     <button class="btn btn-reset" onclick="resetAll()">🔄 Reset</button>
   </div>
   <div class="status-bar" id="status-bar"></div>
@@ -377,7 +386,7 @@
 
 <div class="footer">
   LMSG F&B Concept Scoring Tool · RCC Internal · April 2026<br>
-  Scores saved locally (localStorage) and to RCC SharePoint when uploaded
+  Scores saved locally (localStorage). Use Export PDF to save a printable copy.
 </div>
 
 </div><!-- end container -->
@@ -767,51 +776,19 @@ function resetAll() {
   showStatus('🔄 Reset complete.', 'info');
 }
 
-// ─── EXPORT JSON ─────────────────────────────────────────────────────────────
-function exportJSON() {
-  const data = getSessionData();
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  const name = (data.meta.name || 'scoring').replace(/\s+/g,'-').toLowerCase();
-  a.download = `lmsg-scoring-${name}-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-}
+// ─── EXPORT PDF ──────────────────────────────────────────────────────────────
+function exportPDF() {
+  // Show all panels before printing
+  const panels = document.querySelectorAll('.tab-panel');
+  const prevDisplay = [];
+  panels.forEach((p, i) => { prevDisplay[i] = p.style.display; p.style.display = 'block'; });
 
-// ─── SHAREPOINT UPLOAD ───────────────────────────────────────────────────────
-// Calls backend proxy endpoint. Zera will deploy a small Node.js relay on the server.
-async function uploadSharePoint() {
-  const name = document.getElementById('inp-name').value;
-  if (!name) { showStatus('⚠️ Please enter your name before uploading.', 'err'); return; }
-  
-  const data = getSessionData();
-  const btn = document.getElementById('btn-sp');
-  btn.disabled = true;
-  btn.textContent = '☁️ Uploading...';
-  showStatus('⏳ Uploading to SharePoint...', 'info');
+  window.print();
 
-  try {
-    const res = await fetch('/api/lmsg-scoring-upload', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (res.ok) {
-      const r = await res.json();
-      showStatus(`✅ Uploaded to SharePoint: ${r.path || 'RCC-Data/Scoring'}`, 'ok');
-    } else {
-      // Fallback: export JSON with instructions
-      exportJSON();
-      showStatus('⚠️ Direct upload not available. JSON exported — send to Zera to upload.', 'err');
-    }
-  } catch(e) {
-    // Fallback when no backend
-    exportJSON();
-    showStatus('📤 JSON exported. Send file to Zera to upload to SharePoint (RCC-Data/LMSG-Scoring/).', 'info');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '☁️ Upload to SharePoint';
-  }
+  // Restore panels after print dialog
+  setTimeout(() => {
+    panels.forEach((p, i) => { p.style.display = prevDisplay[i]; });
+  }, 500);
 }
 
 // ─── STATUS ──────────────────────────────────────────────────────────────────
