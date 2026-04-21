@@ -3,52 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Opera Metropole Thu Thiem — P&L Analysis</title>
+<title>Opera Metropole — P&L Final</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:11pt; line-height:1.6; }
-  .container { max-width:860px; margin:0 auto; padding:24px 16px 48px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 32px 16px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 36px; }
+  .header h1 { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+  .header .subtitle { color: #8b949e; font-size: 14px; margin-top: 6px; }
+  .header .badge { display: inline-block; background: #1f6feb; color: #fff; font-size: 12px; padding: 3px 12px; border-radius: 20px; margin-top: 10px; }
+  .header .badge.green { background: #238636; }
 
-  .header {
-    background:linear-gradient(140deg,#0d1b2a,#1a1a2e);
-    border-radius:14px; padding:28px 36px; color:white; margin-bottom:20px;
-  }
-  .header .tag { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:8px; }
-  .header h1 { font-size:20pt; font-weight:700; margin-bottom:4px; }
-  .header h1 em { color:#c8a050; font-style:normal; }
-  .header .sub { font-size:10pt; color:rgba(255,255,255,0.5); }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; text-align: center; }
+  .card.green { border-color: #238636; }
+  .card.blue  { border-color: #1f6feb; }
+  .card.orange { border-color: #d29922; }
+  .card .label { font-size: 12px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .card .value { font-size: 24px; font-weight: 700; }
+  .card.green .value { color: #3fb950; }
+  .card.blue  .value { color: #58a6ff; }
+  .card.orange .value { color: #d29922; }
+  .card .sub  { font-size: 12px; color: #8b949e; margin-top: 4px; }
 
-  .card { background:white; border-radius:12px; padding:22px 24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .card h2 { font-size:12pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.5px; }
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 13px; font-weight: 600; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #21262d; }
 
-  table { width:100%; border-collapse:collapse; font-size:10.5pt; }
-  th { background:#0d1b2a; color:#c8a050; padding:9px 12px; text-align:left; font-size:9pt; letter-spacing:0.5px; }
-  td { padding:9px 12px; border-bottom:1px solid #f0f0f0; }
-  tr:last-child td { border-bottom:none; }
-  tr:hover td { background:#fafafa; }
-  .num { text-align:right; font-variant-numeric:tabular-nums; }
-  .label { color:#555; font-size:9.5pt; }
+  table { width: 100%; border-collapse: collapse; background: #161b22; border-radius: 10px; overflow: hidden; border: 1px solid #30363d; }
+  th { background: #21262d; color: #8b949e; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 16px; text-align: left; }
+  td { padding: 10px 16px; font-size: 14px; border-top: 1px solid #21262d; }
+  tr:hover td { background: #1c2128; }
+  .neg { color: #f85149; }
+  .pos { color: #3fb950; }
+  .total-row td { font-weight: 700; font-size: 15px; background: #1c2128; border-top: 2px solid #30363d; }
+  .total-row .pos { color: #3fb950; font-size: 16px; }
+  .right { text-align: right; }
+  .center { text-align: center; }
+  .member-name { font-weight: 600; color: #e6edf3; }
+  .member-pct { color: #8b949e; font-size: 13px; }
+  .roi-badge { display: inline-block; background: #1a3a1a; color: #3fb950; border: 1px solid #238636; border-radius: 4px; padding: 2px 8px; font-size: 13px; font-weight: 600; }
+  .highlight-row td { background: #1a2332 !important; }
+  .highlight-row .member-name { color: #58a6ff; }
+  .note { background: #161b22; border: 1px solid #30363d; border-left: 3px solid #238636; border-radius: 6px; padding: 12px 16px; font-size: 13px; color: #8b949e; margin-top: 8px; }
+  .note strong { color: #3fb950; }
+  .note.warn { border-left-color: #d29922; }
+  .note.warn strong { color: #d29922; }
 
-  .total-row td { font-weight:700; background:#f8f4ec; color:#0d1b2a; border-top:2px solid #c8a050; border-bottom:2px solid #c8a050; }
-  .neg { color:#c0392b; }
-  .pos { color:#16a34a; font-weight:700; }
-  .gold { color:#c8a050; font-weight:700; }
+  .diff-pos { color: #3fb950; font-size: 12px; }
+  .diff-neg { color: #f85149; font-size: 12px; }
 
-  .kpi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:16px; }
-  .kpi { background:white; border-radius:12px; padding:18px 20px; box-shadow:0 2px 8px rgba(0,0,0,0.06); text-align:center; }
-  .kpi .val { font-size:20pt; font-weight:700; color:#c8a050; }
-  .kpi .lbl { font-size:8.5pt; color:#888; text-transform:uppercase; letter-spacing:1px; margin-top:4px; }
-
-  .badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:8.5pt; font-weight:700; }
-  .badge-green { background:#d1fae5; color:#065f46; }
-  .badge-gold { background:#fef3c7; color:#92400e; }
-
-  .footer { text-align:center; font-size:8.5pt; color:#aaa; margin-top:24px; }
-
-  @media (max-width:600px) {
-    .kpi-grid { grid-template-columns:repeat(2,1fr); }
-    .header { padding:20px; }
-    .header h1 { font-size:15pt; }
+  .footer { text-align: center; margin-top: 40px; color: #484f58; font-size: 12px; }
+  @media (max-width: 600px) {
+    .cards { grid-template-columns: 1fr; }
+    td, th { padding: 8px 10px; font-size: 13px; }
   }
 </style>
 </head>
@@ -56,134 +63,250 @@
 <div class="container">
 
   <div class="header">
-    <div class="tag">RCC Investment Analysis · Private</div>
-    <h1>Opera Metropole <em>Thu Thiem</em></h1>
-    <div class="sub">Scenario: Bán 225 tỷ · Nắm giữ ~5 tháng (11/2025 → 4/2026)</div>
+    <h1>🏢 OPERA METROPOLE</h1>
+    <div class="subtitle">P&amp;L Final Revised — Bán 225 tỷ · Nắm giữ 156 ngày (11/11/2025 → 16/04/2026)</div>
+    <div class="badge green">✅ Revised với số thực VietinBank · 21/04/2026</div>
   </div>
 
-  <!-- KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi">
-      <div class="val">42.27 tỷ</div>
-      <div class="lbl">Lợi Nhuận Ròng</div>
+  <div class="cards">
+    <div class="card green">
+      <div class="label">LN Ròng Project</div>
+      <div class="value">37.21 tỷ</div>
+      <div class="sub">+3.93 tỷ vs bản cũ</div>
     </div>
-    <div class="kpi">
-      <div class="val">65.9%</div>
-      <div class="lbl">ROI (5 tháng)</div>
+    <div class="card blue">
+      <div class="label">ROI Cả Team</div>
+      <div class="value">58.0%</div>
+      <div class="sub">Trên vốn góp 64.125 tỷ</div>
     </div>
-    <div class="kpi">
-      <div class="val">~158%</div>
-      <div class="lbl">IRR Annualized</div>
+    <div class="card orange">
+      <div class="label">IRR Annualized</div>
+      <div class="value">~192%</div>
+      <div class="sub">156 ngày nắm giữ</div>
     </div>
   </div>
 
   <!-- P&L -->
-  <div class="card">
-    <h2>📊 P&L — Bán 225 Tỷ</h2>
+  <div class="section">
+    <div class="section-title">📊 Bảng P&amp;L — Số Thực Tế</div>
     <table>
-      <thead>
-        <tr><th>Hạng Mục</th><th class="num">Số Tiền</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Giá bán</td><td class="num gold">225.00 tỷ</td></tr>
-        <tr><td class="label">− Chi phí bán (1%)</td><td class="num neg">−2.25 tỷ</td></tr>
-        <tr><td class="label">− Giá mua</td><td class="num neg">−177.50 tỷ</td></tr>
-        <tr><td class="label">− Lãi vay (113.38 tỷ × 6.3% × 5/12)</td><td class="num neg">−2.98 tỷ</td></tr>
-        <tr class="total-row"><td>Lợi Nhuận Ròng</td><td class="num pos">42.27 tỷ</td></tr>
-      </tbody>
+      <tr><th>Hạng Mục</th><th class="right">Số Tiền (VND)</th><th class="right">Tỷ VND</th><th class="right">vs Bản Cũ</th></tr>
+
+      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
+      <tr><td><strong>DOANH THU</strong></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td style="padding-left:28px;">Giá bán</td>
+        <td class="right pos">225,000,000,000</td>
+        <td class="right pos">225.00 tỷ</td>
+        <td class="right">—</td>
+      </tr>
+
+      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
+      <tr><td><strong>CHI PHÍ MUA &amp; TÀI CHÍNH</strong></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td style="padding-left:28px;">Giá mua</td>
+        <td class="right neg">-177,500,000,000</td>
+        <td class="right neg">-177.50 tỷ</td>
+        <td class="right">—</td>
+      </tr>
+      <tr>
+        <td style="padding-left:28px;">Lãi vay (thực tế — giai đoạn UDLS thấp)</td>
+        <td class="right neg">-188,050,685</td>
+        <td class="right neg">-0.188 tỷ</td>
+        <td class="right diff-pos">↓ -2.79 tỷ</td>
+      </tr>
+
+      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
+      <tr><td><strong>CHI PHÍ BÁN</strong></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td style="padding-left:28px;">Thuế TNCN (2% × 225 tỷ — full giá bán)</td>
+        <td class="right neg">-4,500,000,000</td>
+        <td class="right neg">-4.50 tỷ</td>
+        <td class="right diff-neg">↑ +0.70 tỷ</td>
+      </tr>
+      <tr>
+        <td style="padding-left:28px;">Phí môi giới (1% × 225 tỷ)</td>
+        <td class="right neg">-2,250,000,000</td>
+        <td class="right neg">-2.25 tỷ</td>
+        <td class="right">—</td>
+      </tr>
+      <tr>
+        <td style="padding-left:28px;">Phí công chứng HĐ cọc</td>
+        <td class="right neg">-15,000,000</td>
+        <td class="right neg">-0.015 tỷ</td>
+        <td class="right">—</td>
+      </tr>
+      <tr>
+        <td style="padding-left:28px;">Phí công chứng sổ hồng</td>
+        <td class="right neg">-60,000,000</td>
+        <td class="right neg">-0.060 tỷ</td>
+        <td class="right">—</td>
+      </tr>
+
+      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
+      <tr><td><strong>PHÍ TẤT TOÁN VIETINBANK (SỐ THỰC)</strong></td><td></td><td></td><td></td></tr>
+      <tr>
+        <td style="padding-left:28px;">Dư nợ gốc phải trả</td>
+        <td class="right neg">-108,000,000,000</td>
+        <td class="right neg">-108.00 tỷ</td>
+        <td class="right diff-pos">↓ -5.38 tỷ gốc</td>
+      </tr>
+      <tr>
+        <td style="padding-left:28px;">Phí trả nợ trước hạn (1%)</td>
+        <td class="right neg">-1,089,500,000</td>
+        <td class="right neg">-1.090 tỷ</td>
+        <td class="right diff-pos">↓ -0.044 tỷ</td>
+      </tr>
+      <tr>
+        <td style="padding-left:28px;">Thu hồi ưu đãi lãi suất (4.7%/năm × 156 ngày)</td>
+        <td class="right neg">-2,188,551,781</td>
+        <td class="right neg">-2.189 tỷ</td>
+        <td class="right diff-neg">↑ +0.199 tỷ</td>
+      </tr>
+
+      <tr class="total-row">
+        <td>🟢 LỢI NHUẬN RÒNG PROJECT</td>
+        <td class="right pos">37,209,397,534</td>
+        <td class="right pos">~37.21 tỷ</td>
+        <td class="right diff-pos"><strong>↑ +3.93 tỷ</strong></td>
+      </tr>
     </table>
-    <div style="margin-top:12px; font-size:9pt; color:#888;">
-      ROI Project: <strong>65.9%</strong> trên vốn góp 64.12 tỷ &nbsp;|&nbsp;
-      So với mục tiêu 240 tỷ: thấp hơn ~17 điểm % — vẫn là return rất tốt với 5 tháng nắm giữ
+    <div class="note">
+      <strong>✅ Lãi vay chỉ 188M</strong> (thay vì ước tính ~2.98 tỷ) do khoản vay hưởng giai đoạn ưu đãi lãi suất thấp. Thu hồi UDLS 2.19 tỷ là chi phí đánh đổi khi tất toán sớm — net vẫn có lợi hơn bản ước tính cũ ~4.63 tỷ.
     </div>
   </div>
 
-  <!-- Member breakdown -->
-  <div class="card">
-    <h2>👥 Phân Bổ Từng Thành Viên</h2>
+  <!-- Members -->
+  <div class="section">
+    <div class="section-title">👥 Phân Chia Theo Thành Viên — Revised (LN: 37.21 tỷ | Vốn: 64.125 tỷ)</div>
     <table>
-      <thead>
-        <tr>
-          <th>Thành Viên</th>
-          <th class="num">%</th>
-          <th class="num">Vốn Góp</th>
-          <th class="num">Lãi Vay</th>
-          <th class="num">LN Ròng</th>
-          <th class="num">Tổng Nhận Về</th>
-          <th class="num">ROI</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Anh Quang (NDQ)</strong></td>
-          <td class="num">53.17%</td>
-          <td class="num">34.10 tỷ</td>
-          <td class="num neg">1.58 tỷ</td>
-          <td class="num pos">22.47 tỷ</td>
-          <td class="num gold">56.57 tỷ</td>
-          <td class="num"><span class="badge badge-green">65.9%</span></td>
-        </tr>
-        <tr>
-          <td>NHY</td>
-          <td class="num">24.02%</td>
-          <td class="num">15.40 tỷ</td>
-          <td class="num neg">0.71 tỷ</td>
-          <td class="num pos">10.15 tỷ</td>
-          <td class="num gold">25.55 tỷ</td>
-          <td class="num"><span class="badge badge-green">65.9%</span></td>
-        </tr>
-        <tr>
-          <td>Yến Linh + Steve</td>
-          <td class="num">8.58%</td>
-          <td class="num">5.50 tỷ</td>
-          <td class="num neg">0.26 tỷ</td>
-          <td class="num pos">3.62 tỷ</td>
-          <td class="num gold">9.12 tỷ</td>
-          <td class="num"><span class="badge badge-green">65.9%</span></td>
-        </tr>
-        <tr style="background:#fef9ee;">
-          <td><strong>Bach Tran (anh)</strong></td>
-          <td class="num">7.80%</td>
-          <td class="num">5.00 tỷ</td>
-          <td class="num neg">0.23 tỷ</td>
-          <td class="num pos">3.30 tỷ</td>
-          <td class="num gold"><strong>8.30 tỷ</strong></td>
-          <td class="num"><span class="badge badge-gold">65.9%</span></td>
-        </tr>
-        <tr>
-          <td>Thùy Linh</td>
-          <td class="num">4.29%</td>
-          <td class="num">2.75 tỷ</td>
-          <td class="num neg">0.13 tỷ</td>
-          <td class="num pos">1.81 tỷ</td>
-          <td class="num gold">4.56 tỷ</td>
-          <td class="num"><span class="badge badge-green">65.9%</span></td>
-        </tr>
-        <tr>
-          <td>DG</td>
-          <td class="num">2.14%</td>
-          <td class="num">1.375 tỷ</td>
-          <td class="num neg">0.06 tỷ</td>
-          <td class="num pos">0.91 tỷ</td>
-          <td class="num gold">2.28 tỷ</td>
-          <td class="num"><span class="badge badge-green">65.9%</span></td>
-        </tr>
-        <tr class="total-row">
-          <td>TỔNG</td>
-          <td class="num">100%</td>
-          <td class="num">64.125 tỷ</td>
-          <td class="num">2.97 tỷ</td>
-          <td class="num">42.26 tỷ</td>
-          <td class="num">106.38 tỷ</td>
-          <td class="num">65.9%</td>
-        </tr>
-      </tbody>
+      <tr>
+        <th>Thành Viên</th>
+        <th class="center">%</th>
+        <th class="right">Vốn Góp</th>
+        <th class="right">LN Ròng</th>
+        <th class="right">Tổng Nhận Về</th>
+        <th class="center">ROI</th>
+      </tr>
+      <tr>
+        <td><span class="member-name">Anh Quang (NDQ)</span></td>
+        <td class="center member-pct">53.17%</td>
+        <td class="right">34.100 tỷ</td>
+        <td class="right pos">19.784 tỷ</td>
+        <td class="right"><strong>53.884 tỷ</strong></td>
+        <td class="center"><span class="roi-badge">58.0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="member-name">NHY</span></td>
+        <td class="center member-pct">24.02%</td>
+        <td class="right">15.400 tỷ</td>
+        <td class="right pos">8.938 tỷ</td>
+        <td class="right"><strong>24.338 tỷ</strong></td>
+        <td class="center"><span class="roi-badge">58.0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="member-name">Yến Linh + Steve</span></td>
+        <td class="center member-pct">8.58%</td>
+        <td class="right">5.500 tỷ</td>
+        <td class="right pos">3.193 tỷ</td>
+        <td class="right"><strong>8.693 tỷ</strong></td>
+        <td class="center"><span class="roi-badge">58.0%</span></td>
+      </tr>
+      <tr class="highlight-row">
+        <td><span class="member-name">Bach Tran</span></td>
+        <td class="center member-pct">7.80%</td>
+        <td class="right">5.000 tỷ</td>
+        <td class="right pos">2.902 tỷ</td>
+        <td class="right"><strong>7.902 tỷ</strong></td>
+        <td class="center"><span class="roi-badge">58.0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="member-name">Thùy Linh</span></td>
+        <td class="center member-pct">4.29%</td>
+        <td class="right">2.750 tỷ</td>
+        <td class="right pos">1.596 tỷ</td>
+        <td class="right"><strong>4.346 tỷ</strong></td>
+        <td class="center"><span class="roi-badge">58.0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="member-name">DG</span></td>
+        <td class="center member-pct">2.14%</td>
+        <td class="right">1.375 tỷ</td>
+        <td class="right pos">0.796 tỷ</td>
+        <td class="right"><strong>2.171 tỷ</strong></td>
+        <td class="center"><span class="roi-badge">58.0%</span></td>
+      </tr>
+      <tr class="total-row">
+        <td><strong>TỔNG CỘNG</strong></td>
+        <td class="center">100%</td>
+        <td class="right">64.125 tỷ</td>
+        <td class="right pos"><strong>37.209 tỷ</strong></td>
+        <td class="right"><strong>101.334 tỷ</strong></td>
+        <td class="center"><span class="roi-badge">58.0%</span></td>
+      </tr>
     </table>
   </div>
 
-  <div class="footer">
-    RCC Internal · Confidential · April 2026
+  <!-- Scenario Compare -->
+  <div class="section">
+    <div class="section-title">📈 So Sánh Kịch Bản</div>
+    <table>
+      <tr>
+        <th>Kịch Bản</th>
+        <th class="right">LN Project</th>
+        <th class="center">ROI</th>
+        <th class="right">Bach Tran Nhận Về</th>
+        <th class="center">IRR Ann.</th>
+      </tr>
+      <tr>
+        <td>Trước phí (gốc)</td>
+        <td class="right">42.27 tỷ</td>
+        <td class="center">65.9%</td>
+        <td class="right">8.30 tỷ</td>
+        <td class="center">~158%</td>
+      </tr>
+      <tr>
+        <td>Sau phí NH (ước tính 16/04)</td>
+        <td class="right">33.28 tỷ</td>
+        <td class="center">51.9%</td>
+        <td class="right">7.60 tỷ</td>
+        <td class="center">~124%</td>
+      </tr>
+      <tr class="highlight-row">
+        <td><strong>✅ FINAL — Số thực VietinBank + thuế full 225 tỷ (21/04)</strong></td>
+        <td class="right pos"><strong>37.21 tỷ</strong></td>
+        <td class="center"><strong style="color:#3fb950">58.0%</strong></td>
+        <td class="right pos"><strong>7.902 tỷ</strong></td>
+        <td class="center"><strong style="color:#3fb950">~192%</strong></td>
+      </tr>
+    </table>
   </div>
+
+  <!-- Loan Info -->
+  <div class="section">
+    <div class="section-title">🏦 Số Thực VietinBank — Tất Toán 16/04/2026</div>
+    <table>
+      <tr><th>Thông Số</th><th class="right">Chi Tiết</th></tr>
+      <tr><td>STK vay</td><td class="right">553******509</td></tr>
+      <tr><td>Ngày giải ngân</td><td class="right">11/11/2025</td></tr>
+      <tr><td>Ngày tất toán dự kiến</td><td class="right">16/04/2026</td></tr>
+      <tr><td>Số ngày hưởng UDLS</td><td class="right">156 ngày</td></tr>
+      <tr><td>Lãi suất thu hồi UDLS</td><td class="right">4.7%/năm</td></tr>
+      <tr><td>Dư nợ gốc</td><td class="right neg">108,000,000,000 VND</td></tr>
+      <tr><td>Lãi vay (đến 16/04)</td><td class="right neg">188,050,685 VND</td></tr>
+      <tr><td>Phí trả nợ trước hạn</td><td class="right neg">1,089,500,000 VND</td></tr>
+      <tr><td>Thu hồi ưu đãi lãi suất</td><td class="right neg">2,188,551,781 VND</td></tr>
+      <tr class="total-row"><td><strong>Tổng phải trả VietinBank</strong></td><td class="right neg"><strong>111,466,102,466 VND (~111.47 tỷ)</strong></td></tr>
+    </table>
+    <div class="note warn">
+      <strong>⚠️ Lưu ý:</strong> Số liệu trên là theo xác nhận của VietinBank ngày 16/04/2026. Khi thực hiện tất toán, đề nghị xác nhận lại tổng số tiền chính xác tại quầy do có thể phát sinh thêm lãi tính theo ngày tất toán thực tế.
+    </div>
+  </div>
+
+  <div class="footer">
+    Zera 🌟 · Royal Canary Corp · Revised 21/04/2026 · Confidential
+  </div>
+
 </div>
 </body>
 </html>
