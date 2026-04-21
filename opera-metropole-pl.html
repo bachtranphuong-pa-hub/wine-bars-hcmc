@@ -7,24 +7,26 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 32px 16px; }
-  .container { max-width: 900px; margin: 0 auto; }
+  .container { max-width: 920px; margin: 0 auto; }
   .header { text-align: center; margin-bottom: 36px; }
   .header h1 { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: 1px; }
   .header .subtitle { color: #8b949e; font-size: 14px; margin-top: 6px; }
-  .header .badge { display: inline-block; background: #1f6feb; color: #fff; font-size: 12px; padding: 3px 12px; border-radius: 20px; margin-top: 10px; }
-  .header .badge.green { background: #238636; }
+  .badges { margin-top: 10px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .badge { display: inline-block; font-size: 12px; padding: 3px 12px; border-radius: 20px; }
+  .badge.blue  { background: #1f6feb; color: #fff; }
+  .badge.green { background: #238636; color: #fff; }
 
   .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
   .card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; text-align: center; }
-  .card.green { border-color: #238636; }
-  .card.blue  { border-color: #1f6feb; }
+  .card.green  { border-color: #238636; }
+  .card.blue   { border-color: #1f6feb; }
   .card.orange { border-color: #d29922; }
   .card .label { font-size: 12px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
   .card .value { font-size: 24px; font-weight: 700; }
-  .card.green .value { color: #3fb950; }
-  .card.blue  .value { color: #58a6ff; }
+  .card.green  .value { color: #3fb950; }
+  .card.blue   .value { color: #58a6ff; }
   .card.orange .value { color: #d29922; }
-  .card .sub  { font-size: 12px; color: #8b949e; margin-top: 4px; }
+  .card .sub   { font-size: 12px; color: #8b949e; margin-top: 4px; }
 
   .section { margin-bottom: 28px; }
   .section-title { font-size: 13px; font-weight: 600; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #21262d; }
@@ -33,24 +35,28 @@
   th { background: #21262d; color: #8b949e; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 16px; text-align: left; }
   td { padding: 10px 16px; font-size: 14px; border-top: 1px solid #21262d; }
   tr:hover td { background: #1c2128; }
-  .neg { color: #f85149; }
-  .pos { color: #3fb950; }
+  .neg  { color: #f85149; }
+  .pos  { color: #3fb950; }
+  .muted { color: #8b949e; font-size: 13px; }
+  .right  { text-align: right; }
+  .center { text-align: center; }
+  .group-header td { background: #0d1117 !important; padding: 6px 16px; font-size: 12px; font-weight: 700; color: #6e7681; text-transform: uppercase; letter-spacing: 1px; border-top: none; }
+  .subtotal-row td { background: #1a2332; font-weight: 600; border-top: 1px solid #30363d; }
   .total-row td { font-weight: 700; font-size: 15px; background: #1c2128; border-top: 2px solid #30363d; }
   .total-row .pos { color: #3fb950; font-size: 16px; }
-  .right { text-align: right; }
-  .center { text-align: center; }
-  .member-name { font-weight: 600; color: #e6edf3; }
-  .member-pct { color: #8b949e; font-size: 13px; }
-  .roi-badge { display: inline-block; background: #1a3a1a; color: #3fb950; border: 1px solid #238636; border-radius: 4px; padding: 2px 8px; font-size: 13px; font-weight: 600; }
   .highlight-row td { background: #1a2332 !important; }
   .highlight-row .member-name { color: #58a6ff; }
-  .note { background: #161b22; border: 1px solid #30363d; border-left: 3px solid #238636; border-radius: 6px; padding: 12px 16px; font-size: 13px; color: #8b949e; margin-top: 8px; }
-  .note strong { color: #3fb950; }
-  .note.warn { border-left-color: #d29922; }
-  .note.warn strong { color: #d29922; }
-
+  .member-name { font-weight: 600; color: #e6edf3; }
+  .member-pct  { color: #8b949e; font-size: 13px; }
+  .roi-badge   { display: inline-block; background: #1a3a1a; color: #3fb950; border: 1px solid #238636; border-radius: 4px; padding: 2px 8px; font-size: 13px; font-weight: 600; }
   .diff-pos { color: #3fb950; font-size: 12px; }
   .diff-neg { color: #f85149; font-size: 12px; }
+
+  .note { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px 16px; font-size: 13px; color: #8b949e; margin-top: 8px; }
+  .note.green { border-left: 3px solid #238636; }
+  .note.green strong { color: #3fb950; }
+  .note.warn  { border-left: 3px solid #d29922; }
+  .note.warn  strong { color: #d29922; }
 
   .footer { text-align: center; margin-top: 40px; color: #484f58; font-size: 12px; }
   @media (max-width: 600px) {
@@ -62,17 +68,22 @@
 <body>
 <div class="container">
 
+  <!-- HEADER -->
   <div class="header">
     <h1>🏢 OPERA METROPOLE</h1>
-    <div class="subtitle">P&amp;L Final Revised — Bán 225 tỷ · Nắm giữ 156 ngày (11/11/2025 → 16/04/2026)</div>
-    <div class="badge green">✅ Revised với số thực VietinBank · 21/04/2026</div>
+    <div class="subtitle">P&amp;L Final — Bán 225 tỷ · Nắm giữ 156 ngày (11/11/2025 → 16/04/2026)</div>
+    <div class="badges">
+      <span class="badge blue">Cập nhật: 21/04/2026</span>
+      <span class="badge green">✅ Số thực VietinBank · Thuế 2% × full 225 tỷ</span>
+    </div>
   </div>
 
+  <!-- SUMMARY CARDS -->
   <div class="cards">
     <div class="card green">
       <div class="label">LN Ròng Project</div>
       <div class="value">37.21 tỷ</div>
-      <div class="sub">+3.93 tỷ vs bản cũ</div>
+      <div class="sub">Sau tất cả chi phí</div>
     </div>
     <div class="card blue">
       <div class="label">ROI Cả Team</div>
@@ -86,99 +97,133 @@
     </div>
   </div>
 
-  <!-- P&L -->
+  <!-- P&L TABLE -->
   <div class="section">
-    <div class="section-title">📊 Bảng P&amp;L — Số Thực Tế</div>
+    <div class="section-title">📊 Bảng P&amp;L — Đầy Đủ</div>
     <table>
-      <tr><th>Hạng Mục</th><th class="right">Số Tiền (VND)</th><th class="right">Tỷ VND</th><th class="right">vs Bản Cũ</th></tr>
+      <tr><th>Hạng Mục</th><th class="right">Số Tiền (VND)</th><th class="right">Tỷ VND</th><th class="right">Ghi Chú</th></tr>
 
-      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
-      <tr><td><strong>DOANH THU</strong></td><td></td><td></td><td></td></tr>
+      <!-- DOANH THU -->
+      <tr class="group-header"><td colspan="4">▸ DOANH THU</td></tr>
       <tr>
-        <td style="padding-left:28px;">Giá bán</td>
-        <td class="right pos">225,000,000,000</td>
-        <td class="right pos">225.00 tỷ</td>
-        <td class="right">—</td>
+        <td style="padding-left:24px;">Giá bán</td>
+        <td class="right pos">+225,000,000,000</td>
+        <td class="right pos">+225.000</td>
+        <td class="right muted">—</td>
       </tr>
 
-      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
-      <tr><td><strong>CHI PHÍ MUA &amp; TÀI CHÍNH</strong></td><td></td><td></td><td></td></tr>
+      <!-- CHI PHÍ MUA -->
+      <tr class="group-header"><td colspan="4">▸ CHI PHÍ MUA &amp; TÀI CHÍNH</td></tr>
       <tr>
-        <td style="padding-left:28px;">Giá mua</td>
+        <td style="padding-left:24px;">Giá mua</td>
         <td class="right neg">-177,500,000,000</td>
-        <td class="right neg">-177.50 tỷ</td>
-        <td class="right">—</td>
+        <td class="right neg">-177.500</td>
+        <td class="right muted">—</td>
       </tr>
       <tr>
-        <td style="padding-left:28px;">Lãi vay (thực tế — giai đoạn UDLS thấp)</td>
+        <td style="padding-left:24px;">Lãi vay (thực tế — giai đoạn UDLS)</td>
         <td class="right neg">-188,050,685</td>
-        <td class="right neg">-0.188 tỷ</td>
-        <td class="right diff-pos">↓ -2.79 tỷ</td>
+        <td class="right neg">-0.188</td>
+        <td class="right muted">Thấp do UDLS</td>
+      </tr>
+      <tr class="subtotal-row">
+        <td style="padding-left:24px;">Subtotal</td>
+        <td class="right neg">-177,688,050,685</td>
+        <td class="right neg">-177.688</td>
+        <td></td>
       </tr>
 
-      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
-      <tr><td><strong>CHI PHÍ BÁN</strong></td><td></td><td></td><td></td></tr>
+      <!-- CHI PHÍ BÁN -->
+      <tr class="group-header"><td colspan="4">▸ CHI PHÍ BÁN (RESELLING COSTS)</td></tr>
       <tr>
-        <td style="padding-left:28px;">Thuế TNCN (2% × 225 tỷ — full giá bán)</td>
+        <td style="padding-left:24px;">Thuế TNCN (2% × 225 tỷ — full giá bán)</td>
         <td class="right neg">-4,500,000,000</td>
-        <td class="right neg">-4.50 tỷ</td>
-        <td class="right diff-neg">↑ +0.70 tỷ</td>
+        <td class="right neg">-4.500</td>
+        <td class="right muted">2% × 225B</td>
       </tr>
       <tr>
-        <td style="padding-left:28px;">Phí môi giới (1% × 225 tỷ)</td>
+        <td style="padding-left:24px;">Phí môi giới (1% × 225 tỷ)</td>
         <td class="right neg">-2,250,000,000</td>
-        <td class="right neg">-2.25 tỷ</td>
-        <td class="right">—</td>
+        <td class="right neg">-2.250</td>
+        <td class="right muted">1% × 225B</td>
       </tr>
       <tr>
-        <td style="padding-left:28px;">Phí công chứng HĐ cọc</td>
+        <td style="padding-left:24px;">Phí công chứng hợp đồng cọc</td>
         <td class="right neg">-15,000,000</td>
-        <td class="right neg">-0.015 tỷ</td>
-        <td class="right">—</td>
+        <td class="right neg">-0.015</td>
+        <td class="right muted">—</td>
       </tr>
       <tr>
-        <td style="padding-left:28px;">Phí công chứng sổ hồng</td>
+        <td style="padding-left:24px;">Phí công chứng sổ hồng</td>
         <td class="right neg">-60,000,000</td>
-        <td class="right neg">-0.060 tỷ</td>
-        <td class="right">—</td>
+        <td class="right neg">-0.060</td>
+        <td class="right muted">—</td>
+      </tr>
+      <tr class="subtotal-row">
+        <td style="padding-left:24px;">Subtotal</td>
+        <td class="right neg">-6,825,000,000</td>
+        <td class="right neg">-6.825</td>
+        <td></td>
       </tr>
 
-      <tr><td colspan="4" style="background:#0d1117;padding:4px;"></td></tr>
-      <tr><td><strong>PHÍ TẤT TOÁN VIETINBANK (SỐ THỰC)</strong></td><td></td><td></td><td></td></tr>
+      <!-- PHÍ NGÂN HÀNG -->
+      <tr class="group-header"><td colspan="4">▸ PHÍ TẤT TOÁN VIETINBANK (SỐ THỰC — 16/04/2026)</td></tr>
       <tr>
-        <td style="padding-left:28px;">Dư nợ gốc phải trả</td>
-        <td class="right neg">-108,000,000,000</td>
-        <td class="right neg">-108.00 tỷ</td>
-        <td class="right diff-pos">↓ -5.38 tỷ gốc</td>
-      </tr>
-      <tr>
-        <td style="padding-left:28px;">Phí trả nợ trước hạn (1%)</td>
+        <td style="padding-left:24px;">Phí trả nợ trước hạn (1% × dư nợ)</td>
         <td class="right neg">-1,089,500,000</td>
-        <td class="right neg">-1.090 tỷ</td>
-        <td class="right diff-pos">↓ -0.044 tỷ</td>
+        <td class="right neg">-1.090</td>
+        <td class="right muted">1% × 108B gốc</td>
       </tr>
       <tr>
-        <td style="padding-left:28px;">Thu hồi ưu đãi lãi suất (4.7%/năm × 156 ngày)</td>
+        <td style="padding-left:24px;">Thu hồi ưu đãi lãi suất (4.7%/năm × 156 ngày)</td>
         <td class="right neg">-2,188,551,781</td>
-        <td class="right neg">-2.189 tỷ</td>
-        <td class="right diff-neg">↑ +0.199 tỷ</td>
+        <td class="right neg">-2.189</td>
+        <td class="right muted">UDLS thu hồi</td>
+      </tr>
+      <tr class="subtotal-row">
+        <td style="padding-left:24px;">Subtotal</td>
+        <td class="right neg">-3,278,051,781</td>
+        <td class="right neg">-3.278</td>
+        <td></td>
       </tr>
 
+      <!-- TOTAL -->
       <tr class="total-row">
-        <td>🟢 LỢI NHUẬN RÒNG PROJECT</td>
-        <td class="right pos">37,209,397,534</td>
-        <td class="right pos">~37.21 tỷ</td>
-        <td class="right diff-pos"><strong>↑ +3.93 tỷ</strong></td>
+        <td><strong>🟢 LỢI NHUẬN RÒNG PROJECT</strong></td>
+        <td class="right pos"><strong>37,208,897,534</strong></td>
+        <td class="right pos"><strong>~37.209 tỷ</strong></td>
+        <td class="right muted">225B − 187.791B</td>
       </tr>
     </table>
-    <div class="note">
-      <strong>✅ Lãi vay chỉ 188M</strong> (thay vì ước tính ~2.98 tỷ) do khoản vay hưởng giai đoạn ưu đãi lãi suất thấp. Thu hồi UDLS 2.19 tỷ là chi phí đánh đổi khi tất toán sớm — net vẫn có lợi hơn bản ước tính cũ ~4.63 tỷ.
+    <div class="note green">
+      <strong>✅ Lãi vay chỉ 188M</strong> (vs ước tính ~2.98 tỷ) do khoản vay hưởng giai đoạn ưu đãi lãi suất thấp từ VietinBank. Thu hồi UDLS 2.19 tỷ là chi phí tất toán sớm — đã phản ánh đầy đủ trong bảng trên.
     </div>
   </div>
 
-  <!-- Members -->
+  <!-- CHI TIẾT VIETINBANK -->
   <div class="section">
-    <div class="section-title">👥 Phân Chia Theo Thành Viên — Revised (LN: 37.21 tỷ | Vốn: 64.125 tỷ)</div>
+    <div class="section-title">🏦 Bảng Kê Chi Phí VietinBank — Số Thực Xác Nhận 16/04/2026</div>
+    <table>
+      <tr><th>Thông Số</th><th class="right">Chi Tiết</th></tr>
+      <tr><td>Số tài khoản vay</td><td class="right muted">553******509</td></tr>
+      <tr><td>Ngày giải ngân</td><td class="right">11/11/2025</td></tr>
+      <tr><td>Ngày tất toán dự kiến</td><td class="right">16/04/2026</td></tr>
+      <tr><td>Số ngày hưởng UDLS</td><td class="right">156 ngày</td></tr>
+      <tr><td>Lãi suất thu hồi ưu đãi</td><td class="right">4.7% / năm</td></tr>
+      <tr style="border-top: 1px solid #30363d;"><td style="padding-top:12px;"><strong>Dư nợ gốc</strong></td><td class="right neg" style="padding-top:12px;"><strong>108,000,000,000 VND</strong></td></tr>
+      <tr><td style="padding-left:24px;">Lãi vay tính đến ngày 16/04</td><td class="right neg">188,050,685 VND</td></tr>
+      <tr><td style="padding-left:24px;">Phí trả nợ trước hạn (1%)</td><td class="right neg">1,089,500,000 VND</td></tr>
+      <tr><td style="padding-left:24px;">Thu hồi ưu đãi lãi suất</td><td class="right neg">2,188,551,781 VND</td></tr>
+      <tr class="total-row"><td><strong>Tổng phải trả VietinBank (bao gồm gốc)</strong></td><td class="right neg"><strong>111,466,102,466 VND (~111.47 tỷ)</strong></td></tr>
+    </table>
+    <div class="note warn">
+      <strong>⚠️ Lưu ý:</strong> Số liệu trên do VietinBank cung cấp ngày 16/04/2026. Khi thực tế tất toán, số lãi vay có thể thay đổi theo ngày thực hiện giao dịch. Đề nghị xác nhận lại tổng số tại quầy trước khi chuyển tiền.
+    </div>
+  </div>
+
+  <!-- PHÂN CHIA THÀNH VIÊN -->
+  <div class="section">
+    <div class="section-title">👥 Phân Chia Theo Thành Viên (LN: 37.209 tỷ | Vốn: 64.125 tỷ)</div>
     <table>
       <tr>
         <th>Thành Viên</th>
@@ -247,7 +292,7 @@
     </table>
   </div>
 
-  <!-- Scenario Compare -->
+  <!-- SO SÁNH KỊCH BẢN -->
   <div class="section">
     <div class="section-title">📈 So Sánh Kịch Bản</div>
     <table>
@@ -259,52 +304,38 @@
         <th class="center">IRR Ann.</th>
       </tr>
       <tr>
-        <td>Trước phí (gốc)</td>
+        <td>Trước phí (gốc ban đầu)</td>
         <td class="right">42.27 tỷ</td>
         <td class="center">65.9%</td>
         <td class="right">8.30 tỷ</td>
         <td class="center">~158%</td>
       </tr>
       <tr>
-        <td>Sau phí NH (ước tính 16/04)</td>
+        <td>Sau phí NH — ước tính 16/04 (thuế khai 190 tỷ)</td>
         <td class="right">33.28 tỷ</td>
         <td class="center">51.9%</td>
         <td class="right">7.60 tỷ</td>
         <td class="center">~124%</td>
       </tr>
+      <tr>
+        <td>Revised — số thực NH (thuế khai 190 tỷ)</td>
+        <td class="right">37.91 tỷ</td>
+        <td class="center">59.1%</td>
+        <td class="right">7.957 tỷ</td>
+        <td class="center">~197%</td>
+      </tr>
       <tr class="highlight-row">
-        <td><strong>✅ FINAL — Số thực VietinBank + thuế full 225 tỷ (21/04)</strong></td>
-        <td class="right pos"><strong>37.21 tỷ</strong></td>
-        <td class="center"><strong style="color:#3fb950">58.0%</strong></td>
+        <td><strong>✅ FINAL — Số thực NH + thuế full 2% × 225 tỷ</strong></td>
+        <td class="right pos"><strong>37.209 tỷ</strong></td>
+        <td class="center"><strong style="color:#3fb950;">58.0%</strong></td>
         <td class="right pos"><strong>7.902 tỷ</strong></td>
-        <td class="center"><strong style="color:#3fb950">~192%</strong></td>
+        <td class="center"><strong style="color:#3fb950;">~192%</strong></td>
       </tr>
     </table>
   </div>
 
-  <!-- Loan Info -->
-  <div class="section">
-    <div class="section-title">🏦 Số Thực VietinBank — Tất Toán 16/04/2026</div>
-    <table>
-      <tr><th>Thông Số</th><th class="right">Chi Tiết</th></tr>
-      <tr><td>STK vay</td><td class="right">553******509</td></tr>
-      <tr><td>Ngày giải ngân</td><td class="right">11/11/2025</td></tr>
-      <tr><td>Ngày tất toán dự kiến</td><td class="right">16/04/2026</td></tr>
-      <tr><td>Số ngày hưởng UDLS</td><td class="right">156 ngày</td></tr>
-      <tr><td>Lãi suất thu hồi UDLS</td><td class="right">4.7%/năm</td></tr>
-      <tr><td>Dư nợ gốc</td><td class="right neg">108,000,000,000 VND</td></tr>
-      <tr><td>Lãi vay (đến 16/04)</td><td class="right neg">188,050,685 VND</td></tr>
-      <tr><td>Phí trả nợ trước hạn</td><td class="right neg">1,089,500,000 VND</td></tr>
-      <tr><td>Thu hồi ưu đãi lãi suất</td><td class="right neg">2,188,551,781 VND</td></tr>
-      <tr class="total-row"><td><strong>Tổng phải trả VietinBank</strong></td><td class="right neg"><strong>111,466,102,466 VND (~111.47 tỷ)</strong></td></tr>
-    </table>
-    <div class="note warn">
-      <strong>⚠️ Lưu ý:</strong> Số liệu trên là theo xác nhận của VietinBank ngày 16/04/2026. Khi thực hiện tất toán, đề nghị xác nhận lại tổng số tiền chính xác tại quầy do có thể phát sinh thêm lãi tính theo ngày tất toán thực tế.
-    </div>
-  </div>
-
   <div class="footer">
-    Zera 🌟 · Royal Canary Corp · Revised 21/04/2026 · Confidential
+    Zera 🌟 · Royal Canary Corp · Final 21/04/2026 · Confidential
   </div>
 
 </div>
