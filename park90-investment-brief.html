@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Park 90 × Barson — Investment Brief</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --navy: #001F4D; --gold: #C9A84C; --lgold: #F5E6C8;
+  --green: #1E8449; --lgreen: #D5F5E3; --red: #C0392B; --lred: #FDEDEC;
+  --blue: #2471A3; --lblue: #D6EAF8; --gray: #2C3E50; --lgray: #F2F2F2;
+  --white: #FFFFFF; --text: #1a1a2e; --muted: #6c757d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8f9fa; color: var(--text); }
+
+/* NAV */
+.nav { background: var(--navy); padding: 12px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav .brand { color: var(--gold); font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+.nav .nav-links { display: flex; gap: 20px; }
+.nav .nav-links a { color: rgba(255,255,255,0.7); font-size: 12px; text-decoration: none; letter-spacing: 0.5px; transition: color 0.2s; }
+.nav .nav-links a:hover { color: var(--gold); }
+
+/* COVER */
+.cover { background: linear-gradient(135deg, var(--navy) 0%, #0d2b5e 60%, #001440 100%); min-height: 88vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 24px; position: relative; overflow: hidden; }
+.cover::before { content: ''; position: absolute; top: -150px; right: -150px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%); }
+.cover::after { content: ''; position: absolute; bottom: -100px; left: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(36,113,163,0.12) 0%, transparent 70%); }
+.cover .tag { display: inline-block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); padding: 6px 18px; border-radius: 20px; margin-bottom: 24px; }
+.cover h1 { font-size: 52px; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 16px; }
+.cover h1 span { color: var(--gold); }
+.cover .subtitle { font-size: 17px; color: rgba(255,255,255,0.65); max-width: 580px; line-height: 1.7; margin-bottom: 48px; }
+.cover .kpi-row { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
+.cover .kpi { text-align: center; }
+.cover .kpi-val { font-size: 30px; font-weight: 700; color: var(--gold); }
+.cover .kpi-lbl { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+/* SECTIONS */
+.section { padding: 64px 32px; max-width: 1200px; margin: 0 auto; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.section-title { font-size: 32px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.section-desc { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 40px; max-width: 720px; }
+.divider { height: 1px; background: #e9ecef; max-width: 1200px; margin: 0 auto; }
+
+/* KPI CARDS */
+.kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 40px; }
+.kpi-card { background: var(--white); border-radius: 12px; padding: 20px 16px; text-align: center; border: 1px solid #e9ecef; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.kpi-card .cv { font-size: 26px; font-weight: 700; }
+.kpi-card .cl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+.kpi-card .cs { font-size: 12px; color: var(--blue); margin-top: 6px; }
+.kpi-card.red .cv { color: var(--red); }
+.kpi-card.green .cv { color: var(--green); }
+.kpi-card.navy .cv { color: var(--navy); }
+.kpi-card.gold .cv { color: var(--gold); }
+.kpi-card.blue .cv { color: var(--blue); }
+
+/* CHART CONTAINERS */
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.chart-grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px; }
+.chart-box { background: var(--white); border-radius: 12px; padding: 24px; border: 1px solid #e9ecef; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.chart-box h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.chart-box .chart-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.chart-box canvas { max-height: 260px; }
+
+/* MILESTONE TABLE */
+.milestone-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 32px; }
+.milestone-table th { background: var(--navy); color: #fff; padding: 12px 16px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.milestone-table td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; }
+.milestone-table tr:hover { background: #f8f9fa; }
+.milestone-table .badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 10px; }
+.badge-green { background: var(--lgreen); color: var(--green); }
+.badge-red { background: var(--lred); color: var(--red); }
+.badge-gold { background: var(--lgold); color: #8B6914; }
+.badge-blue { background: var(--lblue); color: var(--blue); }
+
+/* CAPEX BOX */
+.capex-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+.capex-item { background: var(--white); border-radius: 10px; padding: 20px; border: 1px solid #e9ecef; }
+.capex-item .ci-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.capex-item .ci-val { font-size: 22px; font-weight: 700; color: var(--navy); }
+.capex-item .ci-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.capex-item .ci-bar { height: 4px; background: #eee; border-radius: 2px; margin-top: 12px; }
+.capex-item .ci-fill { height: 4px; border-radius: 2px; }
+
+/* IMPROVE CARDS */
+.improve-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+.improve-card { background: var(--white); border-radius: 12px; padding: 24px; border: 1px solid #e9ecef; border-top: 3px solid; }
+.improve-card.ic1 { border-top-color: var(--gold); }
+.improve-card.ic2 { border-top-color: var(--green); }
+.improve-card.ic3 { border-top-color: var(--blue); }
+.improve-card.ic4 { border-top-color: var(--red); }
+.improve-card.ic5 { border-top-color: #9B59B6; }
+.improve-card.ic6 { border-top-color: var(--navy); }
+.improve-card .ic-icon { font-size: 24px; margin-bottom: 12px; }
+.improve-card .ic-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.improve-card .ic-impact { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 10px; display: inline-block; margin-bottom: 10px; }
+.improve-card .ic-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.improve-card .ic-est { font-size: 12px; font-weight: 700; color: var(--green); margin-top: 10px; }
+
+/* ASSUMPTION BOX */
+.assumption-box { background: var(--lgray); border-radius: 10px; padding: 24px; margin-bottom: 32px; border-left: 4px solid var(--gold); }
+.assumption-box h4 { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.assumption-box ul { list-style: none; }
+.assumption-box li { font-size: 13px; color: var(--gray); line-height: 2; }
+.assumption-box li::before { content: '→ '; color: var(--gold); font-weight: 700; }
+
+/* FOOTER */
+.footer { background: var(--navy); padding: 32px; text-align: center; color: rgba(255,255,255,0.4); font-size: 11px; margin-top: 60px; }
+
+@media (max-width: 900px) {
+  .cover h1 { font-size: 32px; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .chart-grid, .chart-grid-3, .capex-grid, .improve-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="brand">PARK 90 × BARSON</div>
+  <div class="nav-links">
+    <a href="#model">Model</a>
+    <a href="#capex">CAPEX</a>
+    <a href="#revenue">Revenue</a>
+    <a href="#breakeven">Breakeven</a>
+    <a href="#improve">Improvements</a>
+  </div>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="tag">Internal Investment Brief · April 2026</div>
+  <h1>Park <span>90</span> × Barson</h1>
+  <div class="subtitle">Pro-forma P&L analysis for Park 90 wine bar operation at Le Méridien Saigon — financial model review, milestone tracking, and revenue enhancement proposals for RCC & Hotel management.</div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">16.7B</div><div class="kpi-lbl">Total CAPEX (VND)</div></div>
+    <div class="kpi"><div class="kpi-val">50 mo</div><div class="kpi-lbl">Model Period</div></div>
+    <div class="kpi"><div class="kpi-val">1,050K</div><div class="kpi-lbl">Spend/Guest (VND)</div></div>
+    <div class="kpi"><div class="kpi-val">−23%</div><div class="kpi-lbl">Model IRR (conservative)</div></div>
+    <div class="kpi"><div class="kpi-val">Y2+</div><div class="kpi-lbl">NPAT Positive</div></div>
+  </div>
+</div>
+
+<!-- 1. MODEL OVERVIEW -->
+<div id="model" class="section">
+  <div class="section-label">01 · Business Model</div>
+  <div class="section-title">How Park 90 Works</div>
+  <div class="section-desc">Park 90 operates as a premium wine & beverage bar at Le Méridien Saigon, capturing hotel guests as a primary source. The model assumes conservative ramp-up from a low base — reflecting Barson's current low foot traffic — growing from 5% to 25% incremental hotel guest contribution over 24 months.</div>
+
+  <div class="assumption-box">
+    <h4>Key Model Assumptions (Conservative Baseline)</h4>
+    <ul>
+      <li><strong>Revenue model:</strong> Beverage-only (100% bev, 0% food) · Avg spend 1,050K VND/guest (~$40 USD)</li>
+      <li><strong>Guest source:</strong> Incremental hotel guests only — starts at 5% of Barson guests (t=1), ramps to 25% by t=25</li>
+      <li><strong>Critical risk:</strong> Barson currently has low occupancy → 25% of a low base = still low absolute guest count</li>
+      <li><strong>Investment:</strong> 12.73B VND initial (t=0) + 3.975B VND additional (t=3) = 16.7B total</li>
+      <li><strong>D&A:</strong> 145.9M VND/month (straight-line over model period)</li>
+      <li><strong>Fixed opex:</strong> Wages 80M + Marketing 50M + License 65.5M/month = ~195.5M fixed base</li>
+    </ul>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card navy"><div class="cv">16.7B</div><div class="cl">Total CAPEX</div><div class="cs">12.73B + 3.975B @ t=3</div></div>
+    <div class="kpi-card red"><div class="cv">−15.1B</div><div class="cl">NPV (15% disc.)</div><div class="cs">Model baseline</div></div>
+    <div class="kpi-card gold"><div class="cv">44%</div><div class="cl">Stabilized EBITDA</div><div class="cs">Year 3+ margin</div></div>
+    <div class="kpi-card green"><div class="cv">Month 14</div><div class="cl">NPAT Breakeven</div><div class="cs">First positive NPAT</div></div>
+    <div class="kpi-card blue"><div class="cv">1,085</div><div class="cl">Max Guests/mo</div><div class="cs">At 25% occupancy ramp</div></div>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- 2. CAPEX -->
+<div id="capex" class="section">
+  <div class="section-label">02 · CAPEX & Investment Structure</div>
+  <div class="section-title">Capital Deployment</div>
+  <div class="section-desc">Total investment of 16.7 billion VND across two tranches. Initial fit-out and setup, followed by second tranche at month 3 for additional buildout.</div>
+
+  <div class="capex-grid">
+    <div class="capex-item">
+      <div class="ci-label">Initial Investment (t=0)</div>
+      <div class="ci-val">12.73B VND</div>
+      <div class="ci-sub">Fit-out · Equipment · Pre-opening · License</div>
+      <div class="ci-bar"><div class="ci-fill" style="width:76%;background:var(--navy);"></div></div>
+    </div>
+    <div class="capex-item">
+      <div class="ci-label">2nd Tranche (t=3, Jan 2027)</div>
+      <div class="ci-val">3.975B VND</div>
+      <div class="ci-sub">Additional buildout / expansion scope</div>
+      <div class="ci-bar"><div class="ci-fill" style="width:24%;background:var(--blue);"></div></div>
+    </div>
+    <div class="capex-item">
+      <div class="ci-label">Total Investment</div>
+      <div class="ci-val">16.7B VND</div>
+      <div class="ci-sub">~$638K USD · D&A 145.9M/mo over 50 months</div>
+      <div class="ci-bar"><div class="ci-fill" style="width:100%;background:var(--gold);"></div></div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <h4>Cumulative Cash Flow — 50 Month Trajectory</h4>
+    <div class="chart-sub">Starts at −12.73B, drops to −17B after 2nd tranche, gradually recovers. Ends at −769M at t=49 (not yet recovered in model period)</div>
+    <canvas id="cfChart"></canvas>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- 3. REVENUE -->
+<div id="revenue" class="section">
+  <div class="section-label">03 · Revenue by Milestone</div>
+  <div class="section-title">Revenue & Profitability Trajectory</div>
+  <div class="section-desc">Revenue grows from 154M VND/month (t=1) to 1.14B/month by t=49, driven by hotel guest ramp-up. EBITDA turns positive at t=7. NPAT turns positive at t=14 (Year 2).</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h4>Monthly Revenue vs EBITDA</h4>
+      <div class="chart-sub">kVND · 50-month period · EBITDA margin stabilizes ~44–53%</div>
+      <canvas id="revEbitda"></canvas>
+    </div>
+    <div class="chart-box">
+      <h4>Guest Count per Month</h4>
+      <div class="chart-sub">Guests from hotel occupancy · 5% → 25% ramp over 24 months</div>
+      <canvas id="guestChart"></canvas>
+    </div>
+  </div>
+
+  <table class="milestone-table">
+    <thead><tr><th>Period</th><th>Revenue (B VND)</th><th>EBITDA (B VND)</th><th>EBITDA Margin</th><th>NPAT (B VND)</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Year 1</strong> (t1–12)</td><td>3.65B</td><td>0.12B</td><td>3.3%</td><td>−1.63B</td><td><span class="badge badge-red">Ramp-up</span></td></tr>
+      <tr><td><strong>Year 2</strong> (t13–24)</td><td>7.89B</td><td>3.26B</td><td>41.3%</td><td>1.51B</td><td><span class="badge badge-gold">Emerging</span></td></tr>
+      <tr><td><strong>Year 3</strong> (t25–36)</td><td>10.73B</td><td>5.34B</td><td>49.7%</td><td>3.59B</td><td><span class="badge badge-green">Growing</span></td></tr>
+      <tr><td><strong>Year 4</strong> (t37–48)</td><td>12.51B</td><td>6.59B</td><td>52.7%</td><td>4.84B</td><td><span class="badge badge-green">Mature</span></td></tr>
+      <tr><td><strong>EBITDA Breakeven</strong></td><td colspan="2">Month 7 (June 2027)</td><td>—</td><td>—</td><td><span class="badge badge-blue">Milestone</span></td></tr>
+      <tr><td><strong>NPAT Breakeven</strong></td><td colspan="2">Month 14 (Jan 2028)</td><td>—</td><td>—</td><td><span class="badge badge-blue">Milestone</span></td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="divider"></div>
+
+<!-- 4. BREAKEVEN -->
+<div id="breakeven" class="section">
+  <div class="section-label">04 · Breakeven Analysis</div>
+  <div class="section-title">Path to Recovery</div>
+  <div class="section-desc">The model does not achieve full cash recovery within the 50-month window (ending at −769M VND at t=49). NPAT becomes positive at month 14. Full investment recovery requires extending beyond the model period or improving top-line assumptions.</div>
+
+  <div class="chart-grid-3">
+    <div class="chart-box">
+      <h4>Monthly NPAT — Road to Profitability</h4>
+      <div class="chart-sub">Negative for first 13 months · Positive from month 14 onward</div>
+      <canvas id="npatChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <h4>Annual Revenue Ramp</h4>
+      <div class="chart-sub">B VND · Conservative guest assumption</div>
+      <canvas id="annualRev"></canvas>
+    </div>
+  </div>
+
+  <div class="assumption-box" style="border-color:var(--red);">
+    <h4>⚠️ Core Issue: Low Base Problem</h4>
+    <ul>
+      <li>Model assumes Barson hotel guests as source — but Barson is currently low-traffic</li>
+      <li>Growing from 5% to 25% of a small base → absolute guest count remains modest (147 → 1,085/month)</li>
+      <li>At 1,085 guests/month × 1,050K VND = 1.14B revenue — strong unit economics but volume-constrained</li>
+      <li>Solution: expand guest source beyond hotel guests (external walk-in, events, memberships)</li>
+      <li>If same unit economics apply to 2,000 external guests/month → revenue doubles, EBITDA scales rapidly</li>
+    </ul>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- 5. IMPROVEMENTS -->
+<div id="improve" class="section">
+  <div class="section-label">05 · Revenue Enhancement Proposals</div>
+  <div class="section-title">Closing the Gap — 6 Initiatives</div>
+  <div class="section-desc">The conservative model is constrained by a single guest source (hotel occupancy). The following initiatives can materially improve revenue without additional CAPEX, by expanding reach, increasing frequency, and adding high-margin revenue streams.</div>
+
+  <div class="improve-grid">
+    <div class="improve-card ic1">
+      <div class="ic-icon">🍷</div>
+      <div class="ic-title">Wine Membership Program</div>
+      <span class="ic-impact" style="background:var(--lgold);color:#8B6914;">HIGH IMPACT · Low CAPEX</span>
+      <div class="ic-desc">Launch 3-tier membership (Silver/Gold/Diamond) with monthly bottle allocation, priority reservation, and wine cellar access. Lock in recurring revenue independent of hotel occupancy.</div>
+      <div class="ic-est">Est. +150–300M VND/month at 50–100 members</div>
+    </div>
+
+    <div class="improve-card ic2">
+      <div class="ic-icon">🎉</div>
+      <div class="ic-title">Private Events & Buy-outs</div>
+      <span class="ic-impact" style="background:var(--lgreen);color:var(--green);">HIGH IMPACT · Immediate</span>
+      <div class="ic-desc">Position Park 90 for corporate wine dinners, birthday buyouts, and brand activations. Leverage hotel banquet team for F&B coordination. Min spend 20M VND/event.</div>
+      <div class="ic-est">Est. +200–400M VND/month at 4–8 events</div>
+    </div>
+
+    <div class="improve-card ic3">
+      <div class="ic-icon">🌐</div>
+      <div class="ic-title">External Walk-in Traffic</div>
+      <span class="ic-impact" style="background:var(--lblue);color:var(--blue);">MEDIUM · Requires marketing</span>
+      <div class="ic-desc">Target external HCMC premium consumers, not just hotel guests. Social media presence, Google listing, collaborations with premium lifestyle communities (67 Pall Mall, wine clubs).</div>
+      <div class="ic-est">Est. +300–600M VND/month if 300 external guests</div>
+    </div>
+
+    <div class="improve-card ic4">
+      <div class="ic-icon">🍽️</div>
+      <div class="ic-title">Add Food Component</div>
+      <span class="ic-impact" style="background:var(--lred);color:var(--red);">HIGH IMPACT · Requires kitchen</span>
+      <div class="ic-desc">Current model has 0% food. Adding curated wine-pairing snacks / charcuterie boards / shared plates can increase average spend by 30–50% without full kitchen. Leverage hotel kitchen for prep.</div>
+      <div class="ic-est">Est. +30–50% APC uplift → +200–400M/month</div>
+    </div>
+
+    <div class="improve-card ic5">
+      <div class="ic-icon">📦</div>
+      <div class="ic-title">Wine Retail & Take-home</div>
+      <span class="ic-impact" style="background:#E8DAEF;color:#6C3483;">MEDIUM · Low effort</span>
+      <div class="ic-desc">Offer curated take-home bottles at retail markup. Barson as distributor advantage: lower cost, higher margin. Display as cellar recommendation — converts tasting into purchase.</div>
+      <div class="ic-est">Est. +80–150M VND/month at 2–3 bottles/guest conversion</div>
+    </div>
+
+    <div class="improve-card ic6">
+      <div class="ic-icon">📅</div>
+      <div class="ic-title">Wine Education & Masterclasses</div>
+      <span class="ic-impact" style="background:var(--lgray);color:var(--navy);">MEDIUM · Brand builder</span>
+      <div class="ic-desc">Monthly WSET-level tasting events, winemaker dinners, vertical tasting series. Ticket price 500K–2M VND/person. Builds community, creates PR, attracts high-spend repeat guests.</div>
+      <div class="ic-est">Est. +60–120M VND/month · 2 events × 30 guests</div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <h4>Revenue Upside Scenario — Conservative vs Enhanced</h4>
+    <div class="chart-sub">Monthly revenue (B VND) · Blue = model baseline · Green = with all 6 initiatives (est. +600–1,200M/month from Y2)</div>
+    <canvas id="upside"></canvas>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Park 90 × Barson · Investment Brief · Prepared by Zera for RCC & Hotel Management · April 2026 · Confidential — Internal Use Only
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────
+const months = Array.from({length: 49}, (_, i) => `M${i+1}`);
+const quarters = ['Q1\'27','Q2\'27','Q3\'27','Q4\'27','Q1\'28','Q2\'28','Q3\'28','Q4\'28','Q1\'29','Q2\'29','Q3\'29','Q4\'29','Q1\'30','Q2\'30','Q3\'30','Q4\'30'];
+
+const revData = [154040,182925,208717,239833,262562,290011,317690,345202,372491,399261,426425,453288,480056,522726,551925,581677,610873,641218,671865,702813,734131,765901,798256,831196,835759,865978,871677,877710,884056,890826,897942,905424,913295,921573,930273,939401,948968,987745,998834,1010413,1022496,1035103,1048241,1061927,1076178,1091011,1106440,1122482,1139153];
+const ebitdaData = [-98136,-83128,-63477,-39770,-22453,-1539,19549,40511,61303,81698,102395,122862,143257,168438,190684,213353,235597,258717,282067,305647,329508,353714,378365,403462,406939,422287,426629,431226,436060,441219,446641,452341,458338,464645,471274,478229,485517,507024,515473,524295,533501,543106,553116,563544,574402,585703,597458,609681,622383];
+const npatData = [-244020,-229012,-209362,-185654,-168337,-147423,-126335,-105373,-84581,-64186,-43489,-23022,-2627,22554,44800,67469,89713,112833,136183,159763,183624,207829,232481,257578,261055,276403,280745,285342,290176,295335,300757,306457,312454,318761,325390,332344,339633,361140,369588,378410,387617,397222,407232,417660,428518,439819,451574,463796,476498];
+const cumCF = [-12728050,-12826186,-12909314,-16947792,-16987562,-17010015,-17011554,-16992004,-16951494,-16890191,-16808492,-16706097,-16583235,-16439978,-16271540,-16080856,-15867503,-15631906,-15373189,-15091121,-14785475,-14455967,-14102253,-13723888,-13320425,-12913486,-12491199,-12064570,-11633344,-11197283,-10756065,-10309424,-9857083,-9398744,-8934099,-8462826,-7984597,-7499080,-6992055,-6476583,-5952288,-5418787,-4875681,-4322564,-3759020,-3184619,-2598916,-2001458,-1391777,-769394];
+const guestData = [147,174,199,228,250,276,303,329,355,380,406,432,457,498,526,554,582,611,640,669,699,729,760,792,796,825,830,836,842,848,855,862,870,878,886,895,904,941,951,962,974,986,998,1011,1025,1039,1054,1069,1085];
+
+const annualRev = [3652.4, 7892.6, 10733.9, 12509.8];
+const annualEBITDA = [119.8, 3262.8, 5335.8, 6592.8];
+
+// chart defaults
+Chart.defaults.font.family = "'Segoe UI', Arial, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#6c757d';
+
+// ── CF CHART ────────────────────────────────────────────────────
+new Chart(document.getElementById('cfChart'), {
+  type: 'line',
+  data: {
+    labels: ['t0', ...months],
+    datasets: [{
+      label: 'Cum. Cash Flow (M VND)',
+      data: cumCF.map(v => v/1000),
+      borderColor: '#C0392B',
+      backgroundColor: 'rgba(192,57,43,0.08)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(0)}M VND` } } },
+    scales: {
+      y: { ticks: { callback: v => `${(v/1000).toFixed(0)}B` }, grid: { color: '#f0f0f0' } },
+      x: { ticks: { maxTicksLimit: 12 }, grid: { display: false } }
+    }
+  }
+});
+
+// ── REV + EBITDA ─────────────────────────────────────────────────
+new Chart(document.getElementById('revEbitda'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Revenue', data: revData.map(v=>v/1000), borderColor: '#2471A3', backgroundColor: 'rgba(36,113,163,0.08)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 },
+      { label: 'EBITDA', data: ebitdaData.map(v=>v/1000), borderColor: '#1E8449', backgroundColor: 'rgba(30,132,73,0.06)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2, borderDash: [] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(0)}M VND` } } },
+    scales: {
+      y: { ticks: { callback: v => `${v.toFixed(0)}M` }, grid: { color: '#f0f0f0' } },
+      x: { ticks: { maxTicksLimit: 10 }, grid: { display: false } }
+    }
+  }
+});
+
+// ── GUEST CHART ──────────────────────────────────────────────────
+new Chart(document.getElementById('guestChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ label: 'Guests/month', data: guestData, backgroundColor: (ctx) => ctx.parsed.y >= 500 ? 'rgba(30,132,73,0.7)' : ctx.parsed.y >= 200 ? 'rgba(201,168,76,0.7)' : 'rgba(192,57,43,0.6)', borderRadius: 2 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(0)} guests` } } },
+    scales: {
+      y: { grid: { color: '#f0f0f0' } },
+      x: { ticks: { maxTicksLimit: 10 }, grid: { display: false } }
+    }
+  }
+});
+
+// ── NPAT CHART ───────────────────────────────────────────────────
+new Chart(document.getElementById('npatChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ label: 'NPAT (M VND)', data: npatData.map(v=>v/1000), backgroundColor: npatData.map(v => v >= 0 ? 'rgba(30,132,73,0.7)' : 'rgba(192,57,43,0.55)'), borderRadius: 2 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(0)}M VND` } } },
+    scales: {
+      y: { ticks: { callback: v => `${v.toFixed(0)}M` }, grid: { color: '#f0f0f0' } },
+      x: { ticks: { maxTicksLimit: 10 }, grid: { display: false } }
+    }
+  }
+});
+
+// ── ANNUAL REV ───────────────────────────────────────────────────
+new Chart(document.getElementById('annualRev'), {
+  type: 'bar',
+  data: {
+    labels: ['Year 1','Year 2','Year 3','Year 4'],
+    datasets: [
+      { label: 'Revenue (B VND)', data: annualRev, backgroundColor: 'rgba(36,113,163,0.75)', borderRadius: 4 },
+      { label: 'EBITDA (B VND)', data: annualEBITDA, backgroundColor: 'rgba(30,132,73,0.75)', borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}B` } } },
+    scales: {
+      y: { ticks: { callback: v => `${v}B` }, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── UPSIDE CHART ─────────────────────────────────────────────────
+const upsideAdder = revData.map((v, i) => {
+  if (i < 12) return 200000;
+  if (i < 24) return 600000;
+  return 1000000;
+});
+const upside = revData.map((v, i) => v + upsideAdder[i]);
+
+new Chart(document.getElementById('upside'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Baseline Revenue', data: revData.map(v=>v/1000), borderColor: '#2471A3', tension: 0.3, pointRadius: 0, borderWidth: 2, fill: false },
+      { label: 'Enhanced Revenue (est.)', data: upside.map(v=>v/1000), borderColor: '#1E8449', backgroundColor: 'rgba(30,132,73,0.06)', tension: 0.3, pointRadius: 0, borderWidth: 2, fill: '-1', borderDash: [5,3] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(0)}M VND` } } },
+    scales: {
+      y: { ticks: { callback: v => `${v.toFixed(0)}M` }, grid: { color: '#f0f0f0' } },
+      x: { ticks: { maxTicksLimit: 10 }, grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
