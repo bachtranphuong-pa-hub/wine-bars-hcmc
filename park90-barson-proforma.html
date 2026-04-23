@@ -3,454 +3,1285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Park90 × Barson — Proforma P&L (24-Month Ramp)</title>
+<title>Park90 × Barson — Investment Brief & Proforma P&L</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:10.5pt; line-height:1.6; }
-  .container { max-width:1100px; margin:0 auto; padding:24px 16px 48px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f7; color:#1a1a2e; font-size:10.5pt; line-height:1.6; }
+.container { max-width:1140px; margin:0 auto; padding:24px 16px 60px; }
 
-  .header {
-    background:linear-gradient(140deg,#0d1b2a,#1a1a2e);
-    border-radius:14px; padding:28px 36px; color:white; margin-bottom:20px;
-  }
-  .header .tag { font-size:8pt; letter-spacing:3px; text-transform:uppercase; color:#c8a050; margin-bottom:8px; }
-  .header h1 { font-size:20pt; font-weight:700; margin-bottom:4px; }
-  .header h1 em { color:#c8a050; font-style:normal; }
-  .header .sub { font-size:10pt; color:rgba(255,255,255,0.5); }
+/* ── HEADER ── */
+.header {
+  background:linear-gradient(140deg,#0d1b2a 0%,#1a2e44 60%,#0d1b2a 100%);
+  border-radius:16px; padding:36px 40px 32px; color:white; margin-bottom:24px;
+  position:relative; overflow:hidden;
+}
+.header::before {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:300px; height:300px; border-radius:50%;
+  background:radial-gradient(circle, rgba(200,160,80,0.15), transparent 70%);
+}
+.header .tag { font-size:7.5pt; letter-spacing:4px; text-transform:uppercase; color:#c8a050; margin-bottom:10px; }
+.header h1 { font-size:22pt; font-weight:700; margin-bottom:6px; }
+.header h1 em { color:#c8a050; font-style:normal; }
+.header .sub { font-size:10pt; color:rgba(255,255,255,0.55); }
+.header .pills { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.pill { padding:4px 12px; border-radius:20px; font-size:8pt; font-weight:600; background:rgba(200,160,80,0.15); color:#c8a050; border:1px solid rgba(200,160,80,0.3); }
 
-  .card { background:white; border-radius:12px; padding:22px 24px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
-  .card h2 { font-size:11.5pt; font-weight:700; color:#0d1b2a; margin-bottom:16px; text-transform:uppercase; letter-spacing:0.5px; }
+/* ── NAV TABS ── */
+.nav-tabs { display:flex; gap:0; background:white; border-radius:12px; padding:6px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.07); flex-wrap:wrap; }
+.nav-tab { flex:1; min-width:140px; padding:10px 16px; border:none; background:transparent; cursor:pointer; font-size:9pt; font-weight:600; color:#666; border-radius:8px; transition:all 0.2s; text-align:center; }
+.nav-tab.active { background:#0d1b2a; color:white; }
+.nav-tab:hover:not(.active) { background:#f0f2f7; color:#0d1b2a; }
 
-  .kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:16px; }
-  .kpi { background:white; border-radius:12px; padding:16px 18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); text-align:center; }
-  .kpi .val { font-size:16pt; font-weight:700; color:#c8a050; line-height:1.1; }
-  .kpi .lbl { font-size:7.5pt; color:#888; text-transform:uppercase; letter-spacing:1px; margin-top:5px; }
+/* ── SECTION PANELS ── */
+.section-panel { display:none; }
+.section-panel.active { display:block; }
 
-  /* Scenario tabs */
-  .tab-bar { display:flex; gap:8px; margin-bottom:16px; }
-  .tab-btn { padding:9px 20px; border-radius:8px; border:none; cursor:pointer; font-size:9.5pt; font-weight:700; transition:all 0.2s; }
-  .tab-btn.base { background:#fff4e5; color:#92400e; }
-  .tab-btn.base.active { background:#c8a050; color:white; }
-  .tab-btn.cons { background:#eff6ff; color:#1e40af; }
-  .tab-btn.cons.active { background:#1e40af; color:white; }
-  .tab-btn.opti { background:#f0fdf4; color:#14532d; }
-  .tab-btn.opti.active { background:#14532d; color:white; }
+/* ── CARDS ── */
+.card { background:white; border-radius:12px; padding:24px 26px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.card h2 { font-size:11.5pt; font-weight:700; color:#0d1b2a; margin-bottom:18px; text-transform:uppercase; letter-spacing:0.5px; padding-bottom:10px; border-bottom:2px solid #f0f2f7; }
+.card h3 { font-size:10pt; font-weight:700; color:#0d1b2a; margin-bottom:12px; }
 
-  .scenario-panel { display:none; }
-  .scenario-panel.active { display:block; }
+/* ── KPI GRID ── */
+.kpi-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
+.kpi-grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+.kpi-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+.kpi { background:white; border-radius:12px; padding:16px 18px; box-shadow:0 2px 8px rgba(0,0,0,0.06); text-align:center; border-top:3px solid #c8a050; }
+.kpi.blue { border-top-color:#1e40af; }
+.kpi.green { border-top-color:#16a34a; }
+.kpi.red { border-top-color:#dc2626; }
+.kpi.purple { border-top-color:#7c3aed; }
+.kpi .val { font-size:15pt; font-weight:700; color:#c8a050; line-height:1.1; }
+.kpi.blue .val { color:#1e40af; }
+.kpi.green .val { color:#16a34a; }
+.kpi.red .val { color:#dc2626; }
+.kpi.purple .val { color:#7c3aed; }
+.kpi .lbl { font-size:7.5pt; color:#888; text-transform:uppercase; letter-spacing:0.8px; margin-top:5px; }
+.kpi .sub-val { font-size:8pt; color:#aaa; margin-top:2px; }
 
-  /* Monthly table */
-  .tbl-wrap { overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; font-size:9pt; }
-  th { background:#0d1b2a; color:#c8a050; padding:8px 10px; text-align:right; font-size:8pt; letter-spacing:0.3px; white-space:nowrap; }
-  th:first-child { text-align:left; min-width:160px; }
-  td { padding:7px 10px; border-bottom:1px solid #f0f0f0; text-align:right; white-space:nowrap; }
-  td:first-child { text-align:left; color:#444; font-size:9pt; }
-  tr:last-child td { border-bottom:none; }
-  tr.section-header td { background:#f8f9fa; color:#0d1b2a; font-weight:700; font-size:8.5pt; text-transform:uppercase; letter-spacing:0.5px; padding:9px 10px; }
-  tr.total-row td { font-weight:700; background:#f8f4ec; border-top:2px solid #c8a050; border-bottom:2px solid #c8a050; }
-  tr.subtotal td { font-weight:600; background:#fafafa; border-top:1px solid #ddd; }
-  tr.ebitda-row td { font-weight:700; background:#0d1b2a; color:#c8a050; }
-  tr.npat-row td { font-weight:700; background:#14532d; color:white; }
-  tr.neg td.num { color:#c0392b; }
-  .pos { color:#16a34a !important; font-weight:700; }
-  .neg-val { color:#c0392b; }
-  .gold { color:#c8a050; }
+/* ── SCENARIO TABS ── */
+.tab-bar { display:flex; gap:8px; margin-bottom:16px; }
+.tab-btn { padding:9px 22px; border-radius:8px; border:none; cursor:pointer; font-size:9.5pt; font-weight:700; transition:all 0.2s; }
+.tab-btn.base { background:#fff4e5; color:#92400e; }
+.tab-btn.base.active { background:#c8a050; color:white; }
+.tab-btn.cons { background:#eff6ff; color:#1e40af; }
+.tab-btn.cons.active { background:#1e40af; color:white; }
+.tab-btn.opti { background:#f0fdf4; color:#14532d; }
+.tab-btn.opti.active { background:#14532d; color:white; }
+.scenario-panel { display:none; }
+.scenario-panel.active { display:block; }
 
-  /* Ramp chart */
-  .chart-wrap { margin-top:8px; }
-  .bar-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
-  .bar-label { font-size:8pt; color:#666; width:48px; flex-shrink:0; text-align:right; }
-  .bar-track { flex:1; background:#f0f2f7; border-radius:4px; height:18px; position:relative; overflow:hidden; }
-  .bar-fill { height:100%; border-radius:4px; transition:width 0.3s; display:flex; align-items:center; padding-left:6px; font-size:7.5pt; font-weight:700; color:white; }
-  .bar-rev { background:linear-gradient(90deg,#c8a050,#e6b84a); }
-  .bar-ebitda { background:linear-gradient(90deg,#14532d,#16a34a); }
-  .bar-neg { background:linear-gradient(90deg,#c0392b,#e74c3c); }
+/* ── TABLES ── */
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:9pt; }
+th { background:#0d1b2a; color:#c8a050; padding:8px 10px; text-align:right; font-size:8pt; letter-spacing:0.3px; white-space:nowrap; }
+th:first-child { text-align:left; min-width:170px; }
+td { padding:7px 10px; border-bottom:1px solid #f0f0f0; text-align:right; white-space:nowrap; }
+td:first-child { text-align:left; color:#444; }
+tr.section-hdr td { background:#f8f9fa; color:#0d1b2a; font-weight:700; font-size:8.5pt; text-transform:uppercase; letter-spacing:0.5px; padding:8px 10px; }
+tr.subtotal td { font-weight:600; background:#fafafa; border-top:1px solid #e8e8e8; }
+tr.total-row td { font-weight:700; background:#f8f4ec; border-top:2px solid #c8a050; border-bottom:2px solid #c8a050; }
+tr.ebitda-row td { font-weight:700; background:#0d1b2a; color:#c8a050; }
+tr.ebitda-row td:first-child { color:#c8a050; }
+tr.npat-row td { font-weight:700; background:#14532d; color:white; }
+tr.npat-row td:first-child { color:white; }
+tr.highlight td { background:#fffbeb; }
+.pos { color:#16a34a !important; font-weight:600; }
+.neg-val { color:#dc2626; }
+.gold { color:#c8a050 !important; font-weight:600; }
 
-  .legend { display:flex; gap:16px; margin-bottom:12px; font-size:8.5pt; }
-  .leg-item { display:flex; align-items:center; gap:6px; }
-  .leg-dot { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
+/* ── GRID LAYOUTS ── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+.assume-box { background:#f8f9fa; border-radius:10px; padding:16px 18px; }
+.assume-box h3 { font-size:8.5pt; text-transform:uppercase; letter-spacing:1.2px; color:#888; margin-bottom:12px; }
+.assume-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid #eee; font-size:9pt; }
+.assume-row:last-child { border-bottom:none; }
+.assume-val { font-weight:700; color:#0d1b2a; }
 
-  .assumptions { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  .assume-box { background:#f8f9fa; border-radius:8px; padding:14px 16px; }
-  .assume-box h3 { font-size:9pt; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:10px; }
-  .assume-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #eee; font-size:9pt; }
-  .assume-row:last-child { border-bottom:none; }
-  .assume-val { font-weight:700; color:#0d1b2a; }
+/* ── LOCATION CARDS ── */
+.location-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:12px; }
+.loc-card { background:#f8f9fa; border-radius:10px; padding:14px 16px; border-left:4px solid #c8a050; }
+.loc-card.new { border-left-color:#16a34a; background:#f0fdf4; }
+.loc-card.upcoming { border-left-color:#f59e0b; background:#fffbeb; }
+.loc-card .city { font-size:9.5pt; font-weight:700; color:#0d1b2a; }
+.loc-card .venue { font-size:8.5pt; color:#666; margin-top:2px; }
+.loc-card .year { font-size:7.5pt; color:#aaa; margin-top:4px; }
+.loc-card .badge { display:inline-block; padding:1px 7px; border-radius:10px; font-size:7pt; font-weight:700; margin-top:4px; }
+.badge-gold { background:#fef3c7; color:#92400e; }
+.badge-green { background:#d1fae5; color:#065f46; }
+.badge-new { background:#d1fae5; color:#065f46; }
+.badge-upcoming { background:#fef9c3; color:#854d0e; }
+.badge-red { background:#fee2e2; color:#991b1b; }
+.badge-blue { background:#dbeafe; color:#1e40af; }
+.badge-purple { background:#ede9fe; color:#5b21b6; }
 
-  .capex-table table th { background:#1a1a2e; }
+/* ── COMPARISON TABLE ── */
+.compare-table th:nth-child(2) { background:#1e3a5f; }
+.compare-table th:nth-child(3) { background:#c8a050; color:#0d1b2a; }
+.compare-table th:nth-child(4) { background:#14532d; }
 
-  .note { font-size:8.5pt; color:#888; margin-top:10px; font-style:italic; }
-  .badge { display:inline-block; padding:2px 9px; border-radius:20px; font-size:8pt; font-weight:700; }
-  .badge-green { background:#d1fae5; color:#065f46; }
-  .badge-gold { background:#fef3c7; color:#92400e; }
-  .badge-red { background:#fee2e2; color:#991b1b; }
-  .badge-blue { background:#dbeafe; color:#1e40af; }
+/* ── SENSITIVITY ── */
+.sens-wrap { overflow-x:auto; margin-top:8px; }
+.sens-table th { padding:7px 12px; font-size:8pt; }
+.sens-table td { padding:7px 12px; font-size:8.5pt; }
+.cell-good { background:#d1fae5 !important; color:#065f46 !important; font-weight:700; }
+.cell-ok { background:#fef9c3 !important; color:#854d0e !important; font-weight:600; }
+.cell-bad { background:#fee2e2 !important; color:#991b1b !important; }
+.cell-neutral { background:#f8f9fa !important; color:#374151 !important; }
+.cell-highlight { background:#c8a050 !important; color:white !important; font-weight:700; outline:2px solid #0d1b2a; }
 
-  .footer { text-align:center; font-size:8pt; color:#aaa; margin-top:24px; }
+/* ── CHART CONTAINERS ── */
+.chart-container { position:relative; height:280px; margin-top:8px; }
+.chart-container-sm { position:relative; height:220px; margin-top:8px; }
 
-  @media (max-width:768px) {
-    .kpi-grid { grid-template-columns:repeat(2,1fr); }
-    .assumptions { grid-template-columns:1fr; }
-    .header { padding:20px; }
-    .header h1 { font-size:15pt; }
-  }
-  @media print {
-    body { background:white; }
-    .tab-bar { display:none; }
-    .scenario-panel { display:block !important; }
-    .card { box-shadow:none; page-break-inside:avoid; }
-  }
+/* ── OPEN ITEMS ── */
+.open-items { list-style:none; }
+.open-items li { display:flex; gap:10px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:9.5pt; }
+.open-items li.warn { background:#fffbeb; border-left:3px solid #f59e0b; }
+.open-items li.info { background:#eff6ff; border-left:3px solid #3b82f6; }
+.open-items li.danger { background:#fef2f2; border-left:3px solid #ef4444; }
+.open-items li .icon { flex-shrink:0; }
+
+/* ── WATERFALL ── */
+.waterfall-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.wf-label { font-size:8.5pt; color:#444; width:200px; flex-shrink:0; text-align:right; }
+.wf-bar-wrap { flex:1; position:relative; height:22px; }
+.wf-bar { height:100%; border-radius:4px; position:absolute; display:flex; align-items:center; padding:0 8px; font-size:8pt; font-weight:700; color:white; white-space:nowrap; }
+
+/* ── FOOTER ── */
+.footer { text-align:center; font-size:8pt; color:#aaa; margin-top:32px; padding-top:16px; border-top:1px solid #e8e8e8; }
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px) {
+  .kpi-grid { grid-template-columns:repeat(3,1fr); }
+  .kpi-grid-4 { grid-template-columns:repeat(2,1fr); }
+  .two-col, .three-col { grid-template-columns:1fr; }
+  .header h1 { font-size:17pt; }
+  .header { padding:24px 20px; }
+  .nav-tab { min-width:auto; font-size:8.5pt; padding:9px 12px; }
+}
+@media (max-width:600px) {
+  .kpi-grid { grid-template-columns:repeat(2,1fr); }
+}
 </style>
 </head>
 <body>
 <div class="container">
 
-  <div class="header">
-    <div class="tag">RCC Internal · Confidential · April 2026</div>
-    <h1>Park90 × <em>Barson</em> — Proforma P&L</h1>
-    <div class="sub">24-Month Ramp · Revenue Cap 3.5 tỷ VND/tháng · Base: Barson Q1 2026 avg ~1.43 tỷ/tháng</div>
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<div class="header">
+  <div class="tag">RCC Internal · Confidential · April 2026</div>
+  <h1>Park90 × <em>Barson</em> — Investment Brief</h1>
+  <div class="sub">Proforma P&amp;L · 24-Month Ramp · Le Méridien Saigon · v3.0</div>
+  <div class="pills">
+    <span class="pill">📍 Le Méridien Saigon — Lobby Level</span>
+    <span class="pill">💰 Total CAPEX ~14.4 tỷ (~$550K)</span>
+    <span class="pill">📊 IRR Base ~55% p.a.</span>
+    <span class="pill">⏱ Payback Base ~22 tháng</span>
+    <span class="pill">🍷 Wine Portal Holding / Singapore</span>
   </div>
+</div>
 
-  <!-- Assumptions -->
+<!-- ════════════════════════════════════════
+     TOP NAV
+════════════════════════════════════════ -->
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="switchSection('s-brand')">🍷 Brand Overview</button>
+  <button class="nav-tab" onclick="switchSection('s-barson')">🏪 Barson Standalone</button>
+  <button class="nav-tab" onclick="switchSection('s-p90')">🎯 P90 Unit Economics</button>
+  <button class="nav-tab" onclick="switchSection('s-combined')">📊 Combined Model</button>
+  <button class="nav-tab" onclick="switchSection('s-sensitivity')">🔬 Sensitivity</button>
+  <button class="nav-tab" onclick="switchSection('s-openitems')">⚠️ Open Items</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     SECTION 1: BRAND OVERVIEW
+════════════════════════════════════════ -->
+<div class="section-panel active" id="s-brand">
+
   <div class="card">
-    <h2>📋 Key Assumptions</h2>
-    <div class="assumptions">
-      <div class="assume-box">
-        <h3>Revenue</h3>
-        <div class="assume-row"><span>Baseline (Barson avg Q1/2026)</span><span class="assume-val">1.43 tỷ/tháng</span></div>
-        <div class="assume-row"><span>Revenue floor (Feb 2026)</span><span class="assume-val">1.04 tỷ/tháng</span></div>
-        <div class="assume-row"><span>Revenue cap (max uplift)</span><span class="assume-val gold">3.50 tỷ/tháng</span></div>
-        <div class="assume-row"><span>Ramp period</span><span class="assume-val">24 tháng</span></div>
-        <div class="assume-row"><span>FX Rate</span><span class="assume-val">26,200 VND/USD</span></div>
+    <h2>🍷 What Is Park90?</h2>
+    <div class="two-col">
+      <div>
+        <p style="font-size:10pt; line-height:1.8; color:#333; margin-bottom:14px;">
+          <strong>Park90</strong> is a premium fine wine bar concept launched in Singapore in 2018, operated by
+          <strong>Wine Portal Holding Pte Ltd</strong> — a Singapore-based company chaired by
+          <strong>Soo Hoo Khoon Peng</strong>, who acquired a stake in the globally acclaimed
+          <strong>Robert Parker Wine Advocate</strong> franchise in 2012.
+        </p>
+        <p style="font-size:10pt; line-height:1.8; color:#333; margin-bottom:14px;">
+          The name "Park90" reflects its founding philosophy: curating wines rated <strong>90 points and above</strong>
+          by Robert Parker — arguably the world's most respected wine critic. This creates an instantly legible
+          quality signal for wine-curious consumers and connoisseurs alike.
+        </p>
+        <p style="font-size:10pt; line-height:1.8; color:#333;">
+          Park90 has established itself as a <em>hotel-embedded luxury wine destination</em>, partnering with
+          iconic 5-star hotel addresses across Southeast Asia. The concept is now expanding through a
+          <strong>licensing model</strong>, with RCC/Barson as the proposed Saigon licensee.
+        </p>
       </div>
-      <div class="assume-box">
-        <h3>Cost Structure</h3>
-        <div class="assume-row"><span>COGS (Park90 distributor route)</span><span class="assume-val">38% doanh thu</span></div>
-        <div class="assume-row"><span>Gross Margin</span><span class="assume-val pos">62%</span></div>
-        <div class="assume-row"><span>Staff (cố định)</span><span class="assume-val">180 triệu/tháng</span></div>
-        <div class="assume-row"><span>Rent (Barson location)</span><span class="assume-val">150 triệu/tháng</span></div>
-        <div class="assume-row"><span>Opex khác (utilities, marketing)</span><span class="assume-val">120 triệu/tháng</span></div>
+      <div>
+        <div class="assume-box">
+          <h3>Brand DNA</h3>
+          <div class="assume-row"><span>Wine selection threshold</span><span class="assume-val">≥ 90 pts (Robert Parker)</span></div>
+          <div class="assume-row"><span>Collection size</span><span class="assume-val">800+ labels</span></div>
+          <div class="assume-row"><span>Origin affiliation</span><span class="assume-val">Wine Advocate franchise</span></div>
+          <div class="assume-row"><span>Format</span><span class="assume-val">5-star hotel lobby wine bar</span></div>
+          <div class="assume-row"><span>Sommelier model</span><span class="assume-val">Trained by Park90 SG</span></div>
+          <div class="assume-row"><span>Supply chain</span><span class="assume-val">Direct ex-France / SG distributor</span></div>
+          <div class="assume-row"><span>Notable pours</span><span class="assume-val">DRC & Château Pétrus by glass</span></div>
+          <div class="assume-row"><span>Expansion model</span><span class="assume-val">License + revenue share</span></div>
+        </div>
+        <div class="assume-box" style="margin-top:12px;">
+          <h3>Licensor Entity</h3>
+          <div class="assume-row"><span>Company</span><span class="assume-val">Park90 (SG) Pte Ltd</span></div>
+          <div class="assume-row"><span>License Fee (one-off)</span><span class="assume-val">USD 250,000</span></div>
+          <div class="assume-row"><span>Annual License Fee</span><span class="assume-val">2.5% GTO (min $2,500/mo)</span></div>
+          <div class="assume-row"><span>Wine supply by Park90</span><span class="assume-val">≥ 70% of SKUs</span></div>
+          <div class="assume-row"><span>Term</span><span class="assume-val">3 yrs + annual renewal</span></div>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📍 Park90 — Current & Upcoming Locations</h2>
+    <div class="location-grid" style="margin-bottom:16px;">
+      <div class="loc-card">
+        <div class="city">🇸🇬 Singapore</div>
+        <div class="venue">Conrad Singapore Orchard<br><small>(formerly Garden Terrace)</small></div>
+        <div class="year">Est. 2018 — Flagship</div>
+        <span class="badge badge-gold">Flagship</span>
+      </div>
+      <div class="loc-card">
+        <div class="city">🇲🇾 Kuala Lumpur</div>
+        <div class="venue">The St. Regis KL<br><small>The Drawing Room</small></div>
+        <div class="year">Opened July 2024</div>
+        <span class="badge badge-blue">Active</span>
+      </div>
+      <div class="loc-card new">
+        <div class="city">🇹🇭 Bangkok</div>
+        <div class="venue">Park Hyatt Bangkok<br><small>Ploenchit / Lumphini area</small></div>
+        <div class="year">Latest opening (2025)</div>
+        <span class="badge badge-new">Newest</span>
+      </div>
+      <div class="loc-card upcoming">
+        <div class="city">🇻🇳 Ho Chi Minh City</div>
+        <div class="venue">Barson @ Le Méridien Saigon<br><small>Lobby Level — Proposed</small></div>
+        <div class="year">Target: End Nov 2026 / Feb 2027</div>
+        <span class="badge badge-upcoming">Proposed — RCC</span>
+      </div>
+    </div>
+    <p style="font-size:8.5pt; color:#888; font-style:italic;">
+      ⚠️ Bangkok at Park Hyatt is the most recent opening and not yet listed on official Park90 website. All hotel partners are 5-star IHG/Hilton/Hyatt/Marriott brands — consistent with Park90's positioning strategy.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>🤝 Deal Structure — Park90 × Barson (Saigon)</h2>
+    <div class="three-col">
       <div class="assume-box">
-        <h3>CAPEX (Phased)</h3>
-        <div class="assume-row"><span>Phase 1 — Pilot inventory (M1)</span><span class="assume-val">3.93 tỷ (~$150K)</span></div>
-        <div class="assume-row"><span>Phase 2 — Fit-out + equipment (M3)</span><span class="assume-val">3.93 tỷ (~$150K)</span></div>
-        <div class="assume-row"><span>Phase 3 — Full inventory scale (M7)</span><span class="assume-val">6.55 tỷ (~$250K)</span></div>
-        <div class="assume-row"><span>Total CAPEX</span><span class="assume-val gold">14.4 tỷ (~$550K)</span></div>
+        <h3>🏗 CAPEX (One-Off)</h3>
+        <div class="assume-row"><span>License Fee (Park90)</span><span class="assume-val" style="color:#dc2626">6.55 tỷ ($250K)</span></div>
+        <div class="assume-row"><span>Inventory Phase 1 (M1)</span><span class="assume-val" style="color:#dc2626">3.93 tỷ ($150K)</span></div>
+        <div class="assume-row"><span>Inventory Phase 2 (M3)</span><span class="assume-val" style="color:#dc2626">3.93 tỷ ($150K)</span></div>
+        <div class="assume-row"><span>Fit-out / Rent</span><span class="assume-val" style="color:#16a34a">—  (Barson provides)</span></div>
+        <div class="assume-row" style="border-top:2px solid #dc2626; margin-top:6px; padding-top:6px;"><span><strong>Total CAPEX</strong></span><span class="assume-val" style="color:#dc2626; font-size:11pt;">14.41 tỷ</span></div>
         <div class="assume-row"><span>Depreciation</span><span class="assume-val">60 tháng straight-line</span></div>
+        <div class="assume-row"><span>Monthly depreciation</span><span class="assume-val">240.2 triệu/tháng</span></div>
       </div>
       <div class="assume-box">
-        <h3>Financing</h3>
-        <div class="assume-row"><span>Equity contribution</span><span class="assume-val">100% (no debt)</span></div>
-        <div class="assume-row"><span>Tax rate (CIT)</span><span class="assume-val">20%</span></div>
-        <div class="assume-row"><span>Barson revenue split (RCC share)</span><span class="assume-val gold">30% net profit</span></div>
-        <div class="assume-row"><span>Break-even (monthly EBITDA ≥ 0)</span><span class="assume-val">~M6 Base / M9 Cons</span></div>
+        <h3>📅 Ongoing (OPEX)</h3>
+        <div class="assume-row"><span>Annual license fee</span><span class="assume-val">2.5% GTO</span></div>
+        <div class="assume-row"><span>License fee floor</span><span class="assume-val">65.5 tr/tháng ($2,500)</span></div>
+        <div class="assume-row"><span>Staff (RCC-side)</span><span class="assume-val">80 tr/tháng (~3 FTE)</span></div>
+        <div class="assume-row"><span>Opex (misc, marketing)</span><span class="assume-val">100 tr/tháng</span></div>
+        <div class="assume-row"><span>Rent</span><span class="assume-val" style="color:#16a34a">— (Barson không tính)</span></div>
+        <div class="assume-row"><span>Barson revenue share</span><span class="assume-val" style="color:#dc2626">20% GTO</span></div>
+        <div class="assume-row"><span>RCC net revenue</span><span class="assume-val" style="color:#16a34a">80% GTO</span></div>
+      </div>
+      <div class="assume-box">
+        <h3>📊 Revenue Assumptions</h3>
+        <div class="assume-row"><span>Baseline (Barson Q1/2026)</span><span class="assume-val">1.43 tỷ/tháng</span></div>
+        <div class="assume-row"><span>Jan/Feb/Mar 2026</span><span class="assume-val">1.51 / 1.04 / 1.75</span></div>
+        <div class="assume-row"><span>Revenue cap (max)</span><span class="assume-val gold">3.50 tỷ/tháng</span></div>
+        <div class="assume-row"><span>Ramp period</span><span class="assume-val">24 tháng (S-curve)</span></div>
+        <div class="assume-row"><span>GM — Base/Cons/Opti</span><span class="assume-val">62% / 58% / 66%</span></div>
+        <div class="assume-row"><span>CIT (corporate tax)</span><span class="assume-val">20%</span></div>
+        <div class="assume-row"><span>Financing</span><span class="assume-val">100% equity</span></div>
       </div>
     </div>
   </div>
 
-  <!-- Scenario Tabs -->
+</div><!-- end s-brand -->
+
+<!-- ════════════════════════════════════════
+     SECTION 2: BARSON STANDALONE
+════════════════════════════════════════ -->
+<div class="section-panel" id="s-barson">
+
+  <div class="card">
+    <h2>🏪 Barson @ Le Méridien Saigon — Standalone P&L</h2>
+    <p style="font-size:9.5pt; color:#555; margin-bottom:20px;">
+      Barson là F&amp;B outlet hiện tại của RCC tại Le Méridien Saigon, hoạt động độc lập trước khi Park90 được triển khai.
+      Đây là <strong>baseline revenue</strong> mà Park90 sẽ phát triển thêm (không thay thế).
+    </p>
+  </div>
+
+  <div class="kpi-grid" id="barson-kpis">
+    <div class="kpi blue"><div class="val">1.43 tỷ</div><div class="lbl">Revenue avg/tháng</div><div class="sub-val">Q1 2026 avg</div></div>
+    <div class="kpi blue"><div class="val">65%</div><div class="lbl">Gross Margin</div><div class="sub-val">F&B restaurant GM</div></div>
+    <div class="kpi blue"><div class="val">~325 tr</div><div class="lbl">Est. EBITDA/tháng</div><div class="sub-val">~23% margin</div></div>
+    <div class="kpi blue"><div class="val">~179 tr</div><div class="lbl">Est. NPAT/tháng</div><div class="sub-val">~12.5% net margin</div></div>
+    <div class="kpi blue"><div class="val">1.04–1.75 tỷ</div><div class="lbl">Revenue Range</div><div class="sub-val">Jan–Mar 2026</div></div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Barson Standalone — Monthly P&L Estimate (tỷ VND)</h2>
+    <p style="font-size:8.5pt; color:#888; margin-bottom:12px; font-style:italic;">
+      * Ước tính dựa trên actuals Q1/2026. Staff/Opex là typical F&amp;B outlet tại 5-star hotel Saigon.
+      Barson không chịu phần P90 license fee hay inventory CAPEX.
+    </p>
+    <div class="tbl-wrap">
+      <table id="tbl-barson-standalone"></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📈 Barson Revenue — Q1 2026 Actuals</h2>
+    <div class="chart-container-sm">
+      <canvas id="chart-barson-q1"></canvas>
+    </div>
+    <div class="two-col" style="margin-top:16px;">
+      <div class="assume-box">
+        <h3>Barson P&L Summary (Monthly Avg)</h3>
+        <div class="assume-row"><span>Revenue (GTO)</span><span class="assume-val">1,432 triệu</span></div>
+        <div class="assume-row"><span>COGS (35%)</span><span class="assume-val neg-val">(501) triệu</span></div>
+        <div class="assume-row"><span>Gross Profit (65%)</span><span class="assume-val pos">931 triệu</span></div>
+        <div class="assume-row"><span>Staff</span><span class="assume-val neg-val">(350) triệu</span></div>
+        <div class="assume-row"><span>Rent (allocated)</span><span class="assume-val neg-val">(180) triệu</span></div>
+        <div class="assume-row"><span>Opex (utilities, mkt)</span><span class="assume-val neg-val">(76) triệu</span></div>
+        <div class="assume-row"><span><strong>EBITDA</strong></span><span class="assume-val" style="color:#c8a050"><strong>325 triệu (22.7%)</strong></span></div>
+        <div class="assume-row"><span>Depreciation</span><span class="assume-val neg-val">(56) triệu</span></div>
+        <div class="assume-row"><span>EBIT</span><span class="assume-val pos">269 triệu</span></div>
+        <div class="assume-row"><span>CIT (20%)</span><span class="assume-val neg-val">(54) triệu</span></div>
+        <div class="assume-row"><span><strong>NPAT</strong></span><span class="assume-val pos"><strong>215 triệu (15.0%)</strong></span></div>
+      </div>
+      <div class="assume-box">
+        <h3>Barson — Key Business Metrics</h3>
+        <div class="assume-row"><span>Khách/ngày (ước tính)</span><span class="assume-val">~45–65 covers/day</span></div>
+        <div class="assume-row"><span>Avg check (ước tính)</span><span class="assume-val">~700K–900K VND/pax</span></div>
+        <div class="assume-row"><span>Operating days/tháng</span><span class="assume-val">~28–30 ngày</span></div>
+        <div class="assume-row"><span>Số nhân viên (FTE)</span><span class="assume-val">~15–18 FTE</span></div>
+        <div class="assume-row"><span>Vị trí</span><span class="assume-val">Lobby Level, Le Méridien</span></div>
+        <div class="assume-row"><span>Diện tích ước tính</span><span class="assume-val">~400 m²</span></div>
+        <div class="assume-row"><span>Điểm mạnh</span><span class="assume-val">Location + hotel captive</span></div>
+        <div class="assume-row"><span>Điểm yếu</span><span class="assume-val">F&amp;B mix chưa premium wine</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>💡 Tại Sao Barson Cần Park90?</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="margin-bottom:10px; color:#dc2626;">⚠️ Current Gaps</h3>
+        <ul style="list-style:none;">
+          <li style="padding:7px 0; border-bottom:1px solid #f0f0f0; font-size:9.5pt;">❌ Wine revenue thấp — F&amp;B mix dominated by food</li>
+          <li style="padding:7px 0; border-bottom:1px solid #f0f0f0; font-size:9.5pt;">❌ Thiếu premium wine experience cho hotel guests</li>
+          <li style="padding:7px 0; border-bottom:1px solid #f0f0f0; font-size:9.5pt;">❌ Revenue cap ở ~1.75 tỷ/tháng với model hiện tại</li>
+          <li style="padding:7px 0; font-size:9.5pt;">❌ Chưa có destination appeal — khách không đến đặc biệt cho wine</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px; color:#16a34a;">✅ Park90 Adds</h3>
+        <ul style="list-style:none;">
+          <li style="padding:7px 0; border-bottom:1px solid #f0f0f0; font-size:9.5pt;">✅ 800+ premium wine labels (90+ pts Robert Parker)</li>
+          <li style="padding:7px 0; border-bottom:1px solid #f0f0f0; font-size:9.5pt;">✅ Regional brand equity (SG → KL → Bangkok → Saigon)</li>
+          <li style="padding:7px 0; border-bottom:1px solid #f0f0f0; font-size:9.5pt;">✅ Sommelier training + wine menu curation</li>
+          <li style="padding:7px 0; font-size:9.5pt;">✅ 40% COGS advantage vs market (distributor route)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end s-barson -->
+
+<!-- ════════════════════════════════════════
+     SECTION 3: P90 UNIT ECONOMICS
+════════════════════════════════════════ -->
+<div class="section-panel" id="s-p90">
+
+  <div class="card">
+    <h2>🎯 Park90 @ Saigon — Unit Economics (P90-only Contribution)</h2>
+    <p style="font-size:9.5pt; color:#555; margin-bottom:20px;">
+      Section này phân tích <strong>phần tăng trưởng đến từ Park90</strong>: doanh thu outlet toàn bộ sau khi add P90,
+      trừ đi Barson baseline, để xác định contribution thuần của P90 concept.
+      CAPEX và license fee là 100% chi phí của P90 component.
+    </p>
+  </div>
+
   <div class="tab-bar">
-    <button class="tab-btn base active" onclick="switchScenario('base')">📊 Base Case</button>
-    <button class="tab-btn cons" onclick="switchScenario('cons')">📉 Conservative</button>
-    <button class="tab-btn opti" onclick="switchScenario('opti')">📈 Optimistic</button>
+    <button class="tab-btn base active" onclick="switchP90('base')">📊 Base Case</button>
+    <button class="tab-btn cons" onclick="switchP90('cons')">📉 Conservative</button>
+    <button class="tab-btn opti" onclick="switchP90('opti')">📈 Optimistic</button>
   </div>
 
-  <!-- BASE CASE -->
-  <div class="scenario-panel active" id="panel-base">
+  <!-- P90 BASE -->
+  <div class="scenario-panel active" id="p90-panel-base">
     <div class="kpi-grid">
-      <div class="kpi"><div class="val">3.50 tỷ</div><div class="lbl">Peak Revenue/Tháng</div></div>
-      <div class="kpi"><div class="val">2.17 tỷ</div><div class="lbl">Peak Gross Profit</div></div>
-      <div class="kpi"><div class="val">1.72 tỷ</div><div class="lbl">Peak EBITDA/Tháng</div></div>
-      <div class="kpi"><div class="val" style="color:#16a34a">M6</div><div class="lbl">Break-even</div></div>
-      <div class="kpi"><div class="val">~18 tháng</div><div class="lbl">Payback CAPEX</div></div>
+      <div class="kpi"><div class="val">62.3 tỷ</div><div class="lbl">Total GTO 24M</div><div class="sub-val">Base Case</div></div>
+      <div class="kpi"><div class="val">49.8 tỷ</div><div class="lbl">RCC Net Rev 24M</div><div class="sub-val">80% of GTO</div></div>
+      <div class="kpi"><div class="val">24.8 tỷ</div><div class="lbl">EBITDA 24M</div><div class="sub-val">~39.8% of GTO</div></div>
+      <div class="kpi"><div class="val green">15.2 tỷ</div><div class="lbl">NPAT 24M</div><div class="sub-val">~24.4% of GTO</div></div>
+      <div class="kpi"><div class="val" style="color:#c8a050">M6</div><div class="lbl">EBITDA Break-even</div><div class="sub-val">FCF B/E ~M17</div></div>
     </div>
     <div class="card">
-      <h2>📊 Base Case — Monthly P&L (tỷ VND)</h2>
-      <p class="note" style="margin-bottom:12px;">Ramp từ 1.43 tỷ → 3.50 tỷ trong 24 tháng. Đạt cap M18. Gross margin 62%.</p>
-      <div class="tbl-wrap">
-        <table id="tbl-base"></table>
-      </div>
+      <h2>📊 P90 Outlet — Base Case Monthly P&L</h2>
+      <div class="tbl-wrap"><table id="tbl-p90-base"></table></div>
     </div>
     <div class="card">
-      <h2>📈 Revenue & EBITDA Ramp (Base)</h2>
-      <div class="legend">
-        <div class="leg-item"><div class="leg-dot" style="background:#c8a050"></div>Doanh thu</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#16a34a"></div>EBITDA dương</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#e74c3c"></div>EBITDA âm</div>
-      </div>
-      <div class="chart-wrap" id="chart-base"></div>
+      <h2>📈 Revenue vs EBITDA — Base Case (tỷ VND/tháng)</h2>
+      <div class="chart-container"><canvas id="chart-p90-base"></canvas></div>
     </div>
   </div>
 
-  <!-- CONSERVATIVE -->
-  <div class="scenario-panel" id="panel-cons">
+  <!-- P90 CONSERVATIVE -->
+  <div class="scenario-panel" id="p90-panel-cons">
     <div class="kpi-grid">
-      <div class="kpi"><div class="val">2.50 tỷ</div><div class="lbl">Peak Revenue/Tháng</div></div>
-      <div class="kpi"><div class="val">1.55 tỷ</div><div class="lbl">Peak Gross Profit</div></div>
-      <div class="kpi"><div class="val">1.10 tỷ</div><div class="lbl">Peak EBITDA/Tháng</div></div>
-      <div class="kpi"><div class="val" style="color:#1e40af">M9</div><div class="lbl">Break-even</div></div>
-      <div class="kpi"><div class="val">~28 tháng</div><div class="lbl">Payback CAPEX</div></div>
+      <div class="kpi blue"><div class="val">43.2 tỷ</div><div class="lbl">Total GTO 24M</div><div class="sub-val">Conservative</div></div>
+      <div class="kpi blue"><div class="val">34.6 tỷ</div><div class="lbl">RCC Net Rev 24M</div><div class="sub-val">80% of GTO</div></div>
+      <div class="kpi blue"><div class="val">14.2 tỷ</div><div class="lbl">EBITDA 24M</div><div class="sub-val">~32.8% of GTO</div></div>
+      <div class="kpi blue"><div class="val">6.7 tỷ</div><div class="lbl">NPAT 24M</div><div class="sub-val">~15.5% of GTO</div></div>
+      <div class="kpi blue"><div class="val">M9</div><div class="lbl">EBITDA Break-even</div><div class="sub-val">FCF B/E không đạt</div></div>
     </div>
     <div class="card">
-      <h2>📉 Conservative Case — Monthly P&L (tỷ VND)</h2>
-      <p class="note" style="margin-bottom:12px;">Ramp chậm hơn: 1.04 tỷ → 2.50 tỷ trong 24 tháng. Gross margin 58% (giá thấp hơn để gain market share).</p>
-      <div class="tbl-wrap">
-        <table id="tbl-cons"></table>
-      </div>
+      <h2>📉 P90 Outlet — Conservative Case Monthly P&L</h2>
+      <div class="tbl-wrap"><table id="tbl-p90-cons"></table></div>
     </div>
     <div class="card">
-      <h2>📈 Revenue & EBITDA Ramp (Conservative)</h2>
-      <div class="legend">
-        <div class="leg-item"><div class="leg-dot" style="background:#c8a050"></div>Doanh thu</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#16a34a"></div>EBITDA dương</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#e74c3c"></div>EBITDA âm</div>
-      </div>
-      <div class="chart-wrap" id="chart-cons"></div>
+      <h2>📈 Revenue vs EBITDA — Conservative Case</h2>
+      <div class="chart-container"><canvas id="chart-p90-cons"></canvas></div>
     </div>
   </div>
 
-  <!-- OPTIMISTIC -->
-  <div class="scenario-panel" id="panel-opti">
+  <!-- P90 OPTIMISTIC -->
+  <div class="scenario-panel" id="p90-panel-opti">
     <div class="kpi-grid">
-      <div class="kpi"><div class="val">3.50 tỷ</div><div class="lbl">Peak Revenue/Tháng</div></div>
-      <div class="kpi"><div class="val">2.31 tỷ</div><div class="lbl">Peak Gross Profit</div></div>
-      <div class="kpi"><div class="val">1.86 tỷ</div><div class="lbl">Peak EBITDA/Tháng</div></div>
-      <div class="kpi"><div class="val" style="color:#14532d">M4</div><div class="lbl">Break-even</div></div>
-      <div class="kpi"><div class="val">~13 tháng</div><div class="lbl">Payback CAPEX</div></div>
+      <div class="kpi green"><div class="val">66.7 tỷ</div><div class="lbl">Total GTO 24M</div><div class="sub-val">Optimistic</div></div>
+      <div class="kpi green"><div class="val">53.4 tỷ</div><div class="lbl">RCC Net Rev 24M</div><div class="sub-val">80% of GTO</div></div>
+      <div class="kpi green"><div class="val">29.1 tỷ</div><div class="lbl">EBITDA 24M</div><div class="sub-val">~43.6% of GTO</div></div>
+      <div class="kpi green"><div class="val">18.6 tỷ</div><div class="lbl">NPAT 24M</div><div class="sub-val">~27.9% of GTO</div></div>
+      <div class="kpi green"><div class="val">M4</div><div class="lbl">EBITDA Break-even</div><div class="sub-val">FCF B/E ~M15</div></div>
     </div>
     <div class="card">
-      <h2>📈 Optimistic Case — Monthly P&L (tỷ VND)</h2>
-      <p class="note" style="margin-bottom:12px;">Ramp nhanh: 1.75 tỷ → 3.50 tỷ (cap) trong 12 tháng, duy trì M13–M24. Gross margin 66%.</p>
-      <div class="tbl-wrap">
-        <table id="tbl-opti"></table>
-      </div>
+      <h2>📈 P90 Outlet — Optimistic Case Monthly P&L</h2>
+      <div class="tbl-wrap"><table id="tbl-p90-opti"></table></div>
     </div>
     <div class="card">
-      <h2>📈 Revenue & EBITDA Ramp (Optimistic)</h2>
-      <div class="legend">
-        <div class="leg-item"><div class="leg-dot" style="background:#c8a050"></div>Doanh thu</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#16a34a"></div>EBITDA dương</div>
-        <div class="leg-item"><div class="leg-dot" style="background:#e74c3c"></div>EBITDA âm</div>
-      </div>
-      <div class="chart-wrap" id="chart-opti"></div>
+      <h2>📈 Revenue vs EBITDA — Optimistic Case</h2>
+      <div class="chart-container"><canvas id="chart-p90-opti"></canvas></div>
     </div>
   </div>
 
-  <!-- Summary comparison -->
+  <div class="card">
+    <h2>💰 P90-Only Cost Structure (Monthly Steady State, Base)</h2>
+    <div class="two-col">
+      <div>
+        <h3 style="margin-bottom:10px;">Chi phí P90 cộng thêm vào Barson</h3>
+        <table style="width:100%; font-size:9pt;">
+          <tr style="background:#f8f9fa;"><td style="padding:8px; font-weight:700; color:#888; text-transform:uppercase; font-size:8pt;">Khoản mục</td><td style="padding:8px; font-weight:700; color:#888; text-transform:uppercase; font-size:8pt; text-align:right;">Triệu VND/tháng</td><td style="padding:8px; font-weight:700; color:#888; text-transform:uppercase; font-size:8pt; text-align:right;">Ghi chú</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #f0f0f0;">Annual License Fee</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;" class="neg-val">65.5–87.5 tr</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right; font-size:8.5pt; color:#888;">2.5% GTO, min $2.5K/mo</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #f0f0f0;">Staff (RCC-side)</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;" class="neg-val">80 tr</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right; font-size:8.5pt; color:#888;">~3 FTE manager+admin</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #f0f0f0;">Opex (misc, mkt)</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;" class="neg-val">100 tr</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right; font-size:8.5pt; color:#888;">Utilities + marketing</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #f0f0f0;">Barson Rev Share</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;" class="neg-val">700–875 tr</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right; font-size:8.5pt; color:#888;">20% of total GTO</td></tr>
+          <tr><td style="padding:8px; border-bottom:1px solid #f0f0f0;">Depreciation (CAPEX)</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;" class="neg-val">240 tr</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right; font-size:8.5pt; color:#888;">14.41B ÷ 60 tháng</td></tr>
+          <tr style="background:#fffbeb;"><td style="padding:8px; font-weight:700;">Tổng fixed OPEX (excl. COGS)</td><td style="padding:8px; text-align:right; font-weight:700;" class="neg-val">245.5 tr/tháng</td><td style="padding:8px; text-align:right; font-size:8.5pt; color:#888;">License + Staff + Opex</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3 style="margin-bottom:10px;">COGS Structure (on RCC 80% revenue)</h3>
+        <table style="width:100%; font-size:9pt;">
+          <tr style="background:#f8f9fa;"><td style="padding:8px; font-weight:700; color:#888; text-transform:uppercase; font-size:8pt;">Scenario</td><td style="padding:8px; font-weight:700; color:#888; text-transform:uppercase; font-size:8pt; text-align:right;">COGS %</td><td style="padding:8px; font-weight:700; color:#888; text-transform:uppercase; font-size:8pt; text-align:right;">Gross Margin %</td></tr>
+          <tr style="background:#fffbeb;"><td style="padding:8px; border-bottom:1px solid #f0f0f0; font-weight:600;">Conservative</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;" class="neg-val">42%</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right; color:#1e40af; font-weight:700;">58%</td></tr>
+          <tr style="background:#fff8e8;"><td style="padding:8px; border-bottom:1px solid #f0f0f0; font-weight:600;">Base Case ★</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right;" class="neg-val">38%</td><td style="padding:8px; border-bottom:1px solid #f0f0f0; text-align:right; color:#c8a050; font-weight:700;">62%</td></tr>
+          <tr style="background:#f0fdf4;"><td style="padding:8px; font-weight:600;">Optimistic</td><td style="padding:8px; text-align:right;" class="neg-val">34%</td><td style="padding:8px; text-align:right; color:#16a34a; font-weight:700;">66%</td></tr>
+        </table>
+        <div style="margin-top:12px; background:#f0fdf4; padding:12px; border-radius:8px; font-size:9pt;">
+          <strong>💡 COGS Advantage:</strong> Park90 là wine distributor — cung cấp trực tiếp từ France/SG, bypass trung gian.
+          COGS 38% vs ~55-60% nếu RCC tự mua wine ở market rate → <span class="pos">~15-20% margin advantage</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end s-p90 -->
+
+<!-- ════════════════════════════════════════
+     SECTION 4: COMBINED MODEL
+════════════════════════════════════════ -->
+<div class="section-panel" id="s-combined">
+
+  <div class="card">
+    <h2>📊 Combined Model — Barson + P90 @ Saigon</h2>
+    <p style="font-size:9.5pt; color:#555; margin-bottom:20px;">
+      Model này tổng hợp đầy đủ: <strong>Barson standalone</strong> (revenue hiện tại + Barson 20% share từ P90)
+      và <strong>P90 component</strong> (revenue tăng trưởng, CAPEX, license fees). Đây là bức tranh tài chính
+      thực tế RCC phải đánh giá khi ra quyết định đầu tư.
+    </p>
+  </div>
+
+  <!-- Scenario Comparison -->
   <div class="card">
     <h2>📊 Scenario Comparison — 24-Month Summary</h2>
     <div class="tbl-wrap">
-      <table>
+      <table class="compare-table">
         <thead>
           <tr>
-            <th style="text-align:left">Metric</th>
+            <th style="text-align:left; min-width:220px;">Chỉ Số</th>
             <th>Conservative</th>
-            <th>Base Case</th>
+            <th>Base Case ★</th>
             <th>Optimistic</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Doanh thu tháng 1</td><td>1.04 tỷ</td><td>1.43 tỷ</td><td>1.75 tỷ</td></tr>
-          <tr><td>Doanh thu peak (cap)</td><td>2.50 tỷ</td><td class="gold">3.50 tỷ ✓ cap</td><td class="gold">3.50 tỷ ✓ cap</td></tr>
-          <tr><td>Tháng đạt cap</td><td>— (không đạt)</td><td>M18</td><td>M12</td></tr>
-          <tr><td>Gross Margin</td><td>58%</td><td>62%</td><td>66%</td></tr>
-          <tr><td>Break-even EBITDA</td><td>M9</td><td>M6</td><td>M4</td></tr>
-          <tr><td>Tổng doanh thu 24 tháng</td><td>~44 tỷ</td><td class="gold">~64 tỷ</td><td>~73 tỷ</td></tr>
-          <tr><td>Tổng EBITDA 24 tháng</td><td>~8.2 tỷ</td><td class="gold">~20.4 tỷ</td><td>~30.1 tỷ</td></tr>
-          <tr><td>CAPEX tổng</td><td colspan="3" style="text-align:center">14.4 tỷ (~$550K)</td></tr>
-          <tr class="total-row"><td>Payback Period</td><td>~28 tháng</td><td class="gold">~18 tháng</td><td>~13 tháng</td></tr>
-          <tr><td>IRR (24-month)</td><td>~38%</td><td class="gold">~68%</td><td>~112%</td></tr>
-          <tr><td>RCC Net Share (30% NP, 24 tháng)</td><td>~2.0 tỷ</td><td class="gold">~6.1 tỷ</td><td>~9.0 tỷ</td></tr>
+          <tr class="section-hdr"><td colspan="4">ASSUMPTIONS</td></tr>
+          <tr><td>Gross Margin (on RCC 80% rev)</td><td>58%</td><td class="gold">62%</td><td class="pos">66%</td></tr>
+          <tr><td>Revenue Cap / tháng</td><td>2.49 tỷ</td><td class="gold">3.50 tỷ</td><td class="pos">3.50 tỷ</td></tr>
+          <tr><td>GTO Tháng 1</td><td>1.055 tỷ</td><td class="gold">1.454 tỷ</td><td class="pos">1.773 tỷ</td></tr>
+
+          <tr class="section-hdr"><td colspan="4">CAPEX &amp; RETURNS</td></tr>
+          <tr><td>Total CAPEX (one-off + inventory)</td><td colspan="3" style="text-align:center; font-weight:700; color:#dc2626;">14.41 tỷ (~USD 550K)</td></tr>
+          <tr><td>Monthly Depreciation</td><td colspan="3" style="text-align:center;">240.2 triệu/tháng (60 tháng)</td></tr>
+
+          <tr class="section-hdr"><td colspan="4">24-MONTH TOTALS (tỷ VND)</td></tr>
+          <tr><td>Total GTO</td><td>43.20</td><td class="gold">62.31</td><td class="pos">66.71</td></tr>
+          <tr><td>→ Barson Share (20% GTO)</td><td class="neg-val">(8.64)</td><td class="neg-val">(12.46)</td><td class="neg-val">(13.34)</td></tr>
+          <tr><td>RCC Net Revenue (80% GTO)</td><td>34.56</td><td class="gold">49.84</td><td class="pos">53.36</td></tr>
+          <tr><td>Wine COGS</td><td class="neg-val">(14.52)</td><td class="neg-val">(18.94)</td><td class="neg-val">(18.14)</td></tr>
+          <tr class="subtotal"><td>Gross Profit</td><td>20.04</td><td class="gold">30.90</td><td class="pos">35.22</td></tr>
+          <tr><td>License Fee (2.5% GTO)</td><td class="neg-val">(1.57)</td><td class="neg-val">(1.80)</td><td class="neg-val">(1.83)</td></tr>
+          <tr><td>Staff + Opex</td><td colspan="3" style="text-align:center;" class="neg-val">(4.32) — fixed</td></tr>
+          <tr class="ebitda-row"><td>Total EBITDA</td><td>14.15</td><td>24.78</td><td>29.07</td></tr>
+          <tr><td>EBITDA Margin % (of GTO)</td><td>32.7%</td><td class="gold">39.8%</td><td class="pos">43.6%</td></tr>
+          <tr><td>Depreciation</td><td colspan="3" style="text-align:center;" class="neg-val">(5.76)</td></tr>
+          <tr class="subtotal"><td>EBIT</td><td>8.39</td><td class="gold">19.02</td><td class="pos">23.31</td></tr>
+          <tr><td>CIT (20%)</td><td class="neg-val">(1.68)</td><td class="neg-val">(3.80)</td><td class="neg-val">(4.66)</td></tr>
+          <tr class="npat-row"><td>NPAT 24M</td><td>6.71</td><td>15.21</td><td>18.65</td></tr>
+          <tr><td>NPAT Margin % (of GTO)</td><td>15.5%</td><td class="gold">24.4%</td><td class="pos">28.0%</td></tr>
+
+          <tr class="section-hdr"><td colspan="4">INVESTMENT METRICS</td></tr>
+          <tr><td>EBITDA Break-even Month</td><td>M9</td><td class="gold">M6</td><td class="pos">M4</td></tr>
+          <tr><td>FCF Break-even Month</td><td>—  (không đạt M24)</td><td class="gold">~M17</td><td class="pos">~M15</td></tr>
+          <tr class="total-row"><td>Payback Period (CAPEX recovery)</td><td>~32 tháng</td><td class="gold">~22 tháng ★</td><td class="pos">~15 tháng</td></tr>
+          <tr><td>IRR (24-month estimate)</td><td>~28% p.a.</td><td class="gold">~55% p.a. ★</td><td class="pos">~90% p.a.</td></tr>
+
+          <tr class="section-hdr"><td colspan="4">BARSON CONTRIBUTION (from P90 rev share)</td></tr>
+          <tr><td>Barson receives (20% GTO) — 24M</td><td class="pos">8.64 tỷ</td><td class="gold pos">12.46 tỷ</td><td class="pos">13.34 tỷ</td></tr>
+          <tr><td>Barson avg/tháng from P90 share</td><td class="pos">360 tr</td><td class="gold pos">519 tr</td><td class="pos">556 tr</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <div class="footer">
-    Park90 × Barson Proforma P&L · RCC Internal · Confidential · April 2026<br>
-    Assumptions: Barson Q1/2026 actuals (Jan 1.508B / Feb 1.037B / Mar 1.754B) · Park90 distributor COGS advantage · Cap 3.5B VND/month
+  <div class="card">
+    <h2>📈 Cumulative FCF vs CAPEX — Break-even Visualization</h2>
+    <div class="chart-container">
+      <canvas id="chart-combined-fcf"></canvas>
+    </div>
+    <p style="font-size:8.5pt; color:#888; margin-top:8px; font-style:italic;">
+      Đường ngang tại 0 = recovery toàn bộ CAPEX (14.41 tỷ). Conservative case không đạt trong 24 tháng.
+    </p>
   </div>
+
+  <div class="card">
+    <h2>💡 Barson vs P90 vs Combined — Monthly P&L Waterfall (Base, Steady-State M18)</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left; min-width:200px;">P&L Line</th>
+            <th>Barson Only</th>
+            <th>P90 Component</th>
+            <th>Combined (M18)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-hdr"><td colspan="4">REVENUE</td></tr>
+          <tr><td>Outlet GTO</td><td>1,432 tr</td><td><span class="pos">+2,068 tr</span></td><td class="gold">3,500 tr</td></tr>
+          <tr><td>Barson Rev Share (20%)</td><td>—</td><td><span class="neg-val">(700) tr</span></td><td class="neg-val">(700) tr</td></tr>
+          <tr class="subtotal"><td>RCC Net Revenue</td><td>1,432 tr</td><td>2,100 tr</td><td class="gold">2,800 tr</td></tr>
+          <tr><td>COGS</td><td class="neg-val">(501) tr (35%)</td><td class="neg-val">(1,064) tr (38%)</td><td class="neg-val">(1,565) tr</td></tr>
+          <tr class="subtotal"><td>Gross Profit</td><td>931 tr (65%)</td><td>1,036 tr (62%)</td><td class="gold">1,736 tr (62%)</td></tr>
+          <tr class="section-hdr"><td colspan="4">OPERATING EXPENSES</td></tr>
+          <tr><td>License Fee (P90)</td><td>—</td><td class="neg-val">(87.5) tr</td><td class="neg-val">(87.5) tr</td></tr>
+          <tr><td>Staff</td><td class="neg-val">(350) tr</td><td class="neg-val">(80) tr P90-side</td><td class="neg-val">(430) tr</td></tr>
+          <tr><td>Rent (allocated / P90-free)</td><td class="neg-val">(180) tr</td><td>— (none)</td><td class="neg-val">(180) tr</td></tr>
+          <tr><td>Opex</td><td class="neg-val">(76) tr</td><td class="neg-val">(100) tr</td><td class="neg-val">(176) tr</td></tr>
+          <tr class="ebitda-row"><td>EBITDA</td><td>325 tr (22.7%)</td><td>769 tr (27.5%)</td><td>1,469 tr (41.9%)</td></tr>
+          <tr><td>Depreciation</td><td class="neg-val">(56) tr</td><td class="neg-val">(240) tr</td><td class="neg-val">(296) tr</td></tr>
+          <tr class="subtotal"><td>EBIT</td><td>269 tr</td><td>529 tr</td><td>1,173 tr</td></tr>
+          <tr><td>CIT (20%)</td><td class="neg-val">(54) tr</td><td class="neg-val">(246) tr</td><td class="neg-val">(235) tr</td></tr>
+          <tr class="npat-row"><td>NPAT</td><td>215 tr (15.0%)</td><td>769 tr (27.5%)</td><td>982 tr (28.1%)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:8.5pt; color:#888; margin-top:8px; font-style:italic;">
+      * Steady-state M18 khi cả hai components đều mature. P90 component bao gồm Barson 20% share như là chi phí của P90.
+    </p>
+  </div>
+
+</div><!-- end s-combined -->
+
+<!-- ════════════════════════════════════════
+     SECTION 5: SENSITIVITY
+════════════════════════════════════════ -->
+<div class="section-panel" id="s-sensitivity">
+
+  <div class="card">
+    <h2>🔬 Sensitivity Analysis — Khách Cần Tăng Để Đạt NPV Mục Tiêu</h2>
+    <p style="font-size:9.5pt; color:#555; margin-bottom:16px;">
+      Phân tích dưới đây cho thấy: để đạt các mức <strong>NPV mục tiêu</strong> (chiết khấu 15% p.a.),
+      cần bao nhiêu <strong>khách tăng thêm</strong> mỗi ngày và mức <strong>avg check trung bình</strong> là bao nhiêu.
+    </p>
+    <div class="two-col">
+      <div class="assume-box">
+        <h3>📐 Tham Số Cơ Bản</h3>
+        <div class="assume-row"><span>Operating days/tháng</span><span class="assume-val">28 ngày</span></div>
+        <div class="assume-row"><span>Avg check base (Base Case)</span><span class="assume-val">800K VND/pax</span></div>
+        <div class="assume-row"><span>Rev = Guests/day × Avg Check × 28</span><span class="assume-val">Formula</span></div>
+        <div class="assume-row"><span>Discount Rate (WACC)</span><span class="assume-val">15% p.a. (1.17%/mo)</span></div>
+        <div class="assume-row"><span>NPV horizon</span><span class="assume-val">60 tháng</span></div>
+        <div class="assume-row"><span>CAPEX</span><span class="assume-val" style="color:#dc2626;">14.41 tỷ VND</span></div>
+        <div class="assume-row"><span>Fixed OPEX/tháng</span><span class="assume-val">245.5 tr (license+staff+opex)</span></div>
+        <div class="assume-row"><span>GM Base</span><span class="assume-val">62% (on RCC 80% rev)</span></div>
+      </div>
+      <div class="assume-box">
+        <h3>🎯 NPV Target Matrix</h3>
+        <div class="assume-row"><span>NPV = 0 (Break-even)</span><span class="assume-val" style="color:#888;">Minimum viable</span></div>
+        <div class="assume-row"><span>NPV = 5 tỷ</span><span class="assume-val" style="color:#1e40af;">Acceptable return</span></div>
+        <div class="assume-row"><span>NPV = 10 tỷ</span><span class="assume-val" style="color:#c8a050;">Good investment</span></div>
+        <div class="assume-row"><span>NPV = 20 tỷ</span><span class="assume-val" style="color:#16a34a;">Strong return</span></div>
+        <div class="assume-row"><span>NPV = 30 tỷ</span><span class="assume-val" style="color:#7c3aed;">Exceptional</span></div>
+        <p style="font-size:8.5pt; color:#888; margin-top:10px;">
+          * NPV tính trên toàn bộ cash flows của P90 operation (60 tháng), chiết khấu 15% p.a.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Table 1 — Guests/Day vs Avg Check → Monthly Revenue (tỷ VND)</h2>
+    <p style="font-size:8.5pt; color:#888; margin-bottom:12px;">
+      Ô <span style="background:#c8a050; color:white; padding:1px 6px; border-radius:3px; font-size:8pt; font-weight:700;">★ highlight</span> = Base Case assumptions (revenue 1.43 tỷ → 3.5 tỷ)
+    </p>
+    <div class="sens-wrap">
+      <table class="sens-table" id="tbl-sens-revenue"></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Table 2 — Guests/Day vs Avg Check → NPV (60 tháng, Steady-State, tỷ VND)</h2>
+    <p style="font-size:8.5pt; color:#888; margin-bottom:12px;">
+      Giả sử revenue đạt steady-state từ M12, ramp từ M1–M11 theo S-curve. Discount rate 15% p.a. CAPEX 14.41 tỷ.
+      <br>🟢 = NPV ≥ 10 tỷ | 🟡 = NPV 0–10 tỷ | 🔴 = NPV âm (không thu hồi CAPEX)
+    </p>
+    <div class="sens-wrap">
+      <table class="sens-table" id="tbl-sens-npv"></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Table 3 — Avg Check Sensitivity → Key P&L Metrics (Steady-State/tháng)</h2>
+    <p style="font-size:8.5pt; color:#888; margin-bottom:12px;">
+      Guests/day cố định = 125/ngày (Base Case mid-ramp). Thay đổi avg check để thấy impact lên EBITDA và Payback.
+    </p>
+    <div class="sens-wrap">
+      <table class="sens-table" id="tbl-sens-check"></table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📈 NPV Curve — Guests/Day Required vs NPV Target (Avg Check 800K)</h2>
+    <div class="chart-container">
+      <canvas id="chart-npv-curve"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>💡 Strategic Implications — Sensitivity Findings</h2>
+    <div class="three-col">
+      <div style="background:#f0fdf4; border-radius:10px; padding:16px; border-left:4px solid #16a34a;">
+        <h3 style="color:#14532d; margin-bottom:10px;">✅ Đạt NPV 10 tỷ</h3>
+        <ul style="list-style:none; font-size:9pt; line-height:1.8;">
+          <li>• ~115 khách/ngày @ avg check 800K</li>
+          <li>• Hoặc ~85 khách/ngày @ avg check 1.1M</li>
+          <li>• Revenue steady-state: ~2.6 tỷ/tháng</li>
+          <li>• Khả thi với hotel captive + wine events</li>
+        </ul>
+      </div>
+      <div style="background:#fffbeb; border-radius:10px; padding:16px; border-left:4px solid #f59e0b;">
+        <h3 style="color:#92400e; margin-bottom:10px;">⚡ Base Case Strategy</h3>
+        <ul style="list-style:none; font-size:9pt; line-height:1.8;">
+          <li>• Target: 3.5 tỷ/tháng (cap) ở M18</li>
+          <li>• ~160 covers/day @ avg 780K</li>
+          <li>• Tăng avg check là đòn bẩy chính</li>
+          <li>• Wine events + bottle lockers → premium</li>
+        </ul>
+      </div>
+      <div style="background:#fef2f2; border-radius:10px; padding:16px; border-left:4px solid #dc2626;">
+        <h3 style="color:#991b1b; margin-bottom:10px;">⚠️ Risk Zone</h3>
+        <ul style="list-style:none; font-size:9pt; line-height:1.8;">
+          <li>• &lt; 70 khách/ngày → NPV âm</li>
+          <li>• Avg check &lt; 500K → không sustainable</li>
+          <li>• Conservative case (avg 1.8 tỷ/tháng) → payback 32M</li>
+          <li>• CAPEX 14.4 tỷ cần min 2.0 tỷ/tháng để viable</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end s-sensitivity -->
+
+<!-- ════════════════════════════════════════
+     SECTION 6: OPEN ITEMS
+════════════════════════════════════════ -->
+<div class="section-panel" id="s-openitems">
+
+  <div class="card">
+    <h2>⚠️ Open Items & Risks — Cần Xác Nhận Trước Khi Ký</h2>
+    <ul class="open-items">
+      <li class="danger">
+        <span class="icon">🔴</span>
+        <div>
+          <strong>RCC Profit Share % — CHƯA CÓ TRONG TERMSHEET</strong><br>
+          <span style="font-size:9pt; color:#666;">Không có điều khoản profit share cho RCC trong draft termsheet. Trước đây model giả định 30% net profit. Cần thương lượng rõ trước khi commit CAPEX 14.41 tỷ.</span>
+        </div>
+      </li>
+      <li class="danger">
+        <span class="icon">🔴</span>
+        <div>
+          <strong>Venue Confirmation — Independent Shop-Lot/Private Villa Required</strong><br>
+          <span style="font-size:9pt; color:#666;">Termsheet yêu cầu "independent shop-lot or private villa" — không phải hotel lobby bar. Cần Park90 xác nhận Barson's current location qualify. Nếu cần di dời → CAPEX fit-out tăng đáng kể.</span>
+        </div>
+      </li>
+      <li class="warn">
+        <span class="icon">🟡</span>
+        <div>
+          <strong>Barson 20% Revenue Share — Cần Làm Rõ Basis</strong><br>
+          <span style="font-size:9pt; color:#666;">20% của TOTAL outlet revenue (GTO) hay net revenue sau khi trừ wine cost? Nếu là net → impact lên RCC margin thay đổi đáng kể. Model hiện tại giả định 20% GTO.</span>
+        </div>
+      </li>
+      <li class="warn">
+        <span class="icon">🟡</span>
+        <div>
+          <strong>Inventory Cash Flow — Full Payment M1 Before Pick-Up</strong><br>
+          <span style="font-size:9pt; color:#666;">Phase 1: $150K phải thanh toán toàn bộ trước khi nhận hàng (M1). Cash flow impact trực tiếp tháng 1. Phase 2 ($150K) có thể 30–60 ngày credit. Cần lên kế hoạch cash flow cẩn thận.</span>
+        </div>
+      </li>
+      <li class="info">
+        <span class="icon">🔵</span>
+        <div>
+          <strong>Target Opening: Nov 2026 hay Feb 2027 (post-CNY)?</strong><br>
+          <span style="font-size:9pt; color:#666;">2 options khác nhau ~3 tháng → ảnh hưởng timing CAPEX deployment và khi nào revenue bắt đầu. Feb 2027 (post-CNY) có thể launch mạnh hơn do traffic cao.</span>
+        </div>
+      </li>
+      <li class="info">
+        <span class="icon">🔵</span>
+        <div>
+          <strong>Le Cave de Park90 (Retail Component) — Separate Entity?</strong><br>
+          <span style="font-size:9pt; color:#666;">Retail/e-commerce có min fee $1,500/mo vs $2,500/mo cho bar. Nếu add component này → revenue thêm nhưng cũng cần separate P&L và logistics. Chưa được model trong proforma hiện tại.</span>
+        </div>
+      </li>
+      <li class="info">
+        <span class="icon">🔵</span>
+        <div>
+          <strong>Subsequent Inventory Loading Terms — 30 hay 60-Day Credit?</strong><br>
+          <span style="font-size:9pt; color:#666;">Sau phase 1 (full payment), các lô sau có credit terms 30–60 ngày tùy winery. Cần clarify để model working capital accurately.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>📋 Decision Matrix — Go / No-Go</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="text-align:left;">Tiêu Chí</th><th>Required</th><th>Current Status</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>RCC Profit Share % confirmed</td><td>≥ 25% net profit</td><td><span class="badge badge-red">⚠️ TBD</span></td><td>Negotiate in term sheet</td></tr>
+          <tr><td>Venue qualify as shop-lot/villa</td><td>Park90 written confirmation</td><td><span class="badge badge-red">⚠️ Pending</span></td><td>Request written waiver/approval</td></tr>
+          <tr><td>CAPEX funding secured</td><td>14.41 tỷ equity ready</td><td><span class="badge badge-gold">🔵 In discussion</span></td><td>Board approval</td></tr>
+          <tr><td>Revenue baseline ≥ 1.4 tỷ/tháng</td><td>Barson Q1 2026 actuals</td><td><span class="badge badge-green">✅ Confirmed</span></td><td>Done</td></tr>
+          <tr><td>Park90 track record verified</td><td>SG + KL operating</td><td><span class="badge badge-green">✅ Confirmed</span></td><td>Done (+ Bangkok new)</td></tr>
+          <tr><td>GM advantage validated</td><td>COGS &lt; 40% via P90 supply</td><td><span class="badge badge-green">✅ Per term sheet</span></td><td>Confirm in final agreement</td></tr>
+          <tr><td>Opening timeline agreed</td><td>Nov 2026 or Feb 2027</td><td><span class="badge badge-gold">🔵 2 options open</span></td><td>Decide by June 2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- end s-openitems -->
+
+<div class="footer">
+  Park90 × Barson Investment Brief · RCC Internal · Confidential · April 2026 · v3.0<br>
+  Data: Excel proforma-v2 (park90-barson-proforma-v2.xlsx) · Barson Q1/2026 actuals · Park90 term sheet April 2026<br>
+  Sources: Wine Portal Holding, BK Magazine Sep 2025, The Edge Malaysia Jun 2024, The Star Sep 2024, Robert Parker Wine Advocate
 </div>
+</div><!-- end container -->
 
 <script>
-// ─── DATA ENGINE ─────────────────────────────────────────────────────────────
-const FX = 26200;
+// ══════════════════════════════════════════════
+// DATA FROM EXCEL (park90-barson-proforma-v2.xlsx)
+// ══════════════════════════════════════════════
 
-// Ramp function: logistic S-curve from start to target over N months, capped
-function rampRevenue(start, target, months, cap) {
-  const arr = [];
-  for (let m = 1; m <= months; m++) {
-    // S-curve: slow start, accelerate mid, plateau at cap
-    const t = m / months;
-    const s = 1 / (1 + Math.exp(-10 * (t - 0.5)));
-    let rev = start + (target - start) * s;
-    rev = Math.min(rev, cap);
-    arr.push(Math.round(rev * 1000) / 1000);
-  }
-  return arr;
-}
-
-// CAPEX schedule (tỷ VND): injected at specific months
-function capexSchedule(months) {
-  const arr = new Array(months).fill(0);
-  arr[0] = 3.93;  // M1 pilot inventory
-  arr[2] = 3.93;  // M3 fit-out
-  arr[6] = 6.55;  // M7 full scale
-  return arr;
-}
-
-// Depreciation: total CAPEX / 60 months
-const totalCapex = 14.41;
-const deprPerMonth = totalCapex / 60;
-
-function buildScenario(cfg) {
-  const { months, revArr, gm, staffM, rentM, opexM, taxRate, label } = cfg;
-  const capex = capexSchedule(months);
-  const rows = [];
-  let cumEbitda = 0;
-  let cumCapex = 0;
-  let paybackM = null;
-
-  for (let i = 0; i < months; i++) {
-    const rev = revArr[i];
-    const cogs = rev * (1 - gm);
-    const gp = rev * gm;
-    const staff = staffM;
-    const rent = rentM;
-    const opex = opexM;
-    const totalOpex = staff + rent + opex;
-    const ebitda = gp - totalOpex;
-    const depr = deprPerMonth;
-    const ebit = ebitda - depr;
-    const tax = ebit > 0 ? ebit * taxRate : 0;
-    const npat = ebit - tax;
-    const capexM = capex[i];
-    const fcf = ebitda - capexM;
-    cumEbitda += ebitda;
-    cumCapex += capexM;
-    if (paybackM === null && cumEbitda >= totalCapex) paybackM = i + 1;
-    rows.push({ m: i+1, rev, cogs, gp, staff, rent, opex, totalOpex, ebitda, depr, ebit, tax, npat, capexM, fcf, cumEbitda });
-  }
-  return { rows, paybackM };
-}
-
-// ─── SCENARIOS ───────────────────────────────────────────────────────────────
 const MONTHS = 24;
-const CAP = 3.5;
+const CAPEX = 14.41;
+const DEPR = CAPEX / 60; // 0.2402
+const FX = 26200;
+const DISC_RATE_MONTHLY = 0.15 / 12; // 1.25% per month
 
-const scenarios = {
+// Excel data — exact values from v2 spreadsheet
+const DATA = {
   base: {
-    revArr: rampRevenue(1.43, 3.8, MONTHS, CAP),
-    gm: 0.62, staffM: 0.18, rentM: 0.15, opexM: 0.12, taxRate: 0.20,
+    gto: [1.454,1.466,1.484,1.512,1.552,1.610,1.692,1.807,1.958,2.148,2.372,2.615,2.858,3.082,3.272,3.423,3.500,3.500,3.500,3.500,3.500,3.500,3.500,3.500],
+    barsonShare: 0.20, gmRCC: 0.62, fixedOpex: 0.2455, // up to M12; 0.2675 M13+
+    licenseByM: (gto) => Math.max(0.0655, gto*0.025),
+    gmTarget: 0.62,
+    capexByM: [10.48,0,3.93,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
   },
   cons: {
-    revArr: rampRevenue(1.04, 2.5, MONTHS, 2.5),
-    gm: 0.58, staffM: 0.18, rentM: 0.15, opexM: 0.12, taxRate: 0.20,
+    gto: [1.055,1.062,1.074,1.090,1.115,1.151,1.202,1.272,1.365,1.482,1.620,1.770,1.920,2.058,2.175,2.268,2.338,2.389,2.425,2.450,2.466,2.478,2.485,2.490],
+    gmTarget: 0.58,
+    capexByM: [10.48,0,3.93,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
   },
   opti: {
-    revArr: rampRevenue(1.75, 4.0, MONTHS, CAP),
-    gm: 0.66, staffM: 0.18, rentM: 0.15, opexM: 0.12, taxRate: 0.20,
+    gto: [1.773,1.784,1.802,1.828,1.866,1.921,1.999,2.107,2.251,2.432,2.644,2.875,3.106,3.318,3.499,3.500,3.500,3.500,3.500,3.500,3.500,3.500,3.500,3.500],
+    gmTarget: 0.66,
+    capexByM: [10.48,0,3.93,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
   }
 };
 
-// ─── TABLE RENDERER ──────────────────────────────────────────────────────────
-function fmt(v) {
+// Excel exact row values (verified)
+const EXCEL_ROWS = {
+  base: {
+    ebitda: [0.4757,0.4816,0.4906,0.5045,0.5243,0.5531,0.5937,0.6508,0.7257,0.8199,0.9310,1.0515,1.1662,1.2716,1.3611,1.4322,1.4685,1.4685,1.4685,1.4685,1.4685,1.4685,1.4685,1.4685],
+    npat:   [0.1884,0.1931,0.2003,0.2114,0.2273,0.2503,0.2828,0.3285,0.3884,0.4638,0.5526,0.6490,0.7408,0.8251,0.8967,0.9536,0.9826,0.9826,0.9826,0.9826,0.9826,0.9826,0.9826,0.9826],
+    fcf: [-10.0043,0.4816,-3.4394,0.5045,0.5243,0.5531,0.5937,0.6508,0.7257,0.8199,0.9310,1.0515,1.1662,1.2716,1.3611,1.4322,1.4685,1.4685,1.4685,1.4685,1.4685,1.4685,1.4685,1.4685],
+    cumFCF: [-10.0043,-9.5227,-12.9621,-12.4576,-11.9333,-11.3802,-10.7865,-10.1357,-9.4100,-8.5901,-7.6591,-6.6076,-5.4414,-4.1698,-2.8087,-1.3765,0.0920,1.5605,3.0290,4.4975,5.9660,7.4345,8.9030,10.3715]
+  },
+  cons: {
+    ebitda: [0.2440,0.2473,0.2528,0.2603,0.2719,0.2886,0.3122,0.3447,0.3879,0.4421,0.5062,0.5758,0.6454,0.7094,0.7637,0.8069,0.8393,0.8630,0.8797,0.8913,0.8987,0.9043,0.9075,0.9099],
+    npat:   [0.0030,0.0057,0.0101,0.0161,0.0254,0.0387,0.0576,0.0836,0.1182,0.1615,0.2128,0.2685,0.3242,0.3754,0.4188,0.4534,0.4793,0.4982,0.5116,0.5209,0.5268,0.5313,0.5338,0.5358],
+    fcf: [-10.2360,0.2473,-3.6772,0.2603,0.2719,0.2886,0.3122,0.3447,0.3879,0.4421,0.5062,0.5758,0.6454,0.7094,0.7637,0.8069,0.8393,0.8630,0.8797,0.8913,0.8987,0.9043,0.9075,0.9099],
+    cumFCF: [-10.2360,-9.9887,-13.6659,-13.4056,-13.1337,-12.8451,-12.5329,-12.1882,-11.8003,-11.3582,-10.8520,-10.2762,-9.6308,-8.9214,-8.1577,-7.3508,-6.5115,-5.6485,-4.7688,-3.8775,-2.9788,-2.0745,-1.1670,-0.2571]
+  },
+  opti: {
+    ebitda: [0.6906,0.6965,0.7060,0.7197,0.7397,0.7688,0.8100,0.8670,0.9430,1.0386,1.1499,1.2661,1.3824,1.4889,1.5800,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805],
+    npat:   [0.3603,0.3650,0.3726,0.3836,0.3996,0.4229,0.4558,0.5014,0.5622,0.6387,0.7278,0.8207,0.9138,0.9990,1.0718,1.0722,1.0722,1.0722,1.0722,1.0722,1.0722,1.0722,1.0722,1.0722],
+    fcf: [-9.7894,0.6965,-3.2240,0.7197,0.7397,0.7688,0.8100,0.8670,0.9430,1.0386,1.1499,1.2661,1.3824,1.4889,1.5800,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805,1.5805],
+    cumFCF: [-9.7894,-9.0929,-12.3169,-11.5972,-10.8575,-10.0887,-9.2787,-8.4117,-7.4687,-6.4301,-5.2802,-4.0141,-2.6317,-1.1428,0.4372,2.0177,3.5982,5.1787,6.7592,8.3397,9.9202,11.5007,13.0812,14.6617]
+  }
+};
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function f(v, decimals=3) {
+  if (v === null || v === undefined) return '—';
   if (v === 0) return '—';
-  const s = v.toFixed(3);
-  return (v < 0 ? '<span class="neg-val">' : '') + s + (v < 0 ? '</span>' : '');
+  const abs = Math.abs(v).toFixed(decimals);
+  if (v < 0) return `<span class="neg-val">(${abs})</span>`;
+  return abs;
 }
-function fmtPos(v) {
-  return v >= 0
-    ? '<span class="pos">' + v.toFixed(3) + '</span>'
-    : '<span class="neg-val">(' + Math.abs(v).toFixed(3) + ')</span>';
+function fp(v) { // positive green / negative red
+  if (v === null || v === undefined) return '—';
+  const abs = Math.abs(v).toFixed(3);
+  if (v < 0) return `<span class="neg-val">(${abs})</span>`;
+  return `<span class="pos">${abs}</span>`;
+}
+function pct(v) { return (v*100).toFixed(1)+'%'; }
+
+// ══════════════════════════════════════════════
+// NAV TABS
+// ══════════════════════════════════════════════
+function switchSection(id) {
+  document.querySelectorAll('.section-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  // Re-render charts if needed
+  if (id === 's-combined') renderCombinedChart();
+  if (id === 's-sensitivity') renderSensitivity();
 }
 
-function renderTable(scenarioKey) {
-  const cfg = scenarios[scenarioKey];
-  const { rows } = buildScenario({ ...cfg, months: MONTHS });
-  const tbl = document.getElementById('tbl-' + scenarioKey);
+// ══════════════════════════════════════════════
+// BARSON STANDALONE TABLE
+// ══════════════════════════════════════════════
+function renderBarsonTable() {
+  const months = [1,2,3,6,9,12,'AVG'];
+  const actuals = {1:1.508, 2:1.037, 3:1.754};
+  const avg = 1.432;
 
-  // Header — show Q1–Q8
-  const qCols = [1,2,3,4,5,6,9,12,15,18,21,24];
-  let h = '<thead><tr><th>Hạng Mục</th>';
-  qCols.forEach(m => { h += `<th>M${m}</th>`; });
-  h += '</tr></thead>';
+  function getBarsonRev(m) {
+    if (m==='AVG') return avg;
+    if (actuals[m]) return actuals[m];
+    return avg; // steady state
+  }
 
-  const get = (m) => rows[m-1];
+  let h = '<thead><tr><th style="text-align:left">Hạng Mục (tỷ VND)</th>';
+  months.forEach(m => h += `<th>${m==='AVG'?'AVG/tháng':'M'+m}</th>`);
+  h += '</tr></thead><tbody>';
 
   function row(label, fn, cls='') {
     let r = `<tr class="${cls}"><td>${label}</td>`;
-    qCols.forEach(m => {
-      const v = fn(get(m));
-      r += `<td>${v}</td>`;
-    });
+    months.forEach(m => { r += `<td>${fn(m)}</td>`; });
     return r + '</tr>';
   }
 
-  let b = '<tbody>';
-  b += `<tr class="section-header"><td colspan="${qCols.length+1}">REVENUE</td></tr>`;
-  b += row('Doanh Thu (tỷ VND)', r => `<strong>${r.rev.toFixed(3)}</strong>`, '');
-  b += row('COGS (38–42%)', r => fmt(-r.cogs), '');
-  b += row('Gross Profit', r => fmtPos(r.gp), 'subtotal');
-  b += row('Gross Margin %', r => (r.gp/r.rev*100).toFixed(1)+'%', '');
-
-  b += `<tr class="section-header"><td colspan="${qCols.length+1}">OPERATING EXPENSES</td></tr>`;
-  b += row('Nhân sự', r => fmt(-r.staff), '');
-  b += row('Thuê mặt bằng', r => fmt(-r.rent), '');
-  b += row('Opex (utilities, mkt…)', r => fmt(-r.opex), '');
-  b += row('Tổng Opex', r => fmt(-r.totalOpex), 'subtotal');
-
-  b += row('EBITDA', r => fmtPos(r.ebitda), 'ebitda-row');
-  b += row('EBITDA Margin %', r => (r.ebitda/r.rev*100).toFixed(1)+'%', '');
-  b += row('Khấu hao (CAPEX/60)', r => fmt(-r.depr), '');
-  b += row('EBIT', r => fmtPos(r.ebit), 'subtotal');
-  b += row('CIT (20%)', r => fmt(-r.tax), '');
-  b += row('NPAT', r => fmtPos(r.npat), 'npat-row');
-
-  b += `<tr class="section-header"><td colspan="${qCols.length+1}">CASH FLOW</td></tr>`;
-  b += row('CAPEX tháng', r => r.capexM > 0 ? fmt(-r.capexM) : '—', '');
-  b += row('Free Cash Flow', r => fmtPos(r.ebitda - r.capexM), 'subtotal');
-  b += row('Cumulative EBITDA', r => fmtPos(r.cumEbitda), 'total-row');
-  b += '</tbody>';
-
-  tbl.innerHTML = h + b;
-}
-
-// ─── CHART RENDERER ──────────────────────────────────────────────────────────
-function renderChart(scenarioKey) {
-  const cfg = scenarios[scenarioKey];
-  const { rows } = buildScenario({ ...cfg, months: MONTHS });
-  const maxRev = Math.max(...rows.map(r => r.rev));
-  const maxEbitda = Math.max(...rows.map(r => Math.abs(r.ebitda)));
-  const chart = document.getElementById('chart-' + scenarioKey);
-  let html = '';
-  rows.forEach(r => {
-    const revW = (r.rev / 3.5 * 100).toFixed(1);
-    const ebitdaW = (Math.abs(r.ebitda) / 1.9 * 100).toFixed(1);
-    const ebitdaCls = r.ebitda >= 0 ? 'bar-ebitda' : 'bar-neg';
-    html += `<div class="bar-row">
-      <span class="bar-label">M${r.m}</span>
-      <div style="flex:1">
-        <div class="bar-track" style="margin-bottom:3px"><div class="bar-fill bar-rev" style="width:${Math.min(revW,100)}%">${r.rev.toFixed(2)}B</div></div>
-        <div class="bar-track"><div class="bar-fill ${ebitdaCls}" style="width:${Math.min(ebitdaW,100)}%">${r.ebitda >= 0 ? '+' : ''}${r.ebitda.toFixed(2)}B</div></div>
-      </div>
-    </div>`;
+  h += `<tr class="section-hdr"><td colspan="${months.length+1}">REVENUE</td></tr>`;
+  h += row('Doanh Thu (GTO)', m => {
+    const v = getBarsonRev(m);
+    return m<=3 ? `<strong>${v.toFixed(3)} <span style="font-size:7.5pt;color:#888">(actual)</span></strong>` : v.toFixed(3);
   });
-  chart.innerHTML = html;
+  h += row('COGS (35%)', m => f(-getBarsonRev(m)*0.35));
+  h += row('Gross Profit (65%)', m => fp(getBarsonRev(m)*0.65), 'subtotal');
+  h += `<tr class="section-hdr"><td colspan="${months.length+1}">OPERATING EXPENSES</td></tr>`;
+  h += row('Staff (~15-18 FTE)', m => f(-0.350));
+  h += row('Rent (allocated)', m => f(-0.180));
+  h += row('Opex (utilities, misc)', m => f(-0.076));
+  h += row('Total Opex', m => f(-0.606), 'subtotal');
+  h += row('EBITDA', m => {
+    const v = getBarsonRev(m)*0.65 - 0.606;
+    return `<strong>${fp(v)}</strong>`;
+  }, 'ebitda-row');
+  h += row('EBITDA Margin', m => {
+    const ebitda = getBarsonRev(m)*0.65 - 0.606;
+    return pct(ebitda/getBarsonRev(m));
+  });
+  h += row('Depreciation', m => f(-0.056));
+  h += row('EBIT', m => fp(getBarsonRev(m)*0.65 - 0.662));
+  h += row('CIT (20%)', m => {
+    const ebit = getBarsonRev(m)*0.65 - 0.662;
+    return ebit > 0 ? f(-ebit*0.20) : '—';
+  });
+  h += row('NPAT', m => {
+    const ebit = getBarsonRev(m)*0.65 - 0.662;
+    const cit = ebit > 0 ? ebit*0.20 : 0;
+    return fp(ebit - cit);
+  }, 'npat-row');
+
+  document.getElementById('tbl-barson-standalone').innerHTML = h + '</tbody>';
 }
 
-// ─── TABS ────────────────────────────────────────────────────────────────────
-function switchScenario(key) {
-  document.querySelectorAll('.scenario-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + key).classList.add('active');
-  document.querySelector('.tab-btn.' + (key === 'base' ? 'base' : key === 'cons' ? 'cons' : 'opti')).classList.add('active');
+// ══════════════════════════════════════════════
+// P90 TABLES (using Excel exact data)
+// ══════════════════════════════════════════════
+function renderP90Table(scenario) {
+  const d = DATA[scenario];
+  const er = EXCEL_ROWS[scenario];
+  const gto = d.gto;
+  const gm = d.gmTarget;
+  const capexByM = d.capexByM;
+
+  const qCols = [0,2,5,8,11,14,17,20,23]; // M1,M3,M6,M9,M12,M15,M18,M21,M24
+
+  let h = '<thead><tr><th style="text-align:left">Hạng Mục (tỷ VND)</th>';
+  qCols.forEach(i => h += `<th>M${i+1}</th>`);
+  h += '</tr></thead><tbody>';
+
+  function row(label, fn, cls='') {
+    let r = `<tr class="${cls}"><td>${label}</td>`;
+    qCols.forEach(i => r += `<td>${fn(i)}</td>`);
+    return r + '</tr>';
+  }
+
+  const licFee = (i) => Math.max(0.0655, gto[i]*0.025);
+  const rccRev = (i) => gto[i]*0.80;
+  const cogs = (i) => rccRev(i)*(1-gm);
+  const gp = (i) => rccRev(i)*gm;
+  const barsonShare = (i) => gto[i]*0.20;
+  const staffOpex = 0.08+0.10; // 0.18
+  const totalOpex = (i) => licFee(i) + staffOpex;
+
+  h += `<tr class="section-hdr"><td colspan="${qCols.length+1}">REVENUE & SPLIT</td></tr>`;
+  h += row('Total Outlet GTO', i => `<strong>${gto[i].toFixed(3)}</strong>`);
+  h += row('→ Barson Share (20%)', i => `<span class="neg-val">(${(gto[i]*0.20).toFixed(3)})</span>`);
+  h += row('RCC Net Revenue (80%)', i => fp(rccRev(i)), 'subtotal');
+  h += row('RCC Rev as % GTO', i => '80.0%');
+
+  h += `<tr class="section-hdr"><td colspan="${qCols.length+1}">WINE COGS</td></tr>`;
+  h += row(`COGS (${Math.round((1-gm)*100)}% on RCC rev)`, i => f(-cogs(i)));
+  h += row('Gross Profit', i => fp(gp(i)), 'subtotal');
+  h += row('Gross Margin %', i => pct(gm));
+
+  h += `<tr class="section-hdr"><td colspan="${qCols.length+1}">OPERATING EXPENSES</td></tr>`;
+  h += row('Annual License Fee (2.5% GTO)', i => f(-licFee(i)));
+  h += row('Staff (RCC-side, 3 FTE)', i => f(-0.080));
+  h += row('Opex (misc, mkt, utilities)', i => f(-0.100));
+  h += row('Rent', i => '— (Barson)');
+  h += row('Total Opex', i => f(-totalOpex(i)), 'subtotal');
+
+  h += row('EBITDA', i => `<strong>${fp(er.ebitda[i])}</strong>`, 'ebitda-row');
+  h += row('EBITDA Margin % (GTO)', i => pct(er.ebitda[i]/gto[i]));
+  h += row('Depreciation (14.41B÷60)', i => f(-DEPR));
+  h += row('EBIT', i => fp(er.ebitda[i]-DEPR));
+  h += row('CIT (20%)', i => {
+    const ebit = er.ebitda[i]-DEPR;
+    return ebit>0 ? f(-ebit*0.20) : '—';
+  });
+  h += row('NPAT', i => `<strong>${fp(er.npat[i])}</strong>`, 'npat-row');
+
+  h += `<tr class="section-hdr"><td colspan="${qCols.length+1}">CASH FLOW</td></tr>`;
+  h += row('CAPEX deployed', i => capexByM[i]>0 ? `<span class="neg-val">(${capexByM[i].toFixed(2)})</span>` : '—');
+  h += row('Free Cash Flow', i => fp(er.fcf[i]), 'subtotal');
+  h += row('Cumulative FCF', i => fp(er.cumFCF[i]), 'total-row');
+
+  document.getElementById('tbl-p90-'+scenario).innerHTML = h + '</tbody>';
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
-['base','cons','opti'].forEach(k => { renderTable(k); renderChart(k); });
+// ══════════════════════════════════════════════
+// CHARTS
+// ══════════════════════════════════════════════
+const MONTHS_LABELS = Array.from({length:24},(_,i)=>'M'+(i+1));
+
+function renderBarsonQ1Chart() {
+  const ctx = document.getElementById('chart-barson-q1').getContext('2d');
+  new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels:['Jan 2026','Feb 2026','Mar 2026'],
+      datasets:[{
+        label:'Revenue (tỷ VND)',
+        data:[1.508,1.037,1.754],
+        backgroundColor:['#1e40af','#dc2626','#16a34a'],
+        borderRadius:6
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:d=>`${d.parsed.y.toFixed(3)} tỷ VND`}}},
+      scales:{y:{beginAtZero:false, min:0.8, ticks:{callback:v=>v.toFixed(2)+' tỷ'}}}
+    }
+  });
+}
+
+function renderP90Chart(scenario) {
+  const ctx = document.getElementById('chart-p90-'+scenario).getContext('2d');
+  const gto = DATA[scenario].gto;
+  const er = EXCEL_ROWS[scenario];
+  new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: MONTHS_LABELS,
+      datasets:[
+        {label:'Total GTO',data:gto,backgroundColor:'rgba(200,160,80,0.5)',borderColor:'#c8a050',borderWidth:1,borderRadius:3,order:2},
+        {label:'EBITDA',data:er.ebitda,type:'line',borderColor:scenario==='cons'?'#1e40af':scenario==='opti'?'#16a34a':'#c8a050',backgroundColor:'transparent',borderWidth:2.5,pointRadius:3,tension:0.4,order:1}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top'}, tooltip:{callbacks:{label:d=>`${d.dataset.label}: ${d.parsed.y.toFixed(3)} tỷ`}}},
+      scales:{y:{ticks:{callback:v=>v.toFixed(2)+' tỷ'}}}
+    }
+  });
+}
+
+let combinedChartDone = false;
+function renderCombinedChart() {
+  if (combinedChartDone) return;
+  combinedChartDone = true;
+  const ctx = document.getElementById('chart-combined-fcf').getContext('2d');
+  const capexLine = new Array(24).fill(-CAPEX);
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: MONTHS_LABELS,
+      datasets:[
+        {label:'Conservative Cum.FCF',data:EXCEL_ROWS.cons.cumFCF,borderColor:'#1e40af',backgroundColor:'rgba(30,64,175,0.05)',borderWidth:2,fill:false,tension:0.3,pointRadius:2},
+        {label:'Base Case Cum.FCF ★',data:EXCEL_ROWS.base.cumFCF,borderColor:'#c8a050',backgroundColor:'rgba(200,160,80,0.08)',borderWidth:2.5,fill:false,tension:0.3,pointRadius:3},
+        {label:'Optimistic Cum.FCF',data:EXCEL_ROWS.opti.cumFCF,borderColor:'#16a34a',backgroundColor:'rgba(22,163,74,0.06)',borderWidth:2,fill:false,tension:0.3,pointRadius:2},
+        {label:'CAPEX Target (breakeven)',data:new Array(24).fill(0),borderColor:'#dc2626',borderDash:[6,3],borderWidth:1.5,fill:false,pointRadius:0}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top'}, tooltip:{callbacks:{label:d=>`${d.dataset.label}: ${d.parsed.y.toFixed(2)} tỷ`}}},
+      scales:{y:{ticks:{callback:v=>v.toFixed(1)+' tỷ'}, grid:{color:c=>c.tick.value===0?'rgba(220,38,38,0.5)':'rgba(0,0,0,0.05)'}}}
+    }
+  });
+}
+
+// ══════════════════════════════════════════════
+// SENSITIVITY TABLES
+// ══════════════════════════════════════════════
+let sensitivityDone = false;
+function renderSensitivity() {
+  if (sensitivityDone) return;
+  sensitivityDone = true;
+
+  const guestsOptions = [40, 60, 80, 100, 125, 150, 175, 200];
+  const checkOptions  = [400, 500, 600, 700, 800, 900, 1000, 1200, 1500]; // K VND
+  const DAYS = 28;
+  const GM = 0.62;
+  const BAR_SHARE = 0.20;
+  const RCC_SHARE = 0.80;
+  const FIXED_OPEX = 0.2455; // tỷ/tháng (license+staff+opex at floor)
+  const TAX = 0.20;
+  const HORIZON = 60; // months for NPV
+  const r = 0.15/12;  // monthly discount rate
+
+  function calcMonthlyRev(guests, checkK) {
+    return guests * checkK * 1000 * DAYS / 1e9; // tỷ VND (GTO)
+  }
+  function calcNPV(steadyGTO) {
+    // Months 1–11: ramp linearly from 40% to 100% of steady state
+    // Months 12–60: steady state
+    let npv = -CAPEX;
+    for (let m = 1; m <= HORIZON; m++) {
+      const rampFactor = m <= 12 ? 0.4 + (m/12)*0.6 : 1.0;
+      const gto = steadyGTO * rampFactor;
+      const licFee = Math.max(0.0655, gto * 0.025);
+      const rccRev = gto * RCC_SHARE;
+      const cogs = rccRev * (1 - GM);
+      const opex = licFee + 0.08 + 0.10; // staff + misc
+      const ebitda = rccRev*GM - opex;
+      const ebit = ebitda - DEPR;
+      const cit = ebit > 0 ? ebit * TAX : 0;
+      const npat = ebit - cit;
+      const fcf = ebitda - (m === 1 ? 10.48 : m === 3 ? 3.93 : 0);
+      // Use NPAT + Depr as proxy for free cash flow after tax
+      const cfm = npat + DEPR;
+      npv += cfm / Math.pow(1 + r, m);
+    }
+    return npv;
+  }
+
+  // Table 1: Revenue sensitivity
+  let t1 = '<thead><tr><th style="text-align:left">Guests/Day ↓ | Avg Check →</th>';
+  checkOptions.forEach(c => t1 += `<th>${c}K</th>`);
+  t1 += '</tr></thead><tbody>';
+  guestsOptions.forEach(g => {
+    t1 += '<tr>';
+    t1 += `<td style="font-weight:700; background:#f8f9fa;">${g} khách/ngày</td>`;
+    checkOptions.forEach(c => {
+      const rev = calcMonthlyRev(g, c);
+      const isBase = (g===125 && c===800);
+      const isMin = (Math.abs(rev-1.43)<0.15);
+      let cls = rev>=3.0?'cell-good':rev>=2.0?'cell-ok':rev<1.2?'cell-bad':'cell-neutral';
+      if (isBase) cls = 'cell-highlight';
+      t1 += `<td class="${cls}">${rev.toFixed(2)} tỷ</td>`;
+    });
+    t1 += '</tr>';
+  });
+  t1 += '</tbody>';
+  document.getElementById('tbl-sens-revenue').innerHTML = t1;
+
+  // Table 2: NPV sensitivity
+  let t2 = '<thead><tr><th style="text-align:left">Guests/Day ↓ | Avg Check →</th>';
+  checkOptions.forEach(c => t2 += `<th>${c}K</th>`);
+  t2 += '</tr></thead><tbody>';
+  guestsOptions.forEach(g => {
+    t2 += '<tr>';
+    t2 += `<td style="font-weight:700; background:#f8f9fa;">${g} khách/ngày</td>`;
+    checkOptions.forEach(c => {
+      const gto = calcMonthlyRev(g, c);
+      const npv = calcNPV(gto);
+      const isBase = (g===125 && c===800);
+      let cls = npv>=10?'cell-good':npv>=0?'cell-ok':'cell-bad';
+      if (isBase) cls = 'cell-highlight';
+      const sym = npv >= 0 ? '+' : '';
+      t2 += `<td class="${cls}">${sym}${npv.toFixed(1)} tỷ</td>`;
+    });
+    t2 += '</tr>';
+  });
+  t2 += '</tbody>';
+  document.getElementById('tbl-sens-npv').innerHTML = t2;
+
+  // Table 3: Avg check sensitivity at fixed 125 guests/day
+  const fixedGuests = 125;
+  const checkRange = [400,500,600,700,800,900,1000,1100,1200,1300,1400,1500];
+  let t3 = '<thead><tr>';
+  ['Avg Check','Revenue GTO/tháng','RCC Net Rev (80%)','Gross Profit (62%)','EBITDA','EBITDA %','NPAT','NPV (60M)','Payback (M)'].forEach(h => t3+=`<th>${h}</th>`);
+  t3 += '</tr></thead><tbody>';
+  checkRange.forEach(c => {
+    const gto = calcMonthlyRev(fixedGuests, c);
+    const rccRev = gto * 0.80;
+    const gp = rccRev * GM;
+    const licFee = Math.max(0.0655, gto*0.025);
+    const opex = licFee + 0.08 + 0.10;
+    const ebitda = gp - opex;
+    const ebit = ebitda - DEPR;
+    const cit = ebit>0 ? ebit*0.20 : 0;
+    const npat = ebit - cit;
+    const npv = calcNPV(gto);
+    // Payback: months to cumulate EBITDA >= CAPEX (simplified linear)
+    const payback = ebitda > 0 ? Math.ceil(CAPEX / ebitda) : 999;
+    const isBase = c===800;
+    const cls = isBase ? 'highlight' : '';
+    const ebitdaPct = ebitda>0 ? (ebitda/gto*100).toFixed(1)+'%' : '<span class="neg-val">neg</span>';
+    t3 += `<tr class="${cls}">`;
+    t3 += `<td style="font-weight:700;">${c}K VND${isBase?' ★':''}</td>`;
+    t3 += `<td>${gto.toFixed(3)} tỷ</td>`;
+    t3 += `<td>${(rccRev).toFixed(3)} tỷ</td>`;
+    t3 += `<td>${gp.toFixed(3)} tỷ</td>`;
+    t3 += `<td>${ebitda>0?'<span class="pos">':'<span class="neg-val">('}${Math.abs(ebitda).toFixed(3)}${ebitda>0?'':')'}</span> tỷ</td>`;
+    t3 += `<td>${ebitdaPct}</td>`;
+    t3 += `<td>${npat>0?fp(npat)+' tỷ':'<span class="neg-val">neg</span>'}</td>`;
+    t3 += `<td>${npv>=0?'<span class="pos">+'+npv.toFixed(1):'<span class="neg-val">'+npv.toFixed(1)}</span> tỷ</td>`;
+    t3 += `<td>${payback>60?'<span class="neg-val">&gt;60M</span>':payback+'M'}</td>`;
+    t3 += '</tr>';
+  });
+  t3 += '</tbody>';
+  document.getElementById('tbl-sens-check').innerHTML = t3;
+
+  // NPV Curve chart
+  const npvValues = guestsOptions.map(g => calcNPV(calcMonthlyRev(g, 800)));
+  const ctx = document.getElementById('chart-npv-curve').getContext('2d');
+  new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: guestsOptions.map(g=>g+' khách/ngày'),
+      datasets:[
+        {label:'NPV (60M, 15% disc., Avg Check 800K)',data:npvValues,borderColor:'#c8a050',backgroundColor:'rgba(200,160,80,0.1)',fill:true,borderWidth:2.5,pointRadius:5,tension:0.4},
+        {label:'NPV = 0 (Breakeven)',data:new Array(guestsOptions.length).fill(0),borderColor:'#dc2626',borderDash:[6,4],borderWidth:1.5,pointRadius:0}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top'}, tooltip:{callbacks:{label:d=>`NPV: ${d.parsed.y.toFixed(1)} tỷ VND`}}},
+      scales:{y:{ticks:{callback:v=>v.toFixed(0)+' tỷ'}, grid:{color:c=>c.tick.value===0?'rgba(220,38,38,0.4)':'rgba(0,0,0,0.05)'}}}}
+    }
+  });
+}
+
+// ══════════════════════════════════════════════
+// P90 SCENARIO SWITCHING
+// ══════════════════════════════════════════════
+function switchP90(key) {
+  document.querySelectorAll('#s-p90 .scenario-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#s-p90 .tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('p90-panel-'+key).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  renderBarsonTable();
+  renderP90Table('base');
+  renderP90Table('cons');
+  renderP90Table('opti');
+  renderBarsonQ1Chart();
+  renderP90Chart('base');
+  renderP90Chart('cons');
+  renderP90Chart('opti');
+});
 </script>
 </body>
 </html>
