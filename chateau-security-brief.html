@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phương Án An Ninh — Chateau Q9</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f5f7; color:#1a1a2e; font-size:10.5pt; line-height:1.6; }
+.wrap { max-width:960px; margin:0 auto; padding:28px 20px 52px; }
+
+.header { background:linear-gradient(135deg,#0d1b2a,#1e3a5f); border-radius:12px; padding:24px 32px; color:white; margin-bottom:20px; }
+.header .label { font-size:7.5pt; letter-spacing:4px; text-transform:uppercase; color:#c8a050; margin-bottom:6px; }
+.header h1 { font-size:16pt; font-weight:700; }
+.header p { font-size:9pt; color:rgba(255,255,255,0.5); margin-top:4px; }
+
+.section { background:white; border-radius:12px; padding:22px 26px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.section h2 { font-size:9.5pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:16px; border-bottom:2px solid #f0f0f0; padding-bottom:10px; }
+
+/* KPI row */
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:0; }
+.kpi { background:#f8f9fa; border-radius:10px; padding:14px 16px; border-top:3px solid #c8a050; text-align:center; }
+.kpi.blue { border-top-color:#1e40af; }
+.kpi.green { border-top-color:#16a34a; }
+.kpi.red { border-top-color:#dc2626; }
+.kpi .val { font-size:15pt; font-weight:700; color:#0d1b2a; }
+.kpi .lbl { font-size:8pt; color:#888; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+
+/* Position cards */
+.pos-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.pos-card { border-radius:8px; padding:13px 15px; }
+.pos-card.a1 { background:#fef9f0; border-left:4px solid #c8a050; }
+.pos-card.a2 { background:#f0f4ff; border-left:4px solid #1e40af; }
+.pos-card.a345 { background:#f0fdf4; border-left:4px solid #16a34a; }
+.pos-card h3 { font-size:10pt; font-weight:700; margin-bottom:6px; }
+.pos-card ul { padding-left:15px; font-size:9pt; color:#444; line-height:1.9; }
+
+/* Emergency table */
+table { width:100%; border-collapse:collapse; font-size:9pt; }
+thead tr { background:#0d1b2a; }
+th { color:#c8a050; padding:10px 12px; text-align:left; font-size:8.5pt; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; }
+td { padding:10px 12px; border-bottom:1px solid #f0f0f0; vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:#fafafa; }
+.sit { font-weight:700; color:#0d1b2a; }
+.tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:7.5pt; font-weight:700; }
+.tag-red    { background:#fee2e2; color:#991b1b; }
+.tag-blue   { background:#dbeafe; color:#1e40af; }
+.tag-green  { background:#d1fae5; color:#065f46; }
+.tag-yellow { background:#fef3c7; color:#92400e; }
+.tag-gray   { background:#f3f4f6; color:#374151; }
+
+/* Warning box */
+.warn { background:#fffbeb; border-left:4px solid #f59e0b; border-radius:0 8px 8px 0; padding:13px 16px; margin-top:14px; font-size:9.5pt; color:#555; }
+.gap-box { background:#fef2f2; border-left:4px solid #dc2626; border-radius:0 8px 8px 0; padding:13px 16px; margin-top:0; font-size:9.5pt; color:#555; }
+.gap-box ul { padding-left:18px; margin-top:6px; line-height:1.9; }
+
+.footer { text-align:center; font-size:8pt; color:#bbb; margin-top:20px; }
+
+@media(max-width:700px) {
+  .kpi-row { grid-template-columns:repeat(2,1fr); }
+  .pos-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div class="label">Chateau De Saigon · Q9 · Kỹ An Security · 2025</div>
+  <h1>Phương Án An Ninh — Dinh Thự Chateau</h1>
+  <p>Tóm tắt cho anh Quang · Tháng 4/2026</p>
+</div>
+
+<!-- QUY MÔ -->
+<div class="section">
+  <h2>Quy Mô Triển Khai</h2>
+  <div class="kpi-row">
+    <div class="kpi"><div class="val">15</div><div class="lbl">Nhân sự tổng</div></div>
+    <div class="kpi blue"><div class="val">24/7</div><div class="lbl">Hoạt động liên tục</div></div>
+    <div class="kpi green"><div class="val">5</div><div class="lbl">Vị trí cố định</div></div>
+    <div class="kpi red"><div class="val">15'</div><div class="lbl">Check-in bộ đàm/lần</div></div>
+  </div>
+</div>
+
+<!-- VỊ TRÍ -->
+<div class="section">
+  <h2>Bố Trí Vị Trí</h2>
+  <div class="pos-grid">
+    <div class="pos-card a1">
+      <h3>🚧 A1 — Cổng Chính</h3>
+      <ul>
+        <li>Kiểm soát 100% người/xe vào/ra</li>
+        <li>Đăng ký khách: tên, tổ chức, mục đích, chữ ký</li>
+        <li><strong>Không tự ý mở cổng</strong> — phải có lệnh Gia chủ</li>
+        <li>Giám sát nhà thầu, bảo trì toàn bộ quá trình</li>
+        <li>Quan sát UAV khoảng không phía trên</li>
+      </ul>
+    </div>
+    <div class="pos-card a2">
+      <h3>🖥 A2 — Phòng Điều Khiển Trung Tâm</h3>
+      <ul>
+        <li>Giám sát CCTV 24/7 toàn bộ khu vực trọng điểm</li>
+        <li>Kiểm soát cửa tự động + khoá khẩn cấp từ xa</li>
+        <li>Vận hành PCCC trung tâm + mở cửa thoát hiểm</li>
+        <li>Điều khiển thang máy khi mất điện/khẩn cấp</li>
+        <li>Cấp/thu hồi quyền thẻ từ theo lệnh Gia chủ</li>
+        <li>Điều phối xử lý UAV khi có cảnh báo</li>
+      </ul>
+    </div>
+    <div class="pos-card a345">
+      <h3>🚶 A3 / A4 / A5 — Tuần Tra</h3>
+      <ul>
+        <li>Tuần tra nội/ngoại vi 24/7, lịch không cố định</li>
+        <li>Quan sát khoảng không phát hiện UAV/flycam</li>
+        <li>Giám sát công nhân, bảo trì, người làm vườn</li>
+        <li>Kiểm tra cửa, hàng rào, hệ thống chiếu sáng</li>
+        <li>Phối hợp phản ứng nhanh khi có sự cố</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TÌNH HUỐNG KHẨN CẤP -->
+<div class="section">
+  <h2>Phương Án Xử Lý Tình Huống Khẩn Cấp</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:18%">Tình Huống</th>
+        <th style="width:18%">Phát Hiện</th>
+        <th style="width:34%">Xử Lý Ngay</th>
+        <th style="width:30%">Escalate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="sit">🔴 Xâm nhập trái phép</span></td>
+        <td>A3/A4/A5 tuần tra hoặc camera A2</td>
+        <td>Chặn tiếp cận → báo A2 → A2 khoá cửa khu vực → điều phối lực lượng bao vây</td>
+        <td><span class="tag tag-red">Đội trưởng</span> <span class="tag tag-red">Công an địa phương</span> <span class="tag tag-gray">Bảo vệ The Rivus</span></td>
+      </tr>
+      <tr>
+        <td><span class="sit">🔴 Trộm cắp / Cướp giật</span></td>
+        <td>Bất kỳ vị trí nào</td>
+        <td>Tạm giữ người/tang vật theo pháp luật, lập biên bản tại chỗ, không để tẩu thoát</td>
+        <td><span class="tag tag-red">Công an</span> <span class="tag tag-blue">Trung tâm Kỹ An</span> <span class="tag tag-red">Đội trưởng</span></td>
+      </tr>
+      <tr>
+        <td><span class="sit">🔴 Cháy nổ</span></td>
+        <td>Báo động PCCC hoặc camera A2</td>
+        <td>A2 kích hoạt PCCC trung tâm → tự động mở khoá cửa thoát hiểm toàn dinh thự → sơ tán Gia chủ</td>
+        <td><span class="tag tag-red">Gọi 114</span> <span class="tag tag-red">Đội trưởng</span> <span class="tag tag-blue">Trung tâm Kỹ An</span></td>
+      </tr>
+      <tr>
+        <td><span class="sit">🟡 UAV / Flycam xuất hiện</span></td>
+        <td>A3/A4/A5 quan sát khoảng không bên trên</td>
+        <td>Cảnh báo trực quan, ghi nhận thông tin, báo ngay A2 — <strong>KHÔNG dùng thiết bị chế áp</strong> (vi phạm NĐ 288/2025)</td>
+        <td><span class="tag tag-blue">A2 điều phối</span> <span class="tag tag-blue">Trung tâm Kỹ An</span> theo quy trình riêng</td>
+      </tr>
+      <tr>
+        <td><span class="sit">🟡 Mất điện</span></td>
+        <td>A2 phát hiện qua hệ thống</td>
+        <td>Kiểm soát thang máy dự phòng, duy trì khoá cổng/cửa qua hệ thống backup, không để mất kiểm soát lối vào</td>
+        <td><span class="tag tag-yellow">Đội trưởng</span> <span class="tag tag-yellow">Báo Gia chủ</span></td>
+      </tr>
+      <tr>
+        <td><span class="sit">🟢 Khách đột xuất / Không hẹn</span></td>
+        <td>A1 cổng chính</td>
+        <td>Giữ khách tại cổng, ghi thông tin, <strong>KHÔNG mở cửa</strong> khi chưa có lệnh Gia chủ — đề nghị khách để lại danh thiếp/lời nhắn</td>
+        <td><span class="tag tag-gray">Đội trưởng</span> → chờ lệnh Gia chủ</td>
+      </tr>
+      <tr>
+        <td><span class="sit">🟢 Nhà thầu / Bảo trì vào</span></td>
+        <td>A1 kiểm tra danh sách</td>
+        <td>Đối chiếu danh sách phê duyệt, đăng ký vào/ra, A3/A4/A5 giám sát toàn bộ quá trình làm việc</td>
+        <td>Từ chối nếu không có tên trong danh sách đã phê duyệt</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    ⚡ <strong>Chuỗi chỉ huy:</strong> Mọi sự cố → báo Đội trưởng/Ca trưởng → báo ngay Trung tâm Nghiệp vụ Kỹ An qua <strong>Viber nhóm hoặc điện thoại</strong> để theo dõi và chỉ đạo kịp thời.
+  </div>
+</div>
+
+<!-- GAPS -->
+<div class="section">
+  <h2>Điểm Cần Làm Rõ Thêm</h2>
+  <div class="gap-box">
+    <strong>Thông tin chưa có trong file — anh cần hỏi lại Kỹ An:</strong>
+    <ul>
+      <li>❓ <strong>Bảng giá / chi phí hàng tháng</strong> — chưa có trong tài liệu này</li>
+      <li>❓ <strong>Sơ đồ mặt bằng</strong> bố trí A1–A5 cụ thể — có đề cập nhưng không đính kèm</li>
+      <li>❓ <strong>Nội dung chi tiết "Các tình huống cụ thể"</strong> — phần này được đề cập nhưng nội dung trống trong file → có thể là phụ lục riêng</li>
+      <li>❓ <strong>Lịch ca kíp</strong> — mỗi ca mấy tiếng, số người/ca, luân phiên thế nào</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">Chateau De Saigon · Kỹ An Security · Tóm tắt bởi Zera · Tháng 4/2026</div>
+</div>
+</body>
+</html>
