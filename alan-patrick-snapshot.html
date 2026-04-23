@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advisor Snapshot | RCC</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f5f7; color:#1a1a2e; font-size:10.5pt; line-height:1.6; }
+.wrap { max-width:860px; margin:0 auto; padding:28px 20px 48px; }
+
+.header { background:linear-gradient(135deg,#0d1b2a,#1e3a5f); border-radius:12px; padding:24px 32px; color:white; margin-bottom:20px; }
+.header .label { font-size:7.5pt; letter-spacing:4px; text-transform:uppercase; color:#c8a050; margin-bottom:6px; }
+.header h1 { font-size:16pt; font-weight:700; }
+.header p { font-size:9.5pt; color:rgba(255,255,255,0.55); margin-top:4px; }
+
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+
+.card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.card-head { padding:18px 20px 14px; border-bottom:1px solid #f0f0f0; }
+.card-head .name { font-size:13pt; font-weight:700; color:#0d1b2a; }
+.card-head .role { font-size:8.5pt; color:#888; margin-top:3px; }
+.card-head .avail { display:inline-block; margin-top:8px; padding:3px 10px; border-radius:10px; font-size:7.5pt; font-weight:700; }
+.avail-yes { background:#d1fae5; color:#065f46; }
+.avail-now { background:#fef3c7; color:#92400e; }
+
+.card-body { padding:16px 20px; }
+
+.row { display:flex; gap:8px; padding:7px 0; border-bottom:1px solid #f5f5f5; align-items:flex-start; font-size:9.5pt; }
+.row:last-child { border-bottom:none; }
+.row-label { font-weight:700; color:#888; font-size:8pt; text-transform:uppercase; letter-spacing:0.5px; min-width:80px; flex-shrink:0; padding-top:2px; }
+.row-val { color:#333; flex:1; }
+
+.ws-list { list-style:none; margin-top:10px; }
+.ws-list li { display:flex; gap:8px; padding:6px 8px; border-radius:6px; margin-bottom:4px; font-size:9pt; }
+.ws-list li:nth-child(1) { background:#fef9f0; }
+.ws-list li:nth-child(2) { background:#f0f4ff; }
+.ws-list li:nth-child(3) { background:#f0fdf4; }
+.ws-list li:nth-child(4) { background:#fdf4ff; }
+
+.detail-link { display:block; text-align:center; padding:10px; font-size:8.5pt; color:#1e40af; text-decoration:none; background:#f0f4ff; border-radius:0 0 12px 12px; font-weight:600; }
+.detail-link:hover { background:#dbeafe; }
+
+.note { background:#fffbeb; border-radius:10px; padding:13px 16px; font-size:9pt; color:#555; border-left:3px solid #c8a050; margin-top:0; }
+
+@media(max-width:640px) { .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div class="label">RCC Nội Bộ · Tháng 4/2026</div>
+  <h1>Advisor Snapshot — Alan Chan & Patrick Finn</h1>
+  <p>Tóm tắt nhanh · Chi tiết tại link bên dưới mỗi cột</p>
+</div>
+
+<div class="grid">
+
+  <!-- ALAN CHAN -->
+  <div class="card">
+    <div class="card-head">
+      <div class="name">Alan Thomas Chan</div>
+      <div class="role">Managing Director · ATC Advisors Pte Ltd · Singapore</div>
+      <span class="avail avail-now">✅ Independent — Available ngay</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-label">Kinh nghiệm</span>
+        <span class="row-val">30+ năm · Ultra luxury hospitality, capital markets, UHNW network SEA</span>
+      </div>
+      <div class="row">
+        <span class="row-label">Nổi bật</span>
+        <span class="row-val">
+          8 năm tại <strong>Hotel Properties Ltd</strong> — Special Assistant cho Chủ tịch Ong Beng Seng (tỷ phú SG, owner của Four Seasons KL, JHB, Point Yamu Phuket)<br>
+          Xây dựng <strong>67 Pall Mall Singapore</strong> từ 0 → SGD 20M+ raised<br>
+          <strong>Resorts World Sentosa</strong> — phát triển 4 hotels từ ground-up
+        </span>
+      </div>
+      <div class="row">
+        <span class="row-label">Học vấn</span>
+        <span class="row-val">Harvard Business School (Chief of Staff) · WSET Level 2</span>
+      </div>
+
+      <ul class="ws-list">
+        <li>🏨 <strong>Aman Deal</strong> — Expert advisor, hiểu cấu trúc ultra luxury HoldCo từ phía owner</li>
+        <li>🏝 <strong>Tuần Châu</strong> — Primary mandate, lead negotiator với brands quốc tế</li>
+        <li>🍽 <strong>Le Méridien F&B</strong> — Kết nối Tung Lok, Hakkasan, Imperial Treasure, Sunset</li>
+        <li>🍷 <strong>Park90</strong> — Wine KOL, brand advocate, Robert Parker network</li>
+      </ul>
+    </div>
+    <a class="detail-link" href="https://bachtranphuong-pa-hub.github.io/wine-bars-hcmc/alan-chan-brief.html" target="_blank">📄 Hồ sơ chi tiết →</a>
+  </div>
+
+  <!-- PATRICK FINN -->
+  <div class="card">
+    <div class="card-head">
+      <div class="name">Patrick Finn</div>
+      <div class="role">Former VP Development SEA & Korea · IHG Hotels & Resorts · Singapore</div>
+      <span class="avail avail-yes">✅ Rời IHG 02/2026 — Sẵn sàng engage</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-label">Kinh nghiệm</span>
+        <span class="row-val">20+ năm · Hotel development, HMA negotiation, APAC & EMEA</span>
+      </div>
+      <div class="row">
+        <span class="row-label">Nổi bật</span>
+        <span class="row-val">
+          <strong>IHG</strong> (2023–02/2026) — VP Development SEA & Korea, 18 brands, 100+ hotels<br>
+          <strong>Hyatt APAC</strong> — Lãnh đạo phát triển toàn khu vực châu Á TBD<br>
+          <strong>Starwood EMEA</strong> — Acquisitions & Development (W, St. Regis, Westin, Sheraton)
+        </span>
+      </div>
+      <div class="row">
+        <span class="row-label">Thế mạnh</span>
+        <span class="row-val">Cấu trúc & đàm phán HMA · Quan hệ chủ đầu tư SEA · Hiểu cả 2 phía brand lẫn developer</span>
+      </div>
+
+      <ul class="ws-list">
+        <li>🏝 <strong>Tuần Châu</strong> — Co-lead brand search, dẫn dắt đàm phán HMA từ LOI → term sheet</li>
+        <li>🏨 <strong>Aman Deal</strong> — Market intelligence, competitive positioning, industry network</li>
+      </ul>
+    </div>
+    <a class="detail-link" href="https://bachtranphuong-pa-hub.github.io/wine-bars-hcmc/alan-chan-brief.html#patrick" target="_blank">📄 Hồ sơ chi tiết →</a>
+  </div>
+
+</div>
+
+<!-- Combined fee -->
+<div class="note">
+  💰 <strong>Đề xuất engagement:</strong> Master advisory agreement cho Alan (USD 7–10K/mo retainer + success fees). Patrick: USD 4K/mo retainer cho Tuần Châu + success fee khi ký HMA. Cả hai independent advisors — không conflict of interest.
+</div>
+
+</div>
+</body>
+</html>
