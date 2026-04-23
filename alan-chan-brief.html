@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alan Chan — Advisory Profile | RCC</title>
+<title>Alan Chan — Hồ Sơ Cố Vấn | RCC</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f5f7; color:#1a1a2e; font-size:10.5pt; line-height:1.6; }
-.wrap { max-width:860px; margin:0 auto; padding:32px 20px 60px; }
+.wrap { max-width:900px; margin:0 auto; padding:32px 20px 60px; }
 
 /* Header */
 .header { background:linear-gradient(135deg,#0d1b2a,#1e3a5f); border-radius:14px; padding:32px 36px; color:white; margin-bottom:20px; }
@@ -18,223 +18,374 @@ body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f5f7; color:#1a1a2
 .tag { padding:4px 12px; border-radius:20px; font-size:8pt; font-weight:600; background:rgba(200,160,80,0.15); color:#c8a050; border:1px solid rgba(200,160,80,0.3); }
 
 /* Section */
-.section { background:white; border-radius:12px; padding:22px 26px; margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-.section h2 { font-size:10pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:16px; border-bottom:2px solid #f0f0f0; padding-bottom:10px; }
+.section { background:white; border-radius:12px; padding:24px 28px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.section > h2 { font-size:9.5pt; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:#888; margin-bottom:18px; border-bottom:2px solid #f0f0f0; padding-bottom:10px; }
 
-/* Workstream cards */
-.ws-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.ws { border-radius:10px; padding:16px 18px; border-left:4px solid; }
+/* Bio summary */
+.bio-text { font-size:10pt; color:#333; line-height:1.85; }
+
+/* Workstream cards — full width stacked */
+.ws { border-radius:10px; padding:20px 22px; margin-bottom:14px; border-left:5px solid; }
 .ws.aman  { background:#fef9f0; border-color:#c8a050; }
 .ws.tc    { background:#f0f4ff; border-color:#1e40af; }
 .ws.fb    { background:#f0fdf4; border-color:#16a34a; }
 .ws.wine  { background:#fdf4ff; border-color:#7c3aed; }
-.ws h3 { font-size:10pt; font-weight:700; margin-bottom:6px; }
-.ws .cred { font-size:8.5pt; font-weight:700; color:#555; margin-bottom:6px; padding:3px 8px; border-radius:4px; background:rgba(0,0,0,0.05); display:inline-block; }
-.ws p { font-size:9pt; color:#444; line-height:1.7; }
-.ws ul { padding-left:14px; font-size:9pt; color:#444; line-height:1.8; }
+
+.ws-header { display:flex; align-items:baseline; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+.ws h3 { font-size:11pt; font-weight:700; }
+.ws .cred-badge { font-size:8pt; font-weight:700; padding:3px 10px; border-radius:12px; background:rgba(0,0,0,0.07); color:#444; }
+
+.ws-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+.ws-cell { background:rgba(255,255,255,0.75); border-radius:8px; padding:12px 14px; }
+.ws-cell .cell-title { font-size:7.5pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:8px; }
+.ws-cell ul { padding-left:14px; font-size:9pt; color:#333; line-height:1.8; }
+.ws-cell p { font-size:9pt; color:#333; line-height:1.8; }
 
 /* Career timeline */
 .timeline { list-style:none; }
-.timeline li { display:flex; gap:16px; padding:10px 0; border-bottom:1px solid #f4f4f4; align-items:flex-start; }
+.timeline li { display:flex; gap:16px; padding:12px 0; border-bottom:1px solid #f4f4f4; align-items:flex-start; }
 .timeline li:last-child { border-bottom:none; }
-.tl-dot { width:10px; height:10px; border-radius:50%; background:#c8a050; flex-shrink:0; margin-top:6px; }
-.tl-dot.blue { background:#1e40af; }
-.tl-dot.green { background:#16a34a; }
-.tl-dot.gray { background:#9ca3af; }
+.tl-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.dot-gold { background:#c8a050; }
+.dot-blue { background:#1e40af; }
+.dot-green { background:#16a34a; }
+.dot-gray  { background:#9ca3af; }
 .tl-body { flex:1; }
-.tl-org { font-weight:700; font-size:10pt; color:#0d1b2a; }
-.tl-role { font-size:9pt; color:#555; }
-.tl-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
-.tl-tag { font-size:7.5pt; padding:2px 8px; border-radius:10px; background:#f0f0f0; color:#555; font-weight:600; }
-.tl-tag.gold { background:#fef3c7; color:#92400e; }
-.tl-tag.blue { background:#dbeafe; color:#1e40af; }
-.tl-tag.green { background:#d1fae5; color:#065f46; }
-.tl-tag.purple { background:#ede9fe; color:#5b21b6; }
+.tl-org { font-weight:700; font-size:10.5pt; color:#0d1b2a; }
+.tl-period { font-size:8.5pt; color:#888; margin-bottom:3px; }
+.tl-desc { font-size:9pt; color:#555; line-height:1.7; margin-bottom:6px; }
+.tl-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.tl-tag { font-size:7.5pt; padding:2px 8px; border-radius:10px; font-weight:600; }
+.tt-gold   { background:#fef3c7; color:#92400e; }
+.tt-blue   { background:#dbeafe; color:#1e40af; }
+.tt-green  { background:#d1fae5; color:#065f46; }
+.tt-purple { background:#ede9fe; color:#5b21b6; }
+.tt-gray   { background:#f3f4f6; color:#374151; }
 
-/* Engagement */
-.eng-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
-.eng-card { background:#f8f9fa; border-radius:10px; padding:14px 14px; text-align:center; }
-.eng-card .icon { font-size:18pt; margin-bottom:6px; }
-.eng-card .ws-name { font-size:8.5pt; font-weight:700; color:#0d1b2a; margin-bottom:6px; }
-.eng-card .fee { font-size:9pt; color:#c8a050; font-weight:700; }
-.eng-card .fee-type { font-size:8pt; color:#888; margin-top:2px; }
+/* Engagement table */
+.eng-table { width:100%; border-collapse:collapse; font-size:9.5pt; }
+.eng-table th { background:#0d1b2a; color:#c8a050; padding:10px 14px; text-align:left; font-size:8.5pt; text-transform:uppercase; letter-spacing:0.5px; }
+.eng-table td { padding:11px 14px; border-bottom:1px solid #f0f0f0; vertical-align:top; }
+.eng-table tr:last-child td { border-bottom:none; }
+.eng-table tr:hover td { background:#fafafa; }
+.fee-main { font-weight:700; color:#0d1b2a; font-size:10pt; }
+.fee-sub  { font-size:8.5pt; color:#888; margin-top:2px; }
 
-.footer { text-align:center; font-size:8pt; color:#bbb; margin-top:24px; }
+.total-box { margin-top:14px; background:#fffbeb; border-radius:10px; padding:14px 18px; border-left:4px solid #c8a050; font-size:10pt; }
+.total-box strong { color:#0d1b2a; }
 
-@media(max-width:640px) {
+.footer { text-align:center; font-size:8pt; color:#bbb; margin-top:28px; }
+
+@media(max-width:700px) {
   .ws-grid { grid-template-columns:1fr; }
-  .eng-grid { grid-template-columns:repeat(2,1fr); }
   .header h1 { font-size:16pt; }
+  .header { padding:24px 20px; }
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 
+<!-- HEADER -->
 <div class="header">
-  <div class="label">RCC Confidential · Advisory Profile · April 2026</div>
+  <div class="label">RCC Nội Bộ · Hồ Sơ Cố Vấn · Tháng 4/2026</div>
   <h1>Alan Thomas Chan</h1>
   <div class="title">Managing Director, ATC Advisors Pte Ltd · Singapore</div>
   <div class="tags">
-    <span class="tag">30+ Years Experience</span>
+    <span class="tag">30+ Năm Kinh Nghiệm</span>
     <span class="tag">HPL / Four Seasons</span>
     <span class="tag">Resorts World Sentosa</span>
     <span class="tag">67 Pall Mall Singapore</span>
-    <span class="tag">UHNW Networks SEA</span>
+    <span class="tag">Mạng Lưới UHNW Đông Nam Á</span>
   </div>
 </div>
 
-<!-- Workstreams -->
+<!-- GIỚI THIỆU -->
 <div class="section">
-  <h2>Why Alan — Mapped to RCC Needs</h2>
-  <div class="ws-grid">
+  <h2>Tổng Quan</h2>
+  <p class="bio-text">
+    Alan Chan là senior executive và strategic dealmaker người Singapore với hơn <strong>30 năm kinh nghiệm lãnh đạo</strong>
+    trong các lĩnh vực: ultra luxury hospitality, integrated resorts, luxury membership platforms, private aviation,
+    entertainment và capital markets tại Đông Nam Á. Ông hiện là <strong>Managing Director của ATC Advisors Pte Ltd</strong>,
+    tư vấn chiến lược cho các tổ chức hospitality và luxury về partnerships, capital formation và market expansion toàn khu vực.<br><br>
+    Điểm nổi bật trong career của ông là <strong>8 năm tại Hotel Properties Ltd (HPL)</strong> — công ty sở hữu và phát triển
+    nhiều bất động sản Four Seasons nhất thế giới — với tư cách Special Assistant trực tiếp cho Chủ tịch Ong Beng Seng,
+    một trong những property tycoon lớn nhất Singapore. Tiếp đó, ông xây dựng <strong>67 Pall Mall Singapore</strong>
+    từ con số 0 thành Asia's premier luxury wine members club, huy động hơn SGD 20 triệu vốn trong 3 năm.
+  </p>
+</div>
 
-    <div class="ws aman">
-      <h3>🏨 1 · Aman — Ultra Luxury Advisor</h3>
-      <span class="cred">HPL · 8 years · Ong Beng Seng</span>
-      <ul>
-        <li>Special Assistant to Chairman of HPL — world's largest Four Seasons owner/developer</li>
-        <li>Owner's rep: <strong>Four Seasons KL, Four Seasons Johannesburg, Point Yamu Phuket</strong></li>
-        <li>Expert advisor on ultra luxury HoldCo structures, equity deals & operator relationships at principal level</li>
-        <li>UHNW network SG · KL · HK — access to Aman-tier investors & industry insiders</li>
-      </ul>
+<!-- WORKSTREAM MAPPING -->
+<div class="section">
+  <h2>Phân Tích Phù Hợp Theo Từng Workstream</h2>
+
+  <!-- WS 1 -->
+  <div class="ws aman">
+    <div class="ws-header">
+      <h3>🏨 1 · Aman — Cố Vấn Ultra Luxury Hospitality</h3>
+      <span class="cred-badge">HPL · 8 năm · Ong Beng Seng</span>
     </div>
-
-    <div class="ws tc">
-      <h3>🏝 2 · Tuần Châu — Primary Operator Search</h3>
-      <span class="cred">HPL + Resorts World Sentosa</span>
-      <ul>
-        <li><strong>Parallel mandate — primary source & lead negotiator</strong></li>
-        <li>Built 4 hotels at RWS from ground up — brand selection, HMA negotiation, construction oversight</li>
-        <li>Developer-level experience with Four Seasons, COMO, Hard Rock at HPL</li>
-        <li>Direct access to decision-makers at Six Senses, Anantara, Zannier, Luxury Collection — no intermediary</li>
-      </ul>
+    <div class="ws-grid">
+      <div class="ws-cell">
+        <div class="cell-title">📌 Yêu Cầu</div>
+        <ul>
+          <li>Cố vấn chiến lược cho deal mua cổ phần Aman ở cấp HoldCo</li>
+          <li>Hiểu cấu trúc equity, governance và operator dynamics trong ultra luxury hospitality</li>
+          <li>Kết nối với UHNW investors và industry insiders trong hệ sinh thái Aman-tier</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">✅ Lý Do Phù Hợp</div>
+        <ul>
+          <li>8 năm tại HPL — làm việc trực tiếp với Ong Beng Seng, owner/developer của Four Seasons KL, Four Seasons Johannesburg, Point Yamu by COMO Phuket</li>
+          <li>Hiểu sâu về cách structured equity deal HoldCo cấp global trong luxury hospitality</li>
+          <li>Mạng lưới UHNW tại SG, KL, HK — tier investors phù hợp với Aman deal</li>
+          <li>Kinh nghiệm investment banking (KKR, Apollo, TPG) — đọc và đánh giá deal structure</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">📦 Deliverable</div>
+        <ul>
+          <li>Advisory memo về cấu trúc deal Aman phù hợp với RCC</li>
+          <li>Danh sách qualified contacts trong hệ sinh thái Aman/ultra luxury để tiếp cận</li>
+          <li>Tham gia các cuộc họp/negotiation session với tư cách expert advisor</li>
+          <li>Đánh giá rủi ro và cơ hội theo góc nhìn operator-owner relationship</li>
+        </ul>
+      </div>
     </div>
+  </div>
 
-    <div class="ws fb">
-      <h3>🍽 3 · Le Méridien F&B — Asian Fine Dining</h3>
-      <span class="cred">67 Pall Mall + UHNW Network</span>
-      <ul>
-        <li>Target operators: <strong>Tung Lok, Hakkasan, Imperial Treasure, Sunset Hospitality</strong></li>
-        <li>67 Pall Mall network: direct relationships with regional F&B group principals & C-suite</li>
-        <li>Singapore-based — natural connector for SG-headquartered groups (Tung Lok, Imperial Treasure) entering Vietnam</li>
-        <li>Role: introductions, feasibility advocacy & deal structuring support</li>
-      </ul>
+  <!-- WS 2 -->
+  <div class="ws tc">
+    <div class="ws-header">
+      <h3>🏝 2 · Tuần Châu — Tìm Kiếm & Đàm Phán Brand Operator</h3>
+      <span class="cred-badge">HPL + Resorts World Sentosa · Primary Mandate</span>
     </div>
-
-    <div class="ws wine">
-      <h3>🍷 4 · Park90 — Wine KOL & Advocate</h3>
-      <span class="cred">67 Pall Mall · WSET · Robert Parker network</span>
-      <ul>
-        <li><strong>Built 67 Pall Mall SG from zero</strong> — Asia's premier luxury wine club, SGD 20M+ raised</li>
-        <li>Promote wine culture under Park90 brand as <strong>KOL / Wine Advocate</strong> — content, events, media</li>
-        <li>WSET Level 2 · relationships with Bordeaux/Burgundy châteaux & SEA collectors</li>
-        <li>Robert Parker Wine Advocate ecosystem — authentic credibility for Park90 brand positioning</li>
-      </ul>
+    <div class="ws-grid">
+      <div class="ws-cell">
+        <div class="cell-title">📌 Yêu Cầu</div>
+        <ul>
+          <li>Tìm kiếm và kết nối brand operator phù hợp cho dự án island resort Tuần Châu (Quảng Ninh)</li>
+          <li>Alan đóng vai trò <strong>primary source và lead negotiator</strong> — parallel mandate</li>
+          <li>Target brands: Four Seasons, Six Senses, Anantara, Zannier, Luxury Collection tier</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">✅ Lý Do Phù Hợp</div>
+        <ul>
+          <li>Tại Resorts World Sentosa: trực tiếp tham gia xây dựng 4 hotels (Hotel Michael, Crockfords Tower, Hard Rock Hotel — nay là The Laurus & Hotel Ora) từ construction đến brand execution</li>
+          <li>Tại HPL: owner's representative cho Point Yamu by COMO Phuket, Four Seasons KL, Four Seasons Johannesburg — biết rõ HMA structure và fee negotiation</li>
+          <li>Biết chính xác <em>ai quyết định</em> tại từng brand — tiếp cận ở cấp principal, không qua trung gian</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">📦 Deliverable</div>
+        <ul>
+          <li>Shortlist 3–5 brands phù hợp với scale và positioning của Tuần Châu</li>
+          <li>Dẫn dắt cuộc gặp đầu tiên và các vòng đàm phán HMA</li>
+          <li>Tư vấn về deal structure, management fee, brand standards compliance</li>
+          <li>Milestone report hàng tháng về tiến độ outreach</li>
+        </ul>
+      </div>
     </div>
+  </div>
 
+  <!-- WS 3 -->
+  <div class="ws fb">
+    <div class="ws-header">
+      <h3>🍽 3 · Le Méridien Saigon — F&B Asian Fine Dining</h3>
+      <span class="cred-badge">67 Pall Mall · UHNW Network · SG Connections</span>
+    </div>
+    <div class="ws-grid">
+      <div class="ws-cell">
+        <div class="cell-title">📌 Yêu Cầu</div>
+        <ul>
+          <li>Kết nối với các F&B operator global tier để triển khai tại Le Méridien Saigon</li>
+          <li>Target: <strong>Tung Lok, Hakkasan, Imperial Treasure, Sunset Hospitality</strong></li>
+          <li>Mục tiêu: nâng tầm F&B mix của Barson/Le Méridien, tăng ADR và destination appeal</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">✅ Lý Do Phù Hợp</div>
+        <ul>
+          <li>67 Pall Mall membership: UHNW + luxury brand C-suite, F&B group founders và restaurant operators cao cấp khu vực</li>
+          <li>Singapore-based — natural connector cho các nhóm SG-headquartered (Tung Lok Group, Imperial Treasure) đang tìm cơ hội mở rộng vào Vietnam</li>
+          <li>Career trong entertainment & live events: mạng lưới rộng với hospitality và F&B experiential industry tại Asia</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">📦 Deliverable</div>
+        <ul>
+          <li>Giới thiệu trực tiếp đến C-suite/founders của các F&B groups mục tiêu</li>
+          <li>Facilitate buổi gặp đầu tiên và EOI (Expression of Interest)</li>
+          <li>Tư vấn về deal structure: revenue share, lease, franchise model</li>
+          <li>Tối thiểu 2–3 operator introductions trong 6 tháng đầu</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- WS 4 -->
+  <div class="ws wine">
+    <div class="ws-header">
+      <h3>🍷 4 · Park90 — Wine KOL & Brand Advocate</h3>
+      <span class="cred-badge">67 Pall Mall · WSET · Robert Parker Ecosystem</span>
+    </div>
+    <div class="ws-grid">
+      <div class="ws-cell">
+        <div class="cell-title">📌 Yêu Cầu</div>
+        <ul>
+          <li>Promote wine culture dưới brand Park90 với vai trò <strong>KOL / Wine Advocate</strong></li>
+          <li>Tạo credibility và awareness cho Park90 @ Saigon trong giới UHNW và luxury wine community SEA</li>
+          <li>Hỗ trợ wine curation, events và membership strategy</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">✅ Lý Do Phù Hợp</div>
+        <ul>
+          <li><strong>Xây dựng 67 Pall Mall Singapore từ zero</strong> — Asia's premier luxury wine members club với 800+ labels, bao gồm DRC và Château Pétrus by the glass, huy động SGD 20M+ trong 3 năm</li>
+          <li>WSET Level 2 — nền tảng wine knowledge chính thức</li>
+          <li>Quan hệ trực tiếp với Robert Parker Wine Advocate ecosystem — đây chính là DNA của Park90 brand (90+ points curation)</li>
+          <li>Mạng lưới Bordeaux/Burgundy châteaux owners và SEA wine collectors</li>
+        </ul>
+      </div>
+      <div class="ws-cell">
+        <div class="cell-title">📦 Deliverable</div>
+        <ul>
+          <li>Tham gia các wine events, masterclass và media appearances dưới banner Park90</li>
+          <li>Content/editorial contribution: wine selections, tasting notes, curated lists</li>
+          <li>Kết nối với wine importers và rare allocation sources cho Park90 cellar</li>
+          <li>Mở rộng awareness đến UHNW community tại SG, KL và Bangkok</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Career -->
+<!-- CAREER TIMELINE -->
 <div class="section">
-  <h2>Career Highlights</h2>
+  <h2>Hành Trình Sự Nghiệp</h2>
   <ul class="timeline">
     <li>
-      <div class="tl-dot"></div>
+      <div class="tl-dot dot-gold"></div>
       <div class="tl-body">
         <div class="tl-org">ATC Advisors Pte Ltd</div>
-        <div class="tl-role">Managing Director · Current</div>
-        <div class="tl-tags"><span class="tl-tag gold">Strategic Advisory</span><span class="tl-tag gold">Capital Formation</span><span class="tl-tag gold">SEA Partnerships</span></div>
+        <div class="tl-period">Hiện tại · Managing Director</div>
+        <div class="tl-desc">Tư vấn chiến lược cho doanh nghiệp hospitality, lifestyle và luxury về partnerships, capital formation và market expansion. Tập trung vào cross-border opportunities và kết nối brands với capital và high-level stakeholders tại Đông Nam Á.</div>
+        <div class="tl-tags"><span class="tl-tag tt-gold">Strategic Advisory</span><span class="tl-tag tt-gold">Capital Formation</span><span class="tl-tag tt-gold">SEA Expansion</span></div>
       </div>
     </li>
     <li>
-      <div class="tl-dot"></div>
+      <div class="tl-dot dot-gold"></div>
       <div class="tl-body">
         <div class="tl-org">67 Pall Mall Singapore</div>
-        <div class="tl-role">Director & Shareholder · 2020–2023 · First Employee</div>
-        <div class="tl-tags"><span class="tl-tag gold">SGD 20M+ Raised</span><span class="tl-tag gold">Luxury Wine Club</span><span class="tl-tag gold">UHNW Members</span></div>
+        <div class="tl-period">2020–2023 · Director & Shareholder · Nhân viên đầu tiên</div>
+        <div class="tl-desc">Xây dựng Asia's premier luxury wine members club từ con số 0. Phát triển membership base, huy động hơn <strong>SGD 20 triệu</strong> vốn equity và debt, tăng đáng kể enterprise valuation trong 3 năm. Mở rộng institutional, developer và government partnerships toàn khu vực.</div>
+        <div class="tl-tags"><span class="tl-tag tt-gold">SGD 20M+ Raised</span><span class="tl-tag tt-gold">Luxury Wine Club</span><span class="tl-tag tt-gold">UHNW Membership</span><span class="tl-tag tt-gold">Ground-Up Build</span></div>
       </div>
     </li>
     <li>
-      <div class="tl-dot"></div>
+      <div class="tl-dot dot-blue"></div>
       <div class="tl-body">
         <div class="tl-org">Hotel Properties Ltd (HPL)</div>
-        <div class="tl-role">Special Assistant to Chairman Ong Beng Seng · ~8 Years</div>
-        <div class="tl-tags">
-          <span class="tl-tag blue">Four Seasons KL</span>
-          <span class="tl-tag blue">Four Seasons Johannesburg</span>
-          <span class="tl-tag blue">Point Yamu Phuket</span>
-          <span class="tl-tag blue">Go-Jets / Gulfstream</span>
-          <span class="tl-tag blue">Singapore GP</span>
-        </div>
+        <div class="tl-period">~8 năm · Special Assistant to Chairman Ong Beng Seng</div>
+        <div class="tl-desc">Làm việc trực tiếp với Chủ tịch HPL — công ty sở hữu và phát triển nhiều bất động sản Four Seasons nhất thế giới. Đại diện chủ đầu tư trong quá trình phát triển và xây dựng <strong>Point Yamu Resort by COMO (Phuket), Four Seasons Hotel Kuala Lumpur, Four Seasons Hotel Johannesburg</strong> và nhiều dự án hospitality khác. Đồng thời quản lý các vị trí trong subsidiary <strong>Go-Jets</strong> (đại diện Gulfstream Aerospace) và <strong>Singapore Grand Prix</strong>.</div>
+        <div class="tl-tags"><span class="tl-tag tt-blue">Four Seasons KL</span><span class="tl-tag tt-blue">Four Seasons Johannesburg</span><span class="tl-tag tt-blue">Point Yamu by COMO</span><span class="tl-tag tt-blue">Go-Jets / Gulfstream</span><span class="tl-tag tt-blue">Singapore GP</span></div>
       </div>
     </li>
     <li>
-      <div class="tl-dot blue"></div>
+      <div class="tl-dot dot-blue"></div>
       <div class="tl-body">
         <div class="tl-org">Maybank Kim Eng</div>
-        <div class="tl-role">Investment Banking</div>
-        <div class="tl-tags"><span class="tl-tag blue">KKR · Apollo · TPG</span><span class="tl-tag blue">Felda IPO USD 3.1B</span></div>
+        <div class="tl-period">Investment Banking</div>
+        <div class="tl-desc">Tiếp xúc với các global private equity firms hàng đầu bao gồm <strong>KKR, Apollo Global Management và TPG</strong>. Tham gia vào các giao dịch lớn trong đó có <strong>IPO Felda Global Ventures trị giá USD 3.1 tỷ</strong> — một trong những IPO lớn nhất lịch sử Malaysia.</div>
+        <div class="tl-tags"><span class="tl-tag tt-blue">KKR · Apollo · TPG</span><span class="tl-tag tt-blue">Felda IPO USD 3.1B</span><span class="tl-tag tt-blue">Capital Markets</span></div>
       </div>
     </li>
     <li>
-      <div class="tl-dot green"></div>
+      <div class="tl-dot dot-green"></div>
       <div class="tl-body">
         <div class="tl-org">Resorts World Sentosa</div>
-        <div class="tl-role">Resort Development · Singapore's First IR</div>
-        <div class="tl-tags"><span class="tl-tag green">4 Hotels Built</span><span class="tl-tag green">Universal Studios Sponsorship</span><span class="tl-tag green">Investor Relations</span></div>
+        <div class="tl-period">Resort Development · Singapore's First Integrated Resort</div>
+        <div class="tl-desc">Đóng vai trò quan trọng trong quá trình phát triển, investor relations và casino partnerships trong giai đoạn launch IR đầu tiên của Singapore. Là một phần của development team phụ trách construction và execution của <strong>4 hotel properties</strong>: Hotel Michael, Crockfords Tower, Hard Rock Hotel (nay là The Laurus & Hotel Ora). Dẫn dắt partnership chiến lược với <strong>Universal Studios Singapore</strong>.</div>
+        <div class="tl-tags"><span class="tl-tag tt-green">4 Hotels Built</span><span class="tl-tag tt-green">Universal Studios Sponsorship</span><span class="tl-tag tt-green">Investor Relations</span><span class="tl-tag tt-green">Casino Partnerships</span></div>
       </div>
     </li>
     <li>
-      <div class="tl-dot gray"></div>
+      <div class="tl-dot dot-gray"></div>
       <div class="tl-body">
         <div class="tl-org">Asia Live Entertainment</div>
-        <div class="tl-role">Producer & Promoter · International artists, large-scale events</div>
+        <div class="tl-period">Producer & Promoter · Giai đoạn đầu sự nghiệp</div>
+        <div class="tl-desc">Sản xuất và quảng bá các nghệ sĩ quốc tế cùng các sự kiện quy mô lớn trong giai đoạn phát triển của ngành live entertainment tại châu Á. Góp phần xây dựng các nền tảng âm nhạc và lifestyle lớn tại Singapore.</div>
+        <div class="tl-tags"><span class="tl-tag tt-gray">International Artists</span><span class="tl-tag tt-gray">Large-Scale Events</span><span class="tl-tag tt-gray">Singapore</span></div>
       </div>
     </li>
   </ul>
-  <div style="margin-top:14px; background:#f8f9fa; border-radius:8px; padding:12px 16px; font-size:9pt; color:#555;">
-    🎓 <strong>Certified Chief of Staff</strong> — Harvard Business School Executive Program &nbsp;|&nbsp;
-    🍷 <strong>WSET Level 2</strong> Award in Wines
+  <div style="margin-top:14px; background:#f8f9fa; border-radius:8px; padding:12px 16px; font-size:9pt; color:#555; display:flex; gap:24px; flex-wrap:wrap;">
+    <span>🎓 <strong>Certified Chief of Staff</strong> — Harvard Business School Executive Program (Chief of Staff Association)</span>
+    <span>🍷 <strong>WSET Level 2</strong> Award in Wines</span>
   </div>
 </div>
 
-<!-- Engagement -->
+<!-- ENGAGEMENT -->
 <div class="section">
-  <h2>Proposed Engagement</h2>
-  <div class="eng-grid">
-    <div class="eng-card">
-      <div class="icon">🏨</div>
-      <div class="ws-name">Aman — Expert Advisor</div>
-      <div class="fee">SGD 5–8K/mo</div>
-      <div class="fee-type">Retainer + 1–2% success fee on deal</div>
-    </div>
-    <div class="eng-card">
-      <div class="icon">🏝</div>
-      <div class="ws-name">Tuần Châu Operator</div>
-      <div class="fee">SGD 5K/mo</div>
-      <div class="fee-type">Retainer + success fee on HMA signing</div>
-    </div>
-    <div class="eng-card">
-      <div class="icon">🍽</div>
-      <div class="ws-name">Le Méridien F&B</div>
-      <div class="fee">Project Fee</div>
-      <div class="fee-type">Per operator introduced & deal signed</div>
-    </div>
-    <div class="eng-card">
-      <div class="icon">🍷</div>
-      <div class="ws-name">Park90 Wine KOL</div>
-      <div class="fee">USD 1–2K/mo</div>
-      <div class="fee-type">Retainer or advisory equity</div>
-    </div>
-  </div>
-  <div style="margin-top:14px; background:#fffbeb; border-radius:8px; padding:12px 16px; font-size:9.5pt; color:#555; border-left:3px solid #c8a050;">
-    💡 <strong>Recommendation:</strong> One master advisory agreement covering all 4 workstreams — <strong>SGD 8–10K/month retainer</strong> + success fees per deal closed.
+  <h2>Đề Xuất Hợp Tác</h2>
+  <table class="eng-table">
+    <thead>
+      <tr>
+        <th style="width:22%">Workstream</th>
+        <th style="width:30%">Phạm Vi Công Việc</th>
+        <th style="width:25%">Cơ Cấu Phí</th>
+        <th style="width:23%">KPI / Milestone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>🏨 Aman<br>Ultra Luxury Advisor</strong></td>
+        <td>Expert advisory cho deal cổ phần Aman HoldCo; tham gia họp, đánh giá deal structure, kết nối investors</td>
+        <td>
+          <div class="fee-main">USD 4–6K/tháng</div>
+          <div class="fee-sub">+ 1–2% success fee trên giá trị deal</div>
+        </td>
+        <td>Advisory memo trong 30 ngày; danh sách contacts trong 60 ngày</td>
+      </tr>
+      <tr>
+        <td><strong>🏝 Tuần Châu<br>Lead Negotiator</strong></td>
+        <td>Primary mandate tìm kiếm brand operator; dẫn dắt toàn bộ outreach và vòng đàm phán HMA</td>
+        <td>
+          <div class="fee-main">USD 4K/tháng</div>
+          <div class="fee-sub">+ Success fee khi ký HMA (TBD theo deal size)</div>
+        </td>
+        <td>Shortlist brands trong 45 ngày; cuộc gặp đầu tiên trong 90 ngày</td>
+      </tr>
+      <tr>
+        <td><strong>🍽 Le Méridien F&B<br>Operator Connector</strong></td>
+        <td>Giới thiệu và kết nối với Tung Lok, Hakkasan, Imperial Treasure, Sunset Hospitality; facilitate EOI và deal terms</td>
+        <td>
+          <div class="fee-main">Project Fee</div>
+          <div class="fee-sub">USD 5–10K per operator deal signed</div>
+        </td>
+        <td>Tối thiểu 2 introductions trong 6 tháng đầu</td>
+      </tr>
+      <tr>
+        <td><strong>🍷 Park90<br>Wine KOL</strong></td>
+        <td>Brand advocate và wine content creator dưới Park90; tham gia events, masterclass, media; curation input</td>
+        <td>
+          <div class="fee-main">USD 1.5–2K/tháng</div>
+          <div class="fee-sub">Hoặc advisory equity (TBD)</div>
+        </td>
+        <td>Minimum 1 event/tháng; content contribution quarterly</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="total-box">
+    💡 <strong>Khuyến nghị:</strong> Ký một <strong>Master Advisory Agreement</strong> bao gồm cả 4 workstreams —
+    retainer <strong>USD 7–10K/tháng</strong> + success fees riêng cho từng deal closed.
+    Cơ cấu này phù hợp với profile của Alan và tạo động lực rõ ràng theo kết quả thực tế.
   </div>
 </div>
 
-<div class="footer">RCC Internal · Confidential · April 2026 · Prepared by Zera</div>
+<div class="footer">RCC Nội Bộ · Bảo Mật · Tháng 4/2026 · Prepared by Zera</div>
 </div>
 </body>
 </html>
