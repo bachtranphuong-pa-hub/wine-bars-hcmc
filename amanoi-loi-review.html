@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amanoi LOI — Review & Redline | RCC</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f5f7; color:#1a1a2e; font-size:10.5pt; line-height:1.7; }
+.wrap { max-width:960px; margin:0 auto; padding:28px 20px 60px; }
+
+.header { background:linear-gradient(135deg,#0d1b2a,#1e3a5f); border-radius:12px; padding:24px 32px; color:white; margin-bottom:20px; }
+.header .label { font-size:7.5pt; letter-spacing:4px; text-transform:uppercase; color:#c8a050; margin-bottom:6px; }
+.header h1 { font-size:16pt; font-weight:700; }
+.header p { font-size:9pt; color:rgba(255,255,255,0.5); margin-top:4px; }
+
+.section { background:white; border-radius:12px; padding:22px 26px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.section h2 { font-size:9.5pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:16px; border-bottom:2px solid #f0f0f0; padding-bottom:10px; }
+.section h3 { font-size:10.5pt; font-weight:700; color:#0d1b2a; margin:18px 0 8px; }
+
+/* Summary KPIs */
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:0; }
+.kpi { background:#f8f9fa; border-radius:10px; padding:14px 16px; border-top:3px solid; text-align:center; }
+.kpi.gold { border-top-color:#c8a050; }
+.kpi.blue { border-top-color:#1e40af; }
+.kpi.green { border-top-color:#16a34a; }
+.kpi.red { border-top-color:#dc2626; }
+.kpi .val { font-size:13pt; font-weight:700; color:#0d1b2a; line-height:1.2; }
+.kpi .lbl { font-size:7.5pt; color:#888; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+
+/* Issue cards */
+.issue { border-radius:10px; padding:16px 18px; margin-bottom:12px; border-left:5px solid; }
+.issue.red    { background:#fef2f2; border-color:#dc2626; }
+.issue.yellow { background:#fffbeb; border-color:#f59e0b; }
+.issue.green  { background:#f0fdf4; border-color:#16a34a; }
+.issue.blue   { background:#eff6ff; border-color:#1e40af; }
+.issue .issue-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.issue .badge { font-size:7.5pt; font-weight:700; padding:2px 9px; border-radius:10px; }
+.badge-red    { background:#fee2e2; color:#991b1b; }
+.badge-yellow { background:#fef3c7; color:#92400e; }
+.badge-green  { background:#d1fae5; color:#065f46; }
+.badge-blue   { background:#dbeafe; color:#1e40af; }
+.issue h4 { font-size:10.5pt; font-weight:700; color:#0d1b2a; }
+.issue p, .issue li { font-size:9.5pt; color:#444; line-height:1.8; }
+.issue ul { padding-left:18px; }
+
+/* Redline table */
+table { width:100%; border-collapse:collapse; font-size:9pt; }
+th { background:#0d1b2a; color:#c8a050; padding:9px 12px; text-align:left; font-size:8pt; text-transform:uppercase; letter-spacing:0.5px; }
+td { padding:10px 12px; border-bottom:1px solid #f0f0f0; vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+.clause { font-weight:700; color:#0d1b2a; font-size:9pt; white-space:nowrap; }
+.original { color:#dc2626; text-decoration:line-through; font-size:9pt; }
+.revised { color:#16a34a; font-size:9pt; font-weight:600; }
+.rationale { font-size:8.5pt; color:#555; }
+.severity { display:inline-block; padding:2px 8px; border-radius:8px; font-size:7.5pt; font-weight:700; }
+.sev-high   { background:#fee2e2; color:#991b1b; }
+.sev-med    { background:#fef3c7; color:#92400e; }
+.sev-low    { background:#d1fae5; color:#065f46; }
+
+.overall-box { background:#fffbeb; border-left:4px solid #c8a050; border-radius:0 10px 10px 0; padding:16px 18px; font-size:10pt; color:#333; }
+
+.footer { text-align:center; font-size:8pt; color:#bbb; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div class="label">RCC Nội Bộ · Confidential · 25/04/2026</div>
+  <h1>Amanoi LOI — Review & Redline</h1>
+  <p>Project Paradise · Knight Frank Vietnam · Draft dated 24/04/2026</p>
+</div>
+
+<!-- SNAPSHOT -->
+<div class="section">
+  <h2>Snapshot Giao Dịch</h2>
+  <div class="kpi-row">
+    <div class="kpi gold"><div class="val">USD 90–110M</div><div class="lbl">Indicative Price Range</div></div>
+    <div class="kpi blue"><div class="val">100%</div><div class="lbl">Equity Target (onshore/offshore)</div></div>
+    <div class="kpi green"><div class="val">3 tháng</div><div class="lbl">Exclusivity Period</div></div>
+    <div class="kpi red"><div class="val">31/12/2026</div><div class="lbl">Target Close</div></div>
+  </div>
+</div>
+
+<!-- OVERALL ASSESSMENT -->
+<div class="section">
+  <h2>Đánh Giá Tổng Thể</h2>
+  <div class="overall-box">
+    <strong>Nhìn chung: LOI này được soạn khá chuyên nghiệp bởi Knight Frank</strong> — cấu trúc standard, ngôn ngữ pháp lý sạch, non-binding nature được xác nhận rõ ràng. Phù hợp để mở cửa đàm phán.<br><br>
+    Tuy nhiên có <strong>4 điểm cần redline quan trọng</strong> và <strong>3 điểm cần bổ sung</strong> trước khi gửi — đặc biệt xoay quanh: (1) khoảng giá quá rộng gây yếu vị thế, (2) exclusivity obligation phía seller chưa đủ răng, (3) thiếu break fee nếu seller withdraw, (4) DD timeline quá ngắn cho asset này.
+  </div>
+</div>
+
+<!-- ISSUES -->
+<div class="section">
+  <h2>Các Điểm Cần Xem Xét</h2>
+
+  <div class="issue red">
+    <div class="issue-head"><span class="badge badge-red">🔴 HIGH</span><h4>Indicative Price Range Quá Rộng — USD 20M Spread</h4></div>
+    <p>Range USD 90–110M = 22% spread. Đây là tín hiệu yếu — seller sẽ neo ngay ở USD 110M và dùng đó làm floor cho negotiation thực sự. Với asset class này, range hợp lý là USD 10M hoặc ít hơn.</p>
+    <ul style="margin-top:8px;">
+      <li><strong>Rủi ro:</strong> Seller hiểu buyer chưa có conviction về giá → giảm urgency để respond</li>
+      <li><strong>Đề xuất:</strong> Narrow xuống USD 95–105M, hoặc quote một điểm duy nhất USD 100M "subject to DD" nếu muốn mạnh hơn</li>
+    </ul>
+  </div>
+
+  <div class="issue red">
+    <div class="issue-head"><span class="badge badge-red">🔴 HIGH</span><h4>DD Timeline 20 Working Days Không Đủ Cho Amanoi</h4></div>
+    <p>Desktop DD 20 ngày làm việc (~4 tuần) là rất ngắn cho một resort asset phức tạp như Amanoi — đặc biệt với các vấn đề tiềm ẩn về: land use rights tại Vĩnh Hy, Aman management agreement, cấu trúc sở hữu thực sự, và rủi ro nhà máy điện hạt nhân Ninh Thuận 2.</p>
+    <ul style="margin-top:8px;">
+      <li><strong>Rủi ro:</strong> Buyer tự tạo áp lực không cần thiết; nếu cần extend → seller có leverage</li>
+      <li><strong>Đề xuất:</strong> Tăng lên 30 working days (6 tuần) + extension 15 ngày (thay vì 10), không cần giải thích lý do</li>
+    </ul>
+  </div>
+
+  <div class="issue yellow">
+    <div class="issue-head"><span class="badge badge-yellow">🟡 MEDIUM</span><h4>Exclusivity — Thiếu Cơ Chế Phạt Nếu Seller Vi Phạm</h4></div>
+    <p>Điều khoản exclusivity hiện tại chỉ yêu cầu seller <em>not to engage</em> với alternative proposals, nhưng không có mechanism nào nếu seller vi phạm. Cụ thể thiếu: (1) break fee nếu seller tiếp tục deal với bên khác, (2) injunctive relief clause, (3) liquidated damages.</p>
+    <ul style="margin-top:8px;">
+      <li><strong>Rủi ro:</strong> Seller có thể dùng LOI này để leverage một offer tốt hơn từ bên khác trong khi RCC đang DD</li>
+      <li><strong>Đề xuất:</strong> Thêm: <em>"In the event Ownership breaches this exclusivity obligation, Ownership shall pay to Purchaser a break fee of USD [X] as liquidated damages."</em> — mức hợp lý: USD 1–2M</li>
+    </ul>
+  </div>
+
+  <div class="issue yellow">
+    <div class="issue-head"><span class="badge badge-yellow">🟡 MEDIUM</span><h4>Governing Law — Vietnam Chưa Phải Lựa Chọn Tối Ưu</h4></div>
+    <p>LOI nói <em>"governed by the laws of Vietnam"</em> nhưng transaction structure đề cập cả <em>offshore holding company</em>. Nếu deal được structured qua BVI/Singapore HoldCo → governing law Vietnam sẽ conflict và gây phức tạp khi enforce.</p>
+    <ul style="margin-top:8px;">
+      <li><strong>Đề xuất:</strong> Đổi thành: <em>"This EOI shall be governed by the laws of Singapore, or such other jurisdiction as mutually agreed by the parties in the definitive agreements."</em></li>
+      <li>Hoặc nếu giữ Vietnam law: thêm clause SIAC/VIAC arbitration cho dispute resolution</li>
+    </ul>
+  </div>
+
+  <div class="issue blue">
+    <div class="issue-head"><span class="badge badge-blue">🔵 NOTE</span><h4>Aman Management Agreement — Chưa Đề Cập</h4></div>
+    <p>LOI mô tả acquisition của Target Company sở hữu property, nhưng không mention gì về <strong>Aman Management Agreement</strong> hiện tại. Đây là vấn đề trọng yếu — nếu acquire property mà không kèm/terminate HMA với Aman Group, buyer bị lock vào operator không theo ý muốn.</p>
+    <ul style="margin-top:8px;">
+      <li><strong>Đề xuất:</strong> Thêm vào DD checklist: <em>"Review and confirmation of terms of any existing hotel management, franchise or branding agreements affecting the Property, including any termination provisions and associated costs."</em></li>
+    </ul>
+  </div>
+
+  <div class="issue blue">
+    <div class="issue-head"><span class="badge badge-blue">🔵 NOTE</span><h4>Nuclear Plant Risk — Ninh Thuận 2 Không Có Trong DD Scope</h4></div>
+    <p>Dự án nhà máy điện hạt nhân Ninh Thuận 2 (đã được tái khởi động) là rủi ro environmental/perception đặc thù với Amanoi (Vĩnh Hy, Khánh Hoà — gần Ninh Thuận). DD checklist hiện tại không đề cập environmental assessments hay proximity risk.</p>
+    <ul style="margin-top:8px;">
+      <li><strong>Đề xuất:</strong> Thêm vào DD checklist: <em>"Environmental and proximity risk assessment, including any potential impact of planned or existing industrial developments in the surrounding area."</em></li>
+    </ul>
+  </div>
+
+  <div class="issue green">
+    <div class="issue-head"><span class="badge badge-green">🟢 MINOR</span><h4>Typo Nhỏ — "Expresion" → "Expression"</h4></div>
+    <p>Paragraph đầu viết <em>"unsolicited Expresion of Interest"</em> — thiếu chữ "s". Cần sửa trước khi gửi.</p>
+  </div>
+</div>
+
+<!-- REDLINE TABLE -->
+<div class="section">
+  <h2>Redline — Đề Xuất Sửa Cụ Thể</h2>
+  <div style="overflow-x:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:14%">Điều Khoản</th>
+          <th style="width:10%">Mức Độ</th>
+          <th style="width:28%">Ngôn Ngữ Hiện Tại</th>
+          <th style="width:28%">Đề Xuất Sửa</th>
+          <th style="width:20%">Lý Do</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="clause">Indicative Price</td>
+          <td><span class="severity sev-high">HIGH</span></td>
+          <td class="original">USD 90,000,000 to USD 110,000,000</td>
+          <td class="revised">USD 95,000,000 to USD 105,000,000<br><small>(hoặc USD 100,000,000 subject to DD)</small></td>
+          <td class="rationale">Narrow range = stronger conviction. Seller sẽ anchor tại USD 110M nếu giữ nguyên.</td>
+        </tr>
+        <tr>
+          <td class="clause">DD Period</td>
+          <td><span class="severity sev-high">HIGH</span></td>
+          <td class="original">twenty (20) working days… further ten (10) working day extension</td>
+          <td class="revised">thirty (30) working days… further fifteen (15) working day extension</td>
+          <td class="rationale">Asset phức tạp (land use, HMA, nuclear risk). 20 ngày không đủ — tự tạo áp lực không cần thiết.</td>
+        </tr>
+        <tr>
+          <td class="clause">Exclusivity — Break Fee</td>
+          <td><span class="severity sev-high">HIGH</span></td>
+          <td class="original">[Không có điều khoản break fee]</td>
+          <td class="revised">Thêm: "In the event Ownership breaches this exclusivity obligation, Ownership shall pay Purchaser a break fee of USD 1,500,000 as liquidated damages, which the parties acknowledge to be a genuine pre-estimate of loss."</td>
+          <td class="rationale">Ngăn seller dùng LOI để leverage offer khác trong khi RCC đang DD.</td>
+        </tr>
+        <tr>
+          <td class="clause">Exclusivity — Notice Period</td>
+          <td><span class="severity sev-med">MED</span></td>
+          <td class="original">notify Purchaser… no later than seven (7) days after receipt</td>
+          <td class="revised">no later than two (2) Business Days after receipt</td>
+          <td class="rationale">7 ngày quá dài — seller có thể đã negotiate xong với bên khác trước khi RCC biết.</td>
+        </tr>
+        <tr>
+          <td class="clause">Governing Law</td>
+          <td><span class="severity sev-med">MED</span></td>
+          <td class="original">governed by… the laws of Vietnam</td>
+          <td class="revised">governed by the laws of Singapore. Any dispute shall be referred to and finally resolved by arbitration administered by SIAC in accordance with SIAC Rules.</td>
+          <td class="rationale">Transaction có thể offshore (BVI/SG HoldCo) → Vietnam law conflict. Singapore neutral, enforceable.</td>
+        </tr>
+        <tr>
+          <td class="clause">DD Checklist — HMA</td>
+          <td><span class="severity sev-med">MED</span></td>
+          <td class="original">[Không đề cập hotel management agreement]</td>
+          <td class="revised">Thêm vào DD scope: "Review of any existing hotel management, franchise, branding or operator agreements affecting the Property, including notice periods and costs of termination."</td>
+          <td class="rationale">Aman HMA có thể có change-of-control clause. Cần biết cost để terminate hoặc keep trước khi commit.</td>
+        </tr>
+        <tr>
+          <td class="clause">DD Checklist — Environmental</td>
+          <td><span class="severity sev-med">MED</span></td>
+          <td class="original">[Không đề cập environmental / proximity risk]</td>
+          <td class="revised">Thêm: "Environmental assessments and any proximity risk arising from planned or existing industrial, energy or infrastructure developments within a 50km radius of the Property."</td>
+          <td class="rationale">Ninh Thuận 2 nuclear plant = perception risk với Aman guests. Cần assess trước khi commit.</td>
+        </tr>
+        <tr>
+          <td class="clause">Confidentiality — Scope</td>
+          <td><span class="severity sev-low">LOW</span></td>
+          <td class="original">This confidentiality obligation shall apply to Knight Frank and Ownership's respective affiliates…</td>
+          <td class="revised">…Knight Frank, Ownership, <strong>and Purchaser's</strong> respective affiliates… <small>(thêm Purchaser vào để mutual)</small></td>
+          <td class="rationale">Hiện tại chỉ bind seller và KF — buyer không bị bind. Làm mutual để cân bằng và tránh tranh luận sau.</td>
+        </tr>
+        <tr>
+          <td class="clause">Typo</td>
+          <td><span class="severity sev-low">LOW</span></td>
+          <td class="original">"unsolicited Expresion of Interest"</td>
+          <td class="revised">"unsolicited Expression of Interest"</td>
+          <td class="rationale">Lỗi đánh máy — sửa trước khi gửi.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MISSING ITEMS -->
+<div class="section">
+  <h2>Nên Bổ Sung Thêm</h2>
+
+  <div class="issue blue">
+    <div class="issue-head"><span class="badge badge-blue">➕ ADD</span><h4>Conditions Precedent — Buyer Walk-Away Rights</h4></div>
+    <p>LOI hiện không có điều khoản nào cho phép Buyer rút lui dựa trên kết quả DD mà không bị penalty. Nên thêm: <em>"The Proposed Acquisition is subject to the Purchaser's satisfaction (in its sole discretion) with the results of due diligence, including but not limited to confirmation of clean title, satisfactory financial performance, and absence of material undisclosed liabilities."</em></p>
+  </div>
+
+  <div class="issue blue">
+    <div class="issue-head"><span class="badge badge-blue">➕ ADD</span><h4>Deposit / Good Faith Payment</h4></div>
+    <p>Không có mention về good faith deposit. Nếu seller yêu cầu trong negotiation, nên đã có position sẵn. Gợi ý: refundable deposit USD 1–2M vào escrow khi execute NDA, fully refundable nếu DD không satisfactory.</p>
+  </div>
+
+  <div class="issue blue">
+    <div class="issue-head"><span class="badge badge-blue">➕ ADD</span><h4>Key Man — Luc Armand Jean Van Nerom</h4></div>
+    <p>LOI addressed đích danh đến Luc nhưng không có clause về continuity nếu key decision maker thay đổi trong quá trình đàm phán. Với deal này, nên confirm ngay ai là authorized representative có thẩm quyền ký SPA cuối cùng.</p>
+  </div>
+</div>
+
+<!-- NEXT STEPS -->
+<div class="section">
+  <h2>Khuyến Nghị Tiếp Theo</h2>
+  <table>
+    <thead><tr><th>#</th><th>Action</th><th>Priority</th><th>Owner</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Sửa 4 điểm HIGH (giá, DD timeline, break fee, governing law) trước khi gửi</td><td><span class="severity sev-high">Ngay</span></td><td>Bach + KF</td></tr>
+      <tr><td>2</td><td>Thêm Aman HMA và environmental risk vào DD checklist</td><td><span class="severity sev-high">Ngay</span></td><td>Bach + Legal</td></tr>
+      <tr><td>3</td><td>Confirm với Knight Frank: ai là authorized signatory phía Nui Chua South JSC</td><td><span class="severity sev-med">Trước khi gửi</span></td><td>Bach / KF</td></tr>
+      <tr><td>4</td><td>Sơn cross-check cấu trúc sở hữu thực sự của Nui Chua South JSC (từ action meeting 22/04)</td><td><span class="severity sev-med">Song song</span></td><td>Sơn</td></tr>
+      <tr><td>5</td><td>Nếu seller counter với yêu cầu deposit → chuẩn bị sẵn escrow structure</td><td><span class="severity sev-low">Standby</span></td><td>Dung (Finance)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">Amanoi LOI Review · RCC Internal · Confidential · 25/04/2026 · Reviewed by Zera</div>
+</div>
+</body>
+</html>
