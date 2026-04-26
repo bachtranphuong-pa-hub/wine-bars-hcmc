@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amanoi Social Listening — Action Plan | RCC</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:#f4f5f7; color:#1a1a2e; font-size:10.5pt; line-height:1.7; }
+.wrap { max-width:960px; margin:0 auto; padding:28px 20px 60px; }
+
+.header { background:linear-gradient(135deg,#0d1b2a,#1e3a5f); border-radius:12px; padding:24px 32px; color:white; margin-bottom:20px; }
+.header .label { font-size:7.5pt; letter-spacing:4px; text-transform:uppercase; color:#c8a050; margin-bottom:6px; }
+.header h1 { font-size:16pt; font-weight:700; }
+.header p { font-size:9pt; color:rgba(255,255,255,0.5); margin-top:4px; }
+.header .pills { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+.pill { padding:3px 12px; border-radius:20px; font-size:8pt; font-weight:600; background:rgba(200,160,80,0.15); color:#c8a050; border:1px solid rgba(200,160,80,0.3); }
+
+.section { background:white; border-radius:12px; padding:22px 26px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+.section h2 { font-size:9.5pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:16px; border-bottom:2px solid #f0f0f0; padding-bottom:10px; }
+
+/* Status box */
+.status-box { display:flex; align-items:center; gap:12px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px 18px; margin-bottom:16px; }
+.status-box.warn { background:#fffbeb; border-color:#fde68a; }
+.status-icon { font-size:20pt; flex-shrink:0; }
+.status-text strong { display:block; font-size:10.5pt; color:#065f46; }
+.status-text.warn strong { color:#92400e; }
+.status-text span { font-size:9pt; color:#555; }
+
+/* Community table */
+table { width:100%; border-collapse:collapse; font-size:9pt; }
+th { background:#0d1b2a; color:#c8a050; padding:9px 12px; text-align:left; font-size:8pt; text-transform:uppercase; letter-spacing:0.5px; }
+td { padding:10px 12px; border-bottom:1px solid #f0f0f0; vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:#fafafa; }
+.badge { display:inline-block; padding:2px 9px; border-radius:10px; font-size:7.5pt; font-weight:700; }
+.badge-red    { background:#fee2e2; color:#991b1b; }
+.badge-yellow { background:#fef3c7; color:#92400e; }
+.badge-green  { background:#d1fae5; color:#065f46; }
+.badge-blue   { background:#dbeafe; color:#1e40af; }
+.badge-purple { background:#ede9fe; color:#5b21b6; }
+
+/* Keyword cards */
+.kw-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.kw-card { background:#f8f9fa; border-radius:8px; padding:12px 14px; border-left:3px solid #c8a050; }
+.kw-card code { display:block; font-family:monospace; font-size:9.5pt; color:#0d1b2a; background:#e8ecf0; padding:4px 8px; border-radius:4px; margin-bottom:6px; }
+.kw-card .kw-note { font-size:8.5pt; color:#666; }
+
+/* Setup steps */
+.step { display:flex; gap:14px; padding:12px 0; border-bottom:1px solid #f5f5f5; }
+.step:last-child { border-bottom:none; }
+.step-num { width:28px; height:28px; border-radius:50%; background:#0d1b2a; color:#c8a050; font-weight:700; font-size:10pt; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.step-body h4 { font-size:10pt; font-weight:700; color:#0d1b2a; margin-bottom:4px; }
+.step-body p, .step-body li { font-size:9.5pt; color:#444; line-height:1.8; }
+.step-body ul { padding-left:16px; }
+.step-body a { color:#1e40af; text-decoration:none; }
+.step-body a:hover { text-decoration:underline; }
+.step-body code { font-family:monospace; background:#f0f2f7; padding:1px 6px; border-radius:3px; font-size:9pt; }
+
+/* Timeline */
+.timeline-row { display:grid; grid-template-columns:120px 1fr 100px; gap:12px; padding:10px 0; border-bottom:1px solid #f5f5f5; align-items:start; font-size:9.5pt; }
+.timeline-row:last-child { border-bottom:none; }
+.tl-date { font-weight:700; color:#0d1b2a; font-size:9pt; }
+.tl-action { color:#333; }
+.tl-cost { color:#16a34a; font-weight:700; text-align:right; }
+
+/* Snapshot */
+.snapshot-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.snap-card { background:#f8f9fa; border-radius:10px; padding:14px 16px; text-align:center; border-top:3px solid; }
+.snap-card.green { border-top-color:#16a34a; }
+.snap-card.yellow { border-top-color:#f59e0b; }
+.snap-card.red { border-top-color:#dc2626; }
+.snap-card .snap-val { font-size:22pt; font-weight:700; margin-bottom:4px; }
+.snap-card.green .snap-val { color:#16a34a; }
+.snap-card.yellow .snap-val { color:#f59e0b; }
+.snap-card.red .snap-val { color:#dc2626; }
+.snap-card .snap-lbl { font-size:8pt; color:#888; text-transform:uppercase; letter-spacing:0.5px; }
+
+.escalation { background:#fef2f2; border-left:4px solid #dc2626; border-radius:0 10px 10px 0; padding:14px 18px; font-size:9.5pt; color:#444; }
+.escalation ul { padding-left:18px; margin-top:8px; line-height:2; }
+
+.footer { text-align:center; font-size:8pt; color:#bbb; margin-top:24px; }
+
+@media(max-width:640px) {
+  .kw-grid { grid-template-columns:1fr; }
+  .snapshot-grid { grid-template-columns:1fr; }
+  .timeline-row { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div class="label">RCC Internal · Project Paradise · 26/04/2026</div>
+  <h1>Amanoi — Social Listening Action Plan</h1>
+  <p>Nuclear Risk Monitoring · Tier 1 & 2 Communities · Pre-Close Due Diligence</p>
+  <div class="pills">
+    <span class="pill">🎯 Objective: Detect nuclear sentiment early</span>
+    <span class="pill">📍 Asset: Amanoi, 8.3km from NPP2</span>
+    <span class="pill">⏱ Horizon: Now → Close (Dec 2026)</span>
+    <span class="pill">💰 Setup cost: $0–$79/mo</span>
+  </div>
+</div>
+
+<!-- CURRENT STATUS -->
+<div class="section">
+  <h2>Current Baseline — Scan Results (26/04/2026)</h2>
+  <div class="snapshot-grid" style="margin-bottom:16px;">
+    <div class="snap-card green">
+      <div class="snap-val">0</div>
+      <div class="snap-lbl">Nuclear mentions linked to Amanoi</div>
+    </div>
+    <div class="snap-card yellow">
+      <div class="snap-val">671</div>
+      <div class="snap-lbl">Reddit upvotes on Ninh Thuan nuclear restart (r/VietNam, Nov 2024)</div>
+    </div>
+    <div class="snap-card yellow">
+      <div class="snap-val">~2027</div>
+      <div class="snap-lbl">Estimated construction start — likely trigger for community awareness</div>
+    </div>
+  </div>
+
+  <div class="status-box">
+    <span class="status-icon">✅</span>
+    <div class="status-text">
+      <strong>Clean baseline — no nuclear-Amanoi crossover found</strong>
+      <span>Scanned: Reddit (r/FATTravel, r/LuxuryTravel, r/VietNam), Google, TripAdvisor, travel blogs. 
+      Nuclear restart discussed widely in VN communities but not yet linked to Amanoi by any user.</span>
+    </div>
+  </div>
+
+  <div class="status-box warn">
+    <span class="status-icon">⚠️</span>
+    <div class="status-text warn">
+      <strong>Risk window: Construction phase ~2026–2027</strong>
+      <span>When groundbreaking happens, expect media coverage → travel bloggers & Aman Junkies will connect the dots. 
+      Monitor must be live before that event.</span>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY MAP -->
+<div class="section">
+  <h2>Community Map — Tier 1 & Tier 2</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:12%">Tier</th>
+        <th style="width:20%">Platform / Community</th>
+        <th style="width:12%">Size</th>
+        <th style="width:20%">Audience</th>
+        <th style="width:12%">Risk Signal</th>
+        <th style="width:12%">Monitor Tool</th>
+        <th style="width:12%">Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="5" style="font-weight:700; color:#dc2626;">T1<br><small>High Signal</small></td>
+        <td><strong>r/FATTravel</strong><br><small>reddit.com/r/FATTravel</small></td>
+        <td>180K</td>
+        <td>UHNW frequent flyers, Aman regulars</td>
+        <td><span class="badge badge-yellow">MEDIUM</span></td>
+        <td>F5Bot</td>
+        <td><span class="badge badge-red">NOW</span></td>
+      </tr>
+      <tr>
+        <td><strong>r/LuxuryTravel</strong><br><small>reddit.com/r/LuxuryTravel</small></td>
+        <td>400K</td>
+        <td>Luxury travel enthusiasts, Aman mentioned weekly</td>
+        <td><span class="badge badge-yellow">MEDIUM</span></td>
+        <td>F5Bot</td>
+        <td><span class="badge badge-red">NOW</span></td>
+      </tr>
+      <tr>
+        <td><strong>Facebook: Aman Junkies</strong><br><small>Private group</small></td>
+        <td>~15–20K</td>
+        <td>Aman superfans, UHNW, extremely high purchase intent</td>
+        <td><span class="badge badge-red">HIGH</span></td>
+        <td>Manual weekly check</td>
+        <td><span class="badge badge-red">NOW</span></td>
+      </tr>
+      <tr>
+        <td><strong>TripAdvisor — Amanoi</strong><br><small>tripadvisor.com</small></td>
+        <td>Public reviews</td>
+        <td>Past/future guests, Google-indexed</td>
+        <td><span class="badge badge-red">HIGH</span></td>
+        <td>Google Alerts</td>
+        <td><span class="badge badge-red">NOW</span></td>
+      </tr>
+      <tr>
+        <td><strong>r/VietNam</strong><br><small>reddit.com/r/VietNam</small></td>
+        <td>200K+</td>
+        <td>Vietnam watchers, expats, policy followers — nuclear already active</td>
+        <td><span class="badge badge-yellow">MEDIUM</span></td>
+        <td>F5Bot</td>
+        <td><span class="badge badge-yellow">WEEK 1</span></td>
+      </tr>
+      <tr>
+        <td rowspan="4" style="font-weight:700; color:#f59e0b;">T2<br><small>Amplifier</small></td>
+        <td><strong>Instagram #amanoi</strong></td>
+        <td>50K+ posts</td>
+        <td>Influencers, travel bloggers, affluent millennials</td>
+        <td><span class="badge badge-yellow">MEDIUM</span></td>
+        <td>Brand24 / Mention</td>
+        <td><span class="badge badge-yellow">WEEK 2</span></td>
+      </tr>
+      <tr>
+        <td><strong>YouTube — luxury reviewers</strong><br><small>Dr. Luxury, Travel Creatives</small></td>
+        <td>100K–1M/video</td>
+        <td>Aspirational luxury, Aman review videos go viral</td>
+        <td><span class="badge badge-yellow">MEDIUM</span></td>
+        <td>Google Alerts + YouTube search</td>
+        <td><span class="badge badge-yellow">WEEK 2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Twitter/X @aman #amanoi</strong></td>
+        <td>Variable</td>
+        <td>Fast-moving, journalists, travel writers</td>
+        <td><span class="badge badge-yellow">MEDIUM</span></td>
+        <td>Mention.com / Brand24</td>
+        <td><span class="badge badge-blue">MONTH 1</span></td>
+      </tr>
+      <tr>
+        <td><strong>Indagare + FlyerTalk</strong></td>
+        <td>Members-only</td>
+        <td>UHNW travel advisors, agents — B2B word of mouth</td>
+        <td><span class="badge badge-green">LOW</span></td>
+        <td>Manual quarterly</td>
+        <td><span class="badge badge-blue">MONTH 1</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- KEYWORDS -->
+<div class="section">
+  <h2>Keyword Matrix — Google Alerts & F5Bot</h2>
+  <div class="kw-grid">
+    <div class="kw-card">
+      <code>"Amanoi" nuclear</code>
+      <div class="kw-note">🎯 Primary signal — direct crossover concern</div>
+    </div>
+    <div class="kw-card">
+      <code>"Amanoi" "Ninh Thuan" plant</code>
+      <div class="kw-note">Secondary — geographic context</div>
+    </div>
+    <div class="kw-card">
+      <code>"Amanoi" radiation OR reactor</code>
+      <div class="kw-note">Direct safety concern keywords</div>
+    </div>
+    <div class="kw-card">
+      <code>"Ninh Thuan" resort nuclear concern</code>
+      <div class="kw-note">Broader net — any resort + nuclear</div>
+    </div>
+    <div class="kw-card">
+      <code>"Vinh Hy" nuclear OR "hạt nhân"</code>
+      <div class="kw-note">Vietnamese language coverage</div>
+    </div>
+    <div class="kw-card">
+      <code>Amanoi site:reddit.com</code>
+      <div class="kw-note">Reddit-specific Google Alert</div>
+    </div>
+    <div class="kw-card">
+      <code>"Ninh Thuan 2" luxury OR resort OR hotel</code>
+      <div class="kw-note">NPP news mentioning hospitality</div>
+    </div>
+    <div class="kw-card">
+      <code>"Aman" Vietnam nuclear safety</code>
+      <div class="kw-note">Broad brand safety signal</div>
+    </div>
+  </div>
+  <p style="font-size:8.5pt; color:#888; margin-top:12px; font-style:italic;">
+    * Setup Google Alerts tại: <a href="https://alerts.google.com" style="color:#1e40af;">alerts.google.com</a> · F5Bot tại: <a href="https://f5bot.com" style="color:#1e40af;">f5bot.com</a> (Reddit/HN monitoring, free)
+  </p>
+</div>
+
+<!-- SETUP GUIDE -->
+<div class="section">
+  <h2>Setup Guide — Step by Step</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h4>Google Alerts — Setup 8 keywords (15 phút)</h4>
+      <ul>
+        <li>Vào <a href="https://alerts.google.com" target="_blank">alerts.google.com</a></li>
+        <li>Tạo alert cho từng keyword trong bảng trên</li>
+        <li>Settings: <strong>How often = As it happens</strong> · Sources = Automatic · Language = All · Region = Any · How many = All results</li>
+        <li>Deliver to: email team (Bach + Sơn tối thiểu)</li>
+        <li>💡 Dùng Gmail filter để tự gắn label "Amanoi-Nuclear-Alert" và forward nếu cần</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h4>F5Bot — Reddit & Hacker News Monitoring (10 phút, miễn phí)</h4>
+      <ul>
+        <li>Đăng ký tại <a href="https://f5bot.com" target="_blank">f5bot.com</a> bằng email</li>
+        <li>Add keywords: <code>Amanoi</code> · <code>Amanoi nuclear</code> · <code>Vinh Hy nuclear</code> · <code>Ninh Thuan resort</code></li>
+        <li>F5Bot scan Reddit + Hacker News, gửi email khi có mention mới</li>
+        <li>Free tier: unlimited keywords, daily digest hoặc realtime</li>
+        <li><strong>Recommend: Realtime alerts</strong> cho keyword "Amanoi nuclear" · Daily digest cho phần còn lại</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h4>Facebook "Aman Junkies" — Manual Weekly Check</h4>
+      <ul>
+        <li>Search Facebook: <code>"Aman Junkies"</code> → Request to join private group</li>
+        <li>Trong group: dùng search function với keywords <code>Amanoi</code>, <code>Vietnam nuclear</code>, <code>Ninh Thuan</code></li>
+        <li>Frequency: mỗi thứ Hai, check 5–10 phút</li>
+        <li>Assign: 1 team member duy nhất phụ trách (tránh duplicate)</li>
+        <li>Log findings vào tracking sheet tuần/tháng</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h4>TripAdvisor Amanoi — Alert via Google</h4>
+      <ul>
+        <li>Google Alert: <code>site:tripadvisor.com "Amanoi" nuclear</code></li>
+        <li>Manually check Amanoi TripAdvisor page monthly: <a href="https://www.tripadvisor.com/Hotel_Review-g2187082-d2484086-Reviews-Amanoi-Vinh_Hy_Ninh_Thuan_Province.html" target="_blank">Amanoi Reviews page</a></li>
+        <li>Sort by "Most Recent" · Scan titles for nuclear/radiation keywords</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <h4>Brand24 / Mention — Nâng cấp khi deal moves forward (optional)</h4>
+      <ul>
+        <li><strong>Brand24:</strong> <a href="https://brand24.com" target="_blank">brand24.com</a> — USD 79/mo, cover Instagram + Twitter + web + news + Reddit + YouTube</li>
+        <li>Recommend activate khi: LOI accepted OR construction news goes public</li>
+        <li>Setup: 1 project "Amanoi Nuclear Monitor" với 8 keywords trên</li>
+        <li>Sentiment analysis tự động, alert khi volume spike</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- RESPONSE PROTOCOL -->
+<div class="section">
+  <h2>Escalation & Response Protocol</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Signal Type</th>
+        <th>Example</th>
+        <th>Severity</th>
+        <th>Response SLA</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Isolated mention</strong></td>
+        <td>"Amanoi looks great but there's a nuclear plant nearby?" — 1 Reddit comment</td>
+        <td><span class="badge badge-green">LOW</span></td>
+        <td>72 hrs</td>
+        <td>Log, no action. Prepare FAQ talking point.</td>
+      </tr>
+      <tr>
+        <td><strong>Thread gaining traction</strong></td>
+        <td>Reddit thread with 20+ upvotes discussing Amanoi + nuclear</td>
+        <td><span class="badge badge-yellow">MEDIUM</span></td>
+        <td>24 hrs</td>
+        <td>Notify Bach + legal. Review thread content. Consider FAQ post.</td>
+      </tr>
+      <tr>
+        <td><strong>Influencer/media coverage</strong></td>
+        <td>YouTube review or travel article mentioning proximity to plant</td>
+        <td><span class="badge badge-red">HIGH</span></td>
+        <td>4 hrs</td>
+        <td>Immediate escalation to Bach + Sơn + PR team. Activate crisis FAQ.</td>
+      </tr>
+      <tr>
+        <td><strong>Viral spread</strong></td>
+        <td>Thread crosses 500+ upvotes, picked up by news</td>
+        <td><span class="badge badge-red">CRITICAL</span></td>
+        <td>Immediate</td>
+        <td>Emergency call. Consider official statement. Notify Aman management.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="escalation" style="margin-top:14px;">
+    <strong>Pre-prepared FAQ response (draft — to be finalised pre-close):</strong>
+    <ul>
+      <li>"Amanoi is located within Nui Chua National Park, 8.3km from the proposed Ninh Thuan 2 site. The plant is on the opposite side of a mountain range and is not visible from the resort."</li>
+      <li>"VVER-1200 is a Generation III+ reactor with passive safety systems. The international exclusion zone is 3–5km. Amanoi is outside all safety perimeters."</li>
+      <li>"Vietnam's nuclear programme is subject to IAEA oversight and comprehensive environmental impact assessments."</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="section">
+  <h2>Implementation Timeline</h2>
+  <div class="timeline-row" style="font-weight:700; background:#f8f9fa; border-radius:6px; padding:8px 10px; margin-bottom:4px;">
+    <span>When</span><span>Action</span><span style="text-align:right;">Cost</span>
+  </div>
+  <div class="timeline-row">
+    <span class="tl-date">Week 1 (Now)</span>
+    <span class="tl-action">Setup Google Alerts (8 keywords) · Setup F5Bot (4 keywords Reddit) · Request join "Aman Junkies" Facebook group</span>
+    <span class="tl-cost">Free</span>
+  </div>
+  <div class="timeline-row">
+    <span class="tl-date">Week 1</span>
+    <span class="tl-action">Assign 1 team member as monitor owner · Set weekly check calendar (every Monday AM) · Create Notion/Sheets tracking log</span>
+    <span class="tl-cost">Free</span>
+  </div>
+  <div class="timeline-row">
+    <span class="tl-date">Week 2</span>
+    <span class="tl-action">Manual baseline check: TripAdvisor, Instagram #amanoi, YouTube — document current review tone</span>
+    <span class="tl-cost">Free</span>
+  </div>
+  <div class="timeline-row">
+    <span class="tl-date">LOI Accepted</span>
+    <span class="tl-action">Activate Brand24 ($79/mo) · Finalise nuclear FAQ draft · Brief internal team on escalation protocol</span>
+    <span class="tl-cost">$79/mo</span>
+  </div>
+  <div class="timeline-row">
+    <span class="tl-date">Construction news</span>
+    <span class="tl-action">Trigger crisis FAQ deployment readiness · Brief Aman PR team (part of acquisition negotiation) · Consider proactive media fact sheet</span>
+    <span class="tl-cost">Internal</span>
+  </div>
+  <div class="timeline-row">
+    <span class="tl-date">Monthly</span>
+    <span class="tl-action">Compile monitoring report (1 page) → distribute to Bach + Sơn + deal team</span>
+    <span class="tl-cost">Free</span>
+  </div>
+</div>
+
+<!-- MONITOR OWNER -->
+<div class="section">
+  <h2>Ownership & Responsibilities</h2>
+  <table>
+    <thead><tr><th>Role</th><th>Person</th><th>Responsibility</th><th>Time/week</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Monitor Owner</strong></td><td>Sơn (Acquisition)</td><td>Daily alert triage, weekly manual checks, monthly report</td><td>~2 hrs/week</td></tr>
+      <tr><td><strong>Escalation Receiver</strong></td><td>Bach</td><td>Receive MEDIUM+ alerts, approve response actions</td><td>On-demand</td></tr>
+      <tr><td><strong>FAQ Author</strong></td><td>Bach + Legal</td><td>Draft and finalise nuclear FAQ talking points before close</td><td>One-time</td></tr>
+      <tr><td><strong>PR Liaison</strong></td><td>TBD (post-acquisition)</td><td>Coordinate with Aman PR team on official communications</td><td>Post-close</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">Amanoi Social Listening Action Plan · RCC Internal · Confidential · 26/04/2026 · Prepared by Zera</div>
+</div>
+</body>
+</html>
