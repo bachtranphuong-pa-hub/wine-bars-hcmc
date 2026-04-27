@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1100">
+<title>Opera Metropole — Lịch Tất Toán VietinBank</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    padding: 36px 40px 56px;
+    min-width: 1100px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center; margin-bottom: 32px;
+    padding-bottom: 24px; border-bottom: 1px solid #21262d;
+  }
+  .header .label { font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #8b949e; margin-bottom: 8px; }
+  .header h1 { font-size: 26px; font-weight: 800; color: #f0f6fc; margin-bottom: 6px; }
+  .header .sub { font-size: 12px; color: #8b949e; margin-top: 6px; }
+  .badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .badge { padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+  .badge.green { background: #1a3a1a; color: #4ade80; border: 1px solid #238636; }
+  .badge.blue  { background: #1a2a3a; color: #60a5fa; border: 1px solid #1d4ed8; }
+  .badge.orange{ background: #3a2a0a; color: #fb923c; border: 1px solid #c2410c; }
+
+  /* SUMMARY CARDS */
+  .cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 28px; }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px 18px; }
+  .card.green { border-color: #238636; }
+  .card.orange { border-color: #d29922; }
+  .card.red { border-color: #f85149; }
+  .card .lbl { font-size: 10px; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 7px; }
+  .card .val { font-size: 20px; font-weight: 800; color: #f0f6fc; }
+  .card.green .val { color: #4ade80; }
+  .card.orange .val { color: #fb923c; }
+  .card.red .val { color: #f85149; }
+  .card .sub { font-size: 10px; color: #8b949e; margin-top: 4px; }
+
+  /* LOAN DETAIL BOX */
+  .loan-box {
+    background: #161b22; border: 1px solid #21262d; border-radius: 10px;
+    padding: 18px 22px; margin-bottom: 24px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  }
+  .loan-col { padding: 0 20px; }
+  .loan-col:first-child { border-right: 1px solid #21262d; padding-left: 0; }
+  .loan-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #8b949e; margin-bottom: 12px; }
+  .loan-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 12.5px; }
+  .loan-row:last-child { border-bottom: none; font-weight: 700; font-size: 13px; }
+  .loan-row .lk { color: #8b949e; }
+  .loan-row .lv { color: #e6edf3; font-weight: 600; }
+  .loan-row .lv.neg { color: #f85149; }
+  .loan-row .lv.pos { color: #4ade80; }
+  .loan-row .lv.gold { color: #d29922; }
+
+  /* SECTION */
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: #8b949e; margin-bottom: 14px;
+    padding-bottom: 8px; border-bottom: 1px solid #21262d;
+  }
+
+  /* TABLE */
+  .table-wrap { background: #161b22; border: 1px solid #21262d; border-radius: 10px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: #0d1117; border-bottom: 1px solid #21262d; }
+  th { padding: 11px 14px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #8b949e; }
+  th.right { text-align: right; }
+  th.center { text-align: center; }
+  td { padding: 12px 14px; border-bottom: 1px solid #1c2128; vertical-align: top; }
+  td.right { text-align: right; }
+  td.center { text-align: center; }
+  td.neg { color: #f85149; }
+  td.pos { color: #4ade80; }
+  td.muted { color: #8b949e; font-size: 11px; }
+  .muted { color: #8b949e; font-size: 11px; }
+  tr.rec-row td { background: #0d1f0d; }
+  tr:hover td { background: #1c2128; }
+  tr.rec-row:hover td { background: #122012; }
+
+  /* TIMELINE */
+  .timeline { display: flex; gap: 0; margin-bottom: 28px; position: relative; }
+  .timeline::before { content: ''; position: absolute; top: 28px; left: 40px; right: 40px; height: 2px; background: #21262d; z-index: 0; }
+  .tl-item { flex: 1; text-align: center; position: relative; z-index: 1; }
+  .tl-dot {
+    width: 16px; height: 16px; border-radius: 50%; margin: 20px auto 8px;
+    border: 2px solid #21262d; background: #161b22;
+  }
+  .tl-dot.past { background: #8b949e; border-color: #8b949e; }
+  .tl-dot.sot  { background: #4ade80; border-color: #4ade80; box-shadow: 0 0 8px #4ade80aa; }
+  .tl-dot.future { background: #21262d; border-color: #444c56; }
+  .tl-dot.warn { background: #f85149; border-color: #f85149; }
+  .tl-label { font-size: 10px; font-weight: 700; color: #8b949e; }
+  .tl-date  { font-size: 11px; font-weight: 600; color: #e6edf3; margin-top: 2px; }
+  .tl-note  { font-size: 9px; color: #666; margin-top: 3px; }
+
+  /* RECOMMENDATION BOX */
+  .rec-box {
+    background: #0d1f0d; border: 1px solid #238636; border-left: 4px solid #4ade80;
+    border-radius: 10px; padding: 18px 22px; margin-top: 20px;
+  }
+  .rec-box h3 { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #4ade80; margin-bottom: 12px; }
+  .rec-item { font-size: 12.5px; color: #aaa; margin-bottom: 8px; padding-left: 16px; position: relative; line-height: 1.6; }
+  .rec-item::before { content: '→'; position: absolute; left: 0; color: #4ade80; }
+  .rec-item strong { color: #e6edf3; }
+
+  .warn-box {
+    background: #1f1a0d; border: 1px solid #d29922; border-left: 4px solid #fb923c;
+    border-radius: 10px; padding: 16px 20px; margin-top: 14px;
+  }
+  .warn-box h3 { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #fb923c; margin-bottom: 10px; }
+  .warn-item { font-size: 12px; color: #aaa; margin-bottom: 7px; padding-left: 16px; position: relative; line-height: 1.5; }
+  .warn-item::before { content: '⚠'; position: absolute; left: 0; color: #fb923c; font-size: 10px; }
+
+  /* CASH FLOW BOX */
+  .cf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  .cf-card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px 18px; }
+  .cf-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #21262d; color: #8b949e; }
+  .cf-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1c2128; font-size: 12px; }
+  .cf-row:last-child { border-bottom: none; font-weight: 700; font-size: 13px; padding-top: 10px; }
+
+  .footer { text-align: center; font-size: 10px; color: #484f58; margin-top: 36px; border-top: 1px solid #21262d; padding-top: 16px; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="label">Opera Metropole · VietinBank</div>
+  <h1>📅 Lịch Tất Toán Khoản Vay</h1>
+  <div class="sub">Phân tích thời điểm tất toán tối ưu · Giả định có sổ 25/05/2026</div>
+  <div class="badges">
+    <span class="badge blue">Giải ngân: 11/11/2025</span>
+    <span class="badge green">Sổ dự kiến: 25/05/2026</span>
+    <span class="badge orange">Cập nhật: 2026-04-27</span>
+  </div>
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="cards">
+  <div class="card">
+    <div class="lbl">Dư Nợ Gốc</div>
+    <div class="val" style="font-size:17px">108.950 tỷ</div>
+    <div class="sub">VietinBank · TK 553***509</div>
+  </div>
+  <div class="card green">
+    <div class="lbl">Tổng Trả (Tối Ưu)</div>
+    <div class="val" style="font-size:17px">114.081 tỷ</div>
+    <div class="sub">Tất toán ngay khi có sổ 25/05/2026</div>
+  </div>
+  <div class="card orange">
+    <div class="lbl">Tiết Kiệm vs Kéo Dài T7</div>
+    <div class="val" style="font-size:17px">2.860 tỷ</div>
+    <div class="sub">So với tất toán cuối tháng 7/2026</div>
+  </div>
+  <div class="card">
+    <div class="lbl">Phí Trả Trước Hạn</div>
+    <div class="val" style="font-size:17px">1.090 tỷ</div>
+    <div class="sub">Cố định 1% × 108.95 tỷ gốc</div>
+  </div>
+</div>
+
+<!-- LOAN DETAIL -->
+<div class="loan-box">
+  <div class="loan-col">
+    <div class="loan-title">🏦 Thông Số Khoản Vay (Số Thực VTB 16/04/2026)</div>
+    <div class="loan-row"><span class="lk">Dư nợ gốc</span><span class="lv neg">108,950,000,000 VND</span></div>
+    <div class="loan-row"><span class="lk">Lãi vay (đến 16/04)</span><span class="lv neg">188,050,685 VND</span></div>
+    <div class="loan-row"><span class="lk">Thu hồi UDLS (đến 16/04)</span><span class="lv neg">2,188,551,781 VND</span></div>
+    <div class="loan-row"><span class="lk">Phí trả trước hạn (1%)</span><span class="lv neg">1,089,500,000 VND</span></div>
+    <div class="loan-row"><span class="lk">Tổng phải trả (16/04)</span><span class="lv gold">112,416,102,466 VND</span></div>
+  </div>
+  <div class="loan-col">
+    <div class="loan-title">📈 Lãi Tích Lũy Mỗi Ngày (Ước Tính)</div>
+    <div class="loan-row"><span class="lk">Lãi suất thông thường</span><span class="lv">~9.6%/năm (ước tính)</span></div>
+    <div class="loan-row"><span class="lk">Lãi/ngày (thông thường)</span><span class="lv neg">~28.655.342 VND/ngày</span></div>
+    <div class="loan-row"><span class="lk">UDLS thu hồi</span><span class="lv">4.7%/năm</span></div>
+    <div class="loan-row"><span class="lk">UDLS/ngày</span><span class="lv neg">~14.029.178 VND/ngày</span></div>
+    <div class="loan-row"><span class="lk">Tổng chi phí/ngày</span><span class="lv neg">~42.684.521 VND/ngày</span></div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="section">
+  <div class="section-title">📅 Dòng Thời Gian Sự Kiện Chính</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot past"></div>
+      <div class="tl-label">Giải Ngân</div>
+      <div class="tl-date">11/11/2025</div>
+      <div class="tl-note">Ngày vay VTB</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot past"></div>
+      <div class="tl-label">Số Thực VTB</div>
+      <div class="tl-date">16/04/2026</div>
+      <div class="tl-note">156 ngày · 112.42 tỷ</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot future"></div>
+      <div class="tl-label">Hôm Nay</div>
+      <div class="tl-date">27/04/2026</div>
+      <div class="tl-note">Phân tích</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot sot"></div>
+      <div class="tl-label">Có Sổ (dự kiến)</div>
+      <div class="tl-date">25/05/2026</div>
+      <div class="tl-note">⭐ Mốc tất toán tối ưu</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot future"></div>
+      <div class="tl-label">Buffer 1 tuần</div>
+      <div class="tl-date">01/06/2026</div>
+      <div class="tl-note">+~285M vs ngày sổ</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot warn"></div>
+      <div class="tl-label">Không Khuyến Nghị</div>
+      <div class="tl-date">T7/2026+</div>
+      <div class="tl-note">+~700M vs ngày sổ</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN TABLE -->
+<div class="section">
+  <div class="section-title">💰 Bảng Tính Tất Toán Theo Các Mốc Thời Gian</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%">Kịch Bản</th>
+          <th class="center" style="width:13%">Ngày Tất Toán</th>
+          <th class="center" style="width:9%">Số Ngày</th>
+          <th class="right" style="width:12%">Lãi Vay</th>
+          <th class="right" style="width:13%">Thu Hồi UDLS</th>
+          <th class="right" style="width:11%">Phí TH (1%)</th>
+          <th class="right" style="width:13%">Tổng Trả VTB</th>
+          <th class="right" style="width:7%">vs 16/04</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Reference row -->
+        <tr style="background:#1a1400;opacity:0.7">
+          <td><div style="font-size:11px;color:#d29922;font-weight:700">📌 Tham Chiếu VTB (16/04)</div></td>
+          <td class="center"><div style="font-size:12px">16/04/2026</div></td>
+          <td class="center">156</td>
+          <td class="right neg" style="font-size:12px">188M</td>
+          <td class="right neg" style="font-size:12px">2.189 tỷ</td>
+          <td class="right neg" style="font-size:12px">1.090 tỷ</td>
+          <td class="right" style="font-weight:700;color:#d29922">112.416 tỷ</td>
+          <td class="center muted">—</td>
+        </tr>
+        
+  <tr class="">
+    <td>
+      <div style="font-weight:700;color:#e0e0ec;font-size:13px">Tất toán ngay</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">Trước khi có sổ — cần thu xếp nguồn vốn cầu nối</div>
+    </td>
+    <td class="center">
+      <div style="font-weight:600">27/04/2026</div>
+      <div class="muted">Hôm nay</div>
+    </td>
+    <td class="center">
+      <div>167 ngày</div>
+      <div class="muted">kể từ giải ngân</div>
+    </td>
+    <td class="right neg">503.259.452 VND</td>
+    <td class="right neg">2.343 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;font-size:14px;color:#f0e0c0">112.886 tỷ</td>
+    <td class="right neg" style="font-size:12px">+469.529.726 VND<br><span class="muted">vs 16/04</span></td>
+  </tr>
+  <tr class="rec-row">
+    <td>
+      <div style="font-weight:700;color:#4ade80;font-size:13px">Ngay khi có sổ ⭐</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">Mốc tối ưu — sổ về ngay, bàn giao ngay, giải phóng tài sản thế chấp</div>
+    </td>
+    <td class="center">
+      <div style="font-weight:600">25/05/2026</div>
+      <div class="muted">+28 ngày</div>
+    </td>
+    <td class="center">
+      <div>195 ngày</div>
+      <div class="muted">kể từ giải ngân</div>
+    </td>
+    <td class="right neg">1.306 tỷ</td>
+    <td class="right neg">2.736 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;font-size:14px;color:#4ade80">114.081 tỷ</td>
+    <td class="right neg" style="font-size:12px">+1.665 tỷ<br><span class="muted">vs 16/04</span></td>
+  </tr>
+  <tr class="">
+    <td>
+      <div style="font-weight:700;color:#e0e0ec;font-size:13px">Sau sổ 1 tuần</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">Buffer 7 ngày để chuẩn bị tiền, ký công chứng</div>
+    </td>
+    <td class="center">
+      <div style="font-weight:600">01/06/2026</div>
+      <div class="muted">+35 ngày</div>
+    </td>
+    <td class="center">
+      <div>202 ngày</div>
+      <div class="muted">kể từ giải ngân</div>
+    </td>
+    <td class="right neg">1.506 tỷ</td>
+    <td class="right neg">2.834 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;font-size:14px;color:#f0e0c0">114.380 tỷ</td>
+    <td class="right neg" style="font-size:12px">+1.963 tỷ<br><span class="muted">vs 16/04</span></td>
+  </tr>
+  <tr class="">
+    <td>
+      <div style="font-weight:700;color:#e0e0ec;font-size:13px">Sau sổ 2 tuần</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">Thêm thời gian thu xếp cash flow, phí tăng thêm ~285M</div>
+    </td>
+    <td class="center">
+      <div style="font-weight:600">08/06/2026</div>
+      <div class="muted">+42 ngày</div>
+    </td>
+    <td class="center">
+      <div>209 ngày</div>
+      <div class="muted">kể từ giải ngân</div>
+    </td>
+    <td class="right neg">1.707 tỷ</td>
+    <td class="right neg">2.932 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;font-size:14px;color:#f0e0c0">114.678 tỷ</td>
+    <td class="right neg" style="font-size:12px">+2.262 tỷ<br><span class="muted">vs 16/04</span></td>
+  </tr>
+  <tr class="">
+    <td>
+      <div style="font-weight:700;color:#e0e0ec;font-size:13px">Cuối tháng 6</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">Kéo dài 36 ngày sau sổ — chỉ hợp lý nếu bên mua thanh toán chậm</div>
+    </td>
+    <td class="center">
+      <div style="font-weight:600">30/06/2026</div>
+      <div class="muted">+64 ngày</div>
+    </td>
+    <td class="center">
+      <div>231 ngày</div>
+      <div class="muted">kể từ giải ngân</div>
+    </td>
+    <td class="right neg">2.337 tỷ</td>
+    <td class="right neg">3.241 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;font-size:14px;color:#f0e0c0">115.617 tỷ</td>
+    <td class="right neg" style="font-size:12px">+3.201 tỷ<br><span class="muted">vs 16/04</span></td>
+  </tr>
+  <tr class="">
+    <td>
+      <div style="font-weight:700;color:#e0e0ec;font-size:13px">Cuối tháng 7</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">Không khuyến nghị — lãi + UDLS tích lũy thêm ~700M so với tất toán khi có sổ</div>
+    </td>
+    <td class="center">
+      <div style="font-weight:600">31/07/2026</div>
+      <div class="muted">+95 ngày</div>
+    </td>
+    <td class="center">
+      <div>262 ngày</div>
+      <div class="muted">kể từ giải ngân</div>
+    </td>
+    <td class="right neg">3.226 tỷ</td>
+    <td class="right neg">3.676 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;font-size:14px;color:#f0e0c0">116.941 tỷ</td>
+    <td class="right neg" style="font-size:12px">+4.525 tỷ<br><span class="muted">vs 16/04</span></td>
+  </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CASH FLOW ANALYSIS -->
+<div class="section">
+  <div class="section-title">🏦 Phân Tích Cash Flow — Tất Toán Ngày 25/05/2026 (Khuyến Nghị)</div>
+  <div class="cf-grid">
+    <div class="cf-card">
+      <div class="cf-title">📥 Nguồn Thu Từ Giao Dịch Bán</div>
+      <div class="cf-row"><span style="color:#8b949e">Giá bán Opera</span><span style="color:#4ade80">+225.000 tỷ</span></div>
+      <div class="cf-row"><span style="color:#8b949e">Tiền cọc đã nhận (ước)</span><span style="color:#4ade80">+~20–30 tỷ</span></div>
+      <div class="cf-row"><span style="color:#8b949e">Thanh toán cuối khi có sổ</span><span style="color:#4ade80">+~195–205 tỷ</span></div>
+      <div class="cf-row"><span style="color:#e6edf3">Tổng thu</span><span style="color:#4ade80">225.000 tỷ</span></div>
+    </div>
+    <div class="cf-card">
+      <div class="cf-title">📤 Nguồn Chi Ngày Có Sổ (25/05)</div>
+      <div class="cf-row"><span style="color:#8b949e">Tất toán VTB (gốc + lãi + phí)</span><span style="color:#f85149">~114.081 tỷ</span></div>
+      <div class="cf-row"><span style="color:#8b949e">Thuế TNCN 2% × 225 tỷ</span><span style="color:#f85149">-4.500 tỷ</span></div>
+      <div class="cf-row"><span style="color:#8b949e">Phí môi giới 1%</span><span style="color:#f85149">-2.250 tỷ</span></div>
+      <div class="cf-row"><span style="color:#8b949e">Công chứng, phí khác</span><span style="color:#f85149">-~0.075 tỷ</span></div>
+      <div class="cf-row"><span style="color:#e6edf3">Tổng chi</span><span style="color:#f85149">~120.906 tỷ</span></div>
+    </div>
+  </div>
+
+  <div class="rec-box">
+    <h3>✅ Khuyến Nghị — Tất Toán Ngay Khi Có Sổ (25/05/2026)</h3>
+    <div class="rec-item"><strong>Thời điểm tối ưu:</strong> Tất toán cùng ngày nhận sổ (25/05) — ngay khi bên mua thanh toán đủ và ký công chứng xong</div>
+    <div class="rec-item"><strong>Lý do:</strong> Mỗi ngày kéo dài = ~42.684.521 VND chi phí phát sinh (lãi + UDLS) — không có lợi ích gì khi giữ vay sau khi có sổ</div>
+    <div class="rec-item"><strong>Chuẩn bị trước:</strong> Liên hệ VTB 3–5 ngày trước (khoảng 20/05) để lấy số tất toán chính xác tại ngày 25/05 → tránh phát sinh 1 ngày lãi do chênh lệch timing</div>
+    <div class="rec-item"><strong>Nếu bên mua thanh toán chậm:</strong> Yêu cầu bên mua thanh toán trực tiếp vào TK VTB (payment to lender) — giải phóng thế chấp ngay, không cần qua trung gian</div>
+    <div class="rec-item"><strong>Tiết kiệm so với kéo dài đến T7/2026:</strong> <strong style="color:#4ade80">2.860 tỷ</strong></div>
+  </div>
+
+  <div class="warn-box">
+    <h3>⚠️ Lưu Ý Quan Trọng</h3>
+    <div class="warn-item">Số lãi và UDLS trong bảng trên là <strong>ước tính</strong> dựa trên số thực VTB ngày 16/04/2026. Lấy số chính xác từ VTB ~3 ngày trước tất toán.</div>
+    <div class="warn-item">Phí trả trước hạn 1% (<strong>1.090 tỷ</strong>) là cố định không đổi theo ngày tất toán.</div>
+    <div class="warn-item">Nếu sổ về sau 25/05 → các con số sẽ tự động tăng ~42.684.521 VND/ngày so với bảng trên.</div>
+    <div class="warn-item">Confirm lại với VTB: khoản UDLS có được miễn/giảm không nếu tất toán sau một ngưỡng thời gian nhất định.</div>
+  </div>
+</div>
+
+<div class="footer">
+  Dựa trên số liệu VietinBank xác nhận 16/04/2026 · Lãi suất thông thường ước tính ~9.6%/năm<br>
+  Đây là ước tính — xác nhận số chính xác tại VTB trước khi tất toán · Zera AI · 2026-04-27
+</div>
+
+</body>
+</html>
