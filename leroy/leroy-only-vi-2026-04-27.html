@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>Domaine Leroy Portfolio Scan — 2026-04-27</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #0a0a0f;
+    color: #e8e8f0;
+    padding: 32px;
+    min-width: 1200px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    border-bottom: 1px solid #2a2a3a;
+    padding-bottom: 24px;
+  }
+  .header-left {}
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #8b7355;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .header-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #f0e6d0;
+    letter-spacing: -0.5px;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: #888;
+    margin-top: 6px;
+  }
+  .header-right {
+    text-align: right;
+  }
+  .report-date {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+
+  /* ── MARKET CONTEXT BANNER ── */
+  .market-banner {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid #2a3a5c;
+    border-left: 4px solid #4a9eff;
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .market-banner .signal {
+    font-size: 11px;
+    color: #4a9eff;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .market-banner .mtext {
+    font-size: 13px;
+    color: #aab;
+    line-height: 1.5;
+  }
+  .market-banner .mtext strong {
+    color: #e0e8ff;
+  }
+
+  /* ── SUMMARY CARDS ── */
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .card {
+    background: #141420;
+    border: 1px solid #222235;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .card-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .card-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: #f0e6d0;
+  }
+  .card-value.green { color: #4ade80; }
+  .card-value.red   { color: #f87171; }
+  .card-value.blue  { color: #60a5fa; }
+  .card-sub {
+    font-size: 12px;
+    color: #555;
+    margin-top: 4px;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    background: #141420;
+    border: 1px solid #222235;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .table-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #222235;
+    font-size: 13px;
+    font-weight: 700;
+    color: #8b7355;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead th {
+    background: #0f0f1a;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #1e1e2e;
+  }
+  thead th.num, td.num { text-align: right; }
+
+  .wine-row td {
+    padding: 14px 16px 6px;
+    border-bottom: none;
+    vertical-align: top;
+  }
+  .note-row td {
+    padding: 4px 16px 14px;
+    border-bottom: 1px solid #1a1a28;
+  }
+
+  /* alternating rows */
+  tr.wine-row:nth-child(4n+1) td,
+  tr.wine-row:nth-child(4n+1) + tr.note-row td { background: #0f0f1a; }
+
+  .wname {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e8e0d0;
+    margin-bottom: 3px;
+  }
+  .wtype {
+    font-size: 11px;
+    color: #666;
+  }
+  .book {
+    font-size: 14px;
+    font-weight: 600;
+    color: #aaa;
+  }
+  .market {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e8e0d0;
+  }
+  .sub {
+    font-size: 10px;
+    color: #444;
+    margin-top: 2px;
+  }
+  .discount {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .pos { color: #4ade80; }
+  .neg { color: #f87171; }
+  .pnl-amt { font-size: 14px; font-weight: 700; }
+  .pnl-pct { font-size: 11px; margin-top: 2px; opacity: 0.8; }
+  .hold-cell {
+    font-size: 12px;
+    color: #9ca3af;
+    white-space: nowrap;
+    padding-top: 16px;
+  }
+  .action-cell { padding-top: 12px; }
+  .note-text {
+    font-size: 12px;
+    color: #555;
+    font-style: italic;
+  }
+
+  /* badges */
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .action-hold   .badge { background: #1a3a2a; color: #4ade80; border: 1px solid #2a5a3a; }
+  .action-best   .badge { background: #1a2a3a; color: #60a5fa; border: 1px solid #2a4a6a; }
+  .action-watch  .badge { background: #3a2a1a; color: #fb923c; border: 1px solid #5a3a1a; }
+
+  /* ── TOTALS ROW ── */
+  .totals-row td {
+    padding: 16px;
+    background: #0a0a14;
+    border-top: 2px solid #2a2a3a;
+    font-weight: 700;
+  }
+  .totals-label { font-size: 13px; color: #8b7355; text-transform: uppercase; letter-spacing: 1px; }
+  .totals-book  { font-size: 16px; color: #aaa; text-align: right; }
+  .totals-mkt   { font-size: 16px; color: #f0e6d0; text-align: right; }
+  .totals-pnl   { font-size: 18px; color: #4ade80; text-align: right; }
+  .totals-pct   { font-size: 12px; color: #4ade80; text-align: right; }
+
+  /* ── RECOMMENDATIONS ── */
+  .reco-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .reco-card {
+    background: #141420;
+    border: 1px solid #222235;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .reco-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #222;
+  }
+  .reco-title.green { color: #4ade80; }
+  .reco-title.orange { color: #fb923c; }
+  .reco-item {
+    font-size: 13px;
+    color: #bbb;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .reco-item::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #555;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    font-size: 10px;
+    color: #444;
+    text-align: center;
+    border-top: 1px solid #1a1a28;
+    padding-top: 16px;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-label">Danh Mục Đầu Tư Rượu</div>
+    <div class="header-title">Domaine Leroy — Báo Cáo Phân Tích Thị Trường</div>
+    <div class="header-sub">Phân Tích Chiết Khấu · Tiềm Năng Tăng Giá · Khung Thời Gian Giữ · Khuyến Nghị Bán</div>
+  </div>
+  <div class="header-right">
+    <div class="report-date">Generated: 2026-04-27 · Zera AI</div>
+  </div>
+</div>
+
+<div class="market-banner">
+  <div class="signal">📈 Tín Hiệu Thị Trường</div>
+  <div class="mtext">
+    <strong>Thị trường đang tạo đáy.</strong> Liv-ex bid:offer tăng 0,87→1,1 (cao nhất từ Oct 2022). Burgundy 150 ratio: 0,92 (cao nhất từ Jun 2022). 
+    Domaine Leroy tái chiếm vị trí #1 đấu giá năm 2025. Burgundy ≈ 17% giá trị giao dịch Liv-ex tuần này.
+    <strong>Dòng tiền thông minh đang vào — đây là thời điểm GIỮ tối ưu, không phải thoát.</strong>
+  </div>
+</div>
+
+<div class="summary-cards">
+  <div class="card">
+    <div class="card-label">Tổng Giá Vốn</div>
+    <div class="card-value">€95.166</div>
+    <div class="card-sub">13 chai · 4 SKU</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Giá Trị Thị Trường</div>
+    <div class="card-value blue">€124.080</div>
+    <div class="card-sub">Wine-Searcher avg (Tháng 4/2026)</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Lãi/Lỗ Chưa Thực Hiện</div>
+    <div class="card-value green">+€28.914</div>
+    <div class="card-sub">+30.4% vs book</div>
+  </div>
+  <div class="card">
+    <div class="card-label">Cơ Hội Tốt Nhất</div>
+    <div class="card-value" style="font-size:16px;color:#60a5fa;">Beaux Monts 2014</div>
+    <div class="card-sub">+57% so với giá vốn · 6 chai</div>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <div class="table-header">📦 Chi Tiết Danh Mục</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:35%">Rượu</th>
+        <th class="num" style="width:12%">Giá Vốn/Chai</th>
+        <th class="num" style="width:12%">Thị Trường/Chai</th>
+        <th class="num" style="width:9%">Chiết Khấu</th>
+        <th class="num" style="width:12%">L/L Chưa TH</th>
+        <th style="width:10%">Hold Window</th>
+        <th style="width:10%">Khuyến Nghị</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+  <tr class="wine-row action-hold-row">
+    <td class="wine-name">
+      <div class="wname">2015 Domaine Leroy — Richebourg Grand Cru</div>
+      <div class="wtype">Grand Cru · 2 btl · 97/100</div>
+    </td>
+    <td class="num">
+      <div class="book">€13.889</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num">
+      <div class="market">€19.300</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num discount pos">
+      -28%
+    </td>
+    <td class="num pos">
+      <div class="pnl-amt">+€10.822</div>
+      <div class="pnl-pct">+39%</div>
+    </td>
+    <td class="hold-cell">3–5 năm</td>
+    <td class="action-cell"><span class="badge action-hold">GIỮ MẠNH</span></td>
+  </tr>
+  <tr class="note-row">
+    <td colspan="7" class="note-text">💡 Thấp hơn thị trường ~28%. Tài sản đỉnh, tiềm năng tăng giá cao.</td>
+  </tr>
+
+  <tr class="wine-row action-hold-row">
+    <td class="wine-name">
+      <div class="wname">2015 Domaine Leroy — Nuits St. Georges Les Boudots (1er Cru)</div>
+      <div class="wtype">Premier Cru · 3 btl · 95–96/100</div>
+    </td>
+    <td class="num">
+      <div class="book">€5.278</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num">
+      <div class="market">€6.560</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num discount pos">
+      -19%
+    </td>
+    <td class="num pos">
+      <div class="pnl-amt">+€3.846</div>
+      <div class="pnl-pct">+24%</div>
+    </td>
+    <td class="hold-cell">12–24 tháng</td>
+    <td class="action-cell"><span class="badge action-hold">GIỮ / THEO DÕI</span></td>
+  </tr>
+  <tr class="note-row">
+    <td colspan="7" class="note-text">💡 Lowest available market price €6,560. Book undervalued ~19%. Monitor for exit at 12–24m.</td>
+  </tr>
+
+  <tr class="wine-row action-best-row">
+    <td class="wine-name">
+      <div class="wname">2014 Domaine Leroy — Vosne-Romanée Les Beaux Monts (1er Cru)</div>
+      <div class="wtype">Premier Cru · 6 btl · 95/100</div>
+    </td>
+    <td class="num">
+      <div class="book">€4.333</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num">
+      <div class="market">€6.800</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num discount pos">
+      -36%
+    </td>
+    <td class="num pos">
+      <div class="pnl-amt">+€14.802</div>
+      <div class="pnl-pct">+57%</div>
+    </td>
+    <td class="hold-cell">3–5 năm</td>
+    <td class="action-cell"><span class="badge action-best">GIỮ — GIÁ TRỊ NHẤT</span></td>
+  </tr>
+  <tr class="note-row">
+    <td colspan="7" class="note-text">💡 Highest discount in portfolio. 6 bottles = best exposure.</td>
+  </tr>
+
+  <tr class="wine-row action-hold-row">
+    <td class="wine-name">
+      <div class="wname">2015 Domaine Leroy — Romanée St. Vivant Grand Cru</div>
+      <div class="wtype">Grand Cru · 2 btl · 97+/100</div>
+    </td>
+    <td class="num">
+      <div class="book">€12.778</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num">
+      <div class="market">€12.500</div>
+      <div class="sub">mỗi chai</div>
+    </td>
+    <td class="num discount neg">
+      -13%
+    </td>
+    <td class="num neg">
+      <div class="pnl-amt">€556</div>
+      <div class="pnl-pct">-2%</div>
+    </td>
+    <td class="hold-cell">5–8 năm</td>
+    <td class="action-cell"><span class="badge action-hold">GIỮ (kiên nhẫn)</span></td>
+  </tr>
+  <tr class="note-row">
+    <td colspan="7" class="note-text">💡 Trophy play. 2003 vintage +111% at iDealwine Apr 2025 auction.</td>
+  </tr>
+
+      <tr class="totals-row">
+        <td><span class="totals-label">Total Portfolio</span></td>
+        <td class="totals-book">€95.166</td>
+        <td class="totals-mkt">€124.080</td>
+        <td></td>
+        <td class="totals-pnl">+€28.914<div class="totals-pct">+30.4%</div></td>
+        <td colspan="2"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="reco-grid">
+  <div class="reco-card">
+    <div class="reco-title green">✅ Giữ Mạnh — Chưa Nên Bán</div>
+    <div class="reco-item">Richebourg 2015: thấp hơn thị trường 28%, điểm 97/100, giữ 3–5 năm để tối đa hóa giá trị</div>
+    <div class="reco-item">Beaux Monts 2014: thấp hơn thị trường 36% — risk/reward tốt nhất danh mục</div>
+    <div class="reco-item">RSV 2015: book thấp hơn thị trường 13%, trần Grand Cru rất cao trong 5–8 năm</div>
+    <div class="reco-item">Timing thị trường: bid:offer đang phục hồi = giai đoạn GIỮ, không phải thoát</div>
+  </div>
+  <div class="reco-card">
+    <div class="reco-title orange">⚠️ Theo Dõi / Ứng Viên Thanh Khoản</div>
+    <div class="reco-item">NSG Les Boudots 2015: SKU duy nhất trước đây trên market — nay book thấp hơn 19%</div>
+    <div class="reco-item">Nếu cần thanh khoản ngắn hạn → Boudots là lựa chọn thoát đầu tiên hợp lý</div>
+    <div class="reco-item">Premier Cru vs Grand Cru: trần thấp hơn, tốc độ tăng giá chậm hơn</div>
+    <div class="reco-item">Không cần thanh khoản → giữ 12–24 tháng, thị trường có thể tiếp tục tăng</div>
+  </div>
+</div>
+
+<div class="footer">
+  Nguồn: Wine-Searcher (Tháng 4/2026) · iDealwine Auction Report (Tháng 4/2025) · Liv-ex / RareWine Invest (Tháng 4/2026) · The Drinks Business · Wine Intelligence<br>
+  Giá thị trường là ước tính dựa trên Wine-Searcher và kết quả đấu giá gần đây. Không phải tư vấn tài chính. · Tổng hợp bởi Zera AI cho Anh Bach — Royal Canary Corp
+</div>
+
+</body>
+</html>
