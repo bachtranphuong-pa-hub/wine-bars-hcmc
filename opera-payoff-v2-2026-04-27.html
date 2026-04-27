@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>Opera Metropole — Tất Toán + Sensitivity + Vay Ngược</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf3;padding:36px 40px 56px;min-width:1200px;font-size:13px;line-height:1.6}
+
+  .header{text-align:center;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid #21262d}
+  .header .lbl{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#8b949e;margin-bottom:8px}
+  .header h1{font-size:24px;font-weight:800;color:#f0f6fc}
+  .header .sub{font-size:12px;color:#8b949e;margin-top:6px}
+  .badges{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .badge{padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.5px}
+  .badge.green{background:#1a3a1a;color:#4ade80;border:1px solid #238636}
+  .badge.blue{background:#1a2a3a;color:#60a5fa;border:1px solid #1d4ed8}
+  .badge.orange{background:#3a2a0a;color:#fb923c;border:1px solid #c2410c}
+
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+  .card{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:14px 16px}
+  .card .lbl{font-size:10px;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+  .card .val{font-size:18px;font-weight:800;color:#f0f6fc}
+  .card .val.green{color:#4ade80}.card .val.orange{color:#fb923c}.card .val.red{color:#f85149}.card .val.blue{color:#60a5fa}
+  .card .sub{font-size:10px;color:#8b949e;margin-top:3px}
+
+  .section{margin-bottom:28px}
+  .sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#8b949e;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:10px}
+  .sec-badge{background:#21262d;color:#8b949e;padding:2px 8px;border-radius:8px;font-size:9px;font-weight:700}
+
+  .table-wrap{background:#161b22;border:1px solid #21262d;border-radius:10px;overflow:hidden;margin-bottom:14px}
+  table{width:100%;border-collapse:collapse}
+  thead tr{background:#0d1117;border-bottom:1px solid #21262d}
+  th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#8b949e}
+  th.right{text-align:right}
+  td{padding:10px 13px;border-bottom:1px solid #1c2128;vertical-align:middle}
+  td.right{text-align:right}
+  td.neg{color:#f85149}
+  td.pos{color:#4ade80}
+  td.blue{color:#60a5fa}
+  td.muted{color:#8b949e;font-size:11px}
+  .muted{color:#8b949e;font-size:11px}
+  tr.rec-row td{background:#0d1f0d}
+  tr:hover td{background:#1c2128}
+  tr.rec-row:hover td{background:#122012}
+
+  /* LOAN DETAIL MINI */
+  .loan-mini{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:14px 18px;margin-bottom:20px}
+  .loan-mini-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:10px}
+  .lm-cell{text-align:center}
+  .lm-label{font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .lm-val{font-size:13px;font-weight:700;color:#e6edf3}
+  .lm-val.neg{color:#f85149}.lm-val.orange{color:#fb923c}
+
+  /* SENSITIVITY NOTE */
+  .sens-note{background:#141b25;border:1px solid #1d4ed8;border-left:4px solid #60a5fa;border-radius:8px;padding:12px 16px;margin-bottom:14px;font-size:12px;color:#9ab}
+  .sens-note strong{color:#c0d8ff}
+
+  /* RECOMMENDATION BOXES */
+  .rec-box{background:#0d1f0d;border:1px solid #238636;border-left:4px solid #4ade80;border-radius:10px;padding:16px 20px;margin-bottom:14px}
+  .rec-box h3{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#4ade80;margin-bottom:10px}
+  .rec-item{font-size:12px;color:#aaa;margin-bottom:7px;padding-left:16px;position:relative;line-height:1.6}
+  .rec-item::before{content:'→';position:absolute;left:0;color:#4ade80}
+  .rec-item strong{color:#e6edf3}
+
+  .warn-box{background:#1f1a0d;border:1px solid #d29922;border-left:4px solid #fb923c;border-radius:10px;padding:14px 18px;margin-bottom:14px}
+  .warn-box h3{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#fb923c;margin-bottom:10px}
+  .warn-item{font-size:12px;color:#aaa;margin-bottom:6px;padding-left:16px;position:relative;line-height:1.5}
+  .warn-item::before{content:'⚠';position:absolute;left:0;color:#fb923c;font-size:10px}
+  .warn-item strong{color:#e6edf3}
+
+  .blue-box{background:#0d1a2a;border:1px solid #1d4ed8;border-left:4px solid #60a5fa;border-radius:10px;padding:16px 20px;margin-bottom:14px}
+  .blue-box h3{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#60a5fa;margin-bottom:10px}
+  .blue-item{font-size:12px;color:#aaa;margin-bottom:7px;padding-left:16px;position:relative;line-height:1.6}
+  .blue-item::before{content:'→';position:absolute;left:0;color:#60a5fa}
+  .blue-item strong{color:#e6edf3}
+
+  /* CASH FLOW BRIDGE */
+  .bridge-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;margin:16px 0}
+  .bridge-col{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:14px 16px}
+  .bridge-arrow{text-align:center;padding:0 16px;font-size:20px;color:#21262d}
+  .bridge-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #1c2128;font-size:12px}
+  .bridge-row:last-child{border-bottom:none;font-weight:700;font-size:13px;padding-top:8px}
+  .bridge-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #21262d;color:#8b949e}
+
+  .footer{text-align:center;font-size:10px;color:#484f58;margin-top:28px;border-top:1px solid #21262d;padding-top:14px;line-height:1.8}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="lbl">Opera Metropole · VietinBank</div>
+  <h1>💰 Lịch Tất Toán · Sensitivity Tiết Kiệm · Phương Án Vay Ngược</h1>
+  <div class="sub">Giả định có sổ 25/05/2026 · Tối ưu cash flow giai đoạn chờ</div>
+  <div class="badges">
+    <span class="badge blue">Giải ngân: 11/11/2025</span>
+    <span class="badge green">Sổ dự kiến: 25/05/2026 (28 ngày nữa)</span>
+    <span class="badge orange">Cập nhật: 2026-04-27</span>
+  </div>
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="cards">
+  <div class="card"><div class="lbl">Dư Nợ Gốc</div><div class="val" style="font-size:15px">108.950 tỷ</div><div class="sub">TK 553***509</div></div>
+  <div class="card"><div class="lbl">Chi Phí / Ngày</div><div class="val orange" style="font-size:15px">43M/ngày</div><div class="sub">Lãi 29M + UDLS 14M</div></div>
+  <div class="card"><div class="lbl">Tổng Trả (25/05)</div><div class="val green" style="font-size:15px">114.081 tỷ</div><div class="sub">Tất toán ngay khi có sổ</div></div>
+  <div class="card"><div class="lbl">Tiết Kiệm vs T7</div><div class="val green" style="font-size:15px">2.860 tỷ</div><div class="sub">So với tất toán cuối T7/2026</div></div>
+</div>
+
+<!-- LOAN MINI -->
+<div class="loan-mini">
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#8b949e">📌 Tham Chiếu VTB — Số Thực 16/04/2026</div>
+  <div class="loan-mini-grid">
+    <div class="lm-cell"><div class="lm-label">Gốc</div><div class="lm-val neg">108.950 tỷ</div></div>
+    <div class="lm-cell"><div class="lm-label">Lãi vay</div><div class="lm-val neg">0.188 tỷ</div></div>
+    <div class="lm-cell"><div class="lm-label">Thu hồi UDLS</div><div class="lm-val neg">2.189 tỷ</div></div>
+    <div class="lm-cell"><div class="lm-label">Phí TH (1%)</div><div class="lm-val neg">1.090 tỷ</div></div>
+    <div class="lm-cell"><div class="lm-label">Tổng 16/04</div><div class="lm-val orange">112.416 tỷ</div></div>
+  </div>
+</div>
+
+<!-- SECTION 1: PAYOFF SCHEDULE -->
+<div class="section">
+  <div class="sec-title">📅 Lịch Tất Toán Theo Các Mốc <span class="sec-badge">Chi phí tích lũy 43M/ngày</span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th style="width:25%">Kịch Bản</th>
+        <th class="right">Lãi Vay</th>
+        <th class="right">Thu Hồi UDLS</th>
+        <th class="right">Phí TH (1%)</th>
+        <th class="right">Tổng Trả VTB</th>
+        <th class="right">vs 16/04</th>
+        <th class="right">Chi Phí Ngày</th>
+      </tr></thead>
+      <tbody>
+        <tr style="background:#1a1400;opacity:0.8">
+          <td style="color:#d29922;font-size:11px;font-weight:700">📌 Tham chiếu 16/04</td>
+          <td class="right neg muted">0.188 tỷ</td><td class="right neg muted">2.189 tỷ</td>
+          <td class="right neg muted">1.090 tỷ</td>
+          <td class="right" style="color:#d29922;font-weight:700">112.416 tỷ</td>
+          <td class="right muted">—</td><td class="right muted">—</td>
+        </tr>
+        
+  <tr class="">
+    <td style="font-weight:500;color:#e6edf3">Tất toán ngay (27/04)</td>
+    <td class="right neg">0.503 tỷ</td>
+    <td class="right neg">2.343 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;color:#f0d090">112.886 tỷ</td>
+    <td class="right" style="font-size:11px;color:#f85149">+0.470 tỷ</td>
+    <td class="right muted">43M/ngày</td>
+  </tr>
+  <tr class="rec-row">
+    <td style="font-weight:700;color:#4ade80">⭐ Ngay khi có sổ (25/05)</td>
+    <td class="right neg">1.306 tỷ</td>
+    <td class="right neg">2.736 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;color:#4ade80">114.081 tỷ</td>
+    <td class="right" style="font-size:11px;color:#f85149">+1.665 tỷ</td>
+    <td class="right muted">43M/ngày</td>
+  </tr>
+  <tr class="">
+    <td style="font-weight:500;color:#e6edf3">Sau sổ 1 tuần (01/06)</td>
+    <td class="right neg">1.506 tỷ</td>
+    <td class="right neg">2.834 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;color:#f0d090">114.380 tỷ</td>
+    <td class="right" style="font-size:11px;color:#f85149">+1.963 tỷ</td>
+    <td class="right muted">43M/ngày</td>
+  </tr>
+  <tr class="">
+    <td style="font-weight:500;color:#e6edf3">Sau sổ 2 tuần (08/06)</td>
+    <td class="right neg">1.707 tỷ</td>
+    <td class="right neg">2.932 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;color:#f0d090">114.678 tỷ</td>
+    <td class="right" style="font-size:11px;color:#f85149">+2.262 tỷ</td>
+    <td class="right muted">43M/ngày</td>
+  </tr>
+  <tr class="">
+    <td style="font-weight:500;color:#e6edf3">Cuối tháng 6 (30/06)</td>
+    <td class="right neg">2.337 tỷ</td>
+    <td class="right neg">3.241 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;color:#f0d090">115.617 tỷ</td>
+    <td class="right" style="font-size:11px;color:#f85149">+3.201 tỷ</td>
+    <td class="right muted">43M/ngày</td>
+  </tr>
+  <tr class="">
+    <td style="font-weight:500;color:#e6edf3">Cuối tháng 7 (31/07)</td>
+    <td class="right neg">3.226 tỷ</td>
+    <td class="right neg">3.676 tỷ</td>
+    <td class="right neg">1.089 tỷ</td>
+    <td class="right" style="font-weight:700;color:#f0d090">116.941 tỷ</td>
+    <td class="right" style="font-size:11px;color:#f85149">+4.525 tỷ</td>
+    <td class="right muted">43M/ngày</td>
+  </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 2: SENSITIVITY — GỬI TIẾT KIỆM -->
+<div class="section">
+  <div class="sec-title">🏦 Sensitivity — Gửi Tiết Kiệm VTB Giảm Thu Hồi UDLS <span class="sec-badge">28 ngày · Đến 25/05</span></div>
+
+  <div class="sens-note">
+    <strong>Logic:</strong> Gửi tiết kiệm tại VietinBank → (1) nhận lãi TK ~5.8%/năm + (2) VTB có thể giảm/offset một phần UDLS tương ứng số dư duy trì tại ngân hàng.
+    <br>Cột <strong>"UDLS Offset"</strong> là ước tính conservative (50% rate UDLS × số tiền gửi × 28 ngày) — xác nhận chính sách cụ thể với VTB chi nhánh trước khi thực hiện.
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Số Tiền Gửi</th>
+        <th class="right">Lãi TK Nhận (28 ngày)</th>
+        <th class="right">UDLS Offset Tối Đa</th>
+        <th class="right">UDLS Offset Thực Tế (~50%)</th>
+        <th class="right">Net Lợi Ích</th>
+        <th class="right">Yield Ròng</th>
+      </tr></thead>
+      <tbody>
+  <tr>
+    <td style="font-weight:600">10 tỷ</td>
+    <td class="right">44M</td>
+    <td class="right neg">36M</td>
+    <td class="right pos">18M</td>
+    <td class="right pos" style="font-weight:700">63M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">20 tỷ</td>
+    <td class="right">89M</td>
+    <td class="right neg">72M</td>
+    <td class="right pos">36M</td>
+    <td class="right pos" style="font-weight:700">125M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">30 tỷ</td>
+    <td class="right">133M</td>
+    <td class="right neg">108M</td>
+    <td class="right pos">54M</td>
+    <td class="right pos" style="font-weight:700">188M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">40 tỷ</td>
+    <td class="right">178M</td>
+    <td class="right neg">144M</td>
+    <td class="right pos">72M</td>
+    <td class="right pos" style="font-weight:700">250M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">50 tỷ</td>
+    <td class="right">222M</td>
+    <td class="right neg">180M</td>
+    <td class="right pos">90M</td>
+    <td class="right pos" style="font-weight:700">313M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">60 tỷ</td>
+    <td class="right">267M</td>
+    <td class="right neg">216M</td>
+    <td class="right pos">108M</td>
+    <td class="right pos" style="font-weight:700">375M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">70 tỷ</td>
+    <td class="right">311M</td>
+    <td class="right neg">252M</td>
+    <td class="right pos">126M</td>
+    <td class="right pos" style="font-weight:700">438M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">80 tỷ</td>
+    <td class="right">356M</td>
+    <td class="right neg">288M</td>
+    <td class="right pos">144M</td>
+    <td class="right pos" style="font-weight:700">500M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.1%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">100 tỷ</td>
+    <td class="right">445M</td>
+    <td class="right neg">361M</td>
+    <td class="right pos">180M</td>
+    <td class="right pos" style="font-weight:700">625M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">8.2%/năm</td>
+  </tr></tbody>
+    </table>
+  </div>
+
+  <div class="rec-box">
+    <h3>✅ Điểm Ngọt — Gửi 50–70 Tỷ VTB</h3>
+    <div class="rec-item"><strong>Gửi 50 tỷ:</strong> Net benefit ~313M trong 28 ngày — yield ròng ~8.2%/năm</div>
+    <div class="rec-item"><strong>Gửi 70 tỷ:</strong> Net benefit ~438M trong 28 ngày — yield ròng ~8.2%/năm</div>
+    <div class="rec-item">Đây là tối ưu nếu anh có thanh khoản nhàn rỗi cần đặt trước ngày có sổ</div>
+    <div class="rec-item">Điều kiện đi kèm: yêu cầu VTB xác nhận <strong>bằng văn bản</strong> mức UDLS offset tương ứng số dư duy trì</div>
+  </div>
+</div>
+
+<!-- SECTION 3: VAY NGƯỢC -->
+<div class="section">
+  <div class="sec-title">🔄 Phương Án Vay Ngược (Cầm Cố Tiết Kiệm) <span class="sec-badge">Bảo đảm cash flow ~30 ngày</span></div>
+
+  <div class="sens-note" style="border-color:#238636;background:#0a1f0a">
+    <strong style="color:#4ade80">Cơ chế:</strong> Gửi TK tiết kiệm VTB 6 tháng → dùng TK làm tài sản đảm bảo → vay ngược lại 90% giá trị → dùng khoản vay ngược để tất toán khoản vay Opera. Sau khi nhận tiền từ bên mua → tất toán khoản vay ngược ngay.
+    <br><strong style="color:#4ade80">Mục đích:</strong> Bảo đảm anh có đủ tiền tất toán ngay khi sổ về (25/05) dù bên mua thanh toán chậm 1–2 tuần.
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Gửi TK</th>
+        <th class="right">Vay Ngược (90%)</th>
+        <th class="right">Kỳ Hạn</th>
+        <th class="right">Lãi Vay Ngược</th>
+        <th class="right">Lãi TK Nhận</th>
+        <th class="right">Chi Phí Ròng</th>
+        <th class="right">Lãi Suất Ròng</th>
+      </tr></thead>
+      <tbody>
+  <tr>
+    <td style="font-weight:600">50 tỷ TK</td>
+    <td class="right blue" style="font-weight:700">45.000 tỷ</td>
+    <td class="right muted">~30 ngày</td>
+    <td class="right neg">277M</td>
+    <td class="right pos">238M</td>
+    <td class="right neg" style="font-weight:700">39M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">1.1%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">70 tỷ TK</td>
+    <td class="right blue" style="font-weight:700">63.000 tỷ</td>
+    <td class="right muted">~30 ngày</td>
+    <td class="right neg">388M</td>
+    <td class="right pos">334M</td>
+    <td class="right neg" style="font-weight:700">55M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">1.1%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">100 tỷ TK</td>
+    <td class="right blue" style="font-weight:700">90.000 tỷ</td>
+    <td class="right muted">~30 ngày</td>
+    <td class="right neg">555M</td>
+    <td class="right pos">477M</td>
+    <td class="right neg" style="font-weight:700">78M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">1.1%/năm</td>
+  </tr>
+  <tr>
+    <td style="font-weight:600">120 tỷ TK</td>
+    <td class="right blue" style="font-weight:700">108.000 tỷ</td>
+    <td class="right muted">~30 ngày</td>
+    <td class="right neg">666M</td>
+    <td class="right pos">572M</td>
+    <td class="right neg" style="font-weight:700">94M</td>
+    <td class="right" style="font-weight:700;color:#60a5fa">1.1%/năm</td>
+  </tr></tbody>
+    </table>
+  </div>
+
+  <div class="blue-box">
+    <h3>🔵 Phương Án Khuyến Nghị — Gửi 120 Tỷ, Vay Ngược 108 Tỷ</h3>
+    <div class="blue-item"><strong>Bước 1 (Ngay bây giờ):</strong> Gửi 120 tỷ TK có kỳ hạn VTB 6 tháng — đảm bảo đủ tài sản để vay 108.95+ tỷ (đủ tất toán toàn bộ)</div>
+    <div class="blue-item"><strong>Bước 2 (~20/05):</strong> Liên hệ VTB lấy số tất toán chính xác ngày 25/05 → ký hợp đồng vay cầm cố TK ~108.95 tỷ</div>
+    <div class="blue-item"><strong>Bước 3 (25/05 — ngày có sổ):</strong> Dùng tiền vay ngược tất toán khoản vay Opera → nhận sổ → bàn giao ngay cho bên mua</div>
+    <div class="blue-item"><strong>Bước 4 (Sau khi nhận tiền từ bên mua):</strong> Tất toán khoản vay ngược → giải chấp TK → toàn bộ sạch</div>
+    <div class="blue-item"><strong>Chi phí ròng 30 ngày:</strong> Chỉ ~94M — đổi lấy việc <strong>không bị phụ thuộc timing bên mua</strong>, chủ động tất toán ngay khi có sổ</div>
+    <div class="blue-item"><strong>Lợi thế chiến lược:</strong> Tránh rủi ro bên mua delay → tránh 43M/ngày chi phí tiếp tục phát sinh sau ngày có sổ</div>
+  </div>
+
+  <div class="warn-box">
+    <h3>⚠️ Lưu Ý Thực Thi</h3>
+    <div class="warn-item">Xác nhận VTB có sản phẩm <strong>"vay cầm cố tiền gửi"</strong> tại chi nhánh đang quản lý khoản vay Opera</div>
+    <div class="warn-item">Lãi suất vay cầm cố TK thực tế dao động <strong>6.5–8.5%/năm</strong> tùy thời điểm và RM — confirm trước khi ký</div>
+    <div class="warn-item">Đảm bảo <strong>kỳ hạn TK ≥ thời gian cần bridge</strong> — nếu tất toán sớm hơn, phá vỡ TK có thể mất lãi suất</div>
+    <div class="warn-item">Thay thế: yêu cầu bên mua <strong>chuyển thẳng vào TK VTB</strong> (tất toán trực tiếp từ bên mua lên VTB) → đơn giản nhất, không cần bridge</div>
+  </div>
+
+  <!-- BRIDGE CASHFLOW -->
+  <div style="margin-top:16px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#8b949e;margin-bottom:12px">📊 Sơ Đồ Cash Flow Bridge</div>
+    <div class="bridge-grid">
+      <div class="bridge-col">
+        <div class="bridge-title">📥 Vào (Tài Trợ Tất Toán)</div>
+        <div class="bridge-row"><span style="color:#8b949e">Vay ngược VTB (cầm cố TK)</span><span style="color:#4ade80">+108.95+ tỷ</span></div>
+        <div class="bridge-row"><span style="color:#8b949e">Tổng sẵn sàng</span><span style="color:#4ade80">≥ 114 tỷ</span></div>
+      </div>
+      <div class="bridge-arrow">→</div>
+      <div class="bridge-col">
+        <div class="bridge-title">📤 Ra (Ngày 25/05)</div>
+        <div class="bridge-row"><span style="color:#8b949e">Tất toán VTB Opera</span><span style="color:#f85149">~114.081 tỷ</span></div>
+        <div class="bridge-row"><span style="color:#8b949e">Net chi phí bridge 30 ngày</span><span style="color:#fb923c">~94M</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:10px;font-size:11px;color:#8b949e">
+      Sau khi nhận tiền từ bên mua Opera → tất toán bridge ngay → giải chấp TK 120 tỷ → cash về đầy đủ
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Số liệu dựa trên VTB xác nhận 16/04/2026 · Lãi suất thông thường ước tính ~9.6%/năm · UDLS 4.7%/năm<br>
+  Sensitivity và vay ngược là ước tính — xác nhận chính sách cụ thể với VietinBank RM trước khi thực hiện · Zera AI · 2026-04-27
+</div>
+
+</body>
+</html>
