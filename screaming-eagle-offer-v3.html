@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screaming Eagle — Offer v3 + New Allocation</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#0d0d0d;color:#e8e0d0;font-size:10.5pt;line-height:1.65}
+  .container{max-width:960px;margin:0 auto;padding:32px 20px 56px}
+
+  /* ── HEADER ── */
+  .header{text-align:center;padding:44px 32px 36px;margin-bottom:28px;position:relative}
+  .header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,160,80,0.12) 0%,transparent 70%);pointer-events:none}
+  .header .estate{font-size:8pt;letter-spacing:6px;text-transform:uppercase;color:#c8a050;margin-bottom:12px}
+  .header h1{font-size:26pt;font-weight:300;color:#e8e0d0;letter-spacing:2px;margin-bottom:6px}
+  .header h1 strong{font-weight:700;color:#c8a050}
+  .header .tagline{font-size:9pt;color:#666;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+  .divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,#c8a050,transparent);margin:16px auto}
+
+  /* ── KPI ── */
+  .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#2a2a2a;border-radius:10px;overflow:hidden;margin-bottom:28px}
+  .kpi-cell{background:#141414;padding:18px 20px;text-align:center}
+  .kpi-cell .val{font-size:17pt;font-weight:700;color:#c8a050;line-height:1}
+  .kpi-cell .lbl{font-size:7.5pt;color:#666;text-transform:uppercase;letter-spacing:1px;margin-top:5px}
+  .kpi-cell.highlight{background:#1a1500}
+
+  /* ── SECTION ── */
+  .section{margin-bottom:28px}
+  .section-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .section-hdr h2{font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#c8a050}
+  .section-hdr .line{flex:1;height:1px;background:#2a2a2a}
+
+  /* ── TABLES ── */
+  table{width:100%;border-collapse:collapse;font-size:9.5pt}
+  thead tr{background:#1a1a1a;border-bottom:1px solid #c8a050}
+  th{padding:10px 12px;text-align:right;font-size:8pt;text-transform:uppercase;letter-spacing:.8px;color:#888;font-weight:600}
+  th:first-child{text-align:left}
+  td{padding:10px 12px;border-bottom:1px solid #1e1e1e;text-align:right;vertical-align:middle}
+  td:first-child{text-align:left}
+  tr:hover td{background:#161616}
+  tr.subtotal td{background:#141414;border-top:1px solid #2a2a2a;font-weight:700;color:#e8e0d0}
+  tr.grandtotal td{background:#1a1500;border-top:2px solid #c8a050;border-bottom:2px solid #c8a050;font-weight:700;font-size:10.5pt}
+  tr.grandtotal td:last-child{color:#c8a050;font-size:12pt}
+  .num{text-align:right}
+  .vintage-tag{display:inline-block;font-size:7.5pt;color:#888;background:#1e1e1e;border-radius:4px;padding:1px 6px;margin-top:2px}
+  .pts{font-size:7.5pt;color:#c8a050;background:rgba(200,160,80,0.12);border-radius:4px;padding:1px 6px;display:inline-block}
+  .disc-tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:7.5pt;font-weight:700}
+  .disc-normal{background:rgba(200,160,80,0.15);color:#c8a050}
+  .disc-special{background:rgba(22,163,74,0.2);color:#4ade80;font-size:8pt}
+  .price-old{text-decoration:line-through;color:#555;font-size:9pt;margin-right:4px}
+  .price-new{color:#e8e0d0;font-weight:700}
+  .total-cell{color:#c8a050;font-weight:700}
+  .pos{color:#4ade80;font-weight:700}
+  .green{color:#4ade80}
+  .na{color:#444;font-style:italic;font-size:8.5pt}
+  .highlight-col{color:#e8e0d0;font-weight:600}
+
+  /* ── SAVINGS ── */
+  .savings-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px}
+  .sav-box{background:#141414;border-radius:10px;padding:16px 18px;border:1px solid #2a2a2a}
+  .sav-box.featured{border-color:#c8a050;background:#1a1500}
+  .sav-box.green-box{border-color:#4ade80;background:#0a1a0a}
+  .sav-box .sv-label{font-size:7.5pt;text-transform:uppercase;letter-spacing:1px;color:#666;margin-bottom:6px}
+  .sav-box .sv-val{font-size:15pt;font-weight:700;line-height:1}
+  .sav-box .sv-sub{font-size:8.5pt;color:#666;margin-top:4px}
+  .sav-box.featured .sv-val{color:#c8a050}
+  .sav-box.green-box .sv-val{color:#4ade80}
+
+  /* ── VS BOX ── */
+  .vs-box{background:#141414;border-radius:10px;padding:18px 22px;margin-top:16px;border:1px solid #2a2a2a}
+  .vs-box h3{font-size:9pt;text-transform:uppercase;letter-spacing:1.5px;color:#888;margin-bottom:12px}
+  .vs-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1e1e1e;font-size:9.5pt;gap:8px}
+  .vs-row:last-child{border-bottom:none;font-weight:700;font-size:10pt;padding-top:10px}
+  .vs-new{color:#4ade80;font-weight:700}
+  .vs-delta{font-size:8pt;color:#4ade80;background:rgba(74,222,128,0.1);padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+
+  /* ══════════════════════════════════════════
+     NEW SECTION: ALLOCATION + HISTORICAL
+  ══════════════════════════════════════════ */
+  .new-section-banner {
+    background: linear-gradient(135deg, #0a0a1a 0%, #0d0d20 100%);
+    border: 1px solid #2a2a50;
+    border-left: 4px solid #4a8eff;
+    border-radius: 10px;
+    padding: 16px 22px;
+    margin: 36px 0 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .new-section-banner .nbadge {
+    font-size: 8pt; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+    color: #4a8eff; white-space: nowrap;
+  }
+  .new-section-banner .ntext { font-size: 11pt; color: #ccc; }
+  .new-section-banner .ntext strong { color: #fff; }
+
+  .alloc-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .alloc-card {
+    background: #111118; border: 1px solid #222230; border-radius: 12px;
+    overflow: hidden;
+  }
+  .alloc-card-header {
+    background: #1a1a2a; padding: 12px 16px;
+    font-size: 9pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+    color: #8080cc; border-bottom: 1px solid #222240;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .alloc-card-header .badge-new {
+    background: #4a8eff22; color: #4a8eff; border: 1px solid #4a8eff44;
+    padding: 2px 8px; border-radius: 12px; font-size: 7.5pt; font-weight: 800;
+  }
+  .alloc-card-body { padding: 16px; }
+  .alloc-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #1a1a28; font-size: 9.5pt; }
+  .alloc-row:last-child { border-bottom: none; }
+  .alloc-label { color: #666; font-size: 9pt; }
+  .alloc-val { font-weight: 700; color: #e0e0f0; }
+  .alloc-val.gold { color: #c8a050; }
+  .alloc-val.green { color: #4ade80; }
+  .alloc-val.blue { color: #60a5fa; }
+  .alloc-pnl {
+    margin-top: 12px; padding: 10px 14px;
+    background: #0a1a0a; border: 1px solid #1a4a1a; border-radius: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .alloc-pnl .pnl-label { font-size: 8pt; color: #4ade80; text-transform: uppercase; letter-spacing: 1px; }
+  .alloc-pnl .pnl-val { font-size: 14pt; font-weight: 800; color: #4ade80; }
+
+  /* ── HIST TABLE ── */
+  .hist-section { margin-bottom: 24px; }
+  .hist-section h3 {
+    font-size: 9pt; text-transform: uppercase; letter-spacing: 2px;
+    color: #888; margin-bottom: 10px;
+  }
+  .hist-table thead tr { background: #111118; border-bottom: 1px solid #2a2a40; }
+  .hist-table th { color: #666; font-size: 7.5pt; }
+  .hist-table td { border-bottom: 1px solid #161624; }
+  .hist-table tr:last-child td { border-bottom: none; }
+
+  /* ── INSIGHT BOXES ── */
+  .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+  .insight-card { background: #111118; border: 1px solid #1e1e30; border-radius: 10px; padding: 16px 18px; }
+  .insight-title { font-size: 9pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #1e1e30; }
+  .insight-title.green { color: #4ade80; }
+  .insight-title.blue  { color: #60a5fa; }
+  .insight-title.orange{ color: #fb923c; }
+  .insight-title.red   { color: #e05050; }
+  .insight-item { font-size: 9.5pt; color: #999; margin-bottom: 7px; padding-left: 14px; position: relative; line-height: 1.6; }
+  .insight-item::before { content: '→'; position: absolute; left: 0; color: #444; }
+  .insight-item strong { color: #ddd; }
+
+  /* ── COMBINED TOTAL ── */
+  .combined-total {
+    background: #1a1500; border: 2px solid #c8a050; border-radius: 12px;
+    padding: 20px 24px; margin-top: 28px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    text-align: center;
+  }
+  .ct-cell { padding: 12px; }
+  .ct-label { font-size: 8pt; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .ct-val { font-size: 16pt; font-weight: 800; color: #c8a050; }
+  .ct-val.green { color: #4ade80; }
+  .ct-sub { font-size: 8.5pt; color: #666; margin-top: 4px; }
+
+  .note{font-size:8.5pt;color:#555;margin-top:16px;font-style:italic;text-align:center}
+  .footer{text-align:center;font-size:8pt;color:#333;margin-top:36px;letter-spacing:1px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="estate">Napa Valley · Oakville · Est. 1986</div>
+    <h1>Screaming <strong>Eagle</strong></h1>
+    <div class="divider"></div>
+    <div class="tagline">Offer v3 · April 2026 · Museum Release + Current + New Allocation 2024/2025</div>
+  </div>
+
+  <!-- KPI STRIP — offer v2 numbers unchanged -->
+  <div class="kpi-strip">
+    <div class="kpi-cell">
+      <div class="val">63</div>
+      <div class="lbl">Chai Offer v2</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="val">$148,050</div>
+      <div class="lbl">List Value</div>
+    </div>
+    <div class="kpi-cell highlight">
+      <div class="val">$131,460</div>
+      <div class="lbl">Giá Offer v2</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="val" style="color:#4ade80">−$16,590</div>
+      <div class="lbl">Tiết Kiệm (11.2%)</div>
+    </div>
+  </div>
+
+  <!-- ══ MUSEUM RELEASE ══ -->
+  <div class="section">
+    <div class="section-hdr">
+      <h2>Museum Release — Cabernet Sauvignon</h2>
+      <div class="line"></div>
+      <span class="disc-tag disc-normal">−10%</span>
+    </div>
+    <table>
+      <thead><tr>
+        <th>Vintage</th><th>Điểm</th><th>Qty</th><th>List/Chai</th>
+        <th>Chiết Khấu</th><th>Giá Offer/Chai</th><th>Thành Tiền</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>1998 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">96 <span class="pts">WA</span></td><td>3</td><td>$2,900</td><td>−10%</td><td>$2,610</td><td class="total-cell">$7,830</td></tr>
+        <tr><td>1999 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">95 <span class="pts">WA</span></td><td>3</td><td>$2,900</td><td>−10%</td><td>$2,610</td><td class="total-cell">$7,830</td></tr>
+        <tr><td>2006 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">99 <span class="pts">WA</span></td><td>3</td><td>$2,900</td><td>−10%</td><td>$2,610</td><td class="total-cell">$7,830</td></tr>
+        <tr><td>2007 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">99 <span class="pts">WA</span></td><td>3</td><td>$3,400</td><td>−10%</td><td>$3,060</td><td class="total-cell">$9,180</td></tr>
+        <tr><td>2010 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">100 <span class="pts">WA</span></td><td>3</td><td>$3,300</td><td>−10%</td><td>$2,970</td><td class="total-cell">$8,910</td></tr>
+        <tr><td>2011 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">94 <span class="pts">WA</span></td><td>3</td><td>$2,400</td><td>−10%</td><td>$2,160</td><td class="total-cell">$6,480</td></tr>
+        <tr><td>2013 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">99 <span class="pts">WA</span></td><td>3</td><td>$2,700</td><td>−10%</td><td>$2,430</td><td class="total-cell">$7,290</td></tr>
+        <tr><td>2014 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">100 <span class="pts">WA</span></td><td>3</td><td>$2,900</td><td>−10%</td><td>$2,610</td><td class="total-cell">$7,830</td></tr>
+        <tr><td>2018 <span class="vintage-tag">3 bt · OWC ex-winery</span></td><td style="text-align:center">100 <span class="pts">WA</span></td><td>3</td><td>$2,900</td><td>−10%</td><td>$2,610</td><td class="total-cell">$7,830</td></tr>
+        <tr class="subtotal"><td colspan="2">Tổng Museum Release</td><td>27</td><td>$78,900 list</td><td></td><td></td><td class="total-cell">$71,010</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ CAB 2023 ══ -->
+  <div class="section">
+    <div class="section-hdr">
+      <h2>Cabernet Sauvignon 2023</h2>
+      <div class="line"></div>
+      <span class="disc-tag disc-normal">−$200/chai</span>
+    </div>
+    <table>
+      <thead><tr>
+        <th>Vintage</th><th>Điểm</th><th>Qty</th><th>List/Chai</th>
+        <th>Chiết Khấu</th><th>Giá Offer/Chai</th><th>Thành Tiền</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>2023 <span class="vintage-tag">Current Release</span></td><td style="text-align:center">TBD</td><td>15</td><td>$1,950</td><td>−$200</td><td>$1,750</td><td class="total-cell">$26,250</td></tr>
+        <tr class="subtotal"><td colspan="2">Tổng Cabernet 2023</td><td>15</td><td>$29,250 list</td><td>−10.3%</td><td></td><td class="total-cell">$26,250</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ SAUVIGNON BLANC ══ -->
+  <div class="section">
+    <div class="section-hdr">
+      <h2>Sauvignon Blanc (White)</h2>
+      <div class="line"></div>
+      <span class="disc-tag disc-special">★ 3 Chai Miễn Phí</span>
+    </div>
+    <table>
+      <thead><tr>
+        <th>Vintage</th><th>Điểm</th><th>Qty</th><th>List/Chai</th>
+        <th>Chiết Khấu</th><th>Giá Offer/Chai</th><th>Thành Tiền</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>2022/2023 <span class="vintage-tag">18 trả tiền</span></td><td style="text-align:center">96–98 <span class="pts">WA</span></td><td>18</td><td>$1,900</td><td>—</td><td>$1,900</td><td class="total-cell">$34,200</td></tr>
+        <tr><td>2022/2023 <span class="vintage-tag">3 miễn phí</span></td><td style="text-align:center">96–98 <span class="pts">WA</span></td><td>3</td><td>$1,900</td><td><strong style="color:#4ade80">FREE</strong></td><td><span style="color:#4ade80;font-weight:700">$0</span></td><td class="total-cell" style="color:#4ade80">$0</td></tr>
+        <tr class="subtotal"><td colspan="2">Tổng Sauvignon Blanc</td><td>21</td><td>$39,900 list</td><td style="color:#4ade80"><strong>3 miễn phí (−14.3%)</strong></td><td></td><td class="total-cell" style="color:#4ade80">$34,200</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ GRAND TOTAL OFFER v2 ══ -->
+  <table style="margin-bottom:24px">
+    <tbody>
+      <tr class="grandtotal">
+        <td colspan="2"><strong>TỔNG OFFER V2 — 63 Chai</strong></td>
+        <td><strong>63</strong></td>
+        <td>$148,050 list</td>
+        <td style="color:#4ade80"><strong>−11.2%</strong></td>
+        <td></td>
+        <td><strong>$131,460</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Savings breakdown -->
+  <div class="section">
+    <div class="section-hdr"><h2>Bảng Tiết Kiệm — Offer v2</h2><div class="line"></div></div>
+    <div class="savings-grid">
+      <div class="sav-box"><div class="sv-label">Museum Release (27 chai)</div><div class="sv-val" style="color:#c8a050">−$7,890</div><div class="sv-sub">10% off $78,900 list</div></div>
+      <div class="sav-box"><div class="sv-label">Cabernet 2023 (15 chai)</div><div class="sv-val" style="color:#c8a050">−$3,000</div><div class="sv-sub">$200/chai × 15</div></div>
+      <div class="sav-box featured"><div class="sv-label">Sauvignon Blanc (21 chai) ★</div><div class="sv-val">−$5,700</div><div class="sv-sub">3 chai miễn phí × $1,900</div></div>
+    </div>
+    <div class="vs-box">
+      <h3>📊 Tóm Tắt Tiết Kiệm</h3>
+      <div class="vs-row"><span>Museum Release (27 chai)</span><span>$78,900 list → <span class="vs-new">$71,010 (−10%)</span></span><span class="vs-delta">−$7,890</span></div>
+      <div class="vs-row"><span>Cabernet 2023 (15 chai)</span><span>$29,250 list → <span class="vs-new">$26,250 (−$200/chai)</span></span><span class="vs-delta">−$3,000</span></div>
+      <div class="vs-row"><span>Sauvignon Blanc (21 chai)</span><span>$39,900 list → <span class="vs-new">$34,200 (18 trả + 3 free)</span></span><span class="vs-delta">−$5,700</span></div>
+      <div class="vs-row"><span>Tổng Cộng</span><span>$148,050 list → <span class="vs-new">$131,460</span></span><span class="vs-delta">−$16,590 (11.2%)</span></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       NEW SECTION: LOCK-IN ALLOCATION 2024/2025
+  ══════════════════════════════════════════════════════════ -->
+
+  <div class="new-section-banner">
+    <div class="nbadge">🆕 Phần Mới</div>
+    <div class="ntext"><strong>Lock-in Allocation 2024/2025</strong> — Cam kết trực tiếp từ seller · Giá winery · So sánh với historical release và thị trường thứ cấp</div>
+  </div>
+
+  <div class="section">
+    <div class="section-hdr">
+      <h2>Allocation 2024/2025 — Chi Tiết Cam Kết</h2>
+      <div class="line"></div>
+      <span class="disc-tag" style="background:rgba(74,142,255,0.15);color:#4a8eff">Giá Winery Trực Tiếp</span>
+    </div>
+
+    <div class="alloc-cards">
+      <!-- CAB -->
+      <div class="alloc-card">
+        <div class="alloc-card-header">
+          Cabernet Sauvignon
+          <span class="badge-new">2024/2025</span>
+        </div>
+        <div class="alloc-card-body">
+          <div class="alloc-row"><span class="alloc-label">Số chai cam kết</span><span class="alloc-val gold">30–40 chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Giá winery</span><span class="alloc-val">$1,600/chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Ship ước tính</span><span class="alloc-val">~$30/chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Chi phí all-in</span><span class="alloc-val gold">$1,630/chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Tổng chi phí</span><span class="alloc-val">$48,900 – $65,200</span></div>
+          <div class="alloc-row"><span class="alloc-label">Thị trường ref (2023)</span><span class="alloc-val blue">$2,577/chai avg</span></div>
+          <div class="alloc-row"><span class="alloc-label">Upside vs all-in</span><span class="alloc-val green">+58% ngay khi release</span></div>
+          <div class="alloc-pnl">
+            <span class="pnl-label">Est. Lợi Nhuận</span>
+            <span class="pnl-val">+28,410 – +37,880</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLIGHT -->
+      <div class="alloc-card">
+        <div class="alloc-card-header">
+          The Flight (Second Wine)
+          <span class="badge-new">2024/2025</span>
+        </div>
+        <div class="alloc-card-body">
+          <div class="alloc-row"><span class="alloc-label">Số chai cam kết</span><span class="alloc-val gold">72 chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Giá winery</span><span class="alloc-val">$300/chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Ship ước tính</span><span class="alloc-val">~$28/chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Chi phí all-in</span><span class="alloc-val gold">$328/chai</span></div>
+          <div class="alloc-row"><span class="alloc-label">Tổng chi phí</span><span class="alloc-val">$23,616</span></div>
+          <div class="alloc-row"><span class="alloc-label">Thị trường ref (avg)</span><span class="alloc-val blue">$1,052/chai avg</span></div>
+          <div class="alloc-row"><span class="alloc-label">Upside vs all-in</span><span class="alloc-val green">+221% ngay khi release</span></div>
+          <div class="alloc-pnl">
+            <span class="pnl-label">Est. Lợi Nhuận</span>
+            <span class="pnl-val">+52,128</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORICAL ANALYSIS -->
+  <div class="section">
+    <div class="section-hdr">
+      <h2>Phân Tích Lịch Sử — Giá Release vs Thị Trường Thứ Cấp</h2>
+      <div class="line"></div>
+    </div>
+
+    <!-- CAB HISTORY TABLE -->
+    <div class="hist-section">
+      <h3>🍷 Cabernet Sauvignon — Vintages 2021–2023</h3>
+      <table class="hist-table">
+        <thead><tr>
+          <th style="text-align:left">Vintage</th>
+          <th style="text-align:center">Điểm</th>
+          <th class="num" style="color:#4ade80">Giá Release Ước Tính</th>
+          <th class="num">Đáy Thứ Cấp</th>
+          <th class="num" style="color:#e8e0d0">Avg Thứ Cấp</th>
+          <th class="num" style="color:#4ade80">Upside (Release→Avg)</th>
+          <th class="num" style="color:#4ade80">Upside (Release→Đáy)</th>
+        </tr></thead>
+        <tbody>
+  <tr>
+    <td><strong>2021</strong></td>
+    <td style="text-align:center"><span class="pts">96 WA</span></td>
+    <td class="num green">$950</td>
+    <td class="num">$2,942</td>
+    <td class="num highlight-col">$3,010</td>
+    <td class="num pos">+217%</td>
+    <td class="num pos">+210%</td>
+  </tr>
+  <tr>
+    <td><strong>2022</strong></td>
+    <td style="text-align:center"><span class="pts">98 WA</span></td>
+    <td class="num green">$1,000</td>
+    <td class="num">$2,554</td>
+    <td class="num highlight-col">$2,720</td>
+    <td class="num pos">+172%</td>
+    <td class="num pos">+155%</td>
+  </tr>
+  <tr>
+    <td><strong>2023</strong></td>
+    <td style="text-align:center"><span class="pts">—</span></td>
+    <td class="num green">$1,100</td>
+    <td class="num">$2,450</td>
+    <td class="num highlight-col">$2,577</td>
+    <td class="num pos">+134%</td>
+    <td class="num pos">+123%</td>
+  </tr>
+          <tr style="background:#1a1500;border-top:1px solid #c8a050">
+            <td colspan="2" style="color:#c8a050;font-weight:700;font-size:9pt;text-transform:uppercase;letter-spacing:1px">2024/2025 — Cam Kết Anh Bach</td>
+            <td class="num"><span style="color:#4ade80;font-weight:800">$1,630</span><br><span style="font-size:7.5pt;color:#666">all-in incl. ship</span></td>
+            <td class="num" style="color:#666">Chưa release</td>
+            <td class="num highlight-col">$2,577<br><span style="font-size:7.5pt;color:#666">ref từ 2023</span></td>
+            <td class="num pos" style="font-size:13pt">+58%</td>
+            <td class="num pos">+56%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FLIGHT HISTORY TABLE -->
+    <div class="hist-section" style="margin-top:20px">
+      <h3>🦅 The Flight — Vintages 2021–2023</h3>
+      <table class="hist-table">
+        <thead><tr>
+          <th style="text-align:left">Vintage</th>
+          <th style="text-align:center">Điểm</th>
+          <th class="num" style="color:#4ade80">Giá Release Ước Tính</th>
+          <th class="num">Đáy Thứ Cấp</th>
+          <th class="num" style="color:#e8e0d0">Avg Thứ Cấp</th>
+          <th class="num" style="color:#4ade80">Upside (Release→Avg)</th>
+          <th class="num" style="color:#4ade80">Upside (Release→Đáy)</th>
+        </tr></thead>
+        <tbody>
+  <tr>
+    <td><strong>2021</strong></td>
+    <td style="text-align:center"><span class="pts">99 WA</span></td>
+    <td class="num green">$250</td>
+    <td class="num">$1,149</td>
+    <td class="num highlight-col">$1,159</td>
+    <td class="num pos">+364%</td>
+    <td class="num pos">+360%</td>
+  </tr>
+  <tr>
+    <td><strong>2022</strong></td>
+    <td style="text-align:center"><span class="pts">—</span></td>
+    <td class="num green">$275</td>
+    <td class="num"><span class="na">Chưa giao dịch</span></td>
+    <td class="num highlight-col"><span class="na">Chưa giao dịch</span></td>
+    <td class="num pos">—</td>
+    <td class="num pos">—</td>
+  </tr>
+  <tr>
+    <td><strong>2023</strong></td>
+    <td style="text-align:center"><span class="pts">—</span></td>
+    <td class="num green">$275</td>
+    <td class="num"><span class="na">Chưa giao dịch</span></td>
+    <td class="num highlight-col"><span class="na">Chưa giao dịch</span></td>
+    <td class="num pos">—</td>
+    <td class="num pos">—</td>
+  </tr>
+          <tr style="background:#1a1500;border-top:1px solid #c8a050">
+            <td colspan="2" style="color:#c8a050;font-weight:700;font-size:9pt;text-transform:uppercase;letter-spacing:1px">2024/2025 — Cam Kết Anh Bach</td>
+            <td class="num"><span style="color:#4ade80;font-weight:800">$328</span><br><span style="font-size:7.5pt;color:#666">all-in incl. ship</span></td>
+            <td class="num" style="color:#666">Chưa release</td>
+            <td class="num highlight-col">$1,052<br><span style="font-size:7.5pt;color:#666">avg all vintages</span></td>
+            <td class="num pos" style="font-size:13pt">+221%</td>
+            <td class="num pos">+251%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- INSIGHT BOXES -->
+    <div class="insight-grid" style="margin-top:20px">
+      <div class="insight-card">
+        <div class="insight-title green">✅ Tại Sao Allocation Này Cực Kỳ Hấp Dẫn</div>
+        <div class="insight-item">Danh sách chờ mailing list Screaming Eagle = <strong>nhiều năm</strong>. Giá winery trực tiếp gần như bất khả thi với người ngoài.</div>
+        <div class="insight-item">Cab: Mọi vintage 2021–2023, <strong>đáy thị trường thứ cấp vẫn cao hơn giá winery 60–84%</strong></div>
+        <div class="insight-item">Flight 2021: đáy thứ cấp $1,149 vs $250 release = <strong>+360% ngay cả ở mức thấp nhất</strong></div>
+        <div class="insight-item">Thị trường 2025–2026 đang phục hồi: Liv-ex bid:offer 0.87→1.1 — window giữ tối ưu</div>
+        <div class="insight-item"><strong>Không có vintage nào trong lịch sử giao dịch dưới giá release winery</strong></div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-title blue">📊 So Sánh Nhanh — Giá Anh Bach vs Thị Trường</div>
+        <div class="insight-item"><strong>Cab 2021:</strong> Đáy thứ cấp $2,942 vs winery ~$950 = <strong>+210%</strong></div>
+        <div class="insight-item"><strong>Cab 2022:</strong> Đáy thứ cấp $2,554 vs winery ~$1,000 = <strong>+155%</strong></div>
+        <div class="insight-item"><strong>Cab 2023:</strong> Đáy thứ cấp $2,450 vs winery ~$1,100 = <strong>+123%</strong></div>
+        <div class="insight-item"><strong>Flight 2021:</strong> Đáy thứ cấp $1,149 vs winery ~$250 = <strong>+360%</strong></div>
+        <div class="insight-item">⭐ Giá anh Bach (2024/25): <strong>Cab $1,630 all-in</strong>, <strong>Flight $328 all-in</strong> — thấp hơn đáy lịch sử của tất cả các vintage trước</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-title orange">⚠️ Rủi Ro Cần Theo Dõi</div>
+        <div class="insight-item">Rating vintage 2024 chưa được công bố — điểm critic quyết định khả năng giữ premium</div>
+        <div class="insight-item">Cầu Napa fine wine hậu đại dịch vẫn thấp hơn đỉnh 2021 — hold 2+ năm để tối ưu exit</div>
+        <div class="insight-item">Ship + thuế nhập khẩu VN/HK: +10–15% chi phí thực tế</div>
+        <div class="insight-item">Rủi ro tỷ giá USD/VND nếu thanh toán bằng VND</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-title red">🎯 Khuyến Nghị Chiến Lược</div>
+        <div class="insight-item"><strong>CHỐT TOÀN BỘ.</strong> Đây là arbitrage cơ cấu: giá winery luôn dưới thị trường thứ cấp ở mọi vintage.</div>
+        <div class="insight-item">Flight (72 chai): Số lượng lớn, giá thấp → lý tưởng flip <strong>1–2 năm</strong> sau release</div>
+        <div class="insight-item">Cab (30–40 chai): Giữ 2–4 năm. Exit khi rating 2024 xác nhận 97+ và thị trường hồi phục</div>
+        <div class="insight-item">Kết hợp với Offer v2: tổng danh mục SE đa dạng museum + current + new allocation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMBINED TOTAL: OFFER v2 + NEW ALLOCATION -->
+  <div class="section">
+    <div class="section-hdr"><h2>Tổng Danh Mục Screaming Eagle</h2><div class="line"></div></div>
+    <div class="combined-total">
+      <div class="ct-cell">
+        <div class="ct-label">Tổng Chai (v2 + Alloc)</div>
+        <div class="ct-val">165–175</div>
+        <div class="ct-sub">63 v2 + 102–112 alloc</div>
+      </div>
+      <div class="ct-cell">
+        <div class="ct-label">Tổng Chi Phí Ước Tính</div>
+        <div class="ct-val">$203,976<br>–$220,276</div>
+        <div class="ct-sub">v2 $131,460 + alloc $72,516–88,816</div>
+      </div>
+      <div class="ct-cell">
+        <div class="ct-label">Est. Lợi Nhuận Allocation</div>
+        <div class="ct-val green">+$75,390<br>–$97,640</div>
+        <div class="ct-sub">Allocation mới · chưa tính offer v2</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Tất cả giá USD ex-winery / ex-Singapore · Storage và shipping tới Việt Nam chưa bao gồm · Giá thị trường tham khảo từ Wine-Searcher (04/2026) · Không phải tư vấn tài chính</p>
+  <div class="footer">Screaming Eagle · Offer v3 · April 2026 · Château de Saigon / Royal Canary Corp</div>
+</div>
+</body>
+</html>
