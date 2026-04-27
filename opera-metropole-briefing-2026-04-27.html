@@ -6,42 +6,37 @@
 <title>Opera Metropole — Full Briefing 2026-04-27</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf3;padding:40px;min-width:1200px;font-size:13px;line-height:1.65}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf3;padding:36px 40px 52px;min-width:1200px;font-size:13px;line-height:1.65}
 
-/* ── HEADER ── */
-.page-header{text-align:center;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #21262d}
-.page-header .eyebrow{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#8b949e;margin-bottom:10px}
-.page-header h1{font-size:28px;font-weight:800;color:#f0f6fc;letter-spacing:-0.5px}
-.page-header .sub{font-size:12px;color:#8b949e;margin-top:6px}
-.badges{display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap}
-.badge{padding:3px 12px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.5px}
-.badge.g{background:#1a3a1a;color:#4ade80;border:1px solid #238636}
-.badge.b{background:#1a2a3a;color:#60a5fa;border:1px solid #1d4ed8}
-.badge.o{background:#3a2a0a;color:#fb923c;border:1px solid #c2410c}
-.badge.p{background:#2a1a3a;color:#c084fc;border:1px solid #7c3aed}
+.ph{text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #21262d}
+.ph .ey{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#8b949e;margin-bottom:8px}
+.ph h1{font-size:26px;font-weight:800;color:#f0f6fc}
+.ph .sub{font-size:12px;color:#8b949e;margin-top:5px}
+.badges{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.badge{padding:3px 12px;border-radius:12px;font-size:10px;font-weight:700}
+.bg{background:#1a3a1a;color:#4ade80;border:1px solid #238636}
+.bb{background:#1a2a3a;color:#60a5fa;border:1px solid #1d4ed8}
+.bo{background:#3a2a0a;color:#fb923c;border:1px solid #c2410c}
+.bp{background:#2a1a3a;color:#c084fc;border:1px solid #7c3aed}
 
-/* ── SECTION ── */
-.sec{margin-bottom:36px}
-.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #21262d}
-.sec-hdr h2{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#8b949e}
-.sec-hdr .chip{background:#21262d;color:#8b949e;padding:2px 9px;border-radius:8px;font-size:10px;font-weight:700}
-.sec-hdr .chip.g{background:#1a3a1a;color:#4ade80}
-.sec-hdr .chip.b{background:#1a2a3a;color:#60a5fa}
-.sec-hdr .chip.o{background:#3a2a0a;color:#fb923c}
-
-/* ── CARDS ── */
-.cards{display:grid;gap:14px;margin-bottom:20px}
+.cards{display:grid;gap:12px;margin-bottom:20px}
 .c4{grid-template-columns:repeat(4,1fr)}
 .c3{grid-template-columns:repeat(3,1fr)}
-.c2{grid-template-columns:repeat(2,1fr)}
-.card{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:14px 16px}
-.card.cg{border-color:#238636}.card.cb{border-color:#1d4ed8}.card.co{border-color:#d29922}.card.cp{border-color:#7c3aed}
-.card .lbl{font-size:10px;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
-.card .val{font-size:18px;font-weight:800;color:#f0f6fc}
-.card.cg .val{color:#4ade80}.card.cb .val{color:#60a5fa}.card.co .val{color:#fb923c}.card.cp .val{color:#c084fc}
-.card .sub{font-size:10px;color:#8b949e;margin-top:3px}
+.card{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:13px 15px}
+.card.cg{border-color:#238636}.card.cb{border-color:#1d4ed8}.card.co{border-color:#d29922}
+.lbl{font-size:10px;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}
+.val{font-size:18px;font-weight:800;color:#f0f6fc}
+.card.cg .val{color:#4ade80}.card.cb .val{color:#60a5fa}.card.co .val{color:#fb923c}
+.sub{font-size:10px;color:#8b949e;margin-top:3px}
 
-/* ── TABLES ── */
+.sec{margin-bottom:32px}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #21262d}
+.sh h2{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#8b949e}
+.chip{padding:2px 9px;border-radius:8px;font-size:10px;font-weight:700;background:#21262d;color:#8b949e}
+.chip.g{background:#1a3a1a;color:#4ade80}
+.chip.o{background:#3a2a0a;color:#fb923c}
+.chip.b{background:#1a2a3a;color:#60a5fa}
+
 .tw{background:#161b22;border:1px solid #21262d;border-radius:10px;overflow:hidden;margin-bottom:12px}
 table{width:100%;border-collapse:collapse}
 thead tr{background:#0d1117;border-bottom:1px solid #21262d}
@@ -49,75 +44,66 @@ th{padding:9px 13px;text-align:left;font-size:10px;font-weight:700;text-transfor
 th.r{text-align:right}
 td{padding:9px 13px;border-bottom:1px solid #1c2128;vertical-align:middle}
 td.r{text-align:right}
+td.fw{font-weight:700}
 td.neg{color:#f85149}
 td.pos{color:#4ade80}
-td.green{color:#4ade80}
-td.gold{color:#d29922}
 td.blue{color:#60a5fa}
 td.dim{color:#8b949e;font-size:11px}
-td.fw{font-weight:700}
 tr.rec td{background:#0d1f0d}
+tr.star td{background:#1a1400}
 tr.refrow td{background:#1a1400;opacity:.85}
 tr:hover td{background:#1c2128}
 tr.rec:hover td{background:#122012}
+tr.star:hover td{background:#201800}
+tr.trow td{background:#0d1117;border-top:2px solid #21262d;font-weight:700}
 
-/* ── MEMBER TABLE ── */
-.mem-row td{vertical-align:middle}
 .roi-badge{display:inline-block;background:#1a3a1a;color:#3fb950;border:1px solid #238636;border-radius:4px;padding:1px 7px;font-size:12px;font-weight:600}
 
-/* ── BOXES ── */
-.box{border-radius:10px;padding:16px 20px;margin-top:12px}
+.box{border-radius:10px;padding:14px 18px;margin-top:12px}
 .box-g{background:#0d1f0d;border:1px solid #238636;border-left:4px solid #4ade80}
 .box-b{background:#0d1a2a;border:1px solid #1d4ed8;border-left:4px solid #60a5fa}
 .box-o{background:#1f1a0d;border:1px solid #d29922;border-left:4px solid #fb923c}
-.box h3{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.box h3{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
 .box-g h3{color:#4ade80}.box-b h3{color:#60a5fa}.box-o h3{color:#fb923c}
-.bi{font-size:12px;color:#aaa;margin-bottom:7px;padding-left:16px;position:relative;line-height:1.6}
+.bi{font-size:12px;color:#aaa;margin-bottom:6px;padding-left:14px;position:relative;line-height:1.6}
 .bi::before{content:'→';position:absolute;left:0}
 .box-g .bi::before{color:#4ade80}.box-b .bi::before{color:#60a5fa}.box-o .bi::before{content:'⚠';color:#fb923c;font-size:10px}
 .bi strong{color:#e6edf3}
 
-/* ── NOTE ── */
-.note{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:10px 14px;font-size:12px;color:#8b949e;margin-bottom:12px}
-.note.nb{border-left:3px solid #60a5fa;background:#0d1a2a}
+.note{background:#0d1a2a;border:1px solid #1d4ed8;border-left:4px solid #60a5fa;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#9ab}
 .note strong{color:#c0d8ff}
 
-/* ── MINI ROW ── */
-.kv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+.kv-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
 .kv{text-align:center;padding:8px;background:#0d1117;border-radius:8px}
 .kv .k{font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
 .kv .v{font-size:13px;font-weight:700}
 .kv .v.neg{color:#f85149}.kv .v.o{color:#fb923c}
 
-/* ── DIVIDER ── */
-.div{border:none;border-top:2px solid #21262d;margin:32px 0}
+.div{border:none;border-top:2px solid #21262d;margin:28px 0}
 
-/* ── FOOTER ── */
-.footer{text-align:center;font-size:10px;color:#484f58;margin-top:32px;border-top:1px solid #21262d;padding-top:14px;line-height:1.8}
+.footer{text-align:center;font-size:10px;color:#484f58;margin-top:28px;border-top:1px solid #21262d;padding-top:14px;line-height:1.8}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════
-     PAGE HEADER
-══════════════════════════════════════════════════════ -->
-<div class="page-header">
-  <div class="eyebrow">Confidential · Royal Canary Corp</div>
+<!-- HEADER -->
+<div class="ph">
+  <div class="ey">Confidential · Royal Canary Corp</div>
   <h1>🏢 OPERA METROPOLE — FULL BRIEFING</h1>
-  <div class="sub">P&amp;L Final · Lịch Tất Toán · Sensitivity Tiết Kiệm · Phương Án Vay Ngược</div>
+  <div class="sub">P&amp;L Final · Lịch Tất Toán · Phương Án Gửi Tiết Kiệm VTB · Vay Cầm Cố</div>
   <div class="badges">
-    <span class="badge p">Giải ngân: 11/11/2025</span>
-    <span class="badge b">Số thực VTB: 16/04/2026</span>
-    <span class="badge g">Sổ dự kiến: 25/05/2026</span>
-    <span class="badge o">Cập nhật: 2026-04-27</span>
+    <span class="badge bp">Giải ngân: 11/11/2025</span>
+    <span class="badge bb">Số thực VTB: 16/04/2026</span>
+    <span class="badge bo">Tất toán sớm: 10/05/2026</span>
+    <span class="badge bg">Ngày có sổ: 25/05/2026</span>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION 1: P&L FINAL
-══════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     PHẦN 1: P&L FINAL
+══════════════════════════════════════ -->
 <div class="sec">
-  <div class="sec-hdr"><h2>01 · P&amp;L Final — Bán 225 Tỷ</h2><span class="chip g">LN 37.21 tỷ · ROI 58% · IRR ~192%</span></div>
+  <div class="sh"><h2>01 · P&amp;L Final — Bán 225 Tỷ</h2><span class="chip g">LN 37.21 tỷ · ROI 58% · IRR ~192%</span></div>
 
   <div class="cards c4">
     <div class="card cg"><div class="lbl">LN Ròng Project</div><div class="val">37.21 tỷ</div><div class="sub">Sau tất cả chi phí</div></div>
@@ -128,7 +114,7 @@ tr.rec:hover td{background:#122012}
 
   <div class="tw">
     <table>
-      <thead><tr><th>Hạng Mục</th><th class="r">Số Tiền</th><th class="r">Tỷ VND</th><th class="r">Ghi Chú</th></tr></thead>
+      <thead><tr><th>Hạng Mục</th><th class="r">Số Tiền (VND)</th><th class="r">Tỷ VND</th><th class="r">Ghi Chú</th></tr></thead>
       <tbody>
         <tr style="background:#0a1a0a"><td colspan="4" style="font-size:10px;font-weight:700;color:#3fb950;text-transform:uppercase;letter-spacing:1px;padding:6px 13px">▸ DOANH THU</td></tr>
         <tr><td style="padding-left:22px">Giá bán</td><td class="r pos">+225,000,000,000</td><td class="r pos">+225.000</td><td class="r dim">—</td></tr>
@@ -140,14 +126,13 @@ tr.rec:hover td{background:#122012}
         <tr><td style="padding-left:22px">Phí môi giới (1% × 225 tỷ)</td><td class="r neg">-2,250,000,000</td><td class="r neg">-2.250</td><td class="r dim">1% × 225B</td></tr>
         <tr><td style="padding-left:22px">Công chứng cọc + sổ hồng</td><td class="r neg">-75,000,000</td><td class="r neg">-0.075</td><td class="r dim">—</td></tr>
         <tr style="background:#0d1117"><td colspan="4" style="font-size:10px;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:1px;padding:6px 13px">▸ PHÍ TẤT TOÁN VIETINBANK (SỐ THỰC 16/04)</td></tr>
-        <tr><td style="padding-left:22px">Phí trả nợ trước hạn (1%)</td><td class="r neg">-1,089,500,000</td><td class="r neg">-1.090</td><td class="r dim">1% × 108.95B gốc</td></tr>
-        <tr><td style="padding-left:22px">Thu hồi ưu đãi lãi suất UDLS</td><td class="r neg">-2,188,551,781</td><td class="r neg">-2.189</td><td class="r dim">4.7%/năm × 156 ngày</td></tr>
-        <tr style="background:#0d2510;border-top:2px solid #238636"><td><strong>🟢 LỢI NHUẬN RÒNG PROJECT</strong></td><td class="r pos fw" style="font-size:15px">37,208,897,534</td><td class="r pos fw" style="font-size:15px">~37.209 tỷ</td><td class="r dim">225B − 187.791B</td></tr>
+        <tr><td style="padding-left:22px">Phí trả nợ trước hạn (1%)</td><td class="r neg">-1,089,500,000</td><td class="r neg">-1.090</td><td class="r dim">Cố định</td></tr>
+        <tr><td style="padding-left:22px">Thu hồi ưu đãi lãi suất (UDLS)</td><td class="r neg">-2,188,551,781</td><td class="r neg">-2.189</td><td class="r dim">4.7%/năm × 156 ngày</td></tr>
+        <tr style="background:#0d2510;border-top:2px solid #238636"><td><strong>🟢 LỢI NHUẬN RÒNG PROJECT</strong></td><td class="r pos fw" style="font-size:15px">37,208,897,534</td><td class="r pos fw" style="font-size:15px">~37.209 tỷ</td><td class="r dim">Số cơ sở (16/04)</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- MEMBER TABLE -->
   <div class="tw">
     <table>
       <thead><tr><th>Thành Viên</th><th class="r">%</th><th class="r">Vốn Góp</th><th class="r">LN Ròng</th><th class="r">Tổng Nhận Về</th><th class="r">ROI</th></tr></thead>
@@ -155,10 +140,10 @@ tr.rec:hover td{background:#122012}
         <tr><td class="fw">Anh Quang (NDQ)</td><td class="r dim">53.17%</td><td class="r">34.100 tỷ</td><td class="r pos">19.784 tỷ</td><td class="r fw">53.884 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
         <tr><td class="fw">NHY</td><td class="r dim">24.02%</td><td class="r">15.400 tỷ</td><td class="r pos">8.938 tỷ</td><td class="r fw">24.338 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
         <tr><td class="fw">Yến Linh + Steve</td><td class="r dim">8.58%</td><td class="r">5.500 tỷ</td><td class="r pos">3.193 tỷ</td><td class="r fw">8.693 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
-        <tr style="background:#0d1a2a"><td class="fw" style="color:#60a5fa">Bach Tran</td><td class="r dim">7.80%</td><td class="r">5.000 tỷ</td><td class="r pos">2.902 tỷ</td><td class="r fw" style="color:#60a5fa">7.902 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
+        <tr style="background:#0d1a2a"><td class="fw blue">Bach Tran</td><td class="r dim">7.80%</td><td class="r">5.000 tỷ</td><td class="r pos">2.902 tỷ</td><td class="r fw blue">7.902 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
         <tr><td class="fw">Thùy Linh</td><td class="r dim">4.29%</td><td class="r">2.750 tỷ</td><td class="r pos">1.596 tỷ</td><td class="r fw">4.346 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
         <tr><td class="fw">DG</td><td class="r dim">2.14%</td><td class="r">1.375 tỷ</td><td class="r pos">0.796 tỷ</td><td class="r fw">2.171 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
-        <tr style="background:#1c2128;border-top:2px solid #21262d"><td class="fw" style="font-size:14px">TỔNG CỘNG</td><td class="r dim">100%</td><td class="r fw">64.125 tỷ</td><td class="r pos fw" style="font-size:14px">37.209 tỷ</td><td class="r fw" style="font-size:14px">101.334 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
+        <tr class="trow"><td class="fw" style="font-size:14px">TỔNG CỘNG</td><td class="r dim">100%</td><td class="r fw">64.125 tỷ</td><td class="r pos fw" style="font-size:14px">37.209 tỷ</td><td class="r fw" style="font-size:14px">101.334 tỷ</td><td class="r"><span class="roi-badge">58.0%</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -166,20 +151,19 @@ tr.rec:hover td{background:#122012}
 
 <hr class="div">
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION 2: LỊCH TẤT TOÁN
-══════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     PHẦN 2: LỊCH TẤT TOÁN
+══════════════════════════════════════ -->
 <div class="sec">
-  <div class="sec-hdr"><h2>02 · Lịch Tất Toán VietinBank</h2><span class="chip o">Chi phí tích lũy 43M/ngày</span></div>
+  <div class="sh"><h2>02 · Lịch Tất Toán — So Sánh 10/05 vs 25/05</h2><span class="chip o">~43M/ngày tích lũy</span></div>
 
-  <!-- VTB PARAMS -->
-  <div class="card" style="margin-bottom:16px">
+  <div class="card" style="margin-bottom:14px">
     <div class="lbl" style="margin-bottom:10px">Thông Số Khoản Vay (Số Thực VTB 16/04/2026)</div>
     <div class="kv-grid">
       <div class="kv"><div class="k">Dư nợ gốc</div><div class="v neg">108.950 tỷ</div></div>
-      <div class="kv"><div class="k">Lãi vay / ngày</div><div class="v neg">~29M</div></div>
-      <div class="kv"><div class="k">UDLS / ngày</div><div class="v neg">~14M</div></div>
-      <div class="kv"><div class="k">Tổng chi phí / ngày</div><div class="v o">~43M</div></div>
+      <div class="kv"><div class="k">Lãi/ngày (~)</div><div class="v neg">29M</div></div>
+      <div class="kv"><div class="k">UDLS/ngày (~)</div><div class="v neg">14M</div></div>
+      <div class="kv"><div class="k">Tổng chi phí/ngày</div><div class="v o">43M</div></div>
       <div class="kv"><div class="k">Phí TH (cố định)</div><div class="v neg">1.090 tỷ</div></div>
     </div>
   </div>
@@ -187,324 +171,307 @@ tr.rec:hover td{background:#122012}
   <div class="tw">
     <table>
       <thead><tr>
-        <th style="width:27%">Kịch Bản</th>
+        <th style="width:27%">Ngày Tất Toán</th>
         <th class="r">Lãi Vay</th>
         <th class="r">Thu Hồi UDLS</th>
         <th class="r">Phí TH (1%)</th>
         <th class="r">Tổng Trả VTB</th>
         <th class="r">vs 16/04</th>
+        <th class="r">vs 25/05</th>
       </tr></thead>
       <tbody>
         <tr class="refrow">
-          <td class="fw" style="color:#d29922;font-size:11px">📌 Tham chiếu VTB (16/04)</td>
+          <td class="fw" style="color:#d29922;font-size:11px">📌 Tham chiếu (16/04)</td>
           <td class="r dim">0.188 tỷ</td><td class="r dim">2.189 tỷ</td>
           <td class="r dim">1.090 tỷ</td>
           <td class="r fw" style="color:#d29922">112.416 tỷ</td>
+          <td class="r dim">—</td><td class="r dim">—</td>
+        </tr>
+        
+  <tr class="">
+    <td class="fw" style="color:#e6edf3">27/04 — Tất toán ngay</td>
+    <td class="r neg">0.503 tỷ</td>
+    <td class="r neg">2.343 tỷ</td>
+    <td class="r neg">1.089 tỷ</td>
+    <td class="r fw" style="color:#f0d090">112.886 tỷ</td>
+    <td class="r" style="font-size:11px;color:#f85149">+0.470 tỷ</td>
+    <td class="r" style="font-size:11px;color:#4ade80">
+      −1195M
+    </td>
+  </tr>
+  <tr class="">
+    <td class="fw" style="color:#e6edf3">01/05</td>
+    <td class="r neg">0.618 tỷ</td>
+    <td class="r neg">2.399 tỷ</td>
+    <td class="r neg">1.089 tỷ</td>
+    <td class="r fw" style="color:#f0d090">113.056 tỷ</td>
+    <td class="r" style="font-size:11px;color:#f85149">+0.640 tỷ</td>
+    <td class="r" style="font-size:11px;color:#4ade80">
+      −1024M
+    </td>
+  </tr>
+  <tr class="">
+    <td class="fw" style="color:#e6edf3">05/05</td>
+    <td class="r neg">0.733 tỷ</td>
+    <td class="r neg">2.455 tỷ</td>
+    <td class="r neg">1.089 tỷ</td>
+    <td class="r fw" style="color:#f0d090">113.227 tỷ</td>
+    <td class="r" style="font-size:11px;color:#f85149">+0.811 tỷ</td>
+    <td class="r" style="font-size:11px;color:#4ade80">
+      −854M
+    </td>
+  </tr>
+  <tr class="star">
+    <td class="fw" style="color:#fb923c">10/05 — Tất toán sớm ⭐</td>
+    <td class="r neg">0.876 tỷ</td>
+    <td class="r neg">2.525 tỷ</td>
+    <td class="r neg">1.089 tỷ</td>
+    <td class="r fw" style="color:#fb923c">113.441 tỷ</td>
+    <td class="r" style="font-size:11px;color:#f85149">+1.024 tỷ</td>
+    <td class="r" style="font-size:11px;color:#4ade80">
+      −640M
+    </td>
+  </tr>
+  <tr class="">
+    <td class="fw" style="color:#e6edf3">15/05</td>
+    <td class="r neg">1.019 tỷ</td>
+    <td class="r neg">2.595 tỷ</td>
+    <td class="r neg">1.089 tỷ</td>
+    <td class="r fw" style="color:#f0d090">113.654 tỷ</td>
+    <td class="r" style="font-size:11px;color:#f85149">+1.238 tỷ</td>
+    <td class="r" style="font-size:11px;color:#4ade80">
+      −427M
+    </td>
+  </tr>
+  <tr class="">
+    <td class="fw" style="color:#e6edf3">20/05</td>
+    <td class="r neg">1.162 tỷ</td>
+    <td class="r neg">2.666 tỷ</td>
+    <td class="r neg">1.089 tỷ</td>
+    <td class="r fw" style="color:#f0d090">113.867 tỷ</td>
+    <td class="r" style="font-size:11px;color:#f85149">+1.451 tỷ</td>
+    <td class="r" style="font-size:11px;color:#4ade80">
+      −213M
+    </td>
+  </tr>
+  <tr class="rec">
+    <td class="fw" style="color:#4ade80">25/05 — Ngày có sổ ⭐</td>
+    <td class="r neg">1.306 tỷ</td>
+    <td class="r neg">2.736 tỷ</td>
+    <td class="r neg">1.089 tỷ</td>
+    <td class="r fw" style="color:#4ade80">114.081 tỷ</td>
+    <td class="r" style="font-size:11px;color:#f85149">+1.665 tỷ</td>
+    <td class="r" style="font-size:11px;color:#666">
+      —
+    </td>
+  </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="box box-o">
+      <h3>⭐ Tất Toán Sớm 10/05 — Tiết Kiệm 640M</h3>
+      <div class="bi">Tổng trả VTB: <strong>113.441 tỷ</strong></div>
+      <div class="bi">Tiết kiệm <strong>640M</strong> so với tất toán ngày có sổ 25/05</div>
+      <div class="bi">Cần <strong>~113.441 tỷ sẵn sàng trước 10/05</strong> — xem phương án vay cầm cố TK bên dưới</div>
+      <div class="bi">Rủi ro: chưa có sổ → bên mua có thể không đồng ý trả đủ trước 10/05</div>
+    </div>
+    <div class="box box-g">
+      <h3>✅ Tất Toán Ngày Có Sổ 25/05 — An Toàn Nhất</h3>
+      <div class="bi">Tổng trả VTB: <strong>114.081 tỷ</strong></div>
+      <div class="bi">Sổ về → bàn giao → nhận tiền → tất toán ngay trong ngày</div>
+      <div class="bi">Liên hệ VTB trước <strong>~20/05</strong> để lấy số chính xác</div>
+      <div class="bi">Yêu cầu bên mua chuyển thẳng vào TK VTB → zero bridge cost</div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════
+     PHẦN 3: GỬI TIẾT KIỆM VTB
+══════════════════════════════════════ -->
+<div class="sec">
+  <div class="sh"><h2>03 · Phương Án Gửi Tiết Kiệm VTB — Giảm Thu Hồi UDLS</h2><span class="chip b">Số thực từ bảng VTB · Tối đa 60 tỷ</span></div>
+
+  <div class="note">
+    <strong>Nguồn số liệu:</strong> Bảng phương án gửi tiết kiệm do VietinBank cung cấp. Lãi suất TK <strong>7%/năm kỳ hạn 12 tháng</strong>. Mỗi <strong>10 tỷ</strong> gửi → giảm UDLS <strong>120M</strong>. Lãi TK và giảm UDLS là hai lợi ích độc lập (lãi TK anh nhận về, UDLS giảm trực tiếp trên số tiền tất toán).
+  </div>
+
+  <div class="tw">
+    <table>
+      <thead><tr>
+        <th>Số Tiền Gửi TK</th>
+        <th class="r">Lãi TK 12 Tháng<br><span style="font-size:9px;color:#555">(anh nhận về)</span></th>
+        <th class="r">UDLS Được Giảm<br><span style="font-size:9px;color:#555">(số thực VTB)</span></th>
+        <th class="r">Tổng Trả VTB (10/05)<br><span style="font-size:9px;color:#555">sau khi giảm UDLS</span></th>
+        <th class="r">Tổng Trả VTB (25/05)<br><span style="font-size:9px;color:#555">sau khi giảm UDLS</span></th>
+        <th class="r">Tiết Kiệm Ròng<br><span style="font-size:9px;color:#555">vs không gửi</span></th>
+      </tr></thead>
+      <tbody>
+        <tr class="refrow">
+          <td class="fw" style="color:#d29922;font-size:11px">Không gửi TK (tham chiếu)</td>
+          <td class="r dim">—</td>
+          <td class="r dim">—</td>
+          <td class="r fw" style="color:#fb923c">113.441 tỷ</td>
+          <td class="r fw" style="color:#4ade80">114.081 tỷ</td>
           <td class="r dim">—</td>
         </tr>
         
   <tr class="">
-    <td class="fw "> Tất toán ngay (27/04)</td>
-    <td class="r neg">0.503 tỷ</td>
-    <td class="r neg">2.343 tỷ</td>
-    <td class="r neg">1.089 tỷ</td>
-    <td class="r fw gold">112.886 tỷ</td>
-    <td class="r" style="font-size:11px;color:#f85149">+0.470 tỷ</td>
+    <td class="fw">10 tỷ</td>
+    <td class="r">700M</td>
+    <td class="r pos fw">120M</td>
+    <td class="r" style="font-weight:700;color:#fb923c">113.321 tỷ</td>
+    <td class="r" style="font-weight:700;color:#4ade80">113.961 tỷ</td>
+    <td class="r pos fw" style="font-size:13px">120M</td>
   </tr>
   <tr class="">
-    <td class="fw "> 01/05/2026</td>
-    <td class="r neg">0.618 tỷ</td>
-    <td class="r neg">2.399 tỷ</td>
-    <td class="r neg">1.089 tỷ</td>
-    <td class="r fw gold">113.056 tỷ</td>
-    <td class="r" style="font-size:11px;color:#f85149">+0.640 tỷ</td>
+    <td class="fw">20 tỷ</td>
+    <td class="r">1400M</td>
+    <td class="r pos fw">240M</td>
+    <td class="r" style="font-weight:700;color:#fb923c">113.201 tỷ</td>
+    <td class="r" style="font-weight:700;color:#4ade80">113.841 tỷ</td>
+    <td class="r pos fw" style="font-size:13px">240M</td>
   </tr>
   <tr class="">
-    <td class="fw "> 05/05/2026</td>
-    <td class="r neg">0.733 tỷ</td>
-    <td class="r neg">2.455 tỷ</td>
-    <td class="r neg">1.089 tỷ</td>
-    <td class="r fw gold">113.227 tỷ</td>
-    <td class="r" style="font-size:11px;color:#f85149">+0.811 tỷ</td>
+    <td class="fw">30 tỷ</td>
+    <td class="r">2100M</td>
+    <td class="r pos fw">360M</td>
+    <td class="r" style="font-weight:700;color:#fb923c">113.081 tỷ</td>
+    <td class="r" style="font-weight:700;color:#4ade80">113.721 tỷ</td>
+    <td class="r pos fw" style="font-size:13px">360M</td>
   </tr>
   <tr class="">
-    <td class="fw "> ⭐ Tất toán sớm (10/05)</td>
-    <td class="r neg">0.876 tỷ</td>
-    <td class="r neg">2.525 tỷ</td>
-    <td class="r neg">1.089 tỷ</td>
-    <td class="r fw gold">113.441 tỷ</td>
-    <td class="r" style="font-size:11px;color:#f85149">+1.024 tỷ</td>
+    <td class="fw">40 tỷ</td>
+    <td class="r">2800M</td>
+    <td class="r pos fw">480M</td>
+    <td class="r" style="font-weight:700;color:#fb923c">112.961 tỷ</td>
+    <td class="r" style="font-weight:700;color:#4ade80">113.601 tỷ</td>
+    <td class="r pos fw" style="font-size:13px">480M</td>
   </tr>
   <tr class="">
-    <td class="fw "> 15/05/2026</td>
-    <td class="r neg">1.019 tỷ</td>
-    <td class="r neg">2.595 tỷ</td>
-    <td class="r neg">1.089 tỷ</td>
-    <td class="r fw gold">113.654 tỷ</td>
-    <td class="r" style="font-size:11px;color:#f85149">+1.238 tỷ</td>
-  </tr>
-  <tr class="">
-    <td class="fw "> 20/05/2026</td>
-    <td class="r neg">1.162 tỷ</td>
-    <td class="r neg">2.666 tỷ</td>
-    <td class="r neg">1.089 tỷ</td>
-    <td class="r fw gold">113.867 tỷ</td>
-    <td class="r" style="font-size:11px;color:#f85149">+1.451 tỷ</td>
+    <td class="fw">50 tỷ</td>
+    <td class="r">3500M</td>
+    <td class="r pos fw">600M</td>
+    <td class="r" style="font-weight:700;color:#fb923c">112.841 tỷ</td>
+    <td class="r" style="font-weight:700;color:#4ade80">113.481 tỷ</td>
+    <td class="r pos fw" style="font-size:13px">600M</td>
   </tr>
   <tr class="rec">
-    <td class="fw green"> ⭐ Ngay khi có sổ (25/05)</td>
-    <td class="r neg">1.306 tỷ</td>
-    <td class="r neg">2.736 tỷ</td>
-    <td class="r neg">1.089 tỷ</td>
-    <td class="r fw green">114.081 tỷ</td>
-    <td class="r" style="font-size:11px;color:#f85149">+1.665 tỷ</td>
+    <td class="fw">60 tỷ</td>
+    <td class="r">4200M</td>
+    <td class="r pos fw">720M</td>
+    <td class="r" style="font-weight:700;color:#fb923c">112.721 tỷ</td>
+    <td class="r" style="font-weight:700;color:#4ade80">113.361 tỷ</td>
+    <td class="r pos fw" style="font-size:13px">720M</td>
   </tr>
       </tbody>
     </table>
   </div>
 
   <div class="box box-g">
-    <h3>✅ Khuyến Nghị — Tất Toán 25/05 (Ngay Khi Có Sổ)</h3>
-    <div class="bi">Mỗi ngày kéo dài = <strong>~43M chi phí</strong> không có giá trị tương đương</div>
-    <div class="bi">Tiết kiệm <strong>0.000 tỷ</strong> so với tất toán cuối tháng 7</div>
-    <div class="bi">Liên hệ VTB trước <strong>~20/05</strong> để lấy số tất toán chính xác tại ngày 25/05</div>
-    <div class="bi">Nếu bên mua trả chậm → yêu cầu <strong>payment thẳng vào TK VTB</strong> (payoff to lender)</div>
+    <h3>✅ Khuyến Nghị — Gửi 60 Tỷ (Tối Đa)</h3>
+    <div class="bi">Giảm UDLS <strong>720M</strong> — tiết kiệm trực tiếp trên số tất toán</div>
+    <div class="bi">Đồng thời nhận lãi TK <strong>4.2 tỷ</strong> sau 12 tháng — hoàn toàn độc lập</div>
+    <div class="bi">Tổng trả VTB ngày 25/05 sau khi gửi 60 tỷ: <strong>113.361 tỷ</strong> (giảm 720M)</div>
+    <div class="bi">Tổng trả VTB ngày 10/05 sau khi gửi 60 tỷ: <strong>112.721 tỷ</strong></div>
   </div>
 </div>
 
 <hr class="div">
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION 3: SENSITIVITY TIẾT KIỆM
-══════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     PHẦN 4: VAY CẦM CỐ TK
+══════════════════════════════════════ -->
 <div class="sec">
-  <div class="sec-hdr"><h2>03 · Sensitivity — Gửi Tiết Kiệm VTB Giảm UDLS</h2><span class="chip b">28 ngày · Đến 25/05/2026</span></div>
+  <div class="sh"><h2>04 · Vay Cầm Cố TK — Khi Cần Cash Tất Toán Sớm</h2><span class="chip g">Vay 90% giá trị TK · 30 ngày bridge</span></div>
 
-  <div class="note nb">
-    <strong>Logic:</strong> Gửi TK VTB → (1) nhận lãi tiết kiệm ~5.8%/năm + (2) VTB offset một phần UDLS tương ứng số dư duy trì.
-    Cột <strong>"UDLS Offset Thực Tế"</strong> = conservative 50% — xác nhận chính sách VTB RM trước khi thực hiện.
-  </div>
-
-  <div class="tw">
-    <table>
-      <thead><tr>
-        <th>Số Tiền Gửi</th>
-        <th class="r">Lãi TK Nhận (28n)</th>
-        <th class="r">UDLS Offset Tối Đa</th>
-        <th class="r">UDLS Offset Thực Tế (~50%)</th>
-        <th class="r">Net Lợi Ích</th>
-        <th class="r">Yield Ròng / Năm</th>
-      </tr></thead>
-      <tbody>
-  <tr>
-    <td class="fw">10 tỷ</td>
-    <td class="r">44M</td>
-    <td class="r dim">36M</td>
-    <td class="r pos">18M</td>
-    <td class="r pos fw">63M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr>
-  <tr>
-    <td class="fw">20 tỷ</td>
-    <td class="r">89M</td>
-    <td class="r dim">72M</td>
-    <td class="r pos">36M</td>
-    <td class="r pos fw">125M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr>
-  <tr>
-    <td class="fw">30 tỷ</td>
-    <td class="r">133M</td>
-    <td class="r dim">108M</td>
-    <td class="r pos">54M</td>
-    <td class="r pos fw">188M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr>
-  <tr>
-    <td class="fw">40 tỷ</td>
-    <td class="r">178M</td>
-    <td class="r dim">144M</td>
-    <td class="r pos">72M</td>
-    <td class="r pos fw">250M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr>
-  <tr>
-    <td class="fw">50 tỷ</td>
-    <td class="r">222M</td>
-    <td class="r dim">180M</td>
-    <td class="r pos">90M</td>
-    <td class="r pos fw">313M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr>
-  <tr>
-    <td class="fw">60 tỷ</td>
-    <td class="r">267M</td>
-    <td class="r dim">216M</td>
-    <td class="r pos">108M</td>
-    <td class="r pos fw">375M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr>
-  <tr>
-    <td class="fw">70 tỷ</td>
-    <td class="r">311M</td>
-    <td class="r dim">252M</td>
-    <td class="r pos">126M</td>
-    <td class="r pos fw">438M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr>
-  <tr>
-    <td class="fw">80 tỷ</td>
-    <td class="r">356M</td>
-    <td class="r dim">288M</td>
-    <td class="r pos">144M</td>
-    <td class="r pos fw">500M</td>
-    <td class="r blue fw">8.1%</td>
-  </tr>
-  <tr>
-    <td class="fw">100 tỷ</td>
-    <td class="r">445M</td>
-    <td class="r dim">361M</td>
-    <td class="r pos">180M</td>
-    <td class="r pos fw">625M</td>
-    <td class="r blue fw">8.2%</td>
-  </tr></tbody>
-    </table>
-  </div>
-
-  <div class="box box-b">
-    <h3>🔵 Điểm Ngọt — Gửi 50–70 Tỷ</h3>
-    <div class="bi">Gửi <strong>50 tỷ:</strong> net benefit ~313M trong 28 ngày — yield ròng <strong>~8.2%/năm</strong></div>
-    <div class="bi">Gửi <strong>70 tỷ:</strong> net benefit ~438M trong 28 ngày — yield ròng <strong>~8.2%/năm</strong></div>
-    <div class="bi">Gửi nhiều hơn không tăng yield tuyến tính — optimal ở mức 50–70 tỷ nếu có thanh khoản nhàn rỗi</div>
-    <div class="bi">Điều kiện bắt buộc: VTB xác nhận <strong>bằng văn bản</strong> mức offset UDLS tương ứng</div>
-  </div>
-</div>
-
-<hr class="div">
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION 4: VAY NGƯỢC (BRIDGE)
-══════════════════════════════════════════════════════ -->
-<div class="sec">
-  <div class="sec-hdr"><h2>04 · Phương Án Vay Ngược — Bảo Đảm Cash Flow</h2><span class="chip g">Cầm cố TK · 30 ngày bridge</span></div>
-
-  <div class="note nb" style="background:#0a1f0a;border-color:#238636">
-    <strong style="color:#4ade80">Cơ chế:</strong> Gửi TK VTB 6 tháng → cầm cố TK → vay lại 90% → dùng tất toán khoản vay Opera ngay khi có sổ → nhận tiền từ bên mua → tất toán vay ngược. Toàn bộ sạch trong 30–45 ngày.
+  <div class="note" style="background:#0a1f0a;border-color:#238636">
+    <strong style="color:#4ade80">Cơ chế:</strong> Gửi TK VTB → cầm cố TK → vay lại 90% → dùng tất toán khoản vay Opera (10/05) → nhận tiền bên mua → tất toán vay cầm cố → giải chấp TK. <strong style="color:#4ade80">Chi phí vay được bù một phần bởi lãi TK + UDLS giảm.</strong>
   </div>
 
   <div class="tw">
     <table>
       <thead><tr>
         <th>Gửi TK</th>
-        <th class="r">Vay Ngược (90%)</th>
-        <th class="r">Kỳ Hạn Bridge</th>
-        <th class="r">Lãi Vay Ngược</th>
-        <th class="r">Lãi TK Nhận</th>
-        <th class="r">Chi Phí Ròng</th>
-        <th class="r">Lãi Suất Ròng</th>
+        <th class="r">Vay Cầm Cố (90%)</th>
+        <th class="r">Kỳ Hạn</th>
+        <th class="r">Lãi Vay<br><span style="font-size:9px;color:#555">(7.5%/năm)</span></th>
+        <th class="r">Lãi TK Nhận<br><span style="font-size:9px;color:#555">(7%/30 ngày)</span></th>
+        <th class="r">Chi Phí Vay Ròng</th>
+        <th class="r">UDLS Giảm</th>
+        <th class="r">Tổng Lợi Ích Ròng<br><span style="font-size:9px;color:#555">(UDLS giảm − chi phí vay)</span></th>
       </tr></thead>
       <tbody>
-  <tr>
-    <td class="fw">50 tỷ TK</td>
-    <td class="r blue fw">45.000 tỷ</td>
+  <tr class="">
+    <td class="fw">60 tỷ TK</td>
+    <td class="r blue fw">54.000 tỷ</td>
     <td class="r dim">30 ngày</td>
-    <td class="r neg">277M</td>
-    <td class="r pos">238M</td>
-    <td class="r neg fw">39M</td>
-    <td class="r blue">1.1%/năm</td>
+    <td class="r neg">333M</td>
+    <td class="r pos">345M</td>
+    <td class="r pos fw">−12M</td>
+    <td class="r pos fw">720M</td>
+    <td class="r pos fw" style="font-size:13px">732M<br><span style="font-size:9px;color:#666">tổng lợi ích</span></td>
   </tr>
-  <tr>
-    <td class="fw">70 tỷ TK</td>
-    <td class="r blue fw">63.000 tỷ</td>
+  <tr class="">
+    <td class="fw">80 tỷ TK</td>
+    <td class="r blue fw">72.000 tỷ</td>
     <td class="r dim">30 ngày</td>
-    <td class="r neg">388M</td>
-    <td class="r pos">334M</td>
-    <td class="r neg fw">55M</td>
-    <td class="r blue">1.1%/năm</td>
+    <td class="r neg">444M</td>
+    <td class="r pos">460M</td>
+    <td class="r pos fw">−16M</td>
+    <td class="r pos fw">960M</td>
+    <td class="r pos fw" style="font-size:13px">976M<br><span style="font-size:9px;color:#666">tổng lợi ích</span></td>
   </tr>
-  <tr>
+  <tr class="">
     <td class="fw">100 tỷ TK</td>
     <td class="r blue fw">90.000 tỷ</td>
     <td class="r dim">30 ngày</td>
     <td class="r neg">555M</td>
-    <td class="r pos">477M</td>
-    <td class="r neg fw">78M</td>
-    <td class="r blue">1.1%/năm</td>
+    <td class="r pos">575M</td>
+    <td class="r pos fw">−21M</td>
+    <td class="r pos fw">1200M</td>
+    <td class="r pos fw" style="font-size:13px">1221M<br><span style="font-size:9px;color:#666">tổng lợi ích</span></td>
   </tr>
-  <tr>
+  <tr class="rec">
     <td class="fw">120 tỷ TK</td>
     <td class="r blue fw">108.000 tỷ</td>
     <td class="r dim">30 ngày</td>
     <td class="r neg">666M</td>
-    <td class="r pos">572M</td>
-    <td class="r neg fw">94M</td>
-    <td class="r blue">1.1%/năm</td>
+    <td class="r pos">690M</td>
+    <td class="r pos fw">−25M</td>
+    <td class="r pos fw">1440M</td>
+    <td class="r pos fw" style="font-size:13px">1465M<br><span style="font-size:9px;color:#666">tổng lợi ích</span></td>
   </tr></tbody>
     </table>
   </div>
 
-  <div class="cards c2" style="margin-top:16px">
-    <div class="box box-g" style="margin-top:0">
-      <h3>✅ Phương Án Khuyến Nghị — Gửi 120 Tỷ, Vay Ngược 108 Tỷ</h3>
-      <div class="bi"><strong>Bước 1 (Ngay bây giờ):</strong> Gửi 120 tỷ TK VTB 6 tháng</div>
-      <div class="bi"><strong>Bước 2 (~20/05):</strong> Ký vay cầm cố TK ~108.95 tỷ (đủ tất toán Opera)</div>
-      <div class="bi"><strong>Bước 3 (25/05):</strong> Dùng tiền vay tất toán Opera → nhận sổ → bàn giao bên mua</div>
-      <div class="bi"><strong>Bước 4:</strong> Nhận tiền bên mua → tất toán vay ngược → giải chấp TK</div>
-      <div class="bi">Chi phí ròng 30 ngày chỉ <strong>~94M</strong> — đổi lấy chủ động hoàn toàn về timing</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="box box-b">
+      <h3>🔵 Phương Án Đề Xuất — Gửi 120 Tỷ, Vay 108 Tỷ</h3>
+      <div class="bi"><strong>Bước 1:</strong> Gửi 120 tỷ TK VTB 12 tháng (7%/năm)</div>
+      <div class="bi"><strong>Bước 2:</strong> Cầm cố TK → vay 108 tỷ (đủ tất toán Opera 10/05)</div>
+      <div class="bi"><strong>Bước 3 (10/05):</strong> Tất toán Opera → nhận UDLS giảm ~1440M</div>
+      <div class="bi"><strong>Bước 4:</strong> Nhận tiền bên mua → tất toán vay cầm cố ngay</div>
+      <div class="bi">Chi phí vay ròng 30 ngày: <strong>~−25M</strong> — bù được bởi UDLS giảm</div>
+      <div class="bi">Tổng lợi ích ròng: <strong style="color:#4ade80">+1465M</strong> (UDLS giảm trừ chi phí vay)</div>
     </div>
-    <div class="box box-o" style="margin-top:0">
+    <div class="box box-o">
       <h3>⚠️ Lưu Ý Thực Thi</h3>
-      <div class="bi">Xác nhận VTB có sản phẩm <strong>vay cầm cố tiền gửi</strong> tại chi nhánh quản lý khoản vay Opera</div>
-      <div class="bi">Lãi suất vay ngược thực tế <strong>6.5–8.5%/năm</strong> — confirm với RM trước khi ký</div>
-      <div class="bi">Đảm bảo kỳ hạn TK <strong>≥ thời gian bridge</strong> — phá TK trước hạn mất lãi suất</div>
-      <div class="bi"><strong>Phương án đơn giản nhất:</strong> Yêu cầu bên mua chuyển thẳng vào TK VTB (zero bridge cost)</div>
-    </div>
-  </div>
-
-  <!-- CASH FLOW TIMELINE -->
-  <div class="card" style="margin-top:16px">
-    <div class="lbl" style="margin-bottom:12px">📅 Dòng Thời Gian Cash Flow Tổng Hợp</div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative">
-      <div style="position:absolute;top:20px;left:10%;right:10%;height:2px;background:#21262d;z-index:0"></div>
-      
-        <div style="text-align:center;position:relative;z-index:1">
-          <div style="width:14px;height:14px;border-radius:50%;background:#8b949e;margin:13px auto 8px;box-shadow:0 0 8px #8b949e66"></div>
-          <div style="font-size:11px;font-weight:700;color:#8b949e">Hôm Nay</div>
-          <div style="font-size:12px;font-weight:600;color:#e6edf3;margin-top:2px">27/04</div>
-          <div style="font-size:10px;color:#8b949e;margin-top:2px">Phân tích</div>
-        </div>
-        <div style="text-align:center;position:relative;z-index:1">
-          <div style="width:14px;height:14px;border-radius:50%;background:#fb923c;margin:13px auto 8px;box-shadow:0 0 8px #fb923c66"></div>
-          <div style="font-size:11px;font-weight:700;color:#fb923c">Chuẩn Bị</div>
-          <div style="font-size:12px;font-weight:600;color:#e6edf3;margin-top:2px">~20/05</div>
-          <div style="font-size:10px;color:#8b949e;margin-top:2px">Gửi TK + ký vay ngược</div>
-        </div>
-        <div style="text-align:center;position:relative;z-index:1">
-          <div style="width:14px;height:14px;border-radius:50%;background:#4ade80;margin:13px auto 8px;box-shadow:0 0 8px #4ade8066"></div>
-          <div style="font-size:11px;font-weight:700;color:#4ade80">⭐ Có Sổ</div>
-          <div style="font-size:12px;font-weight:600;color:#e6edf3;margin-top:2px">25/05</div>
-          <div style="font-size:10px;color:#8b949e;margin-top:2px">Tất toán Opera</div>
-        </div>
-        <div style="text-align:center;position:relative;z-index:1">
-          <div style="width:14px;height:14px;border-radius:50%;background:#60a5fa;margin:13px auto 8px;box-shadow:0 0 8px #60a5fa66"></div>
-          <div style="font-size:11px;font-weight:700;color:#60a5fa">Nhận Tiền</div>
-          <div style="font-size:12px;font-weight:600;color:#e6edf3;margin-top:2px">+~30n</div>
-          <div style="font-size:10px;color:#8b949e;margin-top:2px">Bên mua thanh toán</div>
-        </div>
-        <div style="text-align:center;position:relative;z-index:1">
-          <div style="width:14px;height:14px;border-radius:50%;background:#c084fc;margin:13px auto 8px;box-shadow:0 0 8px #c084fc66"></div>
-          <div style="font-size:11px;font-weight:700;color:#c084fc">Hoàn Tất</div>
-          <div style="font-size:12px;font-weight:600;color:#e6edf3;margin-top:2px">Xong</div>
-          <div style="font-size:10px;color:#8b949e;margin-top:2px">Tất toán bridge · sạch</div>
-        </div>
+      <div class="bi">Xác nhận VTB có sản phẩm <strong>vay cầm cố tiền gửi</strong> tại chi nhánh quản lý khoản Opera</div>
+      <div class="bi">Lãi suất vay cầm cố thực tế <strong>6.5–8.5%/năm</strong> — confirm với RM trước khi ký</div>
+      <div class="bi">Kỳ hạn TK phải <strong>≥ thời gian cần bridge</strong> — phá TK trước hạn mất lãi</div>
+      <div class="bi"><strong>Phương án tối giản:</strong> Yêu cầu bên mua chuyển thẳng vào TK VTB ngày 10/05 → không cần vay ngược, không mất phí bridge</div>
     </div>
   </div>
 </div>
 
 <div class="footer">
   OPERA METROPOLE — FULL BRIEFING · Confidential · Royal Canary Corp<br>
-  Số liệu VTB xác nhận 16/04/2026 · Lãi suất thông thường ~9.6%/năm (ước tính) · UDLS 4.7%/năm<br>
-  Sensitivity & vay ngược là ước tính — xác nhận với VietinBank RM trước khi thực hiện · Zera AI · 2026-04-27
+  Phần gửi TK dựa trên bảng phương án do VietinBank cung cấp · Lãi suất TK 7%/năm · Giảm UDLS 12M/tỷ (số thực)<br>
+  Lịch tất toán ước tính từ số thực 16/04/2026 · Confirm số chính xác với VTB trước khi thực hiện · Zera AI · 2026-04-27
 </div>
 
 </body>
